@@ -2,7 +2,7 @@
 
 case "$1" in
     "record" )
-        darcs record -l
+        git commit -a
         ;;
     "pull" )
         darcs pull http://patch-tag.com/r/AndyStewart/deepin-software-center

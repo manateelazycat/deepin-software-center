@@ -5,10 +5,10 @@ case "$1" in
         git commit -a
         ;;
     "pull" )
-        darcs pull http://patch-tag.com/r/AndyStewart/deepin-software-center
+        git pull
         ;;
     "push" )
-        darcs push -a AndyStewart@patch-tag.com:/r/AndyStewart/deepin-software-center --set-default
+        git push
         ;;
     * ) 
         echo "Help"

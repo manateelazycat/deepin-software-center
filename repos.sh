@@ -8,7 +8,7 @@ case "$1" in
         git pull
         ;;
     "push" )
-        git push
+        git push git@github.com:manateelazycat/deepin-software-center.git
         ;;
     * ) 
         echo "Help"

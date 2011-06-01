@@ -875,7 +875,6 @@ class Tooltips:
         self.times = 70
         self.interval = 80     # in milliseconds
         self.ticker = self.times
-        self.message = ""
         
         self.window = gtk.Window()
         self.window.set_decorated(False)
@@ -883,8 +882,14 @@ class Tooltips:
         self.window.set_transient_for(window.get_toplevel())
         self.window.set_opacity(0.9)
         self.window.set_property("accept-focus", False)
+        self.window.set_size_request(-1, self.height)
         
-        self.window.set_size_request(self.width, self.height)
+        self.label = gtk.Label()
+        self.align = gtk.Alignment()
+        self.align.set(0.5, 0.5, 0.0, 0.0)
+        self.align.set_padding(0, 0, self.paddingX, self.paddingX)
+        self.align.add(self.label)
+        self.window.add(self.align)
         
         self.updatePosition(widget)
         
@@ -901,7 +906,7 @@ class Tooltips:
             
         # Init ticker and message.
         self.ticker = 0
-        self.message = message
+        self.label.set_markup("<span foreground='#333333' size='%s'>%s</span>" % (LABEL_FONT_MEDIUM_SIZE, message))
         
     def redraw(self):
         '''Redraw.'''
@@ -926,12 +931,6 @@ class Tooltips:
         cr.rectangle(0, 0, rect.width, rect.height)
         cr.fill()
         
-        # Draw message.
-        fontSize = 16
-        drawFont(cr, self.message, fontSize, "#000000",
-                 rect.x + self.paddingX, 
-                 getFontYCoordinate(rect.y, self.height, fontSize))
-
         # Change opacity with ticker.
         if self.ticker <= self.startTimes:
             self.window.set_opacity(self.ticker * 0.1)
@@ -939,7 +938,10 @@ class Tooltips:
             self.window.set_opacity(1)
         else:
             self.window.set_opacity((self.times - self.ticker) * 0.1)
-        self.window.move(self.x, self.y)
+            
+        # Update window position.
+        (width, _) = self.label.get_layout().get_pixel_size()
+        self.window.move(self.x - width / 2 - self.paddingX, self.y)
         
         # Expose recursively.
         if widget.get_child() != None:
@@ -952,7 +954,7 @@ class Tooltips:
         (wx, wy) = widget.window.get_origin()
         rect = widget.get_allocation()
         (ww, wh) = (rect.width, rect.height)
-        self.x = wx + (ww - self.width) / 2
+        self.x = wx + ww / 2
         self.y = wy - self.height
         
         self.window.queue_draw()

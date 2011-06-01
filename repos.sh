@@ -5,7 +5,7 @@ case "$1" in
         git commit -a
         ;;
     "pull" )
-        git pull git://github.com/manateelazycat/deepin-software-center.git
+        git pull origin master
         ;;
     "push" )
         git push git@github.com:manateelazycat/deepin-software-center.git

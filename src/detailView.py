@@ -292,9 +292,26 @@ class DetailView:
             
         self.commentListBox = gtk.VBox()
         
+        # Add wait box.
+        commentWaitBox = gtk.HBox()
+        commentWaitAlign = gtk.Alignment()
+        commentWaitAlign.set(0.5, 0.5, 0.0, 0.0)
+        commentWaitAlign.set_padding(20, 20, 0, 0)
+        commentWaitAlign.add(commentWaitBox)
+        self.commentAreaBox.pack_start(commentWaitAlign)
+        
+        commentWaitSpinner = gtk.Spinner()
+        commentWaitSpinner.start()
+        commentWaitSpinnerAlign = gtk.Alignment()
+        commentWaitSpinnerAlign.set(0.5, 0.5, 0.0, 0.0)
+        commentWaitSpinnerAlign.set_padding(10, 10, 10, 10)
+        commentWaitSpinnerAlign.add(commentWaitSpinner)
+        commentWaitBox.pack_start(commentWaitSpinnerAlign, False, False)
+        
         commentWaitLabel = gtk.Label()
-        commentWaitLabel.set_markup("<span foreground='#1A3E88' size='%s'><b>读取用户评论...</b></span>" % (LABEL_FONT_X_LARGE_SIZE))
-        self.commentAreaBox.pack_start(commentWaitLabel)
+        commentWaitLabel.set_markup("<span foreground='#1A3E88' size='%s'><b>读取用户评论...</b></span>"
+                                    % (LABEL_FONT_LARGE_SIZE))
+        commentWaitBox.pack_start(commentWaitLabel, False, False)
         
         return align
     

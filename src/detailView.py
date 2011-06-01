@@ -69,6 +69,7 @@ class DetailView:
         pkg = appInfo.pkg
         self.bigScreenshot = None
         self.readMoreAlign = None
+        self.commentNotifyAlign = None
         self.lastCommentId = ""
         self.updateMoreCommentCallback = updateMoreCommentCallback
         self.messageCallback = messageCallback
@@ -589,11 +590,11 @@ class DetailView:
             commentNotifyLabel = gtk.Label()
             commentNotifyLabel.set_markup(
                 "<span foreground='#1A3E88' size='%s'><b>还不快抢沙发?</b></span>" % (LABEL_FONT_X_LARGE_SIZE))
-            commentNotifyAlign = gtk.Alignment()
-            commentNotifyAlign.set(0.5, 0.5, 0.0, 0.0)
-            commentNotifyAlign.set_padding(notifyPaddingY, notifyPaddingY, 0, 0)
-            commentNotifyAlign.add(commentNotifyLabel)
-            self.commentAreaBox.pack_start(commentNotifyAlign)
+            self.commentNotifyAlign = gtk.Alignment()
+            self.commentNotifyAlign.set(0.5, 0.5, 0.0, 0.0)
+            self.commentNotifyAlign.set_padding(notifyPaddingY, notifyPaddingY, 0, 0)
+            self.commentNotifyAlign.add(commentNotifyLabel)
+            self.commentAreaBox.pack_start(self.commentNotifyAlign)
         else:
             # Add comment list.
             self.commentAreaBox.pack_start(self.commentListBox)
@@ -663,10 +664,13 @@ class DetailView:
     @postGUI
     def sendCommentSuccess(self, pkgName, comment, userName):
         '''Send comment success.'''
+        # Remove spinner box first.
         utils.containerRemoveAll(self.sendCommentSpinnerBox)            
         
+        # Message.
         self.messageCallback("发表 %s 评论成功" % (pkgName))
         
+        # Add comment in comment list.
         commentIcon = "./icons/comment/me.png"
         commentDate = utils.getCurrentTime()
         commentName = "深度Linuxer %s" % (commentDate)
@@ -676,9 +680,16 @@ class DetailView:
                 commentDate, 
                 base64.b64decode(comment)))
         
+        # Remove notify widget if have it.
+        if self.commentNotifyAlign != None:
+            self.commentAreaBox.remove(self.commentNotifyAlign)
+            self.commentAreaBox.pack_start(self.commentListBox)
+        
+        # Connect widget.
         self.commentListBox.pack_start(commentBox, False, False)
         self.commentListBox.reorder_child(commentBox, 0)
-        self.commentListBox.show_all()
+
+        self.commentAreaBox.show_all()
         
     @postGUI
     def sendCommentFailed(self, pkgName):

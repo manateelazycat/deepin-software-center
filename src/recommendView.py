@@ -341,7 +341,7 @@ class RecommendItem(DownloadItem):
         # Add application name.
         pkgName = utils.getPkgName(pkg)
         appName = gtk.Label()
-        appName.set_markup("<span foreground='#1A3E88' size='%s'>%s</span>" % (LABEL_FONT_SIZE, pkgName))
+        appName.set_markup("<span foreground='#1A3E88' size='%s'>%s</span>" % (LABEL_FONT_MEDIUM_SIZE, pkgName))
         appName.set_size_request(self.NAME_WIDTH, -1)
         appName.set_single_line_mode(True)
         appName.set_ellipsize(pango.ELLIPSIZE_END)

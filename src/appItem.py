@@ -402,9 +402,9 @@ def createItemBasicBox(appInfo, maxWidth, showVersion=True):
     appName = gtk.Label()
     if showVersion:
         pkgVersion = utils.getPkgVersion(pkg)
-        markup = "<span foreground='#1A3E88' size='%s'>%s</span><span foreground='#00BB00' size='%s'> (%s)</span>" % (LABEL_FONT_SIZE, pkgName, LABEL_FONT_SIZE, pkgVersion)
+        markup = "<span foreground='#1A3E88' size='%s'>%s</span><span foreground='#00BB00' size='%s'> (%s)</span>" % (LABEL_FONT_MEDIUM_SIZE, pkgName, LABEL_FONT_SIZE, pkgVersion)
     else:
-        markup = "<span foreground='#1A3E88' size='%s'>%s</span>" % (LABEL_FONT_SIZE, pkgName)
+        markup = "<span foreground='#1A3E88' size='%s'>%s</span>" % (LABEL_FONT_MEDIUM_SIZE, pkgName)
     appName.set_markup(markup)
     appName.set_size_request(maxWidth, -1)
     appName.set_single_line_mode(True)

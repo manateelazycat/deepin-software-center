@@ -246,14 +246,14 @@ class DetailView:
         screenshotLabel.set_alignment(0.0, 0.5)
         screenshotBox.pack_start(screenshotLabel, False, False)
         
-        imageBox = gtk.EventBox()
-        imageBox.set_size_request(self.SCREENSHOT_WIDTH, self.SCREENSHOT_HEIGHT)
-        imageBox.connect("expose-event", lambda w, e: drawBackground(w, e, "#FFFFFF"))
-        screenshotBox.pack_start(imageBox, False, False)
+        self.imageBox = gtk.EventBox()
+        self.imageBox.set_size_request(self.SCREENSHOT_WIDTH, self.SCREENSHOT_HEIGHT)
+        self.imageBox.connect("expose-event", lambda w, e: drawBackground(w, e, "#FFFFFF"))
+        screenshotBox.pack_start(self.imageBox, False, False)
         
         self.screenshotImage = gtk.Image()
-        imageBox.add(self.screenshotImage)
-        imageBox.connect("button-press-event", lambda w, e: self.showBigScreenshot(w, pkgName, noscreenshotList))
+        self.imageBox.add(self.screenshotImage)
+        self.imageBox.connect("button-press-event", lambda w, e: self.showBigScreenshot(w, pkgName, noscreenshotList))
 
         infoBox.pack_start(screenshotBox, False, False, self.DETAIL_PADDING_X)
         
@@ -269,9 +269,9 @@ class DetailView:
         elif not pkgName in noscreenshotList:
             # Init fetch thread.
             fetchScreenshot = FetchScreenshot(
-                appInfo, 
-                noscreenshotList,
-                self.screenshotImage, screenshotWidth, screenshotHeight)
+                appInfo, noscreenshotList,
+                self.imageBox, self.screenshotImage, 
+                screenshotWidth, screenshotHeight)
             
             # Start fetch thread.
             fetchScreenshot.start()
@@ -596,14 +596,13 @@ class DetailView:
             self.commentAreaBox.pack_start(commentNotifyAlign)
         else:
             # Add comment list.
+            self.commentAreaBox.pack_start(self.commentListBox)
             self.addCommentList(commentList, commentNum, True)
         
         self.scrolledWindow.show_all()
         
     def addCommentList(self, commentList, commentNum, firstTime=False):
         '''Add comment list.'''
-        self.commentAreaBox.pack_start(self.commentListBox)
-            
         # Add comment list.
         for comment in commentList:
             commentName = comment["cuid"]
@@ -979,12 +978,13 @@ class AppInfoItem(DownloadItem):
 class FetchScreenshot(td.Thread):
     '''Fetch screenshot.'''
 	
-    def __init__(self, appInfo, noscreenshotList, image, width, height):
+    def __init__(self, appInfo, noscreenshotList, imageBox, image, width, height):
         '''Init for fetch screenshot.'''
         td.Thread.__init__(self)
         self.setDaemon(True) # make thread exit when main program exit 
         
         self.appInfo = appInfo
+        self.imageBox = imageBox
         self.image = image
         self.proc = None
         self.returnCode = DOWNLOAD_FAILED
@@ -992,7 +992,7 @@ class FetchScreenshot(td.Thread):
         self.height = height
         self.noscreenshotList = noscreenshotList
         self.killed = False
-
+        
     def stop(self):
         '''Stop download.'''
         if self.proc != None and self.returnCode == DOWNLOAD_FAILED:
@@ -1001,6 +1001,18 @@ class FetchScreenshot(td.Thread):
             
     def run(self):
         '''Run'''
+        # Add wait widget.
+        padding = 40
+        utils.containerRemoveAll(self.imageBox)
+        waitSpinner = gtk.Spinner()
+        waitSpinner.start()
+        waitAlign = gtk.Alignment()
+        waitAlign.set(0.5, 0.5, 1.0, 1.0)
+        waitAlign.set_padding(padding, padding, padding, padding)
+        waitAlign.add(waitSpinner)
+        self.imageBox.add(waitAlign)
+        
+        # Download screenshot.
         pkgName = utils.getPkgName(self.appInfo.pkg)
         screenshotPath = SCREENSHOT_DOWNLOAD_DIR + pkgName
         
@@ -1019,6 +1031,12 @@ class FetchScreenshot(td.Thread):
         self.proc = subprocess.Popen(cmdline)
         self.returnCode = self.proc.wait()
         
+        # Stop waiting widget.
+        utils.containerRemoveAll(self.imageBox)
+        self.imageBox.add(self.image)
+        self.imageBox.show_all()
+        
+        # Set screenshot.
         if self.returnCode == DOWNLOAD_SUCCESS:
             self.image.set_from_pixbuf(gtk.gdk.pixbuf_new_from_file_at_size(screenshotPath, self.width, self.height))
         else:

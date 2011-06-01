@@ -29,6 +29,7 @@ import pango
 import pangocairo
 import pygtk
 import subprocess
+import time
 pygtk.require('2.0')
 
 def isDoubleClick(event):
@@ -335,3 +336,8 @@ def compareCandidates((preA, matchA, restA, pkgA), (preB, matchB, restB, pkgB)):
         return cmp(pkgA, pkgB)
     else:
         return 1        
+
+def getCurrentTime():
+    '''Get current time.'''
+    return time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
+

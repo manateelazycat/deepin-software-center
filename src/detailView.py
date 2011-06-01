@@ -59,7 +59,8 @@ class DetailView:
 
     def __init__(self, aptCache, pageId, appInfo, 
                  switchStatus, downloadQueue, actionQueue,
-                 exitCallback, noscreenshotList, updateMoreCommentCallback):
+                 exitCallback, noscreenshotList, updateMoreCommentCallback,
+                 messageCallback):
         '''Init for detail view.'''
         # Init.
         self.aptCache = aptCache
@@ -70,6 +71,7 @@ class DetailView:
         self.readMoreAlign = None
         self.lastCommentId = ""
         self.updateMoreCommentCallback = updateMoreCommentCallback
+        self.messageCallback = messageCallback
         
         self.box = gtk.VBox()
         self.eventbox = gtk.EventBox()
@@ -284,12 +286,14 @@ class DetailView:
             self.screenshotImage.set_from_pixbuf(gtk.gdk.pixbuf_new_from_file("./icons/screenshot/upload.png"))        
 
         # Add comment label.
+        self.commentAreaBox = gtk.VBox()
+        detailBox.pack_start(self.commentAreaBox)
+            
         self.commentListBox = gtk.VBox()
-        detailBox.pack_start(self.commentListBox)
         
         commentWaitLabel = gtk.Label()
         commentWaitLabel.set_markup("<span foreground='#1A3E88' size='%s'><b>读取用户评论...</b></span>" % (LABEL_FONT_X_LARGE_SIZE))
-        self.commentListBox.pack_start(commentWaitLabel)
+        self.commentAreaBox.pack_start(commentWaitLabel)
         
         return align
     
@@ -461,6 +465,10 @@ class DetailView:
         textBuffer.set_text(commentContent)
         rightBox.pack_start(textView)
         
+        line = gtk.Image()
+        drawLine(line, "#DDDDDD", 1, False, LINE_BOTTOM)
+        commentBox.pack_start(line)
+            
         return commentAlign
     
     def updateDownloadingStatus(self, pkgName, progress, feedback):
@@ -523,10 +531,10 @@ class DetailView:
             self.appNameBox.pack_start(appVoteAlign, False, False)
         
         # Update comment list.
-        utils.containerRemoveAll(self.commentListBox)
+        utils.containerRemoveAll(self.commentAreaBox)
         
         commentTitleBox = gtk.HBox()
-        self.commentListBox.pack_start(commentTitleBox)
+        self.commentAreaBox.pack_start(commentTitleBox)
         
         commentLabel = gtk.Label()
         commentLabel.set_markup("<span foreground='#1A3E88' size='%s'><b>用户评论</b></span>" % (LABEL_FONT_LARGE_SIZE))
@@ -542,7 +550,17 @@ class DetailView:
         self.commentView.set_size_request(-1, commentViewHeight)
         commentViewFrame = gtk.Frame()
         commentViewFrame.add(self.commentView)
-        self.commentListBox.pack_start(commentViewFrame)
+        self.commentAreaBox.pack_start(commentViewFrame)
+        
+        sendCommentBox = gtk.HBox()
+        self.commentAreaBox.pack_start(sendCommentBox)
+        
+        self.sendCommentSpinnerBox = gtk.VBox()
+        sendCommentSpinnerAlign = gtk.Alignment()
+        sendCommentSpinnerAlign.set(1.0, 0.5, 0.0, 0.0)
+        sendCommentSpinnerAlign.set_padding(0, 0, 10, 10)
+        sendCommentSpinnerAlign.add(self.sendCommentSpinnerBox)
+        sendCommentBox.pack_start(sendCommentSpinnerAlign)
         
         (sendCommentButton, sendCommentAlign) = newActionButton(
             "update_selected", 1.0, 0.5, 
@@ -550,7 +568,7 @@ class DetailView:
             5
             )
         sendCommentButton.connect("button-press-event", lambda w, e: self.sendComment())
-        self.commentListBox.pack_start(sendCommentAlign)
+        sendCommentBox.pack_start(sendCommentAlign, False, False)
         
         if commentNum > 0:
             self.commentNumLabel = gtk.Label()
@@ -564,7 +582,7 @@ class DetailView:
             
         line = gtk.Image()
         drawLine(line, "#DDDDDD", 1, False, LINE_BOTTOM)
-        self.commentListBox.pack_start(line)
+        self.commentAreaBox.pack_start(line)
             
         if len(commentList) == 0:
             notifyPaddingY = 20
@@ -575,7 +593,7 @@ class DetailView:
             commentNotifyAlign.set(0.5, 0.5, 0.0, 0.0)
             commentNotifyAlign.set_padding(notifyPaddingY, notifyPaddingY, 0, 0)
             commentNotifyAlign.add(commentNotifyLabel)
-            self.commentListBox.pack_start(commentNotifyAlign)
+            self.commentAreaBox.pack_start(commentNotifyAlign)
         else:
             # Add comment list.
             self.addCommentList(commentList, commentNum, True)
@@ -584,6 +602,8 @@ class DetailView:
         
     def addCommentList(self, commentList, commentNum, firstTime=False):
         '''Add comment list.'''
+        self.commentAreaBox.pack_start(self.commentListBox)
+            
         # Add comment list.
         for comment in commentList:
             commentName = comment["cuid"]
@@ -594,15 +614,11 @@ class DetailView:
             commentBox = self.createComment((commentName, commentIcon, commentDate, commentContent))
             self.commentListBox.pack_start(commentBox, False, False)
             
-            line = gtk.Image()
-            drawLine(line, "#DDDDDD", 1, False, LINE_BOTTOM)
-            self.commentListBox.pack_start(line)
-            
         self.lastCommentId = commentList.pop()["cid"]
         
         # Add read more button.
         if self.readMoreAlign != None and self.readMoreAlign.get_parent() != None:
-            self.commentListBox.remove(self.readMoreAlign)
+            self.commentAreaBox.remove(self.readMoreAlign)
         
         if (firstTime and commentNum > 20) or commentNum >= 20:
             (readMoreButton, self.readMoreAlign) = newActionButton(
@@ -610,7 +626,7 @@ class DetailView:
                 "cell", True, "查看更多的评论", BUTTON_FONT_SIZE_MEDIUM, "#FFFFFF",
                 20
                 )
-            self.commentListBox.pack_start(self.readMoreAlign, False, False)
+            self.commentAreaBox.pack_start(self.readMoreAlign, False, False)
             readMoreButton.connect("button-press-event", lambda w, e: self.fetchMoreComment())
             
     def sendComment(self):
@@ -630,10 +646,47 @@ class DetailView:
             # Get user name.
             userName = base64.b64encode("深度Linuxer %s" % (time.ctime()))
             
-            sendCommentThread = SendComment(pkgName, userName, comment)    
+            self.createSendCommentSpinner()
+            sendCommentThread = SendComment(pkgName, userName, comment, 
+                                            self.sendCommentSuccess, self.sendCommentFailed)    
             sendCommentThread.start()
         else:
             print "Don't allowed send blank comment."
+            
+    def createSendCommentSpinner(self):
+        '''Create send comment spinner.'''
+        utils.containerRemoveAll(self.sendCommentSpinnerBox)            
+        self.sendCommentSpinner = gtk.Spinner()
+        self.sendCommentSpinner.start()
+        self.sendCommentSpinnerBox.pack_start(self.sendCommentSpinner, True, True)
+        self.sendCommentSpinnerBox.show_all()
+            
+    @postGUI
+    def sendCommentSuccess(self, pkgName, comment, userName):
+        '''Send comment success.'''
+        utils.containerRemoveAll(self.sendCommentSpinnerBox)            
+        
+        self.messageCallback("发表 %s 评论成功" % (pkgName))
+        
+        commentIcon = "./icons/comment/me.png"
+        commentDate = utils.getCurrentTime()
+        commentName = "深度Linuxer %s" % (commentDate)
+        commentBox = self.createComment((
+                commentName, 
+                commentIcon, 
+                commentDate, 
+                base64.b64decode(comment)))
+        
+        self.commentListBox.pack_start(commentBox, False, False)
+        self.commentListBox.reorder_child(commentBox, 0)
+        self.commentListBox.show_all()
+        
+    @postGUI
+    def sendCommentFailed(self, pkgName):
+        '''Send comment failed.'''
+        utils.containerRemoveAll(self.sendCommentSpinnerBox)            
+        
+        self.messageCallback("发表 %s 评论失败， 请检查你的网络链接" % (pkgName))
         
     def fetchMoreComment(self):
         '''Fetch more comment.'''
@@ -650,7 +703,7 @@ class DetailView:
         commentList = voteJson["comment_list"]
         
         if len(commentList) == 0 and self.readMoreAlign != None:
-            self.commentListBox.remove(self.readMoreAlign)
+            self.commentAreaBox.remove(self.readMoreAlign)
         else:
             # Add comment list.
             self.addCommentList(commentList, len(commentList))
@@ -660,27 +713,30 @@ class DetailView:
 class SendComment(td.Thread):
     '''Send comment.'''
 	
-    def __init__(self, pkgName, userName, comment):
+    def __init__(self, pkgName, userName, comment, 
+                 successCallback, failedCallback):
         '''Init for fetch detail.'''
         td.Thread.__init__(self)
         self.setDaemon(True) # make thread exit when main program exit 
         self.pkgName = pkgName
         self.userName = userName
         self.comment = comment
+        self.successCallback = successCallback
+        self.failedCallback = failedCallback
         
     def run(self):
         '''Run'''
         # try:
         args = {'n':self.pkgName, 'c':self.comment, 'u':self.userName}
         
-        try:
-            connection = urllib2.urlopen(
-                "http://test-linux.gteasy.com/comment.php?",
-                data=urllib.urlencode(args),
-                timeout=POST_TIMEOUT)
-            print "Send comment (%s) successful." % (self.pkgName)
-        except Exception, e:
-            print "Send comment (%s) failed." % (self.pkgName)
+        # try:
+        connection = urllib2.urlopen(
+            "http://test-linux.gteasy.com/comment.php?",
+            data=urllib.urlencode(args),
+            timeout=POST_TIMEOUT)
+        self.successCallback(self.pkgName, self.comment, self.userName)
+        # except Exception, e:
+        #     self.failedCallback(self.pkgName)
             
 class FetchMoreComment(td.Thread):
     '''Fetch more comment.'''

@@ -79,13 +79,15 @@ class DeepinSoftwareCenter:
             self.downloadUpdateCallback,
             self.downloadFinishCallback,
             self.downloadFailedCallback,
+            self.message
             )
         
         # Action queue.
         self.actionQueue = action.ActionQueue(
             self.actionUpdateCallback,
             self.actionFinishCallback,
-            self.actionFailedCallback
+            self.actionFailedCallback,
+            self.message
             )
         
         # Init widgets.
@@ -885,6 +887,7 @@ class Tooltips:
         self.window.set_size_request(-1, self.height)
         
         self.label = gtk.Label()
+        self.label.set_single_line_mode(True) # just one line
         self.align = gtk.Alignment()
         self.align.set(0.5, 0.5, 0.0, 0.0)
         self.align.set_padding(0, 0, self.paddingX, self.paddingX)

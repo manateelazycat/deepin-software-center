@@ -63,7 +63,8 @@ class Action(td.Thread):
     '''Action.'''
 
     def __init__(self, pkgName, actionType, updateCallback, 
-                 finishCallback, failedCallback, scanCallback):
+                 finishCallback, failedCallback, scanCallback,
+                 messageCallback):
         '''Init for action.'''
         td.Thread.__init__(self)
         self.setDaemon(True) # make thread exit when main program exit 
@@ -77,6 +78,7 @@ class Action(td.Thread):
         self.finishCallback = finishCallback
         self.failedCallback = failedCallback
         self.scanCallback = scanCallback
+        self.messageCallback = messageCallback
 
         # Analysis dependent packages.
         if actionType == ACTION_INSTALL:
@@ -103,6 +105,7 @@ class Action(td.Thread):
             self.finish()
         except Exception, e:
             # Debug.
+            self.messageCallback("%s: 安装失败， 请确保没有其他APT进程在运行." % self.pkgName)
             print "Got error `%s` when commit apt action." % (e)
             
             # Call failed callback.
@@ -142,7 +145,7 @@ class Action(td.Thread):
 class ActionQueue:
     '''Action queue.'''
 
-    def __init__(self, updateCallback, finishCallback, failedCallback):
+    def __init__(self, updateCallback, finishCallback, failedCallback, messageCallback):
         '''Init for action queue.'''
         # Init.
         self.lock = False
@@ -150,6 +153,7 @@ class ActionQueue:
         self.updateCallback = updateCallback
         self.finishCallback = finishCallback
         self.failedCallback = failedCallback
+        self.messageCallback = messageCallback
 
     def startActionThread(self, pkgName, actionType):
         '''Start action thread.'''
@@ -161,7 +165,8 @@ class ActionQueue:
                         self.updateCallback,
                         self.finishCallback,
                         self.failedCallback,
-                        self.finishAction)
+                        self.finishAction,
+                        self.messageCallback)
         action.start()
 
     def addAction(self, pkgName, actionType):

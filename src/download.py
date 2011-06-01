@@ -41,13 +41,14 @@ import xmlrpclib
 (ARIA2_MAJOR_VERSION, ARIA2_MINOR_VERSION, _) = utils.getAria2Version()
 
 class Download(td.Thread):
-    def __init__(self, pkgName, updateCallback, finishCallback):
+    def __init__(self, pkgName, updateCallback, finishCallback, messageCallback):
         # Init.
         td.Thread.__init__(self)
         self.cache = apt.Cache()
         self.pkgName = pkgName
         self.updateCallback = updateCallback
         self.finishCallback = finishCallback
+        self.messageCallback = messageCallback
         self.hash_check = True
         self.print_metalink = False
         self.server = xmlrpclib.ServerProxy('http://localhost:6800/rpc')
@@ -116,6 +117,7 @@ class Download(td.Thread):
             result = self.download([self.pkgName])
             self.server.aria2.shutdown()
         except Exception, e:
+            self.messageCallback("%s: 下载失败, 请检查你的网络链接." % self.pkgName)
             self.updateCallback(self.pkgName, self.progress, "下载失败")
             result = DOWNLOAD_STATUS_FAILED
             print "Download error: ", e
@@ -200,6 +202,7 @@ class Download(td.Thread):
             
             # Stop download if reach retry times.
             if self.retryTicker > DOWNLOAD_TIMEOUT:
+                self.messageCallback("%s: 下载超时， 请检查你的网络链接." % (self.pkgName))
                 self.updateCallback(self.pkgName, self.progress, "下载超时")
                 return DOWNLOAD_STATUS_TIMEOUT
             elif self.retryTicker > 0:
@@ -299,6 +302,7 @@ class Download(td.Thread):
             except IOError, e:
                 if e.errno != errno.ENOENT:
                     print "Failed to check hash", e
+                    self.messageCallback("%s: 校验失败." % self.pkgName)
                 return False
         else:
             return True
@@ -350,7 +354,7 @@ def get_filename(version):
 class DownloadQueue:
     '''Download queue'''
 	
-    def __init__(self, updateCallback, finishCallback, failedCallback):
+    def __init__(self, updateCallback, finishCallback, failedCallback, messageCallback):
         '''Init for download queue.'''
         # Init.
         self.lock = False
@@ -360,6 +364,7 @@ class DownloadQueue:
         self.updateCallback = updateCallback
         self.finishCallback = finishCallback
         self.failedCallback = failedCallback
+        self.messageCallback = messageCallback
         
     def startDownloadThread(self, pkgName):
         '''Start download thread.'''
@@ -370,7 +375,7 @@ class DownloadQueue:
         self.pkgName = pkgName
         
         # Start download thread.
-        download = Download(pkgName, self.updateCallback, self.finishDownload)
+        download = Download(pkgName, self.updateCallback, self.finishDownload, self.messageCallback)
         download.start()
         
         # Get download queue.

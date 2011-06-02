@@ -22,6 +22,7 @@
 from constant import *
 from draw import *
 from utils import postGUI
+from tooltips import *
 import action
 import apt
 import apt_pkg
@@ -862,105 +863,6 @@ class FetchDetail(td.Thread):
             self.updateDetailViewCallback(self.pageId, self.pkgName, voteJson)
         except Exception, e:
             print "Fetch detail view data failed."
-            
-class Tooltips:
-    '''Tooltips.'''
-    
-    def __init__(self, window, widget):
-        '''Init for tooltips.'''
-        self.width = 300
-        self.height = 24
-        self.paddingX = 10
-        
-        self.startTimes = 10
-        self.endTimes = 60
-        self.times = 70
-        self.interval = 80     # in milliseconds
-        self.ticker = self.times
-        
-        self.window = gtk.Window()
-        self.window.set_decorated(False)
-        self.window.set_resizable(True)
-        self.window.set_transient_for(window.get_toplevel())
-        self.window.set_opacity(0.9)
-        self.window.set_property("accept-focus", False)
-        self.window.set_size_request(-1, self.height)
-        
-        self.label = gtk.Label()
-        self.label.set_single_line_mode(True) # just one line
-        self.align = gtk.Alignment()
-        self.align.set(0.5, 0.5, 0.0, 0.0)
-        self.align.set_padding(0, 0, self.paddingX, self.paddingX)
-        self.align.add(self.label)
-        self.window.add(self.align)
-        
-        self.updatePosition(widget)
-        
-        window.connect("size-allocate", lambda w, e: self.updatePosition(widget))
-        window.connect("configure-event", lambda w, e: self.updatePosition(widget))
-        
-        self.window.connect("expose-event", self.show)
-        
-    def start(self, message):
-        '''Start.'''
-        # Timeout add.
-        if self.ticker >= self.times:
-            glib.timeout_add(self.interval, self.redraw)
-            
-        # Init ticker and message.
-        self.ticker = 0
-        self.label.set_markup("<span foreground='#333333' size='%s'>%s</span>" % (LABEL_FONT_MEDIUM_SIZE, message))
-        
-    def redraw(self):
-        '''Redraw.'''
-        if self.ticker >= self.times:
-            self.window.hide_all()
-            
-            return False
-        else:
-            self.window.show_all()
-            
-            self.ticker += 1
-            self.window.queue_draw()
-            
-            return True
-        
-    def show(self, widget, event):
-        '''Show'''
-        # Draw background.
-        rect = widget.allocation
-        cr = widget.window.cairo_create()
-        cr.set_source_rgb(*colorHexToCairo("#b8d2ff"))
-        cr.rectangle(0, 0, rect.width, rect.height)
-        cr.fill()
-        
-        # Change opacity with ticker.
-        if self.ticker <= self.startTimes:
-            self.window.set_opacity(self.ticker * 0.1)
-        elif self.ticker <= self.endTimes:
-            self.window.set_opacity(1)
-        else:
-            self.window.set_opacity((self.times - self.ticker) * 0.1)
-            
-        # Update window position.
-        (width, _) = self.label.get_layout().get_pixel_size()
-        self.window.move(self.x - width / 2 - self.paddingX, self.y)
-        
-        # Expose recursively.
-        if widget.get_child() != None:
-            widget.propagate_expose(widget.get_child(), event)
-            
-        return True
-        
-    def updatePosition(self, widget):
-        '''Update position.'''
-        (wx, wy) = widget.window.get_origin()
-        rect = widget.get_allocation()
-        (ww, wh) = (rect.width, rect.height)
-        self.x = wx + ww / 2
-        self.y = wy - self.height
-        
-        self.window.queue_draw()
             
 if __name__ == "__main__":
     DeepinSoftwareCenter().main()

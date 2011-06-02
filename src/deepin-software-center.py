@@ -425,14 +425,20 @@ class DeepinSoftwareCenter:
                         appInfo.switchStatus(APP_STATE_NORMAL)
                     else:
                         appInfo.switchStatus(APP_STATE_INSTALLED)
-                        
+
+                        # Remove upgradabled packages.
                         self.repoCache.removePkgFromUpgradableList(pkgName)
                         
+                        # Update topbar.
                         pkgNum = len(self.repoCache.upgradablePkgs)
                         self.updatePage.topbar.updateNum(pkgNum)
                         
+                        # Update update view.
                         updateView = self.updatePage.updateView
                         updateView.update(pkgNum)
+                        
+                        # Update notify number.
+                        self.navigatebar.updateIcon.queue_draw()
                         
                     # Update recommend view.
                     recommendView = self.recommendPage.recommendView

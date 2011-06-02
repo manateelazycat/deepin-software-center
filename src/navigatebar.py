@@ -29,9 +29,10 @@ pygtk.require('2.0')
 class NavigateBar:
     '''Interface for navigate bar.'''
 	
-    def __init__(self):
+    def __init__(self, repoCache):
         '''Init for navigate bar.'''
         # Init.
+        self.repoCache = repoCache
         self.iconPadding = 8
         
         self.pageId = PAGE_RECOMMEND
@@ -57,7 +58,7 @@ class NavigateBar:
         self.repositoryIcon     = self.createNavIcon("软件仓库", "./icons/navigate/nav_repo.png", PAGE_REPO)
         self.navBox.pack_start(self.repositoryIcon, False, False, self.iconPadding)
         
-        self.updateIcon         = self.createNavIcon("软件更新", "./icons/navigate/nav_update.png", PAGE_UPGRADE)
+        self.updateIcon         = self.createUpdateIcon("软件更新", "./icons/navigate/nav_update.png", PAGE_UPGRADE)
         self.navBox.pack_start(self.updateIcon, False, False, self.iconPadding)
         
         self.uninstallIcon      = self.createNavIcon("软件卸载", "./icons/navigate/nav_uninstall.png", PAGE_UNINSTALL)
@@ -83,6 +84,21 @@ class NavigateBar:
         
         return eventBox
     
+    def createUpdateIcon(self, iconName, iconPath, pageId):
+        '''Create navigate icon.'''
+        eventButton = gtk.Button()
+        updateButtonSetBackground(
+            eventButton,
+            iconName, iconPath,
+            "./icons/navigate/menu_hover.png",
+            "./icons/navigate/menu_press.png",
+            pageId,
+            self.getPageId,
+            self.getUpgradableNum
+            )
+        
+        return eventButton
+    
     def createNavIcon(self, iconName, iconPath, pageId):
         '''Create navigate icon.'''
         eventButton = gtk.Button()
@@ -101,3 +117,6 @@ class NavigateBar:
         '''Get page id.'''
         return self.pageId
     
+    def getUpgradableNum(self):
+        '''Get upgradable packages number.'''
+        return len(self.repoCache.upgradablePkgs)

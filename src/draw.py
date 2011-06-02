@@ -252,8 +252,80 @@ def navButtonOnExpose(widget, event,
                       hoverImg, pressImg,
                       pageId, getPageId):
     '''Expose function to replace event box's image.'''
+    # Init.
     selectPageId = getPageId()
     
+    # Draw background.
+    backgroundPixbuf = gtk.gdk.pixbuf_new_from_file(pressImg)
+    backgroundWidth = backgroundPixbuf.get_width()
+    backgroundHeight = backgroundPixbuf.get_height()
+    
+    if widget.state == gtk.STATE_NORMAL:
+        if selectPageId == pageId:
+            pixbuf = gtk.gdk.pixbuf_new_from_file(pressImg)
+        else:
+            pixbuf = None
+    elif widget.state == gtk.STATE_PRELIGHT:
+        if selectPageId == pageId:
+            pixbuf = gtk.gdk.pixbuf_new_from_file(pressImg)
+        else:
+            pixbuf = gtk.gdk.pixbuf_new_from_file(hoverImg)
+    elif widget.state == gtk.STATE_ACTIVE:
+        pixbuf = gtk.gdk.pixbuf_new_from_file(pressImg)
+    
+    x, y = widget.allocation.x, widget.allocation.y
+    
+    cr = widget.window.cairo_create()
+    
+    drawPixbuf(cr, pixbuf, x, y)
+
+    navPixbuf = gtk.gdk.pixbuf_new_from_file(navImg)
+    navWidth = navPixbuf.get_width()
+    navHeight = navPixbuf.get_height()
+    drawPixbuf(cr, navPixbuf, 
+               x + (backgroundWidth - navWidth) / 2, 
+               y)
+
+    # Draw font.
+    fontSize = 16
+    
+    drawFont(cr, navName, fontSize, "#FFFFFF",
+             x + backgroundWidth / 2 - fontSize * 2, 
+             y + (backgroundHeight + navHeight) / 2)
+
+    if widget.get_child() != None:
+        widget.propagate_expose(widget.get_child(), event)
+
+    return True
+
+def updateButtonSetBackground(
+    widget, 
+    navName, navImg,
+    hoverImg, pressImg,
+    pageId, getPageId, getUpradableNum):
+    '''Set event box's background.'''
+    image = gtk.gdk.pixbuf_new_from_file(hoverImg)
+    requestWidth = image.get_width()
+    requestHeight = image.get_height()
+    widget.set_size_request(requestWidth, requestHeight)
+    
+    widget.connect("expose-event", lambda w, e: updateButtonOnExpose(
+            w, e,
+            navName, navImg,
+            hoverImg, pressImg, 
+            pageId, getPageId, getUpradableNum))
+        
+def updateButtonOnExpose(
+    widget, event, 
+    navName, navImg,
+    hoverImg, pressImg,
+    pageId, getPageId, getUpradableNum):
+    '''Expose function to replace event box's image.'''
+    # Init.
+    selectPageId = getPageId()
+    upgradableNum = getUpradableNum()
+    
+    # Draw background.
     backgroundPixbuf = gtk.gdk.pixbuf_new_from_file(pressImg)
     backgroundWidth = backgroundPixbuf.get_width()
     backgroundHeight = backgroundPixbuf.get_height()
@@ -284,8 +356,40 @@ def navButtonOnExpose(widget, event,
                x + (backgroundWidth - navWidth) / 2, 
                y)
     
-    fontSize = 16
+    # Draw upgradable number.
+    if upgradableNum > 0 and upgradableNum < 100000:
+        # Init.
+        numBgLeftPixbuf = gtk.gdk.pixbuf_new_from_file("./icons/navigate/notify_bg_left.png")
+        numBgMiddlePixbuf = gtk.gdk.pixbuf_new_from_file("./icons/navigate/notify_bg_middle.png")
+        numBgRightPixbuf = gtk.gdk.pixbuf_new_from_file("./icons/navigate/notify_bg_right.png")
+        numPixbuf = gtk.gdk.pixbuf_new_from_file("./icons/navigate/0.png")
+        numBgLeftWidth = numBgLeftPixbuf.get_width()      
+        numBgLeftHeight = numBgLeftPixbuf.get_height()    
+        numWidth = numPixbuf.get_width()                  
+        numHeight = numPixbuf.get_height()                
+        numLen = len(str(upgradableNum))        
+        numX = x + backgroundWidth - numBgLeftWidth * 2 - numLen * numWidth - 10
+        numY = y + 10
+        
+        # Draw number background.
+        drawPixbuf(cr, numBgLeftPixbuf, numX, numY)
+        drawPixbuf(cr, numBgMiddlePixbuf.scale_simple(numLen * numWidth, numBgLeftHeight, gtk.gdk.INTERP_BILINEAR),
+                   numX + numBgLeftWidth, numY)
+        drawPixbuf(cr, numBgRightPixbuf, 
+                   numX + numBgLeftWidth + numLen * numWidth, numY)
+        
+        # Draw number.
+        for (i, c) in enumerate(str(upgradableNum)):
+            numPixbuf = gtk.gdk.pixbuf_new_from_file("./icons/navigate/%s.png" % c)
+            drawPixbuf(cr, numPixbuf,
+                       numX + numBgLeftWidth + i * numWidth,
+                       numY + (numBgLeftHeight - numHeight) / 2)
+    else:
+        print "Upgradable number out of bound (1 ~ 100000): %s" % (upgradableNum)
     
+    # Draw font.
+    fontSize = 16
+
     drawFont(cr, navName, fontSize, "#FFFFFF",
              x + backgroundWidth / 2 - fontSize * 2, 
              y + (backgroundHeight + navHeight) / 2)

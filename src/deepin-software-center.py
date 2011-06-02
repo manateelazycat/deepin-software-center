@@ -70,6 +70,7 @@ class DeepinSoftwareCenter:
         apt_pkg.init_config()
         apt_pkg.init_system()
         self.aptCache = apt.Cache()
+        self.repoCache = repoCache.RepoCache(self.aptCache)
         self.detailViewDict = {}
         self.searchViewDict = {}
         self.noscreenshotList = []
@@ -111,10 +112,9 @@ class DeepinSoftwareCenter:
                             lambda w, e: utils.moveWindow(w, e, self.window))
         self.topbar.connect("button-press-event", self.doubleClickWindow)
         self.titlebar = titlebar.Titlebar(self.minWindow, self.toggleWindow, self.closeWindow)
-        self.navigatebar = navigatebar.NavigateBar()
+        self.navigatebar = navigatebar.NavigateBar(self.repoCache)
         self.bodyBox = gtk.HBox()
         self.contentBox = gtk.VBox()
-        self.repoCache = repoCache.RepoCache(self.aptCache)
         self.recommendPage = recommendPage.RecommendPage(
             self.repoCache, 
             self.switchStatus,

@@ -78,7 +78,7 @@ class UninstallItem:
         self.itemFrame.set(0.0, 0.5, 1.0, 1.0)
         self.itemFrame.add(self.itemEventBox)
         
-        self.appBasicBox = createItemBasicBox(self.appInfo, 480)
+        self.appBasicBox = createItemBasicBox(self.appInfo, 200, self.itemBox)
         self.itemBox.pack_start(self.appBasicBox, True, True, self.APP_LEFT_PADDING_X)
         
         self.appAdditionBox = gtk.HBox()
@@ -386,7 +386,7 @@ class DownloadItem:
                 
                 self.itemFrame.show_all()
                 
-def createItemBasicBox(appInfo, maxWidth, showVersion=True):
+def createItemBasicBox(appInfo, maxWidth, parent, showVersion=True):
     '''Create item information.'''
     # Init.
     appBasicAlign = gtk.Alignment()
@@ -416,7 +416,12 @@ def createItemBasicBox(appInfo, maxWidth, showVersion=True):
     else:
         markup = "<span foreground='#1A3E88' size='%s'>%s</span>" % (LABEL_FONT_MEDIUM_SIZE, pkgName)
     appName.set_markup(markup)
-    appName.set_size_request(maxWidth, -1)
+    parent.connect("size-allocate", 
+                   lambda w, e: adjustLabelWidth(parent, 
+                                                 appName,
+                                                 LABEL_FONT_MEDIUM_SIZE / 1000,
+                                                 maxWidth))
+    
     appName.set_single_line_mode(True)
     appName.set_ellipsize(pango.ELLIPSIZE_END)
     appName.set_alignment(0.0, 0.5)
@@ -427,7 +432,12 @@ def createItemBasicBox(appInfo, maxWidth, showVersion=True):
     appSummaryBox = gtk.HBox()
     appSummary = gtk.Label()
     appSummary.set_markup("<span foreground='#000000' size='%s'>%s</span>" % (LABEL_FONT_SIZE, summary))
-    appSummary.set_size_request(maxWidth, -1)
+    parent.connect("size-allocate", 
+                   lambda w, e: adjustLabelWidth(parent, 
+                                                 appSummary,
+                                                 LABEL_FONT_SIZE / 1000,
+                                                 maxWidth))
+    
     appSummary.set_single_line_mode(True)
     appSummary.set_ellipsize(pango.ELLIPSIZE_END)
     appSummary.set_alignment(0.0, 0.5)
@@ -435,6 +445,10 @@ def createItemBasicBox(appInfo, maxWidth, showVersion=True):
     appBox.pack_start(appSummaryBox, False, False)
     
     return appBasicAlign
+
+def adjustLabelWidth(parent, label, fontWidth, adjustWidth):
+    '''Adjust label width.'''
+    label.set_width_chars((parent.allocation.width - adjustWidth) / fontWidth)
 
 def createAppIcon(pkg, size=32, alignLeft=5, alignRight=5, alignTop=5, alignBottom=5):
     '''Create application icon.'''

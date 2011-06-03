@@ -70,11 +70,23 @@ class UpdateItem(DownloadItem):
         self.itemFrame.set(0.0, 0.5, 1.0, 1.0)
         self.itemFrame.add(self.itemEventBox)
         
-        self.appBasicBox = self.createBasicBox() 
-        self.appBasicAlign = gtk.Alignment()
-        self.appBasicAlign.set(0.0, 0.5, 0.0, 0.0)
-        self.appBasicAlign.add(self.appBasicBox)
-        self.itemBox.pack_start(self.appBasicAlign, True, True, self.APP_LEFT_PADDING_X)
+        # Add check box.
+        checkPadding = 10
+        self.checkButton = gtk.CheckButton()
+        checkButtonSetBackground(
+            self.checkButton,
+            False, False, 
+            "./icons/cell/select.png",
+            "./icons/cell/selected.png",
+            )
+        self.checkAlign = gtk.Alignment()
+        self.checkAlign.set(0.5, 0.5, 0.0, 0.0)
+        self.checkAlign.set_padding(checkPadding, checkPadding, checkPadding, checkPadding)
+        self.checkAlign.add(self.checkButton)
+        self.itemBox.pack_start(self.checkAlign, False, False)
+        
+        self.appBasicBox = createItemBasicBox(self.appInfo, 560, self.itemBox, False) 
+        self.itemBox.pack_start(self.appBasicBox, True, True)
         
         self.appAdditionBox = gtk.HBox()
         self.appAdditionAlign = gtk.Alignment()
@@ -85,32 +97,6 @@ class UpdateItem(DownloadItem):
         self.initAdditionStatus()
        
         self.itemFrame.show_all()
-        
-    def createBasicBox(self):
-        '''Create basic box.'''
-        padding_x = 5
-        
-        basicBox = gtk.HBox()
-        
-        # Add toggle box.
-        self.checkButton = gtk.CheckButton()
-        checkButtonSetBackground(
-            self.checkButton,
-            False, False, 
-            "./icons/cell/select.png",
-            "./icons/cell/selected.png",
-            )
-        checkAlign = gtk.Alignment()
-        checkAlign.set(0.5, 0.5, 0.0, 0.0)
-        checkAlign.set_padding(padding_x, padding_x, padding_x, padding_x)
-        checkAlign.add(self.checkButton)
-        basicBox.pack_start(checkAlign)
-        
-        # Add addition box.
-        itemBox = createItemBasicBox(self.appInfo, 240, False) 
-        basicBox.pack_start(itemBox)        
-
-        return basicBox
         
     def clickItem(self, widget, event):
         '''Click item.'''

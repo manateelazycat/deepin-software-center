@@ -61,11 +61,7 @@ class SearchItem(DownloadItem):
         self.itemFrame = gtk.Alignment()
         self.itemFrame.set(0.0, 0.5, 1.0, 1.0)
         
-        self.appBasicBox = createItemBasicBox(self.appInfo, 300)
-        
-        self.appAdditionBox = gtk.HBox()
-        self.appAdditionAlign = gtk.Alignment()
-        self.appAdditionAlign.set(1.0, 0.5, 0.0, 0.0)
+        self.appBasicBox = createItemBasicBox(self.appInfo, 200, self.itemBox)
         
         # Widget that status will change.
         self.installingProgressbar = None
@@ -77,6 +73,9 @@ class SearchItem(DownloadItem):
         # Connect components.
         self.itemBox.pack_start(self.appBasicBox, True, True, self.APP_LEFT_PADDING_X)
         
+        self.appAdditionBox = gtk.HBox()
+        self.appAdditionAlign = gtk.Alignment()
+        self.appAdditionAlign.set(1.0, 0.5, 0.0, 0.0)
         self.appAdditionAlign.add(self.appAdditionBox)
         self.itemBox.pack_start(self.appAdditionAlign, False, False)
         

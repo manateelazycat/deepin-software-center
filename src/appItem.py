@@ -35,7 +35,6 @@ class UninstallItem:
     '''Application item.'''
     
     ITEM_PADDING = 5
-    ALIGN_BOX_WIDTH = 200
     PROGRESS_WIDTH = 170
     PROGRESS_HEIGHT = 3
     MAX_CHARS = 50
@@ -140,11 +139,10 @@ class UninstallItem:
             appUninstallLabel.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, "你确定要卸载吗？"))
             actionButtonBox.pack_start(appUninstallLabel, False, False)
             
-            appUninstallPaddingY = 5
             appUninstallBox = gtk.HBox()
             appUninstallAlign = gtk.Alignment()
             appUninstallAlign.set(0.5, 0.5, 1.0, 1.0)
-            appUninstallAlign.set_padding(appUninstallPaddingY, 0, 0, 0)
+            appUninstallAlign.set_padding(ACTION_BUTTON_PADDING_Y, ACTION_BUTTON_PADDING_Y, 0, 0)
             appUninstallAlign.add(appUninstallBox)
             actionButtonBox.pack_start(appUninstallAlign, False, False)
             
@@ -220,7 +218,6 @@ def createActionButton():
 class DownloadItem:
     '''Application item.'''
     PROGRESS_WIDTH = 170
-    ALIGN_BOX_WIDTH = 200
     APP_RIGHT_PADDING_X = 20
     PROGRESS_LABEL_WIDTH_CHARS = 25
     BUTTON_PADDING_X = 4
@@ -248,30 +245,36 @@ class DownloadItem:
         appAdditionBox.pack_start(progressbar.box)
         
         # Alignment box.
-        alignBox = gtk.HBox()
-        alignBox.set_size_request(self.ALIGN_BOX_WIDTH, -1)
-        appAdditionBox.pack_start(alignBox, False, False, self.APP_RIGHT_PADDING_X)
+        (actionBox, actionAlign) = createActionButton()
+        appAdditionBox.pack_start(actionAlign)
+        
+        # Add pause icon.
+        buttonBox = gtk.HBox()
+        buttonAlign = gtk.Alignment()
+        buttonAlign.set(0.5, 0.5, 0.0, 0.0)
+        buttonAlign.set_padding(ACTION_BUTTON_PADDING_Y, ACTION_BUTTON_PADDING_Y, 0, 0)
+        buttonAlign.add(buttonBox)
+        actionBox.pack_start(buttonAlign)
+        
+        pauseIcon = gtk.Button()
+        drawSimpleButton(pauseIcon, "pause")
+        pauseIcon.connect("button-release-event", lambda widget, event: self.switchToDownloadPause())
+        buttonBox.pack_start(pauseIcon, False, False, self.BUTTON_PADDING_X)
+        
+        # Add stop icon.
+        stopIcon = gtk.Button()
+        drawSimpleButton(stopIcon, "stop")
+        stopIcon.connect("button-release-event", lambda widget, event: self.switchToNormal())
+        buttonBox.pack_start(stopIcon, False, False, self.BUTTON_PADDING_X)
         
         # Add feedback label.
         feedbackLabel = gtk.Label()
         feedbackLabel.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, self.appInfo.downloadingFeedback))
         feedbackLabel.set_width_chars(self.PROGRESS_LABEL_WIDTH_CHARS)
         feedbackLabel.set_ellipsize(pango.ELLIPSIZE_END)
-        feedbackLabel.set_alignment(0.0, 0.5)
+        feedbackLabel.set_alignment(0.5, 0.5)
         self.downloadingFeedbackLabel = feedbackLabel
-        alignBox.pack_start(feedbackLabel)
-        
-        # Add pause icon.
-        pauseIcon = gtk.Button()
-        drawSimpleButton(pauseIcon, "pause")
-        pauseIcon.connect("button-release-event", lambda widget, event: self.switchToDownloadPause())
-        alignBox.pack_start(pauseIcon, False, False, self.BUTTON_PADDING_X)
-        
-        # Add stop icon.
-        stopIcon = gtk.Button()
-        drawSimpleButton(stopIcon, "stop")
-        stopIcon.connect("button-release-event", lambda widget, event: self.switchToNormal())
-        alignBox.pack_start(stopIcon, False, False, self.BUTTON_PADDING_X)
+        actionBox.pack_start(feedbackLabel)
         
     def initDownloadPauseStatus(self, appAdditionBox):
         '''Init download pause status.'''
@@ -285,28 +288,35 @@ class DownloadItem:
         appAdditionBox.pack_start(progressbar.box)
         
         # Alignment box.
-        alignBox = gtk.HBox()
-        alignBox.set_size_request(self.ALIGN_BOX_WIDTH, -1)
-        appAdditionBox.pack_start(alignBox, False, False, self.APP_RIGHT_PADDING_X)
+        (actionBox, actionAlign) = createActionButton()
+        appAdditionBox.pack_start(actionAlign)
+        
+        # Add play icon.
+        buttonBox = gtk.HBox()
+        buttonAlign = gtk.Alignment()
+        buttonAlign.set(0.5, 0.5, 0.0, 0.0)
+        buttonAlign.set_padding(ACTION_BUTTON_PADDING_Y, ACTION_BUTTON_PADDING_Y, 0, 0)
+        buttonAlign.add(buttonBox)
+        actionBox.pack_start(buttonAlign)
+        
+        continueIcon = gtk.Button()
+        drawSimpleButton(continueIcon, "continue")
+        continueIcon.connect("button-release-event", lambda widget, event: self.switchToDownloading())
+        buttonBox.pack_start(continueIcon, False, False, self.BUTTON_PADDING_X)
+        
+        # Add stop icon.
+        stopIcon = gtk.Button()
+        drawSimpleButton(stopIcon, "stop")
+        stopIcon.connect("button-release-event", lambda widget, event: self.switchToNormal())
+        buttonBox.pack_start(stopIcon, False, False, self.BUTTON_PADDING_X)
         
         # Add pause label.
         pauseLabel = gtk.Label()
         pauseLabel.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, "暂停"))
         pauseLabel.set_width_chars(self.PROGRESS_LABEL_WIDTH_CHARS)
         pauseLabel.set_ellipsize(pango.ELLIPSIZE_END)
-        alignBox.pack_start(pauseLabel)
-        
-        # Add play icon.
-        continueIcon = gtk.Button()
-        drawSimpleButton(continueIcon, "continue")
-        continueIcon.connect("button-release-event", lambda widget, event: self.switchToDownloading())
-        alignBox.pack_start(continueIcon, False, False, self.BUTTON_PADDING_X)
-        
-        # Add stop icon.
-        stopIcon = gtk.Button()
-        drawSimpleButton(stopIcon, "stop")
-        stopIcon.connect("button-release-event", lambda widget, event: self.switchToNormal())
-        alignBox.pack_start(stopIcon, False, False, self.BUTTON_PADDING_X)
+        pauseLabel.set_alignment(0.5, 0.5)
+        actionBox.pack_start(pauseLabel)
         
     def initInstallingStatus(self):
         '''Init installing status.'''
@@ -632,8 +642,6 @@ def initActionStatus(appAdditionBox, progress, feedback):
     '''Init action status.'''
     APP_RIGHT_PADDING_X = 20
     PROGRESS_WIDTH = 170
-    # ALIGN_BOX_WIDTH = 200
-    ALIGN_BOX_WIDTH = 60
     
     # Clean right box first.
     utils.containerRemoveAll(appAdditionBox)
@@ -645,14 +653,14 @@ def initActionStatus(appAdditionBox, progress, feedback):
     
     # Alignment box.
     alignBox = gtk.HBox()
-    alignBox.set_size_request(ALIGN_BOX_WIDTH, -1)
-    appAdditionBox.pack_start(alignBox, False, False, APP_RIGHT_PADDING_X)
+    alignBox.set_size_request(ACTION_BUTTON_WIDTH, -1)
+    appAdditionBox.pack_start(alignBox, False, False, ACTION_BUTTON_PADDING_X)
     
     # Add feedback label.
     feedbackLabel = gtk.Label()
     feedbackLabel.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, feedback))
     feedbackLabel.set_ellipsize(pango.ELLIPSIZE_END)
-    feedbackLabel.set_alignment(0.0, 0.5)
+    feedbackLabel.set_alignment(0.5, 0.5)
     alignBox.pack_start(feedbackLabel)
     
     return (progressbar, feedbackLabel)

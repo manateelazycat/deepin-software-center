@@ -248,9 +248,7 @@ class Download(td.Thread):
                     self.progress = int(currentLength * 100 / self.totalLength)                
                     
                 # Update status.
-                self.updateCallback(self.pkgName, self.progress, 
-                                    utils.formatFileSize(currentLength) + "/" +  utils.formatFileSize(self.totalLength) +
-                                    " " + utils.formatFileSize(downloadSpeed) + "/s")
+                self.updateCallback(self.pkgName, self.progress, utils.formatFileSize(downloadSpeed) + "/s")
                 
                 # Whether all download complete.
                 downloadCompleted = all(completedStatus)

@@ -63,7 +63,7 @@ class RepoItem(DownloadItem):
         self.itemFrame = gtk.Alignment()
         self.itemFrame.set(0.0, 0.5, 1.0, 1.0)
         
-        self.appBasicBox = createItemBasicBox(self.appInfo, 250)
+        self.appBasicBox = createItemBasicBox(self.appInfo, 340)
         
         self.appAdditionBox = gtk.HBox()
         self.appAdditionAlign = gtk.Alignment()

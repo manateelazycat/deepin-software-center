@@ -64,6 +64,7 @@ class SearchCompletion:
         self.scrolledwindow = gtk.ScrolledWindow()
         self.scrolledwindow.set_property("shadow-type", gtk.SHADOW_NONE)
         self.scrolledwindow.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
+        self.frame = gtk.Frame()
         
         self.treeView.connect("row-activated", self.click)
         self.entry.connect("focus-out-event", lambda w, e: self.hide())
@@ -71,7 +72,8 @@ class SearchCompletion:
         self.entry.connect("changed", self.show)
         
         self.scrolledwindow.add(self.treeView)
-        self.window.add(self.scrolledwindow)
+        self.frame.add(self.scrolledwindow)
+        self.window.add(self.frame)
         
     def show(self, editable):
         '''Show search completion.'''

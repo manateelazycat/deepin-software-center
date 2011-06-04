@@ -70,10 +70,14 @@ class UninstallView(appView.AppView):
             
         return box
     
-    def initUninstallStatus(self, pkgName):
+    def initUninstallStatus(self, pkgName, updateVote=False):
         '''Init uninstall status.'''
         if self.itemDict.has_key(pkgName):
             appItem = self.itemDict[pkgName]
             appItem.appInfo.status = APP_STATE_INSTALLED
             appItem.confirmUninstall = False
             appItem.initAdditionStatus()
+            
+        # Request vote data.
+        if updateVote:
+            self.fetchVoteCallback(PAGE_UNINSTALL, [pkgName], False)

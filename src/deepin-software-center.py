@@ -295,11 +295,11 @@ class DeepinSoftwareCenter:
                 
             # Update repo view.
             repoView = self.repositoryPage.repoView
-            repoView.switchToStatus(pkgName, appStatus)
+            repoView.switchToStatus(pkgName, appStatus, True)
                 
             # Update update view.
             updateView = self.updatePage.updateView
-            updateView.switchToStatus(pkgName, appStatus)
+            updateView.switchToStatus(pkgName, appStatus, True)
                 
             # Update detail view.
             for pageId in [PAGE_RECOMMEND, PAGE_REPO, PAGE_UPGRADE, PAGE_UNINSTALL]:
@@ -308,7 +308,7 @@ class DeepinSoftwareCenter:
                     detailView.switchToStatus(pkgName, appStatus)
                 elif pageId == PAGE_REPO and self.searchViewDict.has_key(pageId):
                     searchView = self.searchViewDict[pageId].searchView
-                    searchView.switchToStatus(pkgName, appStatus)
+                    searchView.switchToStatus(pkgName, appStatus, True)
         else:
             print "Impossible: %s not in RepoCache" % (pkgName)
             
@@ -401,7 +401,7 @@ class DeepinSoftwareCenter:
                     
                     # Update repo view.
                     repoView = self.repositoryPage.repoView
-                    repoView.initNormalStatus(pkgName, isMarkDeleted)
+                    repoView.initNormalStatus(pkgName, isMarkDeleted, True)
                     
                     # Update detail view.
                     for pageId in [PAGE_RECOMMEND, PAGE_REPO, PAGE_UPGRADE, PAGE_UNINSTALL]:
@@ -410,7 +410,7 @@ class DeepinSoftwareCenter:
                             detailView.initNormalStatus(pkgName, isMarkDeleted)
                         elif pageId == PAGE_REPO and self.searchViewDict.has_key(pageId):
                             searchView = self.searchViewDict[pageId].searchView
-                            searchView.initNormalStatus(pkgName, isMarkDeleted)
+                            searchView.initNormalStatus(pkgName, isMarkDeleted, True)
                         
                     # Add in uninstall list.
                     self.updateUninstallView(pkgName, not isMarkDeleted)
@@ -446,7 +446,7 @@ class DeepinSoftwareCenter:
                     
                     # Update repo view.
                     repoView = self.repositoryPage.repoView
-                    repoView.initNormalStatus(pkgName, isMarkDeleted)
+                    repoView.initNormalStatus(pkgName, isMarkDeleted, True)
                     
                     # Update detail view.
                     for pageId in [PAGE_RECOMMEND, PAGE_REPO, PAGE_UPGRADE, PAGE_UNINSTALL]:
@@ -455,7 +455,7 @@ class DeepinSoftwareCenter:
                             detailView.initNormalStatus(pkgName, isMarkDeleted)
                         elif pageId == PAGE_REPO and self.searchViewDict.has_key(pageId):
                             searchView = self.searchViewDict[pageId].searchView
-                            searchView.initNormalStatus(pkgName, isMarkDeleted)
+                            searchView.initNormalStatus(pkgName, isMarkDeleted, True)
                         
                     # Add in uninstall list.
                     self.updateUninstallView(pkgName, not isMarkDeleted)
@@ -476,7 +476,7 @@ class DeepinSoftwareCenter:
                     
                     # Update repo view.
                     repoView = self.repositoryPage.repoView
-                    repoView.initNormalStatus(pkgName, isMarkDeleted)
+                    repoView.initNormalStatus(pkgName, isMarkDeleted, True)
                     
                     # Update detail view.
                     for pageId in [PAGE_RECOMMEND, PAGE_REPO, PAGE_UPGRADE, PAGE_UNINSTALL]:
@@ -504,7 +504,7 @@ class DeepinSoftwareCenter:
                 
                 # Update repo view.
                 repoView = self.repositoryPage.repoView
-                repoView.initNormalStatus(pkgName, True)
+                repoView.initNormalStatus(pkgName, True, True)
                 
                 # Update detail view.
                 for pageId in [PAGE_RECOMMEND, PAGE_REPO, PAGE_UPGRADE, PAGE_UNINSTALL]:
@@ -513,7 +513,7 @@ class DeepinSoftwareCenter:
                         detailView.initNormalStatus(pkgName, True)
                     elif pageId == PAGE_REPO and self.searchViewDict.has_key(pageId):
                         searchView = self.searchViewDict[pageId].searchView
-                        searchView.initNormalStatus(pkgName, True)
+                        searchView.initNormalStatus(pkgName, True, True)
             else:
                 print "Impossible: %s not in RepoCache" % (pkgName)
         elif actionType == ACTION_UPGRADE:
@@ -528,11 +528,11 @@ class DeepinSoftwareCenter:
                 
                 # Update repo view.
                 repoView = self.repositoryPage.repoView
-                repoView.switchToStatus(pkgName, APP_STATE_UPGRADE)
+                repoView.switchToStatus(pkgName, APP_STATE_UPGRADE, True)
                 
                 # Update update view.
                 updateView = self.updatePage.updateView
-                updateView.switchToStatus(pkgName, APP_STATE_UPGRADE)
+                updateView.switchToStatus(pkgName, APP_STATE_UPGRADE, True)
                 
                 # Update detail view.
                 for pageId in [PAGE_RECOMMEND, PAGE_REPO, PAGE_UPGRADE, PAGE_UNINSTALL]:
@@ -541,7 +541,7 @@ class DeepinSoftwareCenter:
                         detailView.switchToStatus(pkgName, APP_STATE_UPGRADE)
                     elif pageId == PAGE_REPO and self.searchViewDict.has_key(pageId):
                         searchView = self.searchViewDict[pageId].searchView
-                        searchView.switchToStatus(pkgName, APP_STATE_UPGRADE)
+                        searchView.switchToStatus(pkgName, APP_STATE_UPGRADE, True)
             else:
                 print "Impossible: %s not in RepoCache" % (pkgName)
         elif actionType == ACTION_UNINSTALL:
@@ -552,7 +552,7 @@ class DeepinSoftwareCenter:
                 
                 # Update uninstall view.
                 uninstallView = self.uninstallPage.uninstallView
-                uninstallView.initUninstallStatus(pkgName)
+                uninstallView.initUninstallStatus(pkgName, True)
                 
                 # Update detail view.
                 for pageId in [PAGE_RECOMMEND, PAGE_REPO, PAGE_UPGRADE, PAGE_UNINSTALL]:
@@ -561,7 +561,7 @@ class DeepinSoftwareCenter:
                         detailView.initNormalStatus(pkgName, False)
                     elif pageId == PAGE_UNINSTALL and self.searchViewDict.has_key(pageId):
                         searchView = self.searchViewDict[pageId].searchView
-                        searchView.initUninstallStatus(pkgName)
+                        searchView.initUninstallStatus(pkgName, True)
             else:
                 print "Impossible: %s not in RepoCache" % (pkgName)
                 
@@ -808,7 +808,7 @@ class DeepinSoftwareCenter:
 class FetchVote(td.Thread):
     '''Fetch vote.'''
 	
-    def __init__(self, pageId, appList, updateVoteCallback, isSearchPage):
+    def __init__(self, pageId, pkgNames, updateVoteCallback, isSearchPage):
         '''Init for fetch vote.'''
         td.Thread.__init__(self)
         self.setDaemon(True) # make thread exit when main program exit 
@@ -818,8 +818,8 @@ class FetchVote(td.Thread):
         self.updateVoteCallback = updateVoteCallback
         
         self.pkgArguments = ""
-        for appInfo in appList:
-            self.pkgArguments += utils.getPkgName(appInfo.pkg) + ","
+        for pkgName in pkgNames:
+            self.pkgArguments += pkgName + ","
         self.pkgArguments = self.pkgArguments.rstrip(",") # remove last , from arguments
         
     def run(self):

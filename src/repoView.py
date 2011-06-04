@@ -218,7 +218,9 @@ class RepoView(appView.AppView):
             self.box.show_all()
             
             # Request vote data.
-            self.fetchVoteCallback(PAGE_REPO, appList)
+            self.fetchVoteCallback(
+                PAGE_REPO, 
+                map (lambda appInfo: utils.getPkgName(appInfo.pkg), appList))
             
         # Scroll ScrolledWindow to top after render.
         utils.scrollToTop(self.scrolledwindow)

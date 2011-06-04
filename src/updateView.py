@@ -274,7 +274,9 @@ class UpdateView(appView.AppView):
             self.box.show_all()
             
             # Request vote data.
-            self.fetchVoteCallback(PAGE_UPGRADE, appList)
+            self.fetchVoteCallback(
+                PAGE_UPGRADE, 
+                map (lambda appInfo: utils.getPkgName(appInfo.pkg), appList))
             
         # Scroll ScrolledWindow to top after render.
         if scrollToTop:

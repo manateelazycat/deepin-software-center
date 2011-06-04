@@ -99,7 +99,10 @@ class AppView:
             self.box.show_all()
             
             # Request vote data.
-            self.fetchVoteCallback(self.pageId, appList, self.isSearchPage)
+            self.fetchVoteCallback(
+                self.pageId, 
+                map (lambda appInfo: utils.getPkgName(appInfo.pkg), appList),
+                self.isSearchPage)
             
         # Scroll ScrolledWindow to top after render.
         if scrollToTop:
@@ -229,20 +232,23 @@ class AppView:
         
         return numBox
 
-    def switchToStatus(self, pkgName, appStatus):
+    def switchToStatus(self, pkgName, appStatus, updateVote=False):
         '''Switch to downloading status.'''
         if self.itemDict.has_key(pkgName):
             appItem = self.itemDict[pkgName]
             appItem.appInfo.status = appStatus
             appItem.initAdditionStatus()
+            
+        if updateVote:
+            self.fetchVoteCallback(self.pageId, [pkgName], self.isSearchPage)
 
-    def initNormalStatus(self, pkgName, isMarkDeleted):
+    def initNormalStatus(self, pkgName, isMarkDeleted, updateVote=False):
         '''Init normal status.'''
         if isMarkDeleted:
-            self.switchToStatus(pkgName, APP_STATE_NORMAL)
+            self.switchToStatus(pkgName, APP_STATE_NORMAL, updateVote)
         else:
-            self.switchToStatus(pkgName, APP_STATE_INSTALLED)
-        
+            self.switchToStatus(pkgName, APP_STATE_INSTALLED, updateVote)
+            
     def updateDownloadingStatus(self, pkgName, progress, feedback):
         '''Update downloading status.'''
         if self.itemDict.has_key(pkgName):

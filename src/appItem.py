@@ -484,7 +484,6 @@ class VoteView:
         self.focusStatus = self.FOCUS_INIT
         # self.focusStatus = self.FOCUS_NORMAL
         self.starSize = 16
-        self.leaveNotifyHandleId = None
         self.starView = None
         
         self.box = gtk.VBox()

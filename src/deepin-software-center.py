@@ -37,7 +37,7 @@ import pangocairo
 import pygtk
 import recommendPage
 import repoCache
-import repositoryPage
+import repoPage
 import search
 import searchPage
 import searchUninstallPage as sp
@@ -122,7 +122,7 @@ class DeepinSoftwareCenter:
             self.downloadQueue,
             self.entryDetailView,
             )
-        self.repositoryPage = repositoryPage.RepositoryPage(
+        self.repoPage = repoPage.RepoPage(
             self.repoCache, 
             self.switchStatus,
             self.downloadQueue,
@@ -190,7 +190,7 @@ class DeepinSoftwareCenter:
         recommendView.switchToStatus(pkgName, appStatus)
         
         # Update repo view.
-        repoView = self.repositoryPage.repoView
+        repoView = self.repoPage.repoView
         repoView.switchToStatus(pkgName, appStatus)
         
         # Update application view.
@@ -219,7 +219,7 @@ class DeepinSoftwareCenter:
             recommendView.updateDownloadingStatus(pkgName, progress, feedback)
             
             # Update repo view.
-            repoView = self.repositoryPage.repoView
+            repoView = self.repoPage.repoView
             repoView.updateDownloadingStatus(pkgName, progress, feedback)
             
             # Update application view.
@@ -254,7 +254,7 @@ class DeepinSoftwareCenter:
             recommendView.switchToStatus(pkgName, appStatus)
                 
             # Update repo view.
-            repoView = self.repositoryPage.repoView
+            repoView = self.repoPage.repoView
             repoView.switchToStatus(pkgName, appStatus)
                 
             # Update update view.
@@ -294,7 +294,7 @@ class DeepinSoftwareCenter:
             recommendView.switchToStatus(pkgName, appStatus)
                 
             # Update repo view.
-            repoView = self.repositoryPage.repoView
+            repoView = self.repoPage.repoView
             repoView.switchToStatus(pkgName, appStatus, True)
                 
             # Update update view.
@@ -326,7 +326,7 @@ class DeepinSoftwareCenter:
                 recommendView.updateInstallingStatus(pkgName, progress, feedback)
                     
                 # Update repo view.
-                repoView = self.repositoryPage.repoView
+                repoView = self.repoPage.repoView
                 repoView.updateInstallingStatus(pkgName, progress, feedback)
                 
                 # Update detail view.
@@ -347,7 +347,7 @@ class DeepinSoftwareCenter:
                 recommendView.updateUpgradingStatus(pkgName, progress, feedback)
                     
                 # Update repo view.
-                repoView = self.repositoryPage.repoView
+                repoView = self.repoPage.repoView
                 repoView.updateUpgradingStatus(pkgName, progress, feedback)
                     
                 # Update update view.
@@ -400,7 +400,7 @@ class DeepinSoftwareCenter:
                     recommendView.initNormalStatus(pkgName, isMarkDeleted)
                     
                     # Update repo view.
-                    repoView = self.repositoryPage.repoView
+                    repoView = self.repoPage.repoView
                     repoView.initNormalStatus(pkgName, isMarkDeleted, True)
                     
                     # Update detail view.
@@ -445,7 +445,7 @@ class DeepinSoftwareCenter:
                     recommendView.initNormalStatus(pkgName, isMarkDeleted)
                     
                     # Update repo view.
-                    repoView = self.repositoryPage.repoView
+                    repoView = self.repoPage.repoView
                     repoView.initNormalStatus(pkgName, isMarkDeleted, True)
                     
                     # Update detail view.
@@ -475,7 +475,7 @@ class DeepinSoftwareCenter:
                     recommendView.initNormalStatus(pkgName, isMarkDeleted)
                     
                     # Update repo view.
-                    repoView = self.repositoryPage.repoView
+                    repoView = self.repoPage.repoView
                     repoView.initNormalStatus(pkgName, isMarkDeleted, True)
                     
                     # Update detail view.
@@ -503,7 +503,7 @@ class DeepinSoftwareCenter:
                 recommendView.initNormalStatus(pkgName, True)
                 
                 # Update repo view.
-                repoView = self.repositoryPage.repoView
+                repoView = self.repoPage.repoView
                 repoView.initNormalStatus(pkgName, True, True)
                 
                 # Update detail view.
@@ -527,7 +527,7 @@ class DeepinSoftwareCenter:
                 recommendView.switchToStatus(pkgName, APP_STATE_UPGRADE)
                 
                 # Update repo view.
-                repoView = self.repositoryPage.repoView
+                repoView = self.repoPage.repoView
                 repoView.switchToStatus(pkgName, APP_STATE_UPGRADE, True)
                 
                 # Update update view.
@@ -695,7 +695,7 @@ class DeepinSoftwareCenter:
             if pageId == PAGE_RECOMMEND:
                 child = self.recommendPage.scrolledwindow
             elif pageId == PAGE_REPO:
-                child = self.repositoryPage.box
+                child = self.repoPage.box
             elif pageId == PAGE_UPGRADE:
                 child = self.updatePage.box
             elif pageId == PAGE_UNINSTALL:
@@ -773,7 +773,7 @@ class DeepinSoftwareCenter:
                 if self.searchViewDict.has_key(pageId):
                     view = self.searchViewDict[pageId].searchView
             else:
-                view = self.repositoryPage.repoView
+                view = self.repoPage.repoView
                 
         elif pageId == PAGE_UPGRADE:
             view = self.updatePage.updateView

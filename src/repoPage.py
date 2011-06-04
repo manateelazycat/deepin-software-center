@@ -35,7 +35,7 @@ import subCategorybar
 import utils
 pygtk.require('2.0')
 
-class RepositoryPage:
+class RepoPage:
     '''Interface for repository page.'''
     
     def __init__(self, repoCache, switchStatus, downloadQueue, entryDetailCallback, 

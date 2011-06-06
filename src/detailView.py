@@ -268,6 +268,7 @@ class DetailView:
         if os.path.exists (screenshotPath):
             self.screenshotImage.set_from_pixbuf(
                 gtk.gdk.pixbuf_new_from_file_at_size(screenshotPath, screenshotWidth, screenshotHeight))
+            utils.setCustomizeClickableCursor(self.imageBox, self.screenshotImage, "./icons/screenshot/zoom.png")
         # Otherwise just fetch screenshot when not in black list.
         elif not pkgName in noscreenshotList:
             # Init fetch thread.
@@ -1113,6 +1114,7 @@ class FetchScreenshot(td.Thread):
         # Set screenshot.
         if self.returnCode == DOWNLOAD_SUCCESS:
             self.image.set_from_pixbuf(gtk.gdk.pixbuf_new_from_file_at_size(screenshotPath, self.width, self.height))
+            utils.setCustomizeClickableCursor(self.imageBox, self.image, "./icons/screenshot/zoom.png")
         else:
             if self.killed:
                 pkgName = utils.getPkgName(self.appInfo.pkg)

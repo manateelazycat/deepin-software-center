@@ -372,3 +372,14 @@ def setClickableLabel(widget, label, normalMarkup, activeMarkup):
     # Set label cursor.
     widget.connect("enter-notify-event", lambda w, e: setCursor(widget, gtk.gdk.HAND2))
     widget.connect("leave-notify-event", lambda w, e: setDefaultCursor(widget))
+
+def setCustomizeClickableCursor(eventbox, widget, cursorPath):
+    '''Set clickable cursor.'''
+    eventbox.connect("enter-notify-event", lambda w, e: setCustomizeCursor(widget, cursorPath))
+    eventbox.connect("leave-notify-event", lambda w, e: setDefaultCursor(widget))
+        
+def setCustomizeCursor(widget, cursorPath):
+    '''Set cursor.'''
+    widget.window.set_cursor(gtk.gdk.Cursor(gtk.gdk.display_get_default(),
+                                            gtk.gdk.pixbuf_new_from_file_at_size(cursorPath, 32, 32),
+                                            0, 0))

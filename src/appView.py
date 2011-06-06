@@ -145,6 +145,7 @@ class AppView:
                 prevBox.connect("button-press-event", lambda widget, event: self.jumpPage(max(1, self.pageIndex - self.pageSize)))
                 prevBox.connect("expose-event", lambda w, e: drawBackground(w, e, "#FFFFFF"))
                 box.pack_start(prevBox, False, False, paddingX)
+                utils.setClickableCursor(prevBox)
                 
                 first = gtk.Label()
                 first.set_markup("<span foreground='#1A3E88' size='%s'>1 ... </span>" % (LABEL_FONT_SIZE))
@@ -153,6 +154,7 @@ class AppView:
                 firstBox.connect("button-press-event", lambda widget, event: self.jumpPage(1))
                 firstBox.connect("expose-event", lambda w, e: drawBackground(w, e, "#FFFFFF"))
                 box.pack_start(firstBox, False, False, paddingX)
+                utils.setClickableCursor(firstBox)
             
             # Add index number icon.
             for i in range(startIndex, endIndex):
@@ -167,6 +169,7 @@ class AppView:
                 lastBox.connect("button-press-event", lambda widget, event: self.jumpPage(self.maxPageIndex))
                 lastBox.connect("expose-event", lambda w, e: drawBackground(w, e, "#FFFFFF"))
                 box.pack_start(lastBox, False, False, paddingX)
+                utils.setClickableCursor(lastBox)
                 
                 # Add next icon.
                 next = gtk.image_new_from_pixbuf(gtk.gdk.pixbuf_new_from_file("./icons/index/forward.png"))
@@ -176,6 +179,7 @@ class AppView:
                                                                                               self.pageIndex + self.pageSize)))
                 nextBox.connect("expose-event", lambda w, e: drawBackground(w, e, "#FFFFFF"))
                 box.pack_start(nextBox, False, False, paddingX)
+                utils.setClickableCursor(nextBox)
             
             # Add jump button.
             spinButton = gtk.SpinButton()
@@ -229,6 +233,7 @@ class AppView:
         numBox.add(numLabel)
         numBox.connect("button-press-event", lambda widget, event: self.jumpPage(index))
         numBox.connect("expose-event", lambda w, e: drawBackground(w, e, "#FFFFFF"))
+        utils.setClickableCursor(numBox)
         
         return numBox
 

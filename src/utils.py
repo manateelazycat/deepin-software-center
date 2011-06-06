@@ -341,3 +341,34 @@ def getCurrentTime():
     '''Get current time.'''
     return time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
 
+def setClickableCursor(widget):
+    '''Set clickable cursor.'''
+    widget.connect("enter-notify-event", lambda w, e: setCursor(widget, gtk.gdk.HAND2))
+    widget.connect("leave-notify-event", lambda w, e: setDefaultCursor(widget))
+        
+def setCursor(widget, cursorType):
+    '''Set cursor.'''
+    widget.window.set_cursor(gtk.gdk.Cursor(cursorType))
+
+def setDefaultCursor(widget):
+    '''Set default cursor.'''
+    widget.window.set_cursor(None)
+
+def setLabelMarkup(widget, label, normalMarkup, activeMarkup):
+    '''Set label markup.'''
+    widget.connect("enter-notify-event", lambda w, e: setMarkup(label, activeMarkup))
+    widget.connect("leave-notify-event", lambda w, e: setMarkup(label, normalMarkup))
+    
+def setMarkup(label, markup):
+    '''Set markup.'''
+    label.set_markup(markup)
+
+def setClickableLabel(widget, label, normalMarkup, activeMarkup):
+    '''Set clickable label.'''
+    # Set label markup.
+    widget.connect("enter-notify-event", lambda w, e: setMarkup(label, activeMarkup))
+    widget.connect("leave-notify-event", lambda w, e: setMarkup(label, normalMarkup))
+    
+    # Set label cursor.
+    widget.connect("enter-notify-event", lambda w, e: setCursor(widget, gtk.gdk.HAND2))
+    widget.connect("leave-notify-event", lambda w, e: setDefaultCursor(widget))

@@ -384,7 +384,7 @@ def updateButtonOnExpose(
             drawPixbuf(cr, numPixbuf,
                        numX + numBgLeftWidth + i * numWidth,
                        numY + (numBgLeftHeight - numHeight) / 2)
-    else:
+    elif upgradableNum != 0:
         print "Upgradable number out of bound (1 ~ 100000): %s" % (upgradableNum)
     
     # Draw font.

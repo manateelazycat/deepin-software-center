@@ -67,8 +67,8 @@ class NavigateBar:
         self.communityIcon      = self.createNavIcon("社区分享", "./icons/navigate/nav_hi.png", PAGE_COMMUNITY)
         self.navBox.pack_start(self.communityIcon, False, False, self.iconPadding)
         
-        # self.moreIcon           = self.createNavIcon("更多精彩", "./icons/navigate/nav_more.png", PAGE_MORE)
-        # self.navBox.pack_start(self.moreIcon, False, False, self.iconPadding)
+        self.moreIcon           = self.createNavIcon("更多功能", "./icons/navigate/nav_more.png", PAGE_MORE)
+        self.navBox.pack_start(self.moreIcon, False, False, self.iconPadding)
         
         self.box.show_all()
 

@@ -35,6 +35,7 @@ import navigatebar
 import pango
 import pangocairo
 import pygtk
+import morePage
 import recommendPage
 import repoCache
 import repoPage
@@ -148,7 +149,7 @@ class DeepinSoftwareCenter:
             self.fetchVote,
             )
         self.communityPage = communityPage.CommunityPage()
-        # self.morePage = morePage.MorePage()
+        self.morePage = morePage.MorePage()
         self.statusbar = statusbar.Statusbar()
         self.statusbar.eventbox.connect("button-press-event", lambda w, e: utils.resizeWindow(w, e, self.window))
         self.statusbar.eventbox.connect("button-press-event", lambda w, e: utils.moveWindow(w, e, self.window))
@@ -658,9 +659,9 @@ class DeepinSoftwareCenter:
         self.navigatebar.communityIcon.connect(
             "button-press-event", 
             lambda widget, event: self.selectPage(PAGE_COMMUNITY))
-        # self.navigatebar.moreIcon.connect(
-        #     "button-press-event", 
-        #     lambda widget, event: self.selectPage(PAGE_MORE))
+        self.navigatebar.moreIcon.connect(
+            "button-press-event", 
+            lambda widget, event: self.selectPage(PAGE_MORE))
         
         # Default select recommend page.
         self.selectPage(PAGE_RECOMMEND)
@@ -702,8 +703,8 @@ class DeepinSoftwareCenter:
                 child = self.uninstallPage.box
             elif pageId == PAGE_COMMUNITY:
                 child = self.communityPage.box
-            # else: 
-            #     child = self.morePage.box
+            else: 
+                child = self.morePage.box
         
         self.contentBox.pack_start(child)
         self.contentBox.show_all()

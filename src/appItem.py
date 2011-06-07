@@ -413,7 +413,7 @@ def createItemBasicBox(appInfo, maxWidth, parent, showVersion=True):
     parent.connect("size-allocate", 
                    lambda w, e: adjustLabelWidth(parent, 
                                                  appName,
-                                                 LABEL_FONT_MEDIUM_SIZE / 1000,
+                                                 LABEL_FONT_SIZE / 1000,
                                                  maxWidth))
     
     appName.set_single_line_mode(True)
@@ -422,8 +422,7 @@ def createItemBasicBox(appInfo, maxWidth, parent, showVersion=True):
     appBox.pack_start(appName, False, False)
     
     pkgVersion = utils.getPkgVersion(pkg)
-    nameMarkup = "<span foreground='#1A3E88' size='%s'>%s</span>" % (LABEL_FONT_MEDIUM_SIZE, pkgName)
-    activeNameMarkup = "<span foreground='#0084FF' size='%s'>%s</span>" % (LABEL_FONT_MEDIUM_SIZE, pkgName)
+    nameMarkup = "<span foreground='#1A3E88' size='%s'>%s</span>" % (LABEL_FONT_SIZE, pkgName)
     versionMarkup = "<span foreground='#00BB00' size='%s'> (%s)</span>" % (LABEL_FONT_SIZE, pkgVersion)
     if showVersion:
         appName.set_markup(nameMarkup + versionMarkup)

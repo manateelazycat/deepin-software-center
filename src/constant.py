@@ -278,15 +278,17 @@ CATEGORY_LIST = [(CATE_WEB,
                  ]
 
 RECOMMEND_LIST = [
-    ("最近更新",        ["gedit", "eclipse", "eog", "vlc", "network-manager-gnome"]),
+    ("最近更新",        ["gedit", "g2ipmsg", "eog", "vlc", "network-manager-gnome"]),
     ("编辑推荐",        ["stellarium", "samba", "wireshark", "playonlinux", "amarok"]),
-    ("网络工具",        ["chromium-browser", "firefox", "uget", "qbittorrent", "amule"]),
-    ("网络通讯",        ["pidgin", "openfetion", "xchat", "gnome-gmail-notifier", "thunderbird"]),
-    ("多媒体",         ["rhythmbox", "gtk-recordmydesktop", "openshot", "moovida", "audacity"]),
-    ("图形图像",        ["gwenview", "gnome-paint", "blender", "inkscape", "gimp"]),
+    ("互联网",          ["chromium-browser", "uget", "pidgin", "thunderbird", "qbittorrent"]),
+    ("影音",           ["rhythmbox", "gtk-recordmydesktop", "openshot", "moovida", "audacity"]),
     ("游戏",           ["beneath-a-steel-sky", "freedroid", "flightgear", "supertuxkart", "alien-arena"]),
-    ("系统工具",        ["ibus-pinyin", "camorama", "brasero", "gparted", "unetbootin"]),
-    ("驱动",           ["jockey-gtk", "ntfs-config", "fglrx", "ndisgtk", "aqsis"]),
+    ("图形图像",        ["gwenview", "gnome-paint", "blender", "inkscape", "gimp"]),
+    ("实用工具",        ["ibus-pinyin", "camorama", "brasero", "gparted", "unetbootin"]),
+    ("行业软件",        ["qcad", "mayavi2", "maxima", "axiom", "cadabra"]),
+    ("编程开发",        ["emacs", "eclipse", "anjuta", "codeblocks", "geany"]),
+    ("硬件驱动",        ["jockey-gtk", "ntfs-config", "fglrx", "ndisgtk", "xserver-xorg-video-nv"]),
+    ("Windows软件",    ["wine", "playonlinux", "q4wine", "winetricks", "wisotool"]),
     ("其他",           ["libreoffice", "liferea", "tomboy", "evince", "kchmviewer"]),
     ]
 

@@ -19,140 +19,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import sortedDict
-
-CATE_ALL = "全部"
-CATE_WEB = "网络"
-CATE_SYSTEM = "系统"
-CATE_BEAUTY = "美化"
-CATE_MULTIMEDIA = "影音"
-CATE_GAME = "游戏"
-CATE_GRAPHICS = "图形"
-CATE_OFFICE = "办公"
-CATE_DESKTOP = "桌面"
-CATE_PROJECT = "工程"
-CATE_DEVELOP = "开发"
-CATE_OTHERS = "其他"
-
-SUBCATE_ALL = "全部"
-SUBCATE_MAIL = "邮件"
-SUBCATE_WEB = "网络"
-SUBCATE_NEWS = "新闻"
-SUBCATE_OTHERS = "其他"
-
-SUBCATE_ADMIM = "系统管理"
-
-SUBCATE_FONT = "字体"
-
-SUBCATE_VIDEO = "视频"
-SUBCATE_SOUND = "音频"
-
-SUBCATE_GAME = "游戏"
-
-SUBCATE_GRAPHICS = "图形"
-
-SUBCATE_OFFICE = "办公"
-
-SUBCATE_GNOME = "Gnome"
-SUBCATE_KDE = "KDE"
-SUBCATE_XFCE = "XFCE"
-
-SUBCATE_FM = "无线电"
-SUBCATE_MATH = "数学"
-SUBCATE_SCIENCE = "科学"
-SUBCATE_ELECTRONICS = "电子学"
-
-SUBCATE_DATABASE = "数据库"
-SUBCATE_DEBUG = "调试"
-SUBCATE_EMBEDDED = "嵌入式"
-SUBCATE_INTERPRETERS = "解释器"
-SUBCATE_LIBDEVEL = "开发库"
-SUBCATE_LIBS = "库"
-SUBCATE_VCS = "版本控制"
-SUBCATE_SHELL = "Shell"
-SUBCATE_EDITOR = "编辑器"
-SUBCATE_PROGRAMMINGLANGUAGE = "编程语言"
-SUBCATE_KERNEL = "内核"
-
-SUBCATE_TRANSLATIONS = "翻译"
-SUBCATE_LOCALIZATION = "本地化"
-SUBCATE_DOC = "文档"
-SUBCATE_UTILS = "工具"
-SUBCATE_MISC = "杂项"
-
-RANK_DICT = {
-    # CATE_WEB
-    "Internet"      : (CATE_WEB, SUBCATE_WEB),
-    "mail"          : (CATE_WEB, SUBCATE_MAIL),
-    "web"           : (CATE_WEB, SUBCATE_WEB),
-    "news"          : (CATE_WEB, SUBCATE_NEWS),
-    "httpd"         : (CATE_WEB, SUBCATE_OTHERS),
-    "net"           : (CATE_WEB, SUBCATE_OTHERS),
-    # CATE_SYSTEM
-    "admin"         : (CATE_SYSTEM, SUBCATE_ADMIM),
-    "base"          : (CATE_SYSTEM, SUBCATE_ADMIM),
-    # CATE_BEAUTY
-    "fonts"         : (CATE_BEAUTY, SUBCATE_FONT),
-    # CATE_MULTIMEDIA
-    "video"         : (CATE_MULTIMEDIA, SUBCATE_VIDEO),
-    "sound"         : (CATE_MULTIMEDIA, SUBCATE_SOUND),
-    "otherosfs"     : (CATE_MULTIMEDIA, SUBCATE_OTHERS),
-    # CATE_GAMES
-    "games"         : (CATE_GAME, SUBCATE_GAME),
-    # CATE_GRAPHICS
-    "graphics"      : (CATE_GRAPHICS, SUBCATE_GRAPHICS),
-    # CATE_OFFICE
-    "text"          : (CATE_OFFICE, SUBCATE_OFFICE),
-    "tex"           : (CATE_OFFICE, SUBCATE_OFFICE),
-    # CATE_DESKTOP
-    "gnome"         : (CATE_DESKTOP, SUBCATE_GNOME),
-    "kde"           : (CATE_DESKTOP, SUBCATE_KDE),
-    "xfce"          : (CATE_DESKTOP, SUBCATE_XFCE),
-    "x11"           : (CATE_DESKTOP, SUBCATE_OTHERS),
-    "metapackages"  : (CATE_DESKTOP, SUBCATE_OTHERS),
-    # CATE_PROJECT
-    "hamradio"      : (CATE_PROJECT, SUBCATE_FM),
-    "math"          : (CATE_PROJECT, SUBCATE_MATH),
-    "science"       : (CATE_PROJECT, SUBCATE_SCIENCE),
-    "electronics"   : (CATE_PROJECT, SUBCATE_ELECTRONICS),
-    "gnu-r"         : (CATE_PROJECT, SUBCATE_OTHERS),
-    # CATE_DEVELOP
-    "database"      : (CATE_DEVELOP, SUBCATE_DATABASE),
-    "debug"         : (CATE_DEVELOP, SUBCATE_DEBUG),
-    "devel"         : (CATE_DEVELOP, SUBCATE_OTHERS),
-    "embedded"      : (CATE_DEVELOP, SUBCATE_EMBEDDED),
-    "interpreters"  : (CATE_DEVELOP, SUBCATE_INTERPRETERS),
-    "libdevel"      : (CATE_DEVELOP, SUBCATE_LIBDEVEL),
-    "libs"          : (CATE_DEVELOP, SUBCATE_LIBS),
-    "oldlibs"       : (CATE_DEVELOP, SUBCATE_LIBS),
-    "vcs"           : (CATE_DEVELOP, SUBCATE_VCS),
-    "shells"        : (CATE_DEVELOP, SUBCATE_SHELL),
-    "zop"           : (CATE_DEVELOP, SUBCATE_OTHERS),
-    "editors"       : (CATE_DEVELOP, SUBCATE_EDITOR),
-    "cli-mono"      : (CATE_DEVELOP, SUBCATE_PROGRAMMINGLANGUAGE),
-    "php"           : (CATE_DEVELOP, SUBCATE_PROGRAMMINGLANGUAGE),
-    "haskell"       : (CATE_DEVELOP, SUBCATE_PROGRAMMINGLANGUAGE),
-    "java"          : (CATE_DEVELOP, SUBCATE_PROGRAMMINGLANGUAGE),
-    "lisp"          : (CATE_DEVELOP, SUBCATE_PROGRAMMINGLANGUAGE),
-    "ocaml"         : (CATE_DEVELOP, SUBCATE_PROGRAMMINGLANGUAGE),
-    "perl"          : (CATE_DEVELOP, SUBCATE_PROGRAMMINGLANGUAGE),
-    "python"        : (CATE_DEVELOP, SUBCATE_PROGRAMMINGLANGUAGE),
-    "ruby"          : (CATE_DEVELOP, SUBCATE_PROGRAMMINGLANGUAGE),
-    "comm"          : (CATE_DEVELOP, SUBCATE_PROGRAMMINGLANGUAGE),
-    "zope"          : (CATE_DEVELOP, SUBCATE_OTHERS),
-    "gnustep"       : (CATE_DEVELOP, SUBCATE_OTHERS),
-    "kernel"        : (CATE_DEVELOP, SUBCATE_KERNEL),
-    # CATE_OTHERS
-    "translations"  : (CATE_OTHERS, SUBCATE_TRANSLATIONS),
-    "localization"  : (CATE_OTHERS, SUBCATE_LOCALIZATION),
-    "doc"           : (CATE_OTHERS, SUBCATE_DOC),
-    "input"         : (CATE_OTHERS, SUBCATE_UTILS),
-    "utility"       : (CATE_OTHERS, SUBCATE_UTILS),
-    "utils"         : (CATE_OTHERS, SUBCATE_UTILS),
-    "unknown"       : (CATE_OTHERS, SUBCATE_MISC),
-    "misc"          : (CATE_OTHERS, SUBCATE_MISC),
-    }
-
 APP_STATE_NORMAL = 1
 APP_STATE_UPGRADE = 2
 APP_STATE_INSTALLED = 3
@@ -181,115 +47,56 @@ DOWNLOAD_STATUS_PAUSE = 3
 DOWNLOAD_STATUS_STOP = 4
 DOWNLOAD_STATUS_TIMEOUT = 5
 
-CATEGORY_LIST = [(CATE_WEB,              
-                  ("web.png", 
-                   sortedDict.SortedDict([
-                                    (SUBCATE_ALL, []),
-                                    (SUBCATE_MAIL, []),
-                                    (SUBCATE_WEB, []),
-                                    (SUBCATE_NEWS, []),
-                                    (SUBCATE_OTHERS, []),
-                                    ]))),
-                 (CATE_SYSTEM,
-                  ("system.png",
-                   sortedDict.SortedDict([
-                                 (SUBCATE_ALL, []),
-                                 (SUBCATE_ADMIM, []),
-                                 ]))),
-                 (CATE_BEAUTY,   
-                  ("beauty.png",
-                   sortedDict.SortedDict([
-                                 (SUBCATE_ALL, []),
-                                 (SUBCATE_FONT, []),
-                                 ]))),
-                 (CATE_MULTIMEDIA,       
-                  ("multimedia.png", 
-                   sortedDict.SortedDict([
-                                 (SUBCATE_ALL, []),
-                                 (SUBCATE_VIDEO, []),
-                                 (SUBCATE_SOUND, []),
-                                 (SUBCATE_OTHERS, []),
-                                 ]))),
-                 (CATE_GAME,     
-                  ("game.png",
-                   sortedDict.SortedDict([
-                                 (SUBCATE_ALL, []),
-                                 (SUBCATE_GAME, []),
-                                 ]))),
-                 (CATE_GRAPHICS, 
-                  ("graphics.png",
-                   sortedDict.SortedDict([
-                                 (SUBCATE_ALL, []),
-                                 (SUBCATE_GRAPHICS, []),
-                                 ]))),
-                 (CATE_OFFICE,   
-                  ("office.png",
-                   sortedDict.SortedDict([
-                                 (SUBCATE_ALL, []),
-                                 (SUBCATE_OFFICE, []),
-                                 ]))),
-                 (CATE_DESKTOP,  
-                  ("desktop.png",
-                   sortedDict.SortedDict([
-                                 (SUBCATE_ALL, []),
-                                 (SUBCATE_GNOME, []),
-                                 (SUBCATE_KDE, []),
-                                 (SUBCATE_XFCE, []),
-                                 (SUBCATE_OTHERS, []),
-                                 ]))),
-                 (CATE_PROJECT,          
-                  ("project.png",
-                   sortedDict.SortedDict([
-                                 (SUBCATE_ALL, []),
-                                 (SUBCATE_FM, []),
-                                 (SUBCATE_MATH, []),
-                                 (SUBCATE_SCIENCE, []),
-                                 (SUBCATE_ELECTRONICS, []),
-                                 (SUBCATE_OTHERS, []),
-                                 ]))),
-                 (CATE_DEVELOP,
-                  ("develop.png",
-                   sortedDict.SortedDict([
-                                 (SUBCATE_ALL, []),
-                                 (SUBCATE_DATABASE, []),
-                                 (SUBCATE_DEBUG, []),
-                                 (SUBCATE_EMBEDDED, []),
-                                 (SUBCATE_INTERPRETERS, []),
-                                 (SUBCATE_LIBDEVEL, []),
-                                 (SUBCATE_LIBS, []),
-                                 (SUBCATE_VCS, []),
-                                 (SUBCATE_SHELL, []),
-                                 (SUBCATE_EDITOR, []),
-                                 (SUBCATE_PROGRAMMINGLANGUAGE, []),
-                                 (SUBCATE_KERNEL, []),
-                                 (SUBCATE_OTHERS, []),
-                                 ]))),
-                 (CATE_OTHERS,   
-                  ("other.png",
-                   sortedDict.SortedDict([
-                                 (SUBCATE_ALL, []),
-                                 (SUBCATE_TRANSLATIONS, []),
-                                 (SUBCATE_LOCALIZATION, []),
-                                 (SUBCATE_DOC, []),
-                                 (SUBCATE_UTILS, []),
-                                 (SUBCATE_MISC, []),
-                                 (SUBCATE_OTHERS, [])
-                                 ]))),
+CLASSIFY_NEWS = "最近更新"
+CLASSIFY_RECOMMEND = "编辑推荐"
+CLASSIFY_WEB = "互联网"
+CLASSIFY_MULTIMEDIA = "影音"
+CLASSIFY_GAME = "游戏"
+CLASSIFY_GRAPHICS = "图形图像"
+CLASSIFY_UTILS = "实用工具"
+CLASSIFY_PROFESSIONAL = "行业软件"
+CLASSIFY_PROGRAMMING = "编程开发"
+CLASSIFY_DRIVER = "硬件驱动"
+CLASSIFY_WINDOWS = "WIN 软件"
+CLASSIFY_OTHERS = "其他"
+
+CLASSIFY_FILES = [(CLASSIFY_WEB,          "web.txt"),
+                  (CLASSIFY_MULTIMEDIA,   "multimedia.txt"),
+                  (CLASSIFY_GAME,         "game.txt"),
+                  (CLASSIFY_GRAPHICS,     "graphics.txt"),
+                  (CLASSIFY_UTILS,        "utils.txt"),
+                  (CLASSIFY_PROFESSIONAL, "professional.txt"),
+                  (CLASSIFY_PROGRAMMING,  "programming.txt"),
+                  (CLASSIFY_DRIVER,       "driver.txt"),
+                  (CLASSIFY_WINDOWS,      "windows.txt"),
+                  (CLASSIFY_OTHERS,       "others.txt")
+                  ]
+
+CLASSIFY_LIST = [(CLASSIFY_WEB,          ("web.png", [])),
+                 (CLASSIFY_MULTIMEDIA,   ("multimedia.png", [])),
+                 (CLASSIFY_GAME,         ("game.png", [])),
+                 (CLASSIFY_GRAPHICS,     ("graphics.png", [])),
+                 (CLASSIFY_UTILS,        ("desktop.png", [])),
+                 (CLASSIFY_PROFESSIONAL, ("project.png", [])),
+                 (CLASSIFY_PROGRAMMING,  ("develop.png", [])),
+                 (CLASSIFY_DRIVER,       ("office.png", [])),
+                 (CLASSIFY_WINDOWS,      ("win.png", [])),
+                 (CLASSIFY_OTHERS,       ("other.png", []))
                  ]
 
 RECOMMEND_LIST = [
-    ("最近更新",        ["gedit", "g2ipmsg", "eog", "vlc", "network-manager-gnome"]),
-    ("编辑推荐",        ["stellarium", "samba", "wireshark", "playonlinux", "amarok"]),
-    ("互联网",          ["chromium-browser", "uget", "pidgin", "thunderbird", "qbittorrent"]),
-    ("影音",           ["rhythmbox", "gtk-recordmydesktop", "openshot", "moovida", "audacity"]),
-    ("游戏",           ["beneath-a-steel-sky", "freedroid", "flightgear", "supertuxkart", "alien-arena"]),
-    ("图形图像",        ["gwenview", "gnome-paint", "blender", "inkscape", "gimp"]),
-    ("实用工具",        ["ibus-pinyin", "camorama", "brasero", "gparted", "unetbootin"]),
-    ("行业软件",        ["qcad", "mayavi2", "maxima", "axiom", "cadabra"]),
-    ("编程开发",        ["emacs", "eclipse", "anjuta", "codeblocks", "geany"]),
-    ("硬件驱动",        ["jockey-gtk", "ntfs-config", "fglrx", "ndisgtk", "xserver-xorg-video-nv"]),
-    ("Windows软件",    ["wine", "playonlinux", "q4wine", "winetricks", "wisotool"]),
-    ("其他",           ["libreoffice", "liferea", "tomboy", "evince", "kchmviewer"]),
+    (CLASSIFY_NEWS,             ["gedit", "g2ipmsg", "eog", "vlc", "network-manager-gnome"]),
+    (CLASSIFY_RECOMMEND,        ["stellarium", "samba", "wireshark", "playonlinux", "amarok"]),
+    (CLASSIFY_WEB,              ["chromium-browser", "uget", "pidgin", "thunderbird", "qbittorrent"]),
+    (CLASSIFY_MULTIMEDIA,       ["rhythmbox", "gtk-recordmydesktop", "openshot", "moovida", "audacity"]),
+    (CLASSIFY_GAME,             ["beneath-a-steel-sky", "freedroid", "flightgear", "supertuxkart", "alien-arena"]),
+    (CLASSIFY_GRAPHICS,         ["gwenview", "gnome-paint", "blender", "inkscape", "gimp"]),
+    (CLASSIFY_UTILS,            ["ibus-pinyin", "camorama", "brasero", "gparted", "unetbootin"]),
+    (CLASSIFY_PROFESSIONAL,     ["qcad", "mayavi2", "maxima", "axiom", "cadabra"]),
+    (CLASSIFY_PROGRAMMING,      ["emacs", "eclipse", "anjuta", "codeblocks", "geany"]),
+    (CLASSIFY_DRIVER,           ["jockey-gtk", "ntfs-config", "fglrx", "ndisgtk", "xserver-xorg-video-nv"]),
+    (CLASSIFY_WINDOWS,          ["wine", "playonlinux", "q4wine", "winetricks", "wisotool"]),
+    (CLASSIFY_OTHERS,           ["libreoffice", "liferea", "tomboy", "evince", "kchmviewer"]),
     ]
 
 LANGUAGE = [
@@ -322,7 +129,7 @@ LABEL_FONT_XX_LARGE_SIZE = 20 * 1000
 
 DOWNLOAD_TIMEOUT = 30           # times
 POST_TIMEOUT = 10               # seconds
-GET_TIMEOUT = 10               # seconds
+GET_TIMEOUT = 10                # seconds
 
 ACTION_BUTTON_PADDING_X = 5
 ACTION_BUTTON_PADDING_Y = 5

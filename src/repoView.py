@@ -163,14 +163,13 @@ class RepoItem(DownloadItem):
 class RepoView(appView.AppView):
     '''Application view.'''
 	
-    def __init__(self, category, subCategory, appNum, getListFunc, switchStatus, downloadQueue, 
+    def __init__(self, category, appNum, getListFunc, switchStatus, downloadQueue, 
                  entryDetailCallback, sendVoteCallback, fetchVoteCallback):
         '''Init for application view.'''
         appView.AppView.__init__(self, appNum, PAGE_REPO)
         
         # Init.
         self.category = category
-        self.subCategory = subCategory
         self.getListFunc = getListFunc
         self.switchStatus = switchStatus
         self.downloadQueue = downloadQueue
@@ -181,10 +180,9 @@ class RepoView(appView.AppView):
         
         self.show()
         
-    def update(self, category, subCategory, appNum):
+    def update(self, category, appNum):
         '''Update view.'''
         self.category = category
-        self.subCategory = subCategory
         self.appNum = appNum
         self.pageIndex = 1
         self.calculateMaxPageIndex()
@@ -200,7 +198,6 @@ class RepoView(appView.AppView):
         if self.appNum != 0:
             # Get application list.
             appList = self.getListFunc(self.category, 
-                                       self.subCategory, 
                                        (self.pageIndex - 1) * self.defaultRows,
                                        min(self.pageIndex * self.defaultRows, self.appNum)
                                        )

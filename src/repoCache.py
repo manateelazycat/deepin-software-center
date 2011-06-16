@@ -115,7 +115,21 @@ class RepoCache:
         self.cache = {}
         self.upgradablePkgs = []
         self.uninstallablePkgs = []
-        self.categoryDict = sortedDict.SortedDict(CATEGORY_LIST)
+        self.categoryDict = sortedDict.SortedDict(CLASSIFY_LIST)
+
+        # Scan category dict.
+        whiteList = []
+        for (categoryType, categoryFile) in CLASSIFY_FILES:
+            for line in open("./pkgClassify/" + categoryFile).readlines():
+                pkgName = line.rstrip("\n")
+                if cache.has_key(pkgName) and cache[pkgName].candidate != None:
+                    # Add in category dict.
+                    (_, categoryList) = self.categoryDict[categoryType]
+                    categoryList.append(pkgName)
+                    
+                    # Add in white list.
+                    whiteList.append(pkgName)
+        self.whiteListDict = dict.fromkeys(whiteList)
 
         # Scan all packages to store and rank. 
         for pkg in cache:
@@ -125,61 +139,28 @@ class RepoCache:
                 # Add AppInfo.
                 self.cache[pkg.name] = AppInfo(pkg)
                 
-                # Rank packages.
-                self.rankPkg(pkg)
-                
                 # Add upgradable packages.
                 if pkg.is_upgradable:
                     self.upgradablePkgs.append(pkg.name)
                     
                 # Add uninstall packages.
                 # Package must not essential and not library packages.
-                if utils.isPkgUninstallable(pkg):
+                if self.isPkgUninstallable(pkg):
                     self.uninstallablePkgs.append(pkg.name)
-
-    def rankPkg(self, pkg):
-        '''Rank package.'''
-        # Get package section
-        pkgSection = pkg.candidate.section
-        splitResult = pkgSection.split('/')
-        if len (splitResult) == 2:
-            # Remove repository prefix, such as, pick pkg from `universal/pkg`
-            section = splitResult[1]
-        else:
-            section = pkgSection
-
-        # Get category and sub-category.
-        if RANK_DICT.has_key(section):
-            (category, subCategory) = RANK_DICT[section]
-        # Put in CATE_OTHERS/SUBCATE_OTHERS if got unknown section. 
-        else:
-            print "Unknown section : ", section
-            (category, subCategory) = (CATE_OTHERS, SUBCATE_OTHERS)
-
-        # Add in all item of category.
-        (categoryItemIcon, categoryItem) = self.categoryDict[category]
-        categoryItem[SUBCATE_ALL].append(pkg.name)
-        categoryItem[subCategory].append(pkg.name)
-
-    def getSubcategorys(self, category):
-        '''Get sub category list.'''
-        (_, categoryItem) = self.categoryDict[category]
-        return categoryItem.keys()
-    
-    def getSubcategoryNumber(self, category, subCategory):
-        '''Get sub category number.'''
-        (_, categoryItem) = self.categoryDict[category]
-        return len(categoryItem[subCategory])
-    
-    def getAppList(self, category, subCategory, startIndex, endIndex):
+                    
+    def getAppList(self, category, startIndex, endIndex):
         '''Get application list in given range.'''
-        (_, categoryItem) = self.categoryDict[category]
-        pkgNames = categoryItem[subCategory]
+        (_, pkgNames) = self.categoryDict[category]
         appList = []
         for index in range(startIndex, endIndex):
             pkgName = pkgNames[index]
             appList.append(self.cache[pkgName])
         return appList
+    
+    def getCategoryNumber(self, category):
+        '''Get sub category number.'''
+        (_, categoryList) = self.categoryDict[category]
+        return len(categoryList)
     
     def getCategorys(self):
         '''Get category list.'''
@@ -216,6 +197,14 @@ class RepoCache:
         '''Add package in uninstallable list.'''
         if self.cache.has_key(pkgName):
             pkg = self.cache[pkgName].pkg
-            if utils.isPkgUninstallable(pkg, False) and not pkgName in self.uninstallablePkgs:
+            if self.isPkgUninstallable(pkg, False) and not pkgName in self.uninstallablePkgs:
                 self.uninstallablePkgs.append(pkgName)
                 self.uninstallablePkgs = sorted(self.uninstallablePkgs)    
+
+    def isPkgUninstallable(self, pkg, checkInstalled=True):
+        '''Is package is uninstallable?'''
+        if checkInstalled:
+            return pkg.is_installed and self.whiteListDict.has_key(pkg.name)
+        else:
+            self.whiteListDict.has_key(pkg.name)
+    

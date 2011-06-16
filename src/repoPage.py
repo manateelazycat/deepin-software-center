@@ -31,7 +31,6 @@ import repoView
 import search
 import searchCompletion as sc
 import sortedDict
-import subCategorybar
 import utils
 pygtk.require('2.0')
 
@@ -46,23 +45,14 @@ class RepoPage:
         self.box = gtk.VBox()
         self.categorybar = categorybar.CategoryBar(self.repoCache.getCategorys(), self.selectCategory)
         self.contentBox = gtk.HBox()
-        # self.subCategorybar = subCategorybar.SubCategorybar(
-        #     CATE_WEB,
-        #     self.repoCache.getSubcategorys(CATE_WEB),
-        #     self.selectSubCategory
-        #     )
-        # self.topbar = Topbar(SUBCATE_ALL, 
-        #                      self.repoCache.getSubcategoryNumber(CATE_WEB, SUBCATE_ALL),
-        #                      self.repoCache.cache.values())
         self.topbar = Topbar(
-            CATE_WEB, 
-            self.repoCache.getSubcategoryNumber(CATE_WEB, SUBCATE_ALL),
+            CLASSIFY_WEB, 
+            self.repoCache.getCategoryNumber(CLASSIFY_WEB),
             self.repoCache.cache.values(),
             entrySearchCallback)
         self.repoView = repoView.RepoView(
-            CATE_WEB, 
-            SUBCATE_ALL, 
-            self.repoCache.getSubcategoryNumber(CATE_WEB, SUBCATE_ALL),
+            CLASSIFY_WEB, 
+            self.repoCache.getCategoryNumber(CLASSIFY_WEB),
             self.repoCache.getAppList,
             switchStatus, 
             downloadQueue,
@@ -78,40 +68,21 @@ class RepoPage:
         self.contentBox.pack_start(self.repoView.scrolledwindow)
         self.box.show_all()
 
-    def selectCategory(self, category, subCategory, categoryId):
+    def selectCategory(self, category, categoryId):
         '''Select category.'''
         self.categorybar.categoryId = categoryId
         self.categorybar.box.queue_draw()
         
-        # Update sub category bar.
-        # self.subCategorybar.updateSubCategorybar(
-        #     category,
-        #     self.repoCache.getSubcategorys(category)
-        #     )
-        
-        # Select sub category.
-        self.selectSubCategory(category, subCategory)
-
-    def selectSubCategory(self, category, subCategory):
-        '''Select sub category.'''
         # Redraw sub-categorybar bar.
-        # self.subCategorybar.frame.queue_draw()
-        
-        # Update top bar.
-        # self.topbar.updateTopbar(
-        #     subCategory, 
-        #     self.repoCache.getSubcategoryNumber(category, subCategory)
-        #     )
         self.topbar.updateTopbar(
             category,
-            self.repoCache.getSubcategoryNumber(category, subCategory)
+            self.repoCache.getCategoryNumber(category)
             )
         
         # Update application view.
         self.repoView.update(
             category, 
-            subCategory,
-            self.repoCache.getSubcategoryNumber(category, subCategory)
+            self.repoCache.getCategoryNumber(category)
             )
 
         # Reset repoView's index.
@@ -138,25 +109,6 @@ class Topbar:
         self.updateTopbar(category, itemNum)
         self.entrySearchCallback = entrySearchCallback
 
-        # Add sort label.
-        defaultSort = gtk.Label()
-        defaultSort.set_markup("<span foreground='#1A3E88' size='%s'>%s</span>" % (LABEL_FONT_SIZE, "默认排行"))
-
-        downloadSort = gtk.Label()
-        downloadSort.set_markup("<span foreground='#1A3E88' size='%s'>%s</span>" % (LABEL_FONT_SIZE, "按下载量排行"))
-
-        voteSort = gtk.Label()
-        voteSort.set_markup("<span foreground='#1A3E88' size='%s'>%s</span>" % (LABEL_FONT_SIZE, "按评分排行"))
-
-        # Add sort box.
-        sortBox = gtk.HBox()
-        sortBox.pack_start(defaultSort, False, False, self.paddingX)
-        sortBox.pack_start(downloadSort, False, False, self.paddingX)
-        sortBox.pack_start(voteSort, False, False, self.paddingX)
-        sortAlign = gtk.Alignment()
-        sortAlign.set(0.5, 0.5, 0.0, 0.0)
-        sortAlign.add(sortBox)
-
         # Add search entry and label.
         (self.searchEntry, searchAlign, self.searchCompletion) = newSearchUI(
             "请输入你要搜索的软件名称、版本或其他信息",
@@ -167,7 +119,7 @@ class Topbar:
         # Connect widgets.
         self.box.pack_start(self.categoryLabel, False, False, self.paddingX)
         self.box.pack_start(self.numLabel, False, False, self.paddingX)
-        self.box.pack_start(sortAlign, True, True, self.paddingX)
+        # self.box.pack_start(sortAlign, True, True, self.paddingX)
         self.box.pack_start(searchAlign)
         
     def search(self, editable):
@@ -189,5 +141,5 @@ class Topbar:
         self.numLabel.set_markup(
             ("<span size='%s'>共</span>" % (LABEL_FONT_SIZE))
             + "<span foreground='#00BB00' size='%s'> %s</span>" % (LABEL_FONT_SIZE, str(itemNum))
-            + ("<span size='%s'>款软件</span>" % (LABEL_FONT_SIZE)))
+            + ("<span size='%s'> 款软件</span>" % (LABEL_FONT_SIZE)))
     

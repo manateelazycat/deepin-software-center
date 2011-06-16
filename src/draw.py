@@ -441,23 +441,24 @@ def sideButtonOnExpose(widget, event,
     pixbuf = image.scale_simple(backgroundWidth, backgroundHeight, gtk.gdk.INTERP_BILINEAR)
     
     x, y = widget.allocation.x, widget.allocation.y
-    fontSize = 15
+    fontSize = 14
     middlePadding = 14
     
     cr = widget.window.cairo_create()
     
     drawPixbuf(cr, pixbuf, x, y)
+    offset = 20
 
     navPixbuf = gtk.gdk.pixbuf_new_from_file(navImg)
     navWidth = navPixbuf.get_width()
     navHeight = navPixbuf.get_height()
     drawPixbuf(cr,
                navPixbuf, 
-               x + (backgroundWidth - navWidth - fontSize * 2 - middlePadding) / 2,
+               x + (backgroundWidth - navWidth - fontSize * 2 - middlePadding) / 2 - offset,
                y + (backgroundHeight - navHeight) / 2)
     
     drawFont(cr, navName, fontSize, "#505050",
-             x + (backgroundWidth - navWidth - fontSize * 2 - middlePadding) / 2 + navWidth + middlePadding,
+             x + (backgroundWidth - navWidth - fontSize * 2 - middlePadding) / 2 + navWidth + middlePadding - offset,
              getFontYCoordinate(y, backgroundHeight, fontSize))
 
     if widget.get_child() != None:

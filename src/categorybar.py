@@ -52,8 +52,7 @@ class CategoryBar:
         '''Create category icon.'''
         # Create icon.
         eventButton = gtk.Button()
-        eventButton.connect("button-press-event", 
-                            lambda widget, event: self.callback(iconName, SUBCATE_ALL, categoryId))
+        eventButton.connect("button-press-event", lambda widget, event: self.callback(iconName, categoryId))
         sideButtonSetBackground(
             eventButton,
             iconName, iconPath,

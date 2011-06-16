@@ -31,7 +31,7 @@ pygtk.require('2.0')
 class RecommendPage:
     '''Interface for recommend page.'''
 	
-    def __init__(self, repoCache, switchStatus, downloadQueue, entryDetailCallback):
+    def __init__(self, repoCache, switchStatus, downloadQueue, entryDetailCallback, selectCategoryCallback):
         '''Init for recommend page.'''
         # Init.
         self.box = gtk.VBox()
@@ -40,7 +40,12 @@ class RecommendPage:
         self.slidebar = SlideBar()
         
         # Add recommend view.
-        self.recommendView = recommendView.RecommendView(repoCache, switchStatus, downloadQueue, entryDetailCallback)
+        self.recommendView = recommendView.RecommendView(
+            repoCache, 
+            switchStatus, 
+            downloadQueue, 
+            entryDetailCallback,
+            selectCategoryCallback)
         self.appBox = gtk.VBox()
         self.appBox.pack_start(self.recommendView.box, False, False)
 

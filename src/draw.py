@@ -633,7 +633,7 @@ def checkButtonOnExpose(widget, event,
 
     return True
 
-def titlebarSetBackground(widget, title, leftImg, middleImg, rightImg):
+def titlebarSetBackground(widget, title, showMore, leftImg, middleImg, rightImg):
     '''Set event box's background.'''
     image = gtk.gdk.pixbuf_new_from_file(leftImg)
     
@@ -642,10 +642,10 @@ def titlebarSetBackground(widget, title, leftImg, middleImg, rightImg):
     widget.set_size_request(-1, requestHeight)
     
     widget.connect("expose-event", lambda w, e: titlebarOnExpose(
-            w, e, title,
+            w, e, title, showMore,
             leftImg, middleImg, rightImg))
         
-def titlebarOnExpose(widget, event, title,
+def titlebarOnExpose(widget, event, title, showMore,
                      leftImg, middleImg, rightImg):
     '''Expose function to replace event box's image.'''
     x, y, width, height = widget.allocation.x, widget.allocation.y, widget.allocation.width, widget.allocation.height
@@ -670,12 +670,18 @@ def titlebarOnExpose(widget, event, title,
     cr = widget.window.cairo_create()
     drawPixbuf(cr, pixbuf, x, y)
     
-    fontSize = 16
-    fontPaddingX = 10
+    # fontSize = 16
+    # fontPaddingX = 10
     
-    drawFont(cr, title, fontSize, "#000000",
-             x + fontPaddingX, 
-             getFontYCoordinate(y, height, fontSize))
+    # drawFont(cr, title, fontSize, "#000000",
+    #          x + fontPaddingX, 
+    #          getFontYCoordinate(y, height, fontSize))
+    
+    # if showMore:
+    #     moreFontSize = 14
+    #     drawFont(cr, "更多>>", moreFontSize, "#000000",
+    #              x + width - 60,
+    #              getFontYCoordinate(y, height, moreFontSize))
 
     if widget.get_child() != None:
         widget.propagate_expose(widget.get_child(), event)
@@ -820,11 +826,12 @@ def drawListItem(widget, index, getSelectIndex, selectable=True):
     except Exception, e:
         print "Ignore exception in drawListItem."
     
-def drawTitlebar(widget, title):
+def drawTitlebar(widget, title, showMore):
     '''Draw title bar.'''
     titlebarSetBackground(
         widget,
         title,
+        showMore,
         "./icons/recommend/title_left.png",
         "./icons/recommend/title_middle.png",
         "./icons/recommend/title_right.png",

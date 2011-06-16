@@ -368,13 +368,14 @@ def clickItem(widget, event, entryDetailCallback, appInfo):
 class RecommendView:
     '''Recommend view.'''
 	
-    def __init__(self, repoCache, switchStatus, downloadQueue, entryDetailCallback):
+    def __init__(self, repoCache, switchStatus, downloadQueue, entryDetailCallback, selectCategoryCallback):
         '''Init for recommend view.'''
         # Init.
         self.repoCache = repoCache
         self.switchStatus = switchStatus
         self.downloadQueue = downloadQueue
         self.entryDetailCallback = entryDetailCallback
+        self.selectCategoryCallback = selectCategoryCallback
         
         self.box = gtk.VBox()
         self.itemDict = {}
@@ -389,8 +390,8 @@ class RecommendView:
             self.box.pack_start(box, False, False)
         
         # Add recommend list.
-        for (index, (itemName, appList)) in enumerate(RECOMMEND_LIST):
-            recommendList = self.createRecommendList(itemName, appList)
+        for (index, (itemName, showMore, appList)) in enumerate(RECOMMEND_LIST):
+            recommendList = self.createRecommendList(itemName, showMore, appList)
             box = boxlist[index / 2]
             box.pack_start(recommendList, False, False)
             
@@ -405,7 +406,7 @@ class RecommendView:
         self.index = index    
         self.box.queue_draw()
 
-    def createRecommendList(self, itemName, appList):
+    def createRecommendList(self, itemName, showMore, appList):
         '''Create recommend list.'''
         # Init.
         alignX = 4
@@ -416,9 +417,49 @@ class RecommendView:
         boxAlign.add(box)
         
         # Add category name.
-        nameButton = gtk.Button()
-        drawTitlebar(nameButton, itemName)
-        box.pack_start(nameButton, False, False)
+        nameBox = gtk.EventBox()
+        nameBox.set_visible_window(False)
+        drawTitlebar(nameBox, itemName, showMore)
+        box.pack_start(nameBox, False, False)
+        
+        nameLabelBox = gtk.HBox()
+        nameBox.add(nameLabelBox)
+        
+        nameLabelPaddingLeft = 10
+        nameLabel = gtk.Label()
+        nameLabel.set_markup("<span foreground='#000000' size='%s'>%s</span>" % (LABEL_FONT_LARGE_SIZE, itemName))
+        nameLabelAlign = gtk.Alignment()
+        nameLabelAlign.set(0.0, 0.5, 0.0, 0.0)
+        nameLabelAlign.set_padding(0, 0, nameLabelPaddingLeft, 0)
+        nameLabelAlign.add(nameLabel)
+        nameLabelBox.pack_start(nameLabelAlign)
+        
+        # Show more label.
+        if showMore:
+            moreLabelPaddingRight = 10
+            moreLabel = gtk.Label()
+            moreLabel.set_markup("<span foreground='#000000' size='%s'>%s</span>" % (LABEL_FONT_MEDIUM_SIZE, "更多>>"))
+            moreLabelEventBox = gtk.EventBox()
+            moreLabelEventBox.add(moreLabel)
+            moreLabelEventBox.set_visible_window(False)
+            moreLabelAlign = gtk.Alignment()
+            moreLabelAlign.set(1.0, 0.5, 0.0, 0.0)
+            moreLabelAlign.set_padding(0, 0, 0, moreLabelPaddingRight)
+            moreLabelAlign.add(moreLabelEventBox)
+            nameLabelBox.pack_start(moreLabelAlign)
+            
+            # Switch to repo page and select category.
+            categoryIndex = (map (lambda (k, _): k, CLASSIFY_LIST)).index(itemName)
+            moreLabelEventBox.connect(
+                "button-press-event", 
+                lambda w, e: self.selectCategoryCallback(itemName, categoryIndex))
+            
+            # Make it clickable.
+            utils.setClickableLabel(
+                moreLabelEventBox,
+                moreLabel,
+                "<span foreground='#000000' size='%s'>更多>></span>" % (LABEL_FONT_MEDIUM_SIZE),
+                "<span foreground='#0084FF' size='%s'>更多>></span>" % (LABEL_FONT_MEDIUM_SIZE))
         
         # Content box.
         contentBox = gtk.HBox()

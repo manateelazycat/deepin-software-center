@@ -122,6 +122,7 @@ class DeepinSoftwareCenter:
             self.switchStatus,
             self.downloadQueue,
             self.entryDetailView,
+            self.selectCategory,
             )
         self.repoPage = repoPage.RepoPage(
             self.repoCache, 
@@ -708,6 +709,21 @@ class DeepinSoftwareCenter:
         
         self.contentBox.pack_start(child)
         self.contentBox.show_all()
+        
+    def selectCategory(self, category, categoryId):
+        '''Select category.'''
+        # Delete PAGE_REPO value from detailViewDict and searchViewDict.
+        if self.detailViewDict.has_key(PAGE_REPO):
+            self.detailViewDict.pop(PAGE_REPO)
+        
+        if self.searchViewDict.has_key(PAGE_REPO):
+            self.searchViewDict.pop(PAGE_REPO)
+            
+        # Select repo page.
+        self.selectPage(PAGE_REPO)
+        
+        # Select category.
+        self.repoPage.selectCategory(category, categoryId)
                         
     def entryDetailView(self, pageId, appInfo):
         '''Entry detail view.'''

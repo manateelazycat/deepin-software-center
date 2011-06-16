@@ -1,0 +1,4 @@
+jockey-gtk
+jockey-kde
+fglrx
+ntfs-config

@@ -391,6 +391,9 @@ def setClickableLabel(widget, label, normalMarkup, activeMarkup):
     # Set label cursor.
     widget.connect("enter-notify-event", lambda w, e: setCursor(w, gtk.gdk.HAND2))
     widget.connect("leave-notify-event", lambda w, e: setDefaultCursor(w))
+    
+    # Reset color when click widget.
+    widget.connect("button-press-event", lambda w, e: setMarkup(label, normalMarkup))
 
 def setCustomizeClickableCursor(eventbox, widget, cursorPath):
     '''Set clickable cursor.'''

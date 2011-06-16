@@ -405,8 +405,7 @@ def sideButtonSetBackground(widget,
                             pageId, getPageId):
     '''Set event box's background.'''
     image = gtk.gdk.pixbuf_new_from_file(hoverImg)
-    requestWidth = image.get_width()
-    widget.set_size_request(requestWidth, -1)
+    widget.set_size_request(image.get_width(), image.get_height())
     
     widget.connect("expose-event", lambda w, e: sideButtonOnExpose(
             w, e,

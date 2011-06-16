@@ -55,7 +55,6 @@ pygtk.require('2.0')
 class DeepinSoftwareCenter:
     '''Interface for software center.'''
     DEFAULT_WIDTH = 890
-    DEFAULT_HEIGHT = 640
     
     def __init__(self):
         '''Init.'''
@@ -590,7 +589,7 @@ class DeepinSoftwareCenter:
         window.set_title('深度Linux软件中心') 
         window.set_position(gtk.WIN_POS_CENTER_ALWAYS)
         (width, height) = utils.getScreenSize(window)
-        window.set_default_size(self.DEFAULT_WIDTH, self.DEFAULT_HEIGHT)
+        window.set_default_size(self.DEFAULT_WIDTH, -1)
         
         # Set icon.
         gtk.window_set_default_icon_from_file("./icons/icon/icon.ico")
@@ -671,9 +670,10 @@ class DeepinSoftwareCenter:
         self.mainBox.pack_start(self.statusbar.eventbox, False, False)
         
         # Adjust body box height.
+        topbarHeight = gtk.gdk.pixbuf_new_from_file("./icons/topbar/background.png").get_height()
         subCategoryHeight = gtk.gdk.pixbuf_new_from_file("./icons/category/sidebar_normal.png").get_height()
         subCategoryNum = len(self.repoCache.getCategorys())
-        self.bodyBox.set_size_request(-1, subCategoryHeight * subCategoryNum)
+        self.bodyBox.set_size_request(-1, topbarHeight + subCategoryHeight * subCategoryNum)
         
         # Set main window.
         self.window.connect("destroy", self.destroy)

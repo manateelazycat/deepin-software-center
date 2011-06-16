@@ -403,6 +403,3 @@ xword
 yahtzeesharp
 zatacka
 zaz
-mysql-client
-mysql-server
-sqliteman

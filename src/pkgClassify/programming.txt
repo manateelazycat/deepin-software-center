@@ -133,3 +133,6 @@ kpackagekit
 phoronix-test-suite
 zita-at1
 sweethome3d
+mysql-client
+mysql-server
+sqliteman

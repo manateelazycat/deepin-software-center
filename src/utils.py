@@ -105,13 +105,29 @@ def getPkgName(pkg):
     '''Get package name.'''
     return pkg.name
 
+def evalFile(filepath):
+    '''Eval file content.'''
+    readFile = open(filepath, "r")
+    content = eval(readFile.read())
+    readFile.close()
+    
+    return content
+
 def getPkgShortDesc(pkg):
     '''Get package's short description.'''
-    return pkg.candidate.summary
+    pkgPath = "./pkgInfo/" + pkg.name
+    if os.path.exists(pkgPath):
+        return ((evalFile(pkgPath))["zh-CN"])["shortDesc"]
+    else:
+        return pkg.candidate.summary
 
 def getPkgLongDesc(pkg):
     '''Get package's long description.'''
-    return pkg.candidate.description
+    pkgPath = "./pkgInfo/" + pkg.name
+    if os.path.exists(pkgPath):
+        return ((evalFile(pkgPath))["zh-CN"])["longDesc"]
+    else:
+        return pkg.candidate.description
 
 def getPkgVersion(pkg):
     '''Get package's version.'''

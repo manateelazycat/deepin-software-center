@@ -136,3 +136,4 @@ sweethome3d
 mysql-client
 mysql-server
 sqliteman
+build-essential

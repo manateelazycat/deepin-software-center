@@ -186,7 +186,6 @@ kgoldrunner
 khangman
 kigo
 kiki-the-nano-bot
-kildclient
 killbots
 kiriki
 kjumpingcube
@@ -297,7 +296,6 @@ projectfootball
 projectl
 pybridge
 pydance
-pykaraoke
 pynagram
 pyracerz
 pyscrabble

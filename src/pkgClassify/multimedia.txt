@@ -134,6 +134,7 @@ projectm-pulseaudio
 promoe
 puredata
 pygmy
+pykaraoke
 pympd
 qarecord
 qjackctl

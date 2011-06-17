@@ -60,6 +60,7 @@ kcachegrind
 kdesvn
 kdevelop
 kiki
+kildclient
 kodos
 kompare
 kpackagekit

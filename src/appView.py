@@ -82,6 +82,13 @@ class AppView:
         utils.containerRemoveAll(self.box)
         self.itemDict.clear()
         
+        # If i don't re-connect self.eventbox and self.box,
+        # update view will show nothing.
+        # I still can't understand why?
+        # Maybe this is bug of GtkEventBox?
+        utils.containerRemoveAll(self.eventbox)
+        self.eventbox.add(self.box)
+        
         if self.appNum != 0:
             # Get application list.
             appList = self.getListFunc((self.pageIndex - 1) * self.defaultRows,

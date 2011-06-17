@@ -104,6 +104,7 @@ lekhonee-gnome
 licq
 licq
 links2
+linphone
 logjam
 lostirc
 lottanzb
@@ -114,6 +115,7 @@ midori
 miro
 mldonkey-gui
 multiget
+mumble
 murmur
 museeq
 musetup-gtk

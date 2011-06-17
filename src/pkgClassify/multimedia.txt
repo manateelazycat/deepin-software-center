@@ -84,9 +84,7 @@ jlgui
 jokosher
 jsymphonic
 juk
-k9copy
 kaffeine
-kamoso
 kid3
 kid3-qt
 kluppe
@@ -100,7 +98,6 @@ kscd
 kwave
 lastfm
 liguidsoap
-linphone
 listen
 livemix
 ll-scope
@@ -115,7 +112,6 @@ mp3diags
 mp3splt-gtk
 mplinuxman
 mscore
-mumble
 muse
 mx44
 ncmpcpp

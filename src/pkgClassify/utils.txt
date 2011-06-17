@@ -77,8 +77,10 @@ htop
 iok
 josm
 k3b
+k9copy
 kaddressbook
 kalarm
+kamoso
 kbackup
 kcalc
 kcharselect

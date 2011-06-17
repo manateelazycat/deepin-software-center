@@ -206,5 +206,5 @@ class RepoCache:
         if checkInstalled:
             return pkg.is_installed and self.whiteListDict.has_key(pkg.name)
         else:
-            self.whiteListDict.has_key(pkg.name)
+            return self.whiteListDict.has_key(pkg.name)
     

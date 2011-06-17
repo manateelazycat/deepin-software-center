@@ -129,6 +129,8 @@ class RepoCache:
                     
                     # Add in white list.
                     whiteList.append(pkgName)
+                else:
+                    print "Haven't found package %s in cache." % (pkgName)
         self.whiteListDict = dict.fromkeys(whiteList)
 
         # Scan all packages to store and rank. 

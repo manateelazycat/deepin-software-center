@@ -1,4 +1,5 @@
+fglrx
 jockey-gtk
 jockey-kde
-fglrx
+ndisgtk
 ntfs-config

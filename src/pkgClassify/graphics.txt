@@ -4,12 +4,15 @@ avidemux-qt
 bombono-dvd
 cairo-dock
 cbrpager
+darkroom
 dia-common
 digikam
 dvd95
 dvdrip
 dvdstyler
+eog
 evolvotron
+f-spot
 feh
 flpsed
 font-manager
@@ -31,7 +34,9 @@ gnome-paint
 gopchop
 gpicview
 gpixpod
+gpppon
 gpscorrelate
+gthumb
 gtk-recordmydesktop
 gtkam
 guvcview

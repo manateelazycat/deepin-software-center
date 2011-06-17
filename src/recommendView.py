@@ -323,9 +323,9 @@ class RecommendItem(DownloadItem):
             if self.downloadingProgressbar != None and self.downloadingFeedbackLabel != None:
                 self.downloadingProgressbar.setProgress(progress)
                 if self.appInfo.status == APP_STATE_DOWNLOAD_PAUSE:
-                    self.downloadingFeedbackLabel.set_markup("<span size='medium'>暂停</span>")
+                    self.downloadingFeedbackLabel.set_markup("<span size='%s'>暂停</span>" % (LABEL_FONT_SIZE))
                 else:
-                    self.downloadingFeedbackLabel.set_markup("<span size='medium'>下载中</span>")
+                    self.downloadingFeedbackLabel.set_markup("<span size='%s'>下载中</span>" % (LABEL_FONT_SIZE))
                 
                 self.itemFrame.show_all()
                 

@@ -195,7 +195,7 @@ class UninstallItem:
         if self.appInfo.status == APP_STATE_UNINSTALLING:
             if self.uninstallingProgressbar != None and self.uninstallingFeedbackLabel != None:
                 self.uninstallingProgressbar.setProgress(progress)
-                self.uninstallingFeedbackLabel.set_text("卸载中")
+                self.uninstallingFeedbackLabel.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, "卸载中"))
                 
                 self.itemFrame.show_all()
                 
@@ -364,7 +364,7 @@ class DownloadItem:
         if self.appInfo.status == APP_STATE_DOWNLOADING:
             if self.downloadingProgressbar != None and self.downloadingFeedbackLabel != None:
                 self.downloadingProgressbar.setProgress(progress)
-                self.downloadingFeedbackLabel.set_text(feedback)
+                self.downloadingFeedbackLabel.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, feedback))
                 
                 self.itemFrame.show_all()
                 
@@ -373,7 +373,7 @@ class DownloadItem:
         if self.appInfo.status == APP_STATE_INSTALLING:
             if self.installingProgressbar != None and self.installingFeedbackLabel != None:
                 self.installingProgressbar.setProgress(progress)
-                self.installingFeedbackLabel.set_text("安装中")
+                self.installingFeedbackLabel.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, "安装中"))
                 
                 self.itemFrame.show_all()
                 
@@ -382,7 +382,7 @@ class DownloadItem:
         if self.appInfo.status == APP_STATE_UPGRADING:
             if self.upgradingProgressbar != None and self.upgradingFeedbackLabel != None:
                 self.upgradingProgressbar.setProgress(progress)
-                self.upgradingFeedbackLabel.set_text("升级中")
+                self.upgradingFeedbackLabel.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, "升级中"))
                 
                 self.itemFrame.show_all()
                 

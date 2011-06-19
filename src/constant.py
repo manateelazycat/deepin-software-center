@@ -86,7 +86,7 @@ CLASSIFY_LIST = [(CLASSIFY_WEB,          ("web.png", [])),
 
 RECOMMEND_LIST = [
     (CLASSIFY_NEWS,             False, ["gedit", "g2ipmsg", "eog", "vlc", "network-manager-gnome"]),
-    (CLASSIFY_RECOMMEND,        False, ["stellarium", "samba", "wireshark", "playonlinux", "amarok"]),
+    (CLASSIFY_RECOMMEND,        False, ["stellarium", "deepin-software-center", "wireshark", "playonlinux", "amarok"]),
     (CLASSIFY_WEB,              True,  ["chromium-browser", "uget", "pidgin", "thunderbird", "qbittorrent"]),
     (CLASSIFY_MULTIMEDIA,       True,  ["rhythmbox", "gtk-recordmydesktop", "openshot", "moovida", "audacity"]),
     (CLASSIFY_GAME,             True,  ["beneath-a-steel-sky", "freedroid", "flightgear", "supertuxkart", "alien-arena"]),

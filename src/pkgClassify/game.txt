@@ -1,5 +1,3 @@
-yabause-gtk
-yabause-qt
 a7xpg
 abe
 abuse
@@ -119,6 +117,7 @@ gcompris
 gemdropx
 gfceu
 gfpoken
+ghextris
 gl-117
 glchess
 glest
@@ -133,6 +132,7 @@ gnect
 gnibbles
 gnobots2
 gnome-breakout
+gnome-chess
 gnome-hearts
 gnome-mastermind
 gnome-sudoku
@@ -144,6 +144,7 @@ gnubik
 gnudoq
 gnujump
 golly
+goplay
 gplanarity
 granatier
 granule
@@ -236,6 +237,7 @@ luola
 madbomber
 maelstrom
 mah-jong
+mathwar
 meritous
 micropolis
 mirrormagic
@@ -346,6 +348,7 @@ tanglet
 tatan
 tecnoballz
 teeworlds
+teg
 tennix
 tetzle
 tictactoe-ng
@@ -400,6 +403,8 @@ xscorch
 xshogi
 xwelltris
 xword
+yabause-gtk
+yabause-qt
 yahtzeesharp
 zatacka
 zaz

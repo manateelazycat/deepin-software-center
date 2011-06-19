@@ -1,11 +1,6 @@
-pythoncad
-qcad
-sagcad
-scidavis
-amide
-librecad
 achilles
 aeskulap
+amide
 avida-qt-viewer
 avogadro
 ballview
@@ -18,6 +13,7 @@ cadabra
 cantor
 caret
 carmetal
+celestia
 celestia-glut
 chemtool
 clustalx
@@ -33,6 +29,7 @@ eficas
 electric
 emboss-explorer
 epigrass
+eqonomize
 euler
 extcalc
 extrema
@@ -76,18 +73,22 @@ graphthing
 gresistor
 gretl
 grinvin
+grisbi
 grpn
 gsmc
 gvb
 gwave
 gwyddion
 harpia
+homebank
 ifrit
 imagej
 imview
 itksnap
 jemboss
 jfractionlab
+k3dsurf
+kalgebra
 kalzium
 kayali
 kbruch
@@ -100,6 +101,7 @@ kmplot
 kseg
 kstars
 latexila
+librecad
 linpsk
 linsmith
 lybniz
@@ -118,6 +120,7 @@ octave3.2
 opencascade-draw
 openrocket
 openuniverse
+oregano
 ovito
 paraview
 paw++
@@ -132,7 +135,10 @@ pymca
 pymol
 pyrocket
 python-ifeffit
+pythoncad
 qalculate-gtk
+qcad
+qelectrotech
 qgis
 qmk-groundstation
 qtdmm
@@ -143,6 +149,8 @@ rfdump
 rkward
 rlplot
 rocs
+sagcad
+scidavis
 scilab
 seaview
 sixpack
@@ -165,6 +173,7 @@ ugene
 viewmol
 weka
 wsjt
+wxbanker
 wxmaxima
 xdrawchem
 xdx

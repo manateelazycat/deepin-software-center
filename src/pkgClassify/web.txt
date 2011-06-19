@@ -1,3 +1,10 @@
+clamz
+dfo
+ploader
+mythnettv
+postr
+gallery-uploader
+kflickr
 amsn
 amule
 arcjobtool
@@ -137,6 +144,8 @@ qbittorrent
 qfreefax
 qnapi
 qterm
+youtranslate
+dc-qt
 quassel
 quassel
 quicksynergy

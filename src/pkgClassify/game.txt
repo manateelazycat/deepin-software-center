@@ -1,3 +1,5 @@
+yabause-gtk
+yabause-qt
 a7xpg
 abe
 abuse

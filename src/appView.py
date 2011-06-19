@@ -35,7 +35,7 @@ class AppView:
         # Init.
         self.appNum = appNum
         self.pageIndex = 1      # default display first page
-        self.defaultRows = 20
+        self.defaultRows = 50
         self.maxPageIndex = None
         self.jumpButton = None
         self.itemIndex = -1

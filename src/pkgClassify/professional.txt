@@ -1,3 +1,9 @@
+pythoncad
+qcad
+sagcad
+scidavis
+amide
+librecad
 achilles
 aeskulap
 avida-qt-viewer
@@ -20,7 +26,6 @@ coqide
 critterding
 ctsim
 drawxtl
-drgeo
 dx
 eagle
 easychem
@@ -33,7 +38,6 @@ extcalc
 extrema
 fastdnaml
 fityk
-frama-c
 freecad
 freediams
 freemat
@@ -104,7 +108,6 @@ massxpert
 mathomatic
 mcu8051ide
 melting-gui
-merkaartor
 mmass
 model-builder
 mricron
@@ -149,10 +152,7 @@ starplot
 stellarium
 survex-aven
 survex-svxedit
-tex-guy
-texmaker
-therion
-therion-viewer
+sweethome3d
 tkgate
 tree-ppuzzle
 tree-puzzle

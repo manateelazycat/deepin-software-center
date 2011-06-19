@@ -47,18 +47,18 @@ DOWNLOAD_STATUS_PAUSE = 3
 DOWNLOAD_STATUS_STOP = 4
 DOWNLOAD_STATUS_TIMEOUT = 5
 
-CLASSIFY_NEWS = "最近更新"
-CLASSIFY_RECOMMEND = "编辑推荐"
-CLASSIFY_WEB = "网络应用"
-CLASSIFY_MULTIMEDIA = "影音播放"
-CLASSIFY_GAME = "游戏娱乐"
-CLASSIFY_GRAPHICS = "图形图像"
-CLASSIFY_UTILS = "实用工具"
-CLASSIFY_PROFESSIONAL = "行业软件"
-CLASSIFY_PROGRAMMING = "编程开发"
-CLASSIFY_DRIVER = "硬件驱动"
-CLASSIFY_WINDOWS = "WIN 软件"
-CLASSIFY_OTHERS = "其他软件"
+CLASSIFY_NEWS = "最近更新"         # 最近更新的软件， 主要用于推荐新的程序
+CLASSIFY_RECOMMEND = "编辑推荐"    # 具体有特色的软件， 主要用于定期循环推荐
+CLASSIFY_WEB = "网络应用"          # 任何以网络设计为主的软件
+CLASSIFY_MULTIMEDIA = "影音播放"   # 围绕着视频、音频设计的播放软件和相关工具
+CLASSIFY_GAME = "游戏娱乐"         # 游戏及其工具
+CLASSIFY_GRAPHICS = "图形图像"     # 围绕图形编辑和设计的相关工具
+CLASSIFY_UTILS = "实用工具"        # 各种系统小工具和实用工具
+CLASSIFY_PROFESSIONAL = "行业软件" # 专业相关的软件， 需要相关的专业知识
+CLASSIFY_PROGRAMMING = "编程开发"  # 围绕开发的各种相关工具
+CLASSIFY_DRIVER = "硬件驱动"       # 硬件驱动及工具
+CLASSIFY_WINDOWS = "WIN 软件"     # 通过 Wine 来运行的各种软件
+CLASSIFY_OTHERS = "其他软件"       # 其他杂项
 
 CLASSIFY_FILES = [(CLASSIFY_WEB,          "web.txt"),
                   (CLASSIFY_MULTIMEDIA,   "multimedia.txt"),

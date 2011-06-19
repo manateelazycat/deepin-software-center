@@ -149,7 +149,8 @@ class AppView:
                 prev = gtk.image_new_from_pixbuf(gtk.gdk.pixbuf_new_from_file("./icons/index/backward.png"))
                 prevBox = gtk.EventBox()
                 prevBox.add(prev)
-                prevBox.connect("button-press-event", lambda widget, event: self.jumpPage(max(1, self.pageIndex - self.pageSize)))
+                prevBox.connect("button-press-event", 
+                                lambda widget, event: self.jumpPage(max(1, (self.pageIndex - 1) / self.pageSize * self.pageSize)))
                 prevBox.connect("expose-event", lambda w, e: drawBackground(w, e, "#FFFFFF"))
                 box.pack_start(prevBox, False, False, paddingX)
                 utils.setClickableCursor(prevBox)
@@ -182,8 +183,8 @@ class AppView:
                 next = gtk.image_new_from_pixbuf(gtk.gdk.pixbuf_new_from_file("./icons/index/forward.png"))
                 nextBox = gtk.EventBox()
                 nextBox.add(next)
-                nextBox.connect("button-press-event", lambda widget, event: self.jumpPage(min(self.maxPageIndex, 
-                                                                                              self.pageIndex + self.pageSize)))
+                nextBox.connect("button-press-event", 
+                                lambda widget, event: self.jumpPage(min(self.maxPageIndex, ((self.pageIndex - 1) / self.pageSize + 1) * self.pageSize + 1)))
                 nextBox.connect("expose-event", lambda w, e: drawBackground(w, e, "#FFFFFF"))
                 box.pack_start(nextBox, False, False, paddingX)
                 utils.setClickableCursor(nextBox)

@@ -172,7 +172,8 @@ class DetailView:
         
         self.toggleTab = gtk.CheckButton()
         self.toggleTab.connect("button-press-event", lambda w, e: self.selectTab())
-        self.actionBox.pack_start(self.toggleTab, False, False)
+        # NOTE: Uncomment below line when finish translate help features.
+        # self.actionBox.pack_start(self.toggleTab, False, False)
         toggleTabSetBackground(
             self.toggleTab,
             False, False,
@@ -838,6 +839,7 @@ class FetchMoreComment(td.Thread):
 def createContentView(content, editable=True):
     '''Create summary view.'''
     textView = gtk.TextView()
+    textView.modify_font(pango.FontDescription("%s %s" % (DEFAULT_FONT, DEFAULT_FONT_SIZE)))
     textView.set_editable(editable)
     textView.set_wrap_mode(gtk.WRAP_CHAR)
     textBuffer = textView.get_buffer()
@@ -910,7 +912,9 @@ class AppInfoItem(DownloadItem):
         # Add application version.
         appVersion = gtk.Label()
         appVersion.set_markup(
-            "版本: <span foreground='#FFFFFF' size='%s'>%s</span>" % (LABEL_FONT_SIZE, utils.getPkgVersion(pkg)))
+            "<span foreground='#000000' size='%s'>%s</span> <span foreground='#FFFFFF' size='%s'>%s</span>"
+            % (LABEL_FONT_MEDIUM_SIZE, "版本:",
+               LABEL_FONT_MEDIUM_SIZE, utils.getPkgVersion(pkg)))
         appVersion.set_alignment(0.0, 0.5)
         self.appExtraBox.pack_start(appVersion, False, False, self.INFO_PADDING_Y)
 
@@ -920,8 +924,11 @@ class AppInfoItem(DownloadItem):
         if self.appInfo.status == APP_STATE_INSTALLED:
             (_, releaseSize) = utils.getPkgDependSize(self.aptCache, pkg, ACTION_UNINSTALL)
             releaseSizeLabel = gtk.Label()
-            releaseSizeLabel.set_markup("卸载后释放 <span foreground='#FFFFFF' size='%s'>%s</span> 空间"
-                                        % (LABEL_FONT_SIZE, utils.formatFileSize(releaseSize)))
+            releaseSizeLabel.set_markup(
+                "<span foreground='#000000' size='%s'>%s</span> <span foreground='#FFFFFF' size='%s'>%s</span> <span foreground='#000000' size='%s'>%s</span>"
+                % (LABEL_FONT_MEDIUM_SIZE, "卸载后释放",
+                   LABEL_FONT_MEDIUM_SIZE, utils.formatFileSize(releaseSize),
+                   LABEL_FONT_MEDIUM_SIZE, "空间"))
             releaseSizeLabel.set_alignment(0.0, 0.5)
             appSizeBox.pack_start(releaseSizeLabel, False, False)
         else:
@@ -934,12 +941,17 @@ class AppInfoItem(DownloadItem):
             else:
                 actionLabel = "安装"
                 (downloadSize, useSize) = utils.getPkgDependSize(self.aptCache, pkg, ACTION_INSTALL)
-            useSizeLabel.set_markup("    %s后占用 <span foreground='#FFFFFF' size='%s'>%s</span> 空间" % 
-                                    (actionLabel, LABEL_FONT_SIZE, utils.formatFileSize(useSize)))
+            useSizeLabel.set_markup(
+                "    <span foreground='#000000' size='%s'>%s</span> <span foreground='#FFFFFF' size='%s'>%s</span> <span foreground='#000000' size='%s'>%s</span>" 
+                % (LABEL_FONT_MEDIUM_SIZE, actionLabel + "后占用", 
+                   LABEL_FONT_MEDIUM_SIZE, utils.formatFileSize(useSize),
+                   LABEL_FONT_MEDIUM_SIZE, "空间"))
                 
             downloadSizeLabel = gtk.Label()
             downloadSizeLabel.set_markup(
-                "需要下载 <span foreground='#FFFFFF' size='%s'>%s</span>" % (LABEL_FONT_SIZE, utils.formatFileSize(downloadSize)))
+                "<span foreground='#000000' size='%s'>%s</span> <span foreground='#FFFFFF' size='%s'>%s</span>"
+                % (LABEL_FONT_MEDIUM_SIZE, "需要下载", 
+                   LABEL_FONT_MEDIUM_SIZE, utils.formatFileSize(downloadSize)))
             downloadSizeLabel.set_alignment(0.0, 0.5)
             appSizeBox.pack_start(downloadSizeLabel, False, False)
                 

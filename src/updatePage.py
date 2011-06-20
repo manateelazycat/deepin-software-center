@@ -31,21 +31,26 @@ class UpdatePage:
     '''Interface for update page.'''
 	
     def __init__(self, repoCache, switchStatus, downloadQueue, entryDetailCallback, 
-                 sendVoteCallback, fetchVoteCallback):
+                 sendVoteCallback, fetchVoteCallback, upgradeSelectedPkgsCallback):
         '''Init for update page.'''
         # Init.
         self.repoCache = repoCache
         self.box = gtk.VBox()
-        self.topbar = Topbar(len(self.repoCache.upgradablePkgs))
         self.updateView = updateView.UpdateView(
+            repoCache,
             len(self.repoCache.upgradablePkgs), 
             self.repoCache.getUpgradableAppList,
             switchStatus, 
             downloadQueue,
             entryDetailCallback,
             sendVoteCallback,
-            fetchVoteCallback
+            fetchVoteCallback,
             )
+        self.topbar = Topbar(len(self.repoCache.upgradablePkgs),
+                             self.updateView.selectAllPkg,
+                             self.updateView.unselectAllPkg,
+                             self.updateView.getSelectList,
+                             upgradeSelectedPkgsCallback)
         
         # Connect components.
         self.box.pack_start(self.topbar.eventbox, False, False)
@@ -56,12 +61,15 @@ class UpdatePage:
 class Topbar:
     '''Top bar.'''
 	
-    def __init__(self, upgradeNum):
+    def __init__(self, upgradeNum, 
+                 selectAllPkgCallback, unselectAllPkgCallback, 
+                 getSelectListCallback, upgradeSelectedPkgsCallback):
         '''Init for top bar.'''
         # Init.
         self.paddingX = 5
         self.numColor = '#00BBBB'
         self.textColor = '#1A3E88'
+        self.selectColor = '#0084FF'
         
         self.box = gtk.HBox()
         self.boxAlign = gtk.Alignment()
@@ -79,15 +87,38 @@ class Topbar:
         self.numLabel = gtk.Label()
         self.selectAllLabel = gtk.Label()
         self.selectAllLabel.set_markup("<span foreground='%s' size='%s'>%s</span>" % (self.textColor, LABEL_FONT_SIZE, "全选"))
-        upgradeBox.pack_start(self.selectAllLabel, False, False, self.paddingX)
+        self.selectAllEventBox = gtk.EventBox()
+        self.selectAllEventBox.set_visible_window(False)
+        self.selectAllEventBox.add(self.selectAllLabel)
+        self.selectAllEventBox.connect("button-press-event", lambda w, e: selectAllPkgCallback())
+        upgradeBox.pack_start(self.selectAllEventBox, False, False, self.paddingX)
+        utils.setClickableLabel(
+            self.selectAllEventBox,
+            self.selectAllLabel,
+            "<span foreground='%s' size='%s'>%s</span>" % (self.textColor, LABEL_FONT_SIZE, "全选"),
+            "<span foreground='%s' size='%s'>%s</span>" % (self.selectColor, LABEL_FONT_SIZE, "全选"),
+            False
+            )
         
         self.unselectAllLabel = gtk.Label()
         self.unselectAllLabel.set_markup("<span foreground='%s' size='%s'>%s</span>" % (self.textColor, LABEL_FONT_SIZE, "全不选"))
-        upgradeBox.pack_start(self.unselectAllLabel, False, False, self.paddingX)
+        self.unselectAllEventBox = gtk.EventBox()
+        self.unselectAllEventBox.set_visible_window(False)
+        self.unselectAllEventBox.add(self.unselectAllLabel)
+        self.unselectAllEventBox.connect("button-press-event", lambda w, e: unselectAllPkgCallback())
+        upgradeBox.pack_start(self.unselectAllEventBox, False, False, self.paddingX)
+        utils.setClickableLabel(
+            self.unselectAllEventBox,
+            self.unselectAllLabel,
+            "<span foreground='%s' size='%s'>%s</span>" % (self.textColor, LABEL_FONT_SIZE, "全不选"),
+            "<span foreground='%s' size='%s'>%s</span>" % (self.selectColor, LABEL_FONT_SIZE, "全不选"),
+            False
+            )
         
         (self.upgradeButton, upgradeButtonAlign) = newActionButton(
              "update_selected", 0.0, 0.5, "cell", True, "升级选中的软件", BUTTON_FONT_SIZE_MEDIUM, "#FFFFFF")
         upgradeBox.pack_start(upgradeButtonAlign, False, False, self.paddingX)
+        self.upgradeButton.connect("button-press-event", lambda w, e: upgradeSelectedPkgsCallback(getSelectListCallback()))
         
         # Connect.
         self.updateNum(upgradeNum)

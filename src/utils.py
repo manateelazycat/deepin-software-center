@@ -382,7 +382,7 @@ def setMarkup(label, markup):
     '''Set markup.'''
     label.set_markup(markup)
 
-def setClickableLabel(widget, label, normalMarkup, activeMarkup):
+def setClickableLabel(widget, label, normalMarkup, activeMarkup, resetAfterClick=True):
     '''Set clickable label.'''
     # Set label markup.
     widget.connect("enter-notify-event", lambda w, e: setMarkup(label, activeMarkup))
@@ -393,7 +393,8 @@ def setClickableLabel(widget, label, normalMarkup, activeMarkup):
     widget.connect("leave-notify-event", lambda w, e: setDefaultCursor(w))
     
     # Reset color when click widget.
-    widget.connect("button-press-event", lambda w, e: setMarkup(label, normalMarkup))
+    if resetAfterClick:
+        widget.connect("button-press-event", lambda w, e: setMarkup(label, normalMarkup))
 
 def setCustomizeClickableCursor(eventbox, widget, cursorPath):
     '''Set clickable cursor.'''

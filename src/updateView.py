@@ -44,13 +44,17 @@ class UpdateItem(DownloadItem):
 	
     def __init__(self, appInfo, switchStatus, downloadQueue, 
                  entryDetailCallback, sendVoteCallback,
-                 index, getSelectIndex, setSelectIndex):
+                 index, getSelectIndex, setSelectIndex,
+                 selectPkgCallback, unselectPkgCallback, getSelectStatusCallback):
         '''Init for application item.'''
         DownloadItem.__init__(self, appInfo, switchStatus, downloadQueue)
         
         self.appInfo = appInfo
         self.entryDetailCallback = entryDetailCallback
         self.sendVoteCallback = sendVoteCallback
+        self.selectPkgCallback = selectPkgCallback
+        self.unselectPkgCallback = unselectPkgCallback
+        self.getSelectStatusCallback = getSelectStatusCallback
         self.checkButton = None
         self.index = index
         self.setSelectIndex = setSelectIndex
@@ -73,6 +77,8 @@ class UpdateItem(DownloadItem):
         # Add check box.
         checkPadding = 10
         self.checkButton = gtk.CheckButton()
+        self.checkButton.set_active(self.getSelectStatusCallback(utils.getPkgName(self.appInfo.pkg)))
+        self.checkButton.connect("toggled", lambda w: self.toggleSelectStatus())
         checkButtonSetBackground(
             self.checkButton,
             False, False, 
@@ -97,6 +103,15 @@ class UpdateItem(DownloadItem):
         self.initAdditionStatus()
        
         self.itemFrame.show_all()
+        
+    def toggleSelectStatus(self):
+        '''Toggle select status.'''
+        selectStatus = self.checkButton.get_active()    
+        pkgName = utils.getPkgName(self.appInfo.pkg)
+        if selectStatus:
+            self.selectPkgCallback(pkgName)
+        else:
+            self.unselectPkgCallback(pkgName)
         
     def clickItem(self, widget, event):
         '''Click item.'''
@@ -200,12 +215,13 @@ class UpdateItem(DownloadItem):
 class UpdateView(appView.AppView):
     '''Application view.'''
 	
-    def __init__(self, appNum, getListFunc, switchStatus, downloadQueue, 
+    def __init__(self, repoCache, appNum, getListFunc, switchStatus, downloadQueue, 
                  entryDetailCallback, sendVoteCallback, fetchVoteCallback):
         '''Init for application view.'''
         appView.AppView.__init__(self, appNum, PAGE_UPGRADE)
         
         # Init.
+        self.repoCache = repoCache
         self.getListFunc = getListFunc
         self.switchStatus = switchStatus
         self.downloadQueue = downloadQueue
@@ -214,7 +230,44 @@ class UpdateView(appView.AppView):
         self.fetchVoteCallback = fetchVoteCallback
         self.itemDict = {}
         
+        # Init select list.
+        self.selectList = []
+        for pkgName in self.repoCache.upgradablePkgs:
+            self.selectList.append(pkgName)
+        
         self.show()
+        
+    def selectPkg(self, pkgName):
+        '''Select package.'''
+        if not pkgName in self.selectList:
+            self.selectList.append(pkgName)
+            
+    def unselectPkg(self, pkgName):
+        '''Unselect package.'''
+        if pkgName in self.selectList:
+            self.selectList.remove(pkgName)
+            
+    def getSelectStatus(self, pkgName):
+        '''Get select status of package.'''
+        return pkgName in self.selectList    
+    
+    def selectAllPkg(self):
+        '''Select all packages.'''
+        for pkgName in self.repoCache.upgradablePkgs:
+            self.selectPkg(pkgName)
+            if self.itemDict.has_key(pkgName):
+                self.itemDict[pkgName].checkButton.set_active(True)
+                
+    def unselectAllPkg(self):
+        '''Unselect all packages.'''
+        for pkgName in self.repoCache.upgradablePkgs:
+            self.unselectPkg(pkgName)
+            if self.itemDict.has_key(pkgName):
+                self.itemDict[pkgName].checkButton.set_active(False)
+                
+    def getSelectList(self):
+        '''Get select package list.'''
+        return self.selectList
         
     def update(self, appNum):
         '''Update view'''
@@ -252,7 +305,9 @@ class UpdateView(appView.AppView):
             notifyBox.pack_start(notifyIconAlign)
             
             notifyLabel = gtk.Label()
-            notifyLabel.set_markup("<span foreground='#1A38EE' size='%s'>%s</span>" % (LABEL_FONT_XX_LARGE_SIZE, "你的系统已经是最新的. :)"))
+            notifyLabel.set_markup(
+                "<span foreground='#1A38EE' size='%s'>%s</span>"
+                % (LABEL_FONT_XX_LARGE_SIZE, "你的系统已经是最新的. :)"))
             notifyBox.pack_start(notifyLabel, False, False)
             
             self.box.show_all()
@@ -292,7 +347,8 @@ class UpdateView(appView.AppView):
             appItem = UpdateItem(appInfo, self.switchStatus, self.downloadQueue, 
                                  self.entryDetailCallback, 
                                  self.sendVoteCallback,
-                                 index, self.getSelectItemIndex, self.setSelectItemIndex)
+                                 index, self.getSelectItemIndex, self.setSelectItemIndex,
+                                 self.selectPkg, self.unselectPkg, self.getSelectStatus)
             box.pack_start(appItem.itemFrame, False, False)
             self.itemDict[utils.getPkgName(appItem.appInfo.pkg)] = appItem
             

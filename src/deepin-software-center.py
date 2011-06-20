@@ -139,6 +139,7 @@ class DeepinSoftwareCenter:
             self.entryDetailView,
             self.sendVote,
             self.fetchVote,
+            self.upgradeSelectedPkgs,
             )
         self.uninstallPage = uninstallPage.UninstallPage(
             self.repoCache, 
@@ -436,6 +437,7 @@ class DeepinSoftwareCenter:
                         
                         # Update update view.
                         updateView = self.updatePage.updateView
+                        updateView.unselectPkg(pkgName) # remove from select list
                         updateView.update(pkgNum)
                         
                         # Update notify number.
@@ -821,6 +823,23 @@ class DeepinSoftwareCenter:
             detailView = self.detailViewDict[pageId]
             if pkgName == utils.getPkgName(detailView.appInfo.pkg):
                 detailView.updateMoreComment(voteJson)
+                
+    def upgradeSelectedPkgs(self, selectList):
+        '''Upgrade select packages.'''
+        # Get download and action packages.
+        downloadPkgs = self.downloadQueue.getDownloadPkgs()
+        actionPkgs = self.actionQueue.getActionPkgs()
+        
+        # Upgrade package if it not in wait queue.
+        for pkgName in selectList:
+            if not pkgName in downloadPkgs + actionPkgs:
+                # Switch status.
+                self.repoCache.cache[pkgName].switchStatus(APP_STATE_DOWNLOADING)
+                self.switchStatus(pkgName, APP_STATE_DOWNLOADING)
+                
+                # Add in download queue.
+                self.downloadQueue.addDownload(pkgName)
+                print "Upgrade %s" % (pkgName)
         
 class FetchVote(td.Thread):
     '''Fetch vote.'''

@@ -422,3 +422,12 @@ class DownloadQueue:
         # Otherwise release download lock.
         else:
             self.lock = False
+            self.pkgName = None
+
+    def getDownloadPkgs(self):
+        '''Get download packages.'''
+        if self.pkgName == None:
+            return self.queue
+        else:
+            return self.queue + [self.pkgName]
+     

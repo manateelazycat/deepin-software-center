@@ -1,0 +1,17 @@
+deepin-software-center (1.0-2011.06.14) natty; urgency=low
+
+  * Updated 2011.06.14
+
+ -- Leng Ganghua <hiweed@gmail.com>  Tue, 14 Jun 2011 16:38:14 +0800
+
+deepin-software-center (1.0-3) natty; urgency=low
+
+  * Changed arch from 'any' to 'all'
+
+ -- Leng Ganghua <hiweed@gmail.com>  Wed, 01 Jun 2011 18:53:22 +0800
+
+deepin-software-center (1.0-1) natty; urgency=low
+
+  * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+
+ -- Leng Ganghua <hiweed@gmail.com>  Tue, 31 May 2011 17:18:47 +0800

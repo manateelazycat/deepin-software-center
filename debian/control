@@ -1,0 +1,15 @@
+Source: deepin-software-center
+Section: admin
+Priority: extra
+Maintainer: Leng Ganghua <hiweed@gmail.com>
+Build-Depends: debhelper (>= 7.0.50~)
+Standards-Version: 3.9.1
+Homepage: <insert the upstream URL, if relevant>
+#Vcs-Git: git://git.debian.org/collab-maint/deepin-software-center.git
+#Vcs-Browser: http://git.debian.org/?p=collab-maint/deepin-software-center.git;a=summary
+
+Package: deepin-software-center
+Architecture: all
+Depends: ${shlibs:Depends}, ${misc:Depends}, aria2
+Description: <insert up to 60 chars description>
+ <insert long description, indented with spaces>

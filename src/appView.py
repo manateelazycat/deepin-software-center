@@ -119,7 +119,7 @@ class AppView:
         '''Create bottom bar.'''
         # Init.
         paddingX = 5
-        paddingY = 5
+        paddingY = 10
             
         # Just render when application more than one page.
         if self.appNum > self.defaultRows * self.pageSize:
@@ -156,7 +156,7 @@ class AppView:
                 utils.setClickableCursor(prevBox)
                 
                 first = gtk.Label()
-                first.set_markup("<span foreground='#1A3E88' size='%s'>1 ... </span>" % (LABEL_FONT_SIZE))
+                first.set_markup("<span foreground='#1A3E88' size='%s'>1 ... </span>" % (LABEL_FONT_LARGE_SIZE))
                 firstBox = gtk.EventBox()
                 firstBox.add(first)
                 firstBox.connect("button-press-event", lambda widget, event: self.jumpPage(1))
@@ -171,7 +171,7 @@ class AppView:
             # Don't add last icon if at last *page*.
             if endIndex - 1 != self.maxPageIndex:
                 last = gtk.Label()
-                last.set_markup("<span foreground='#1A3E88' size='%s'> ... %s</span>" % (LABEL_FONT_SIZE, str(self.maxPageIndex)))
+                last.set_markup("<span foreground='#1A3E88' size='%s'> ... %s</span>" % (LABEL_FONT_LARGE_SIZE, str(self.maxPageIndex)))
                 lastBox = gtk.EventBox()
                 lastBox.add(last)
                 lastBox.connect("button-press-event", lambda widget, event: self.jumpPage(self.maxPageIndex))
@@ -199,9 +199,9 @@ class AppView:
             
             # Add jump label.
             jumpBeforeLabel = gtk.Label()
-            jumpBeforeLabel.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, "跳到第"))
+            jumpBeforeLabel.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_MEDIUM_SIZE, "跳到第"))
             jumpAfterLabel = gtk.Label()
-            jumpAfterLabel.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, "页"))
+            jumpAfterLabel.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_MEDIUM_SIZE, "页"))
             jumpButton = utils.newButtonWithoutPadding()
             jumpButton.connect("button-release-event", lambda widget, event: self.jumpPage(int(self.jumpButton.get_text())))
             drawButton(jumpButton, "confirm", "index", False, "确定", BUTTON_FONT_SIZE_SMALL)
@@ -237,7 +237,7 @@ class AppView:
             numColor = '#BB00BB'
         else:
             numColor = '#1A3E88'
-        numLabel.set_markup(("<span foreground='%s' size='%s'>%s</span>" % (numColor, LABEL_FONT_SIZE, str(index))))
+        numLabel.set_markup(("<span foreground='%s' size='%s'>%s</span>" % (numColor, LABEL_FONT_LARGE_SIZE, str(index))))
         numBox.add(numLabel)
         numBox.connect("button-press-event", lambda widget, event: self.jumpPage(index))
         numBox.connect("expose-event", lambda w, e: drawBackground(w, e, "#FFFFFF"))

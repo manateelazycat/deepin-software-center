@@ -235,12 +235,37 @@ class DetailView:
         summaryLabel.set_markup("<span foreground='#1A3E88' size='%s'><b>详细介绍</b></span>" % (LABEL_FONT_LARGE_SIZE))
         summaryLabel.set_alignment(0.0, 0.5)
         detailBox.pack_start(summaryLabel)
+        
         summaryView = createContentView(utils.getPkgLongDesc(pkg), False)
         summaryAlign = gtk.Alignment()
         summaryAlign.set(0.0, 0.0, 1.0, 1.0)
         summaryAlign.set_padding(summaryAlignTop, 0, 0, summaryAlignRight)
         summaryAlign.add(summaryView)
         detailBox.pack_start(summaryAlign)
+        
+        homepage = utils.getPkgHomepage(pkg)
+        if homepage != "":
+            homepageAlignY = 20
+            homepageLabel = gtk.Label()
+            homepageLabel.set_alignment(0.0, 0.5)
+            homepageLabel.set_markup(
+                "<span foreground='#1A3E88' size='%s' underline='single'>%s</span>"
+                % (LABEL_FONT_SIZE, "访问首页"))
+            homepageAlign = gtk.Alignment()
+            homepageAlign.set(0.0, 0.0, 1.0, 1.0)
+            homepageAlign.set_padding(homepageAlignY, homepageAlignY, 0, 0)
+            homepageAlign.add(homepageLabel)
+            homepageEventBox = gtk.EventBox()
+            homepageEventBox.set_visible_window(False)
+            homepageEventBox.add(homepageAlign)
+            homepageEventBox.connect("button-press-event", lambda w, e: utils.runCommand("xdg-open %s" % (homepage)))
+            detailBox.pack_start(homepageEventBox, False, False)
+            utils.setClickableLabel(
+                homepageEventBox,
+                homepageLabel,
+                "<span foreground='#1A3E88' size='%s' underline='single'>%s</span>" % (LABEL_FONT_SIZE, "访问首页"),
+                "<span foreground='#0084FF' size='%s' underline='single'>%s</span>" % (LABEL_FONT_SIZE, "访问首页"),
+                )
         
         # Add screenshot.
         screenshotBox = gtk.VBox()

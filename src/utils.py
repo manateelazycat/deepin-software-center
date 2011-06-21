@@ -150,6 +150,10 @@ def getPkgSize(pkg):
     '''Get package's  size.'''
     return pkg.candidate.size
 
+def getPkgHomepage(pkg):
+    '''Get homgepage of package.'''
+    return pkg.candidate.homepage
+
 def getPkgInstalledSize(pkg):
     '''Get package's installed size.'''
     return pkg.candidate.installed_size
@@ -182,7 +186,7 @@ def getPkgDependSize(cache, pkg, action):
         print "Calculate `%s` dependent used size failed, instead package's used size." % (getPkgName(pkg))
         return (pkg.candidate.size, pkg.candidate.installed_size)
 
-def runCommand(commands):
+def getCommandOutput(commands):
     '''Run command and return result.'''
     process = subprocess.Popen(commands, stdout=subprocess.PIPE)
     process.wait()
@@ -190,7 +194,7 @@ def runCommand(commands):
     
 def getKernelPackages():
     '''Get running kernel packages.'''
-    kernelVersion = (runCommand(["uname", "-r"]).split("-generic"))
+    kernelVersion = (getCommandOutput(["uname", "-r"]).split("-generic"))
     
     return ["linux-image-generic", 
             "linux-image-%s-generic" % (kernelVersion),
@@ -318,7 +322,7 @@ def getFontYCoordinate(y, height, fontSize):
 # So i pick version information from output of command "aria2c --version".
 def getAria2Version():
     '''Get aria2 version.'''
-    versionList = runCommand(["aria2c", "--version"]).split().pop().split('.')
+    versionList = getCommandOutput(["aria2c", "--version"]).split().pop().split('.')
     
     return (int(versionList[0]), int(versionList[1]), int(versionList[2]))
 
@@ -406,3 +410,6 @@ def setCustomizeCursor(widget, cursorPath):
     widget.window.set_cursor(gtk.gdk.Cursor(gtk.gdk.display_get_default(),
                                             gtk.gdk.pixbuf_new_from_file_at_size(cursorPath, 32, 32),
                                             0, 0))
+def runCommand(command):
+    '''Run command.'''
+    subprocess.Popen("nohup %s > /dev/null" % (command), shell=True)

@@ -1,10 +1,11 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# Author:     Andy Stewart <lazycat.manatee@gmail.com>
-# Maintainer: Andy Stewart <lazycat.manatee@gmail.com>
+# Copyright (C) 2011 Deepin, Inc.
+#               2011 Yong Wang
 # 
-# Copyright (C) 2011 Andy Stewart, all rights reserved.
+# Author:     Yong Wang <lazycat.manatee@gmail.com>
+# Maintainer: Yong Wang <lazycat.manatee@gmail.com>
 # 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -68,8 +69,7 @@ class DeepinSoftwareCenter:
         self.bottomHeight = self.bottombarPixbuf.get_height()
         
         # Init apt cache.
-        apt_pkg.init_config()
-        apt_pkg.init_system()
+        apt_pkg.init()
         self.aptCache = apt.Cache()
         self.repoCache = repoCache.RepoCache(self.aptCache)
         self.detailViewDict = {}
@@ -742,7 +742,7 @@ class DeepinSoftwareCenter:
         
     def sendVote(self, name, vote):
         '''Send vote.'''
-        sendVoteThread = SendVote("http://test-linux.gteasy.com/vote.php?n=%s&m=%s" % (name, vote))
+        sendVoteThread = SendVote("http://test-linux.gteasy.com/vote.php?n=%s&m=%s" % (name, vote), name, self.message)
         sendVoteThread.start()
         
     def exitDetailView(self, pageId):
@@ -870,20 +870,21 @@ class FetchVote(td.Thread):
 class SendVote(td.Thread):
     '''Vote'''
 	
-    def __init__(self, url):
+    def __init__(self, url, name, messageCallback):
         '''Init for vote.'''
         td.Thread.__init__(self)
         self.setDaemon(True) # make thread exit when main program exit 
         self.url = url
+        self.name = name
+        self.messageCallback = messageCallback
 
     def run(self):
         '''Run'''
         try:
             post = urllib2.urlopen(self.url, timeout=POST_TIMEOUT)
-            print "Post %s successful." % (self.url)
-            print "Newest vote: ", post.read()
+            self.messageCallback("%s 评分成功， 感谢参与！ :)" % (self.name))
         except Exception, e:
-            print "Post %s failed." % (self.url)
+            self.messageCallback("%s 评分失败， 请检查你的网络链接。:(" % (self.name))
             print "Error: ", e
             
 class FetchDetail(td.Thread):

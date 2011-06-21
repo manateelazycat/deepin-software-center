@@ -1,10 +1,11 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# Author:     Andy Stewart <lazycat.manatee@gmail.com>
-# Maintainer: Andy Stewart <lazycat.manatee@gmail.com>
+# Copyright (C) 2011 Deepin, Inc.
+#               2011 Yong Wang
 #
-# Copyright (C) 2011 Andy Stewart, all rights reserved.
+# Author:     Yong Wang <lazycat.manatee@gmail.com>
+# Maintainer: Yong Wang <lazycat.manatee@gmail.com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -95,7 +96,7 @@ RECOMMEND_LIST = [
     (CLASSIFY_PROFESSIONAL,     True,  ["qcad", "mayavi2", "maxima", "axiom", "cadabra"]),
     (CLASSIFY_PROGRAMMING,      True,  ["emacs", "eclipse", "anjuta", "codeblocks", "geany"]),
     (CLASSIFY_DRIVER,           True,  ["jockey-gtk", "ntfs-config", "fglrx", "ndisgtk", "xserver-xorg-video-nv"]),
-    (CLASSIFY_WINDOWS,          True,  ["wine", "playonlinux", "q4wine", "winetricks", "wisotool"]),
+    (CLASSIFY_WINDOWS,          True,  ["wine", "playonlinux", "q4wine", "winetricks", "wine1.3"]),
     (CLASSIFY_OTHERS,           True,  ["ibus-pinyin", "camorama", "brasero", "gparted", "unetbootin"]),
     ]
 

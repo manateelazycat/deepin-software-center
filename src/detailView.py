@@ -1,10 +1,11 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# Author:     Andy Stewart <lazycat.manatee@gmail.com>
-# Maintainer: Andy Stewart <lazycat.manatee@gmail.com>
+# Copyright (C) 2011 Deepin, Inc.
+#               2011 Yong Wang
 #
-# Copyright (C) 2011 Andy Stewart, all rights reserved.
+# Author:     Yong Wang <lazycat.manatee@gmail.com>
+# Maintainer: Yong Wang <lazycat.manatee@gmail.com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by

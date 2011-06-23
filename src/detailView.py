@@ -141,7 +141,7 @@ class DetailView:
         drawButton(self.returnButton, "return", "cell", False, "返回", BUTTON_FONT_SIZE_MEDIUM, "#FFFFFF")
         
         buttonPaddingTop = 20
-        buttonPaddingRight = 38
+        buttonPaddingRight = 20
         returnButtonAlign = gtk.Alignment()
         returnButtonAlign.set(0.0, 0.0, 0.0, 0.0)
         returnButtonAlign.add(self.returnButton)

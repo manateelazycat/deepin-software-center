@@ -26,13 +26,21 @@ import aptdaemon.errors as errors
 import dbus.glib
 import dbus.mainloop.glib
 import gobject
+import gtk
 import signal
 import sys
+from utils import *
+import threading as td
 dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
 
-class CheckUpdate:
+class CheckUpdate(td.Thread):
     """Check update."""
-    def __init__(self, allowUnauthenticated=False, details=False):
+    def __init__(self, updateProgressCallback, finishCallback, allowUnauthenticated=False, details=False):
+        td.Thread.__init__(self)
+        self.setDaemon(True) # make thread exit when main program exit 
+        
+        self.updateProgressCallback = updateProgressCallback
+        self.finishCallback = finishCallback
         self.client = client.AptClient()
         self.signals = []
         signal.signal(signal.SIGINT, self.onCancelSignal)
@@ -43,12 +51,9 @@ class CheckUpdate:
         self.transaction = None
         self.loop = gobject.MainLoop()
 
-    def updateCache(self):
+    def run(self):
         """Update cache"""
         self.client.update_cache(reply_handler=self.runTransaction, error_handler=self.onException)
-
-    def run(self):
-        """Start the console client application."""
         self.loop.run()
 
     def setTransaction(self, transaction):
@@ -64,7 +69,6 @@ class CheckUpdate:
 
     def onExit(self, trans, enum):
         """Callback for the exit state of the transaction"""
-        print "Finish"
         if enum == enums.EXIT_FAILED:
             msg = "%s: %s\n%s\n\n%s" % (
                    _("ERROR"),
@@ -73,21 +77,23 @@ class CheckUpdate:
                    trans.error_details)
             print msg
         self.loop.quit()
+        
+        self.finishCallback()
 
     def onStatus(self, transaction, status):
         """Callback for the Status signal of the transaction"""
         self.status = enums.get_status_string_from_enum(status)
-        print self.status
+        self.updateProgressCallback(self.status, self.percent)
 
     def onProgress(self, transaction, percent):
         """Callback for the Progress signal of the transaction"""
         self.percent = percent
         if self.percent < 100:
-            print self.percent
+            self.updateProgressCallback(self.status, self.percent)
 
     def stopCustomProgress(self):
         """Stop the spinner which shows non trans status messages."""
-        print "Stop customize progress."
+        pass
 
     def onCancelSignal(self, signum, frame):
         """Callback for a cancel signal."""
@@ -118,12 +124,66 @@ class CheckUpdate:
         """Callback which runs a requested transaction."""
         self.setTransaction(trans)
         self.transaction.run(error_handler=self.onException, reply_handler=lambda: self.stopCustomProgress())
+        
+class TrayIcon:
+    '''Tray icon.'''
+	
+    def __init__(self):
+        '''Init tray icon.'''
+        self.checker = None
+        self.tooltipWindow = None
+        self.tooltipPixbuf = gtk.gdk.pixbuf_new_from_file_at_size("./trayIcon/window.png", 320, 70)
+        
+    def clickIcon(self):
+        '''Click icon.'''
+        pass
+    
+    def hoverIcon(self, *args):
+        '''Hover icon.'''
+        if self.tooltipWindow == None:
+            self.tooltipWindow = gtk.Window(gtk.WINDOW_TOPLEVEL)
+            self.tooltipWindow.set_decorated(False)
+            self.tooltipWindow.set_default_size(320, 70)
+            self.tooltipWindow.set_opacity(0.8)
+            self.tooltipWindow.connect("size-allocate", lambda w, a: self.updateShape(w, a))
+            
+            self.tooltipWindow.show_all()
+    
+    def updateShape(self, widget, allocation):
+        '''Update shape.'''
+        if allocation.width > 0 and allocation.height > 0:
+            width, height = allocation.width, allocation.height
+            
+            pixbuf = gtk.gdk.Pixbuf(gtk.gdk.COLORSPACE_RGB, True, 8, width, height)
+            self.tooltipPixbuf.copy_area(0, 0, width, height, pixbuf, 0, 0)
 
-def main():
-    """Run a command line client for aptdaemon"""
-    checker = CheckUpdate()
-    checker.updateCache()
-    checker.run()
+            (_, mask) = pixbuf.render_pixmap_and_mask(255)
+            if mask != None:
+                self.tooltipWindow.shape_combine_mask(mask, 0, 0)
+        
+    def updateProgress(self, status, percent):
+        '''Update progress.'''
+        print "%s %s" % (status, percent)
+                
+    def finishCheck(self):
+        '''Finish check.'''
+    	# gtk.main_quit()
+        print "Finish"
+    
+    def main(self):
+        '''Main.'''
+        gtk.gdk.threads_init()        
+        tryIcon = gtk.StatusIcon()
+        tryIcon.set_from_file("./icons/icon/icon.ico")
+        tryIcon.set_has_tooltip(True)
+        tryIcon.set_visible(True)
+        tryIcon.connect("activate", lambda w: self.clickIcon())
+        tryIcon.connect("query-tooltip", self.hoverIcon)
+        
+        self.checker = CheckUpdate(self.updateProgress, self.finishCheck)
+        self.checker.start()
+        
+        gtk.main()
 
 if __name__ == "__main__":
-    main()
+    TrayIcon().main()

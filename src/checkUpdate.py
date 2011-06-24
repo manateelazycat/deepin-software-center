@@ -26,10 +26,12 @@ import aptdaemon.errors as errors
 import dbus.glib
 import dbus.mainloop.glib
 import gobject
+import glib
 import gtk
 import signal
 import sys
 from utils import *
+from draw import *
 import threading as td
 dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
 
@@ -49,6 +51,8 @@ class CheckUpdate(td.Thread):
         self.percent = 0
         self.allowUnauthenticated = allowUnauthenticated
         self.transaction = None
+        self.finish = False
+        self.updateNum = 0
         self.loop = gobject.MainLoop()
 
     def run(self):
@@ -76,9 +80,11 @@ class CheckUpdate(td.Thread):
                    enums.get_error_description_from_enum(trans.error_code),
                    trans.error_details)
             print msg
+        else:
+            self.finish = True
+            self.finishCallback()
+            
         self.loop.quit()
-        
-        self.finishCallback()
 
     def onStatus(self, transaction, status):
         """Callback for the Status signal of the transaction"""
@@ -87,8 +93,8 @@ class CheckUpdate(td.Thread):
 
     def onProgress(self, transaction, percent):
         """Callback for the Progress signal of the transaction"""
-        self.percent = percent
-        if self.percent < 100:
+        if percent < 100:
+            self.percent = percent
             self.updateProgressCallback(self.status, self.percent)
 
     def stopCustomProgress(self):
@@ -127,12 +133,70 @@ class CheckUpdate(td.Thread):
         
 class TrayIcon:
     '''Tray icon.'''
+    
+    TOOLTIP_WIDTH = 320
+    TOOLTIP_HEIGHT = 70
+    TOOLTIP_OFFSET_X = 10
+    TOOLTIP_OFFSET_Y = 30
+    PROGRESS_WIDTH = 170
 	
     def __init__(self):
         '''Init tray icon.'''
-        self.checker = None
         self.tooltipWindow = None
-        self.tooltipPixbuf = gtk.gdk.pixbuf_new_from_file_at_size("./trayIcon/window.png", 320, 70)
+        self.times = 20
+        self.ticker = 0
+        self.interval = 100     # in milliseconds
+        self.tooltipPixbuf = gtk.gdk.pixbuf_new_from_file_at_size(
+            "./trayIcon/window.png", 
+            self.TOOLTIP_WIDTH, 
+            self.TOOLTIP_HEIGHT)
+        
+    def redraw(self):
+        '''Redraw.'''
+        if self.ticker > 4:
+            if self.checker.finish:
+                self.drawFinish()
+            else:
+                self.drawUpdating()
+        elif self.ticker > 0 and self.tooltipWindow != None:
+            self.tooltipWindow.set_opacity(self.ticker * 0.2)
+        elif self.tooltipWindow != None:
+            self.tooltipWindow.hide_all()
+            
+        if self.ticker > 0 and not self.cursorInIcon():
+            self.ticker -= 1
+        
+        return True
+    
+    def cursorInIcon(self):
+        '''Whether cursor in area of icon.'''
+        (iconScreen, rect, orientation) = self.trayIcon.get_geometry()
+        (screen, cx, cy, mask) = gtk.gdk.display_get_default().get_pointer()
+        
+        return isInRect((cx, cy), (rect.x, rect.y, rect.width, rect.height))
+        
+    def drawFinish(self):
+        '''Draw finish.'''
+        # Clean widget first.
+        containerRemoveAll(self.tooltipWindow)
+        
+        # Draw.
+        label = gtk.Label()
+        if self.checker.updateNum == 0:
+            label.set_markup("你的系统已经是最新的了！ :)")
+        else:
+            label.set_markup("有%s个软件包可以升级。" % (self.checker.updateNum))
+        
+        self.tooltipWindow.add(label)
+        self.tooltipWindow.show_all()
+    
+    def drawUpdating(self):
+        '''Draw updating.'''
+        # Draw.
+        self.progressbar.setProgress(self.checker.percent)
+        self.progressStatus.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_LARGE_SIZE, self.checker.status))
+        
+        self.tooltipWindow.show_all()
         
     def clickIcon(self):
         '''Click icon.'''
@@ -140,15 +204,31 @@ class TrayIcon:
     
     def hoverIcon(self, *args):
         '''Hover icon.'''
+        self.ticker = self.times
         if self.tooltipWindow == None:
             self.tooltipWindow = gtk.Window(gtk.WINDOW_TOPLEVEL)
             self.tooltipWindow.set_decorated(False)
-            self.tooltipWindow.set_default_size(320, 70)
-            self.tooltipWindow.set_opacity(0.8)
+            self.tooltipWindow.set_default_size(self.TOOLTIP_WIDTH, self.TOOLTIP_HEIGHT)
             self.tooltipWindow.connect("size-allocate", lambda w, a: self.updateShape(w, a))
             
-            self.tooltipWindow.show_all()
-    
+            self.progressbarBox = gtk.VBox()
+            self.tooltipWindow.add(self.progressbarBox)
+            
+            self.progressbar = drawProgressbar(self.PROGRESS_WIDTH)
+            self.progressbarAlign = gtk.Alignment()
+            self.progressbarAlign.set(0.5, 0.5, 0.0, 0.0)
+            self.progressbarAlign.add(self.progressbar.box)
+            self.progressbarBox.pack_start(self.progressbarAlign)
+            
+            self.progressStatus = gtk.Label()
+            self.progressbarBox.pack_start(self.progressStatus)
+            
+            glib.timeout_add(self.interval, self.redraw)
+            
+        self.tooltipWindow.set_opacity(0.9)
+        self.tooltipWindow.move(gtk.gdk.screen_width() - self.TOOLTIP_WIDTH - self.TOOLTIP_OFFSET_X, self.TOOLTIP_OFFSET_Y)
+        self.tooltipWindow.show_all()
+        
     def updateShape(self, widget, allocation):
         '''Update shape.'''
         if allocation.width > 0 and allocation.height > 0:
@@ -163,7 +243,8 @@ class TrayIcon:
         
     def updateProgress(self, status, percent):
         '''Update progress.'''
-        print "%s %s" % (status, percent)
+        # print "%s %s" % (status, percent)
+        pass
                 
     def finishCheck(self):
         '''Finish check.'''
@@ -173,12 +254,12 @@ class TrayIcon:
     def main(self):
         '''Main.'''
         gtk.gdk.threads_init()        
-        tryIcon = gtk.StatusIcon()
-        tryIcon.set_from_file("./icons/icon/icon.ico")
-        tryIcon.set_has_tooltip(True)
-        tryIcon.set_visible(True)
-        tryIcon.connect("activate", lambda w: self.clickIcon())
-        tryIcon.connect("query-tooltip", self.hoverIcon)
+        self.trayIcon = gtk.StatusIcon()
+        self.trayIcon.set_from_file("./icons/icon/icon.ico")
+        self.trayIcon.set_has_tooltip(True)
+        self.trayIcon.set_visible(True)
+        self.trayIcon.connect("activate", lambda w: self.clickIcon())
+        self.trayIcon.connect("query-tooltip", self.hoverIcon)
         
         self.checker = CheckUpdate(self.updateProgress, self.finishCheck)
         self.checker.start()

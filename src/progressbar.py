@@ -50,14 +50,14 @@ class Progressbar():
         self.progressWidth = self.width - self.bgBorderWidth * 2
         
         self.leftImage = gtk.Image()
-        self.box.pack_start(self.leftImage)
+        self.box.pack_start(self.leftImage, False, False)
         
         self.middleImage = gtk.Image()
         self.middleImage.set_size_request(self.progressWidth, self.bgHeight)
-        self.box.pack_start(self.middleImage)
+        self.box.pack_start(self.middleImage, False, False)
         
         self.rightImage = gtk.Image()
-        self.box.pack_start(self.rightImage)
+        self.box.pack_start(self.rightImage, False, False)
         
         self.progress = 0
         self.setProgress(self.progress)

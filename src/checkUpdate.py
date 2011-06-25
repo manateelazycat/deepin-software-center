@@ -27,7 +27,6 @@ import apt_pkg
 import aptdaemon.client as client
 import aptdaemon.enums as enums
 import aptdaemon.errors as errors
-import dbus
 import glib
 import gobject
 import gtk
@@ -123,18 +122,7 @@ class CheckUpdate(td.Thread):
 
     def onException(self, error):
         """Error callback."""
-        try:
-            raise error
-        except errors.PolicyKitError:
-            msg = "%s %s\n\n%s" % (_("ERROR:"),
-                                   _("You are not allowed to perform "
-                                     "this action."),
-                                   error.get_dbus_message())
-        except dbus.DBusException:
-            msg = "%s %s - %s" % (_("ERROR:"), error.get_dbus_name(),
-                                  error.get_dbus_message())
-        except:
-            msg = str(error)
+        print error
         self.loop.quit()
         sys.exit(msg)
 

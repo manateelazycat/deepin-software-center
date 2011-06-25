@@ -417,5 +417,10 @@ def runCommand(command):
 
 def touchFile(filepath):
     '''Touch file.'''
-    file = open(filepath, "w")
-    file.close()
+    # Create directory first.
+    dir = os.path.dirname(filepath)
+    if not os.path.exists(dir):
+        os.makedirs(dir)
+        
+    # Touch file.
+    open(filepath, "w").close()

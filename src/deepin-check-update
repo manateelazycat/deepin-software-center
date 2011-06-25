@@ -1,0 +1,4 @@
+#!/bin/sh
+
+cd /usr/share/deepin-software-center
+./deepin-check-update.py

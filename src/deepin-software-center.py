@@ -635,6 +635,9 @@ class DeepinSoftwareCenter():
         if self.downloadQueue.downloadQueue != None:
             self.downloadQueue.downloadQueue.put("STOP")
             
+        # Close socket.
+        self.socketThread.socket.close()
+            
     	gtk.main_quit()
     
     def main(self):
@@ -687,13 +690,12 @@ class DeepinSoftwareCenter():
         self.window.show_all()
         
         # Select software update page if add "--show-update" option.
-        if os.path.exists(SOCKET_LOCK_FILE):
+        if len(sys.argv) == 2 and sys.argv[1] == "--show-update":
             self.selectPage(PAGE_UPGRADE)
-            os.unlink(SOCKET_LOCK_FILE)
             
         # Listen socket message for select upgrade page.
-        socketThread = SocketThread(self.showUpgrade)
-        socketThread.start()
+        self.socketThread = SocketThread(self.showUpgrade)
+        self.socketThread.start()
             
         # Run.
         gtk.main()
@@ -946,15 +948,15 @@ class SocketThread(td.Thread):
         
     def run(self):
         '''Run.'''
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  
-        s.bind(SOCKET_ADDRESS)  
+        self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  
+        self.socket.bind(SOCKET_ADDRESS)  
           
         while True:  
-            data, addr = s.recvfrom(2048)  
+            data, addr = self.socket.recvfrom(2048)  
             print "received:", data, "from", addr  
             self.callback()
           
-        s.close()
+        self.socket.close()
             
 if __name__ == "__main__":
     DeepinSoftwareCenter().main()

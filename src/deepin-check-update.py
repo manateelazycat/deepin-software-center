@@ -22,6 +22,8 @@
 
 from draw import *
 from utils import *
+import re
+import urllib2
 import apt
 import apt_pkg
 import aptdaemon.client as client
@@ -36,6 +38,7 @@ import threading as td
 from traceback import print_exc
 from constant import *
 import socket
+import stat
 
 class CheckUpdate(td.Thread):
     """Check update."""
@@ -53,12 +56,10 @@ class CheckUpdate(td.Thread):
         self.transaction = None
         self.finish = False
         self.updateNum = 0
-        self.loop = gobject.MainLoop()
         
     def run(self):
         """Update cache"""
         self.client.update_cache(reply_handler=self.runTransaction, error_handler=self.onException)
-        self.loop.run()
 
     def setTransaction(self, transaction):
         """Monitor the given transaction"""
@@ -70,6 +71,7 @@ class CheckUpdate(td.Thread):
 
     def onExit(self, trans, enum):
         """Callback for the exit state of the transaction"""
+        # Print error but don't stop.
         if enum == enums.EXIT_FAILED:
             msg = "%s: %s\n%s\n\n%s" % (
                    ("ERROR"),
@@ -77,16 +79,16 @@ class CheckUpdate(td.Thread):
                    enums.get_error_description_from_enum(trans.error_code),
                    trans.error_details)
             print msg
-        else:
-            self.percent = 99
-            self.status = "计算可以升级的包"
-            self.calculateUpdateNumber()
-            
-            self.finish = True
-            self.finishCallback()
-            
-        self.loop.quit()
         
+        # Calculate update number.
+        self.percent = 99
+        self.status = "计算可以升级的包"
+        self.calculateUpdateNumber()
+        
+        # Finish callback.
+        self.finish = True
+        self.finishCallback()
+            
     def calculateUpdateNumber(self):
         '''Calculate update number.'''
         apt_pkg.init()
@@ -109,13 +111,10 @@ class CheckUpdate(td.Thread):
         if self.transaction and \
            self.transaction.status != enums.STATUS_SETTING_UP:
             self.transaction.cancel()
-        else:
-            self.loop.quit()
 
     def onException(self, error):
         """Error callback."""
         print error
-        self.loop.quit()
         sys.exit(msg)
 
     def runTransaction(self, trans):
@@ -134,6 +133,7 @@ class TrayIcon:
 	
     def __init__(self):
         '''Init tray icon.'''
+        self.trayIcon = None
         self.tooltipWindow = None
         self.times = 20
         self.ticker = 0
@@ -189,7 +189,9 @@ class TrayIcon:
         '''Draw updating.'''
         # Draw.
         self.progressbar.setProgress(self.checker.percent)
-        self.progressStatus.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, self.checker.status))
+        self.progressStatus.set_markup(
+            "<span size='%s'>(%s) %s</span>"
+            % (LABEL_FONT_SIZE, str(self.checker.percent) + "%", self.checker.status))
         
         self.tooltipWindow.show_all()
         
@@ -206,11 +208,12 @@ class TrayIcon:
             
             # Create file showUpdate.
             if self.checker.finish and self.checker.updateNum > 0:
-                touchFile(SOCKET_LOCK_FILE)
-            
-            # Then start new software center process.
-            runCommand("gksu ./deepin-software-center.py")
+                runCommand("gksu ./deepin-show-update.py")
+            else:
+                runCommand("gksu ./deepin-software-center.py")
         except Exception, e:
+            print e
+            
             # Just need send show update request if software center has running.
             if self.checker.finish and self.checker.updateNum > 0:
                 s.sendto("show update request", SOCKET_ADDRESS)  
@@ -265,26 +268,57 @@ class TrayIcon:
             (_, mask) = pixbuf.render_pixmap_and_mask(255)
             if mask != None:
                 self.tooltipWindow.shape_combine_mask(mask, 0, 0)
+                
+    def getMyIP(self):
+        '''Get my IP.'''
+        return re.search('\d+\.\d+\.\d+\.\d+',urllib2.urlopen("http://www.whereismyip.com").read()).group(0)
         
     @postGUI
     def finishCheck(self):
         '''Finish check.'''
+        # Send IP information to server for statistics.
+        print "Send IP: %s" % (self.getMyIP())
+        
+        # Show detail information.
         self.hoverIcon()
     
+    def getLastUpdateHours(self):
+        """
+        Return the number of hours since the last successful apt-get update
+        
+        If the date is unknown, return "None"
+        """
+        if not os.path.exists("/var/lib/apt/periodic/update-success-stamp"):
+            return None
+        # calculate when the last apt-get update (or similar operation) was performed.
+        mtime = os.stat("/var/lib/apt/periodic/update-success-stamp")[stat.ST_MTIME]
+        agoHours = int((time.time() - mtime) / (60 * 60))
+        return agoHours
+  
     def main(self):
         '''Main.'''
-        gtk.gdk.threads_init()        
-        self.trayIcon = gtk.StatusIcon()
-        self.trayIcon.set_from_file("./icons/icon/icon.ico")
-        self.trayIcon.set_has_tooltip(True)
-        self.trayIcon.set_visible(True)
-        self.trayIcon.connect("activate", lambda w: self.showSoftwareCenter())
-        self.trayIcon.connect("query-tooltip", self.hoverIcon)
+        # Get last update hours.
+        agoHours = self.getLastUpdateHours()
         
-        self.checker = CheckUpdate(self.finishCheck)
-        self.checker.start()
-        
-        gtk.main()
+        # Just update one day after.
+        if agoHours != None and agoHours >= 0:
+            print "Update package list..."
+            
+            gtk.gdk.threads_init()        
+            
+            self.trayIcon = gtk.StatusIcon()
+            self.trayIcon.set_from_file("./icons/icon/icon.ico")
+            self.trayIcon.set_has_tooltip(True)
+            self.trayIcon.set_visible(True)
+            self.trayIcon.connect("activate", lambda w: self.showSoftwareCenter())
+            self.trayIcon.connect("query-tooltip", self.hoverIcon)
+            
+            self.checker = CheckUpdate(self.finishCheck)
+            self.checker.start()
+            
+            gtk.main()
+        else:
+            print "Just update system %s hours ago" % (agoHours)
 
 if __name__ == "__main__":
     TrayIcon().main()

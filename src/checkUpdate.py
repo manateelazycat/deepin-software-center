@@ -45,7 +45,6 @@ class CheckUpdate(td.Thread):
         
         self.finishCallback = finishCallback
         self.client = client.AptClient()
-        self.signals = []
         signal.signal(signal.SIGINT, self.onCancelSignal)
         signal.signal(signal.SIGQUIT, self.onCancelSignal)
         self.status = ""
@@ -55,7 +54,7 @@ class CheckUpdate(td.Thread):
         self.finish = False
         self.updateNum = 0
         self.loop = gobject.MainLoop()
-
+        
     def run(self):
         """Update cache"""
         self.client.update_cache(reply_handler=self.runTransaction, error_handler=self.onException)
@@ -63,14 +62,11 @@ class CheckUpdate(td.Thread):
 
     def setTransaction(self, transaction):
         """Monitor the given transaction"""
-        for handler in self.signals:
-            gobject.source_remove(handler)
         self.transaction = transaction
-        self.signals = []
-        self.signals.append(transaction.connect("status-changed", self.onStatus))
-        self.signals.append(transaction.connect("progress-changed", self.onProgress))
-        self.signals.append(transaction.connect("finished", self.onExit))
-        transaction.set_allow_unauthenticated(self.allowUnauthenticated)
+        self.transaction.connect("status-changed", self.onStatus)
+        self.transaction.connect("progress-changed", self.onProgress)
+        self.transaction.connect("finished", self.onExit)
+        self.transaction.set_allow_unauthenticated(self.allowUnauthenticated)
 
     def onExit(self, trans, enum):
         """Callback for the exit state of the transaction"""
@@ -108,10 +104,6 @@ class CheckUpdate(td.Thread):
         if percent < 100:
             self.percent = percent
 
-    def stopCustomProgress(self):
-        """Stop the spinner which shows non trans status messages."""
-        pass
-
     def onCancelSignal(self, signum, frame):
         """Callback for a cancel signal."""
         if self.transaction and \
@@ -129,7 +121,7 @@ class CheckUpdate(td.Thread):
     def runTransaction(self, trans):
         """Callback which runs a requested transaction."""
         self.setTransaction(trans)
-        self.transaction.run(error_handler=self.onException, reply_handler=lambda: self.stopCustomProgress())
+        self.transaction.run()
         
 class TrayIcon:
     '''Tray icon.'''

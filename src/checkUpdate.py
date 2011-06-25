@@ -214,8 +214,7 @@ class TrayIcon:
             
             # Create file showUpdate.
             if self.checker.finish and self.checker.updateNum > 0:
-                showUpdateFile = open(SOCKET_LOCK_FILE, "w")
-                showUpdateFile.close()
+                touchFile(SOCKET_LOCK_FILE)
             
             # Then start new software center process.
             runCommand("gksu ./deepin-software-center.py")

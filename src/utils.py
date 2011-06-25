@@ -414,3 +414,8 @@ def setCustomizeCursor(widget, cursorPath):
 def runCommand(command):
     '''Run command.'''
     subprocess.Popen("nohup %s > /dev/null" % (command), shell=True)
+
+def touchFile(filepath):
+    '''Touch file.'''
+    file = open(filepath, "w")
+    file.close()

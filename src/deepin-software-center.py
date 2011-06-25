@@ -957,5 +957,4 @@ class SocketThread(td.Thread):
         s.close()
             
 if __name__ == "__main__":
-    softwareCenter = DeepinSoftwareCenter()
-    softwareCenter.main()
+    DeepinSoftwareCenter().main()

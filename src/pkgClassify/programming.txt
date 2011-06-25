@@ -140,3 +140,4 @@ xdot
 xmlcopyeditor
 xsddiagram
 xvile
+vim

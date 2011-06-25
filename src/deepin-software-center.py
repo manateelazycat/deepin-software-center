@@ -32,6 +32,7 @@ import detailView
 import download
 import glib
 import gtk
+import gobject
 import navigatebar
 import pango
 import pangocairo
@@ -44,6 +45,7 @@ import search
 import searchPage
 import searchUninstallPage as sp
 import statusbar
+import sys
 import threading as td
 import titlebar
 import uninstallPage
@@ -52,13 +54,17 @@ import utils
 import urllib2
 import json
 pygtk.require('2.0')
+import dbus
+import dbus.service
+from dbus.mainloop.glib import DBusGMainLoop
 
-class DeepinSoftwareCenter:
+class DeepinSoftwareCenter():
     '''Interface for software center.'''
     DEFAULT_WIDTH = 890
     
     def __init__(self):
         '''Init.'''
+        # Init gdk threads.
         gtk.gdk.threads_init()        
         
         # Shape.
@@ -681,6 +687,14 @@ class DeepinSoftwareCenter:
         self.window.connect("destroy", self.destroy)
         self.window.show_all()
         
+        # Select software update page if add "--show-update" option.
+        if len(sys.argv) == 2 and sys.argv[1] == "--show-update":
+            self.selectPage(PAGE_UPGRADE)
+            
+    
+        dbusThread = DBusThread()
+        dbusThread.start()
+            
         # Run.
         gtk.main()
         
@@ -727,6 +741,18 @@ class DeepinSoftwareCenter:
         # Select category.
         self.repoPage.selectCategory(category, categoryId)
                         
+    def showUpgrade(self):
+        '''Show upgrade page.'''
+        # Delete PAGE_UPGRADE value from detailViewDict and searchViewDict.
+        if self.detailViewDict.has_key(PAGE_UPGRADE):
+            self.detailViewDict.pop(PAGE_UPGRADE)
+        
+        if self.searchViewDict.has_key(PAGE_UPGRADE):
+            self.searchViewDict.pop(PAGE_UPGRADE)
+            
+        # Select upgrade page.
+        self.selectPage(PAGE_UPGRADE)
+        
     def entryDetailView(self, pageId, appInfo):
         '''Entry detail view.'''
         view = detailView.DetailView(
@@ -907,5 +933,40 @@ class FetchDetail(td.Thread):
         except Exception, e:
             print "Fetch detail view data failed."
             
+class DemoException(dbus.DBusException):
+    _dbus_error_name = 'com.example.DemoException'
+
+class SomeObject(dbus.service.Object):
+
+    @dbus.service.method("com.example.SampleInterface",
+                         in_signature='s', out_signature='as')
+    def HelloWorld(self, hello_message):
+        print (str(hello_message))
+        return ["Hello", " from example-service.py", "with unique name",
+                session_bus.get_unique_name()]
+
+    def Exit(self):
+        mainloop.quit()
+
+class DBusThread(td.Thread):
+    '''DBus thread.'''
+	
+    def __init__(self):
+        '''Init for dbus thread.'''
+        td.Thread.__init__(self)
+        self.setDaemon(True) # make thread exit when main program exit 
+        
+    def run(self):
+        '''Run.'''
+        dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
+        session_bus = dbus.SessionBus()
+        name = dbus.service.BusName("com.example.SampleService", session_bus)
+        object = SomeObject(session_bus, '/SomeObject')
+        
+        mainloop = gobject.MainLoop()
+        print "Running example service."
+        mainloop.run()
+            
 if __name__ == "__main__":
-    DeepinSoftwareCenter().main()
+    softwareCenter = DeepinSoftwareCenter()
+    softwareCenter.main()

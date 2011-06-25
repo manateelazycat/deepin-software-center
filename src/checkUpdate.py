@@ -25,10 +25,13 @@ import aptdaemon.enums as enums
 import aptdaemon.errors as errors
 import dbus.glib
 import dbus.mainloop.glib
+import dbus
 import gobject
 import glib
 import gtk
 import signal
+import apt_pkg
+import apt
 import sys
 from utils import *
 from draw import *
@@ -37,11 +40,10 @@ dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
 
 class CheckUpdate(td.Thread):
     """Check update."""
-    def __init__(self, updateProgressCallback, finishCallback, allowUnauthenticated=False, details=False):
+    def __init__(self, finishCallback, allowUnauthenticated=False, details=False):
         td.Thread.__init__(self)
         self.setDaemon(True) # make thread exit when main program exit 
         
-        self.updateProgressCallback = updateProgressCallback
         self.finishCallback = finishCallback
         self.client = client.AptClient()
         self.signals = []
@@ -75,27 +77,37 @@ class CheckUpdate(td.Thread):
         """Callback for the exit state of the transaction"""
         if enum == enums.EXIT_FAILED:
             msg = "%s: %s\n%s\n\n%s" % (
-                   _("ERROR"),
+                   ("ERROR"),
                    enums.get_error_string_from_enum(trans.error_code),
                    enums.get_error_description_from_enum(trans.error_code),
                    trans.error_details)
             print msg
         else:
+            self.percent = 99
+            self.status = "计算可以升级的包"
+            self.calculateUpdateNumber()
+            
             self.finish = True
             self.finishCallback()
             
         self.loop.quit()
+        
+    def calculateUpdateNumber(self):
+        '''Calculate update number.'''
+        apt_pkg.init()
+        cache = apt.Cache()
+        for pkg in cache:
+            if pkg.candidate != None and pkg.is_upgradable:
+                self.updateNum += 1
 
     def onStatus(self, transaction, status):
         """Callback for the Status signal of the transaction"""
         self.status = enums.get_status_string_from_enum(status)
-        self.updateProgressCallback(self.status, self.percent)
 
     def onProgress(self, transaction, percent):
         """Callback for the Progress signal of the transaction"""
         if percent < 100:
             self.percent = percent
-            self.updateProgressCallback(self.status, self.percent)
 
     def stopCustomProgress(self):
         """Stop the spinner which shows non trans status messages."""
@@ -138,7 +150,7 @@ class TrayIcon:
     TOOLTIP_HEIGHT = 70
     TOOLTIP_OFFSET_X = 10
     TOOLTIP_OFFSET_Y = 30
-    PROGRESS_WIDTH = 170
+    PROGRESS_WIDTH = 200
 	
     def __init__(self):
         '''Init tray icon.'''
@@ -161,7 +173,10 @@ class TrayIcon:
         elif self.ticker > 0 and self.tooltipWindow != None:
             self.tooltipWindow.set_opacity(self.ticker * 0.2)
         elif self.tooltipWindow != None:
-            self.tooltipWindow.hide_all()
+            if self.checker.finish and self.checker.updateNum == 0:
+                gtk.main_quit()
+            else:
+                self.tooltipWindow.hide_all()
             
         if self.ticker > 0 and not self.cursorInIcon():
             self.ticker -= 1
@@ -183,9 +198,9 @@ class TrayIcon:
         # Draw.
         label = gtk.Label()
         if self.checker.updateNum == 0:
-            label.set_markup("你的系统已经是最新的了！ :)")
+            label.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, "你的系统已经是最新的了！ :)"))
         else:
-            label.set_markup("有%s个软件包可以升级。" % (self.checker.updateNum))
+            label.set_markup("<span size='%s'>有%s个软件包可以升级。</span>" % (LABEL_FONT_SIZE, self.checker.updateNum))
         
         self.tooltipWindow.add(label)
         self.tooltipWindow.show_all()
@@ -194,13 +209,18 @@ class TrayIcon:
         '''Draw updating.'''
         # Draw.
         self.progressbar.setProgress(self.checker.percent)
-        self.progressStatus.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_LARGE_SIZE, self.checker.status))
+        self.progressStatus.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, self.checker.status))
         
         self.tooltipWindow.show_all()
         
     def clickIcon(self):
         '''Click icon.'''
-        pass
+        bus = dbus.SessionBus()
+        remote_object = bus.get_object("com.example.SampleService", "/SomeObject")
+        hello_reply_list = remote_object.HelloWorld(
+            "Hello from example-client.py!",
+            dbus_interface = "com.example.SampleInterface")
+        print hello_reply_list
     
     def hoverIcon(self, *args):
         '''Hover icon.'''
@@ -212,15 +232,16 @@ class TrayIcon:
             self.tooltipWindow.connect("size-allocate", lambda w, a: self.updateShape(w, a))
             
             self.progressbarBox = gtk.VBox()
-            self.tooltipWindow.add(self.progressbarBox)
-            
-            self.progressbar = drawProgressbar(self.PROGRESS_WIDTH)
             self.progressbarAlign = gtk.Alignment()
             self.progressbarAlign.set(0.5, 0.5, 0.0, 0.0)
-            self.progressbarAlign.add(self.progressbar.box)
-            self.progressbarBox.pack_start(self.progressbarAlign)
+            self.progressbarAlign.add(self.progressbarBox)
+            self.tooltipWindow.add(self.progressbarAlign)
+            
+            self.progressbar = drawProgressbar(self.PROGRESS_WIDTH)
+            self.progressbarBox.pack_start(self.progressbar.box)
             
             self.progressStatus = gtk.Label()
+            self.progressStatus.set_alignment(0.0, 0.5)
             self.progressbarBox.pack_start(self.progressStatus)
             
             glib.timeout_add(self.interval, self.redraw)
@@ -241,15 +262,9 @@ class TrayIcon:
             if mask != None:
                 self.tooltipWindow.shape_combine_mask(mask, 0, 0)
         
-    def updateProgress(self, status, percent):
-        '''Update progress.'''
-        # print "%s %s" % (status, percent)
-        pass
-                
     def finishCheck(self):
         '''Finish check.'''
-    	# gtk.main_quit()
-        print "Finish"
+        self.hoverIcon()
     
     def main(self):
         '''Main.'''
@@ -261,8 +276,10 @@ class TrayIcon:
         self.trayIcon.connect("activate", lambda w: self.clickIcon())
         self.trayIcon.connect("query-tooltip", self.hoverIcon)
         
-        self.checker = CheckUpdate(self.updateProgress, self.finishCheck)
+        self.checker = CheckUpdate(self.finishCheck)
         self.checker.start()
+        
+        self.clickIcon()
         
         gtk.main()
 

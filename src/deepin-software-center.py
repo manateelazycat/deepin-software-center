@@ -22,8 +22,8 @@
 
 from constant import *
 from draw import *
-from utils import postGUI
 from tooltips import *
+from utils import postGUI
 import action
 import apt
 import apt_pkg
@@ -31,13 +31,13 @@ import communityPage
 import detailView
 import download
 import glib
-import gtk
 import gobject
+import gtk
+import json
 import navigatebar
 import pango
 import pangocairo
 import pygtk
-# import morePage
 import recommendPage
 import repoCache
 import repoPage
@@ -50,13 +50,12 @@ import threading as td
 import titlebar
 import uninstallPage
 import updatePage
-import utils
 import urllib2
-import json
+import utils
 pygtk.require('2.0')
-import dbus
-import dbus.service
-from dbus.mainloop.glib import DBusGMainLoop
+
+import socket
+import os
 
 class DeepinSoftwareCenter():
     '''Interface for software center.'''
@@ -688,12 +687,13 @@ class DeepinSoftwareCenter():
         self.window.show_all()
         
         # Select software update page if add "--show-update" option.
-        if len(sys.argv) == 2 and sys.argv[1] == "--show-update":
+        if os.path.exists(SOCKET_LOCK_FILE):
             self.selectPage(PAGE_UPGRADE)
+            os.unlink(SOCKET_LOCK_FILE)
             
-    
-        dbusThread = DBusThread()
-        dbusThread.start()
+        # Listen socket message for select upgrade page.
+        socketThread = SocketThread(self.showUpgrade)
+        socketThread.start()
             
         # Run.
         gtk.main()
@@ -741,6 +741,7 @@ class DeepinSoftwareCenter():
         # Select category.
         self.repoPage.selectCategory(category, categoryId)
                         
+    @postGUI
     def showUpgrade(self):
         '''Show upgrade page.'''
         # Delete PAGE_UPGRADE value from detailViewDict and searchViewDict.
@@ -933,39 +934,27 @@ class FetchDetail(td.Thread):
         except Exception, e:
             print "Fetch detail view data failed."
             
-class DemoException(dbus.DBusException):
-    _dbus_error_name = 'com.example.DemoException'
-
-class SomeObject(dbus.service.Object):
-
-    @dbus.service.method("com.example.SampleInterface",
-                         in_signature='s', out_signature='as')
-    def HelloWorld(self, hello_message):
-        print (str(hello_message))
-        return ["Hello", " from example-service.py", "with unique name",
-                session_bus.get_unique_name()]
-
-    def Exit(self):
-        mainloop.quit()
-
-class DBusThread(td.Thread):
-    '''DBus thread.'''
+class SocketThread(td.Thread):
+    '''Socekt thread.'''
 	
-    def __init__(self):
-        '''Init for dbus thread.'''
+    def __init__(self, callback):
+        '''Init socket thread.'''
         td.Thread.__init__(self)
         self.setDaemon(True) # make thread exit when main program exit 
+
+        self.callback = callback
         
     def run(self):
         '''Run.'''
-        dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
-        session_bus = dbus.SessionBus()
-        name = dbus.service.BusName("com.example.SampleService", session_bus)
-        object = SomeObject(session_bus, '/SomeObject')
-        
-        mainloop = gobject.MainLoop()
-        print "Running example service."
-        mainloop.run()
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  
+        s.bind(SOCKET_ADDRESS)  
+          
+        while True:  
+            data, addr = s.recvfrom(2048)  
+            print "received:", data, "from", addr  
+            self.callback()
+          
+        s.close()
             
 if __name__ == "__main__":
     softwareCenter = DeepinSoftwareCenter()

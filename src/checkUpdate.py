@@ -20,23 +20,23 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from draw import *
+from utils import *
+import apt
+import apt_pkg
 import aptdaemon.client as client
 import aptdaemon.enums as enums
 import aptdaemon.errors as errors
-import dbus.glib
-import dbus.mainloop.glib
 import dbus
-import gobject
 import glib
+import gobject
 import gtk
 import signal
-import apt_pkg
-import apt
 import sys
-from utils import *
-from draw import *
 import threading as td
-dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
+from traceback import print_exc
+from constant import *
+import socket
 
 class CheckUpdate(td.Thread):
     """Check update."""
@@ -193,7 +193,7 @@ class TrayIcon:
     def drawFinish(self):
         '''Draw finish.'''
         # Clean widget first.
-        containerRemoveAll(self.tooltipWindow)
+        containerRemoveAll(self.tooltipEventBox)
         
         # Draw.
         label = gtk.Label()
@@ -202,7 +202,7 @@ class TrayIcon:
         else:
             label.set_markup("<span size='%s'>有%s个软件包可以升级。</span>" % (LABEL_FONT_SIZE, self.checker.updateNum))
         
-        self.tooltipWindow.add(label)
+        self.tooltipEventBox.add(label)
         self.tooltipWindow.show_all()
     
     def drawUpdating(self):
@@ -213,14 +213,35 @@ class TrayIcon:
         
         self.tooltipWindow.show_all()
         
-    def clickIcon(self):
-        '''Click icon.'''
-        bus = dbus.SessionBus()
-        remote_object = bus.get_object("com.example.SampleService", "/SomeObject")
-        hello_reply_list = remote_object.HelloWorld(
-            "Hello from example-client.py!",
-            dbus_interface = "com.example.SampleInterface")
-        print hello_reply_list
+    def showSoftwareCenter(self):
+        '''Show software center.'''
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  
+        
+        try:
+            # Software center is not running if address is not bind.
+            s.bind(SOCKET_ADDRESS)
+            
+            # Close socket.
+            s.close()
+            
+            # Create file showUpdate.
+            if self.checker.finish and self.checker.updateNum > 0:
+                showUpdateFile = open(SOCKET_LOCK_FILE, "w")
+                showUpdateFile.close()
+            
+            # Then start new software center process.
+            runCommand("gksu ./deepin-software-center.py")
+        except Exception, e:
+            # Just need send show update request if software center has running.
+            if self.checker.finish and self.checker.updateNum > 0:
+                s.sendto("show update request", SOCKET_ADDRESS)  
+            
+            # Close socket.
+            s.close()  
+        
+        # Quit.
+        if self.checker.finish:
+            gtk.main_quit()
     
     def hoverIcon(self, *args):
         '''Hover icon.'''
@@ -231,11 +252,15 @@ class TrayIcon:
             self.tooltipWindow.set_default_size(self.TOOLTIP_WIDTH, self.TOOLTIP_HEIGHT)
             self.tooltipWindow.connect("size-allocate", lambda w, a: self.updateShape(w, a))
             
+            self.tooltipEventBox = gtk.EventBox()
+            self.tooltipEventBox.connect("button-press-event", lambda w, e: self.showSoftwareCenter())
+            self.tooltipWindow.add(self.tooltipEventBox)
+            
             self.progressbarBox = gtk.VBox()
             self.progressbarAlign = gtk.Alignment()
             self.progressbarAlign.set(0.5, 0.5, 0.0, 0.0)
             self.progressbarAlign.add(self.progressbarBox)
-            self.tooltipWindow.add(self.progressbarAlign)
+            self.tooltipEventBox.add(self.progressbarAlign)
             
             self.progressbar = drawProgressbar(self.PROGRESS_WIDTH)
             self.progressbarBox.pack_start(self.progressbar.box)
@@ -262,6 +287,7 @@ class TrayIcon:
             if mask != None:
                 self.tooltipWindow.shape_combine_mask(mask, 0, 0)
         
+    @postGUI
     def finishCheck(self):
         '''Finish check.'''
         self.hoverIcon()
@@ -273,13 +299,11 @@ class TrayIcon:
         self.trayIcon.set_from_file("./icons/icon/icon.ico")
         self.trayIcon.set_has_tooltip(True)
         self.trayIcon.set_visible(True)
-        self.trayIcon.connect("activate", lambda w: self.clickIcon())
+        self.trayIcon.connect("activate", lambda w: self.showSoftwareCenter())
         self.trayIcon.connect("query-tooltip", self.hoverIcon)
         
         self.checker = CheckUpdate(self.finishCheck)
         self.checker.start()
-        
-        self.clickIcon()
         
         gtk.main()
 

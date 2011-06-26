@@ -949,7 +949,7 @@ class SocketThread(td.Thread):
     def run(self):
         '''Run.'''
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  
-        self.socket.bind(SOCKET_ADDRESS)  
+        self.socket.bind(SOCKET_SOFTWARECENTER_ADDRESS)  
           
         while True:  
             data, addr = self.socket.recvfrom(2048)  

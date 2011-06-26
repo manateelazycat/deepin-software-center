@@ -269,12 +269,6 @@ def scrollToTop(scrolledWindow):
     '''Scroll scrolled window to top.'''
     scrolledWindow.get_vadjustment().set_value(0)
     
-def runGUI(fun):
-    '''Run gui code in main thread.'''
-    gtk.gdk.threads_enter()
-    fun
-    gtk.gdk.threads_leave()
-
 def postGUI(func):
     '''Post GUI code in main thread.'''
     def wrap(*a, **kw):
@@ -427,7 +421,7 @@ def setCustomizeCursor(widget, cursorPath):
 def runCommand(command):
     '''Run command.'''
     subprocess.Popen("nohup %s > /dev/null" % (command), shell=True)
-
+    
 def touchFile(filepath):
     '''Touch file.'''
     # Create directory first.

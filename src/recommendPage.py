@@ -86,8 +86,8 @@ class SlideBar:
         self.padding = 10
         self.imageWidth = 600
         self.imageHeight = 300
-        self.times = 20
-        self.interval = 400 / self.times
+        self.times = 10
+        self.interval = 300 / self.times
         self.smallImagePaddingY = 10
 
         self.imageDir = "./images/"

@@ -20,10 +20,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from constant import *
 from draw import *
+from traceback import print_exc
 from utils import *
-import re
-import urllib2
 import apt
 import apt_pkg
 import aptdaemon.client as client
@@ -32,13 +32,13 @@ import aptdaemon.errors as errors
 import glib
 import gobject
 import gtk
+import re
 import signal
-import sys
-import threading as td
-from traceback import print_exc
-from constant import *
 import socket
 import stat
+import sys
+import threading as td
+import urllib2
 
 # Must init thread before any thread code running.
 # Otherwise you will got segmentation fault about dbus_connection_get_dispatch_status, 

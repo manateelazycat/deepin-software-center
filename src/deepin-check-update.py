@@ -21,8 +21,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from checkUpdate import *
-import dbus
 from dbus.mainloop.glib import DBusGMainLoop
+import dbus
+import glib
 
 class NetworkWatcher:
     '''Watch network status.'''
@@ -36,27 +37,35 @@ class NetworkWatcher:
     
     def __init__(self):
         '''Init for NetworkWatcher.'''
+        # Init.
         DBusGMainLoop(set_as_default=True)
         self.bus = dbus.Bus(dbus.Bus.TYPE_SYSTEM)
         self.networkState = self.NM_STATE_CONNECTED # make it always connected if NM isn't available
-        
-    def run(self):
-        '''Run.'''
-        # Get DBus object.
-        obj = self.bus.get_object(
+        self.obj = self.bus.get_object(
             "org.freedesktop.NetworkManager", 
             "/org/freedesktop/NetworkManager")
         
+    def run(self):
+        '''Run.'''
         # Register callback to StateChanged signal.
-        obj.connect_to_signal(
+        self.obj.connect_to_signal(
             "StateChanged",
             self.updateNotify,
             dbus_interface="org.freedesktop.NetworkManager")
         
         # Run first time.
-        interface = dbus.Interface(obj, "org.freedesktop.DBus.Properties")
+        self.update()
+        
+        # Update package list every 24 hours.
+        glib.timeout_add_seconds(60 * 60 * 24, self.update)
+        
+    def update(self):
+        '''Update.'''
+        interface = dbus.Interface(self.obj, "org.freedesktop.DBus.Properties")
         self.networkState = interface.Get("org.freedesktop.NetworkManager", "State")
         self.updateNotify(self.networkState)
+        
+        return True
 
     def updateNotify(self, state):
         '''Notify update.'''

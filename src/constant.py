@@ -144,4 +144,5 @@ TOPBAR_SEARCH_RIGHT = 30
 TOPBAR_SEARCH_ADJUST_RIGHT = 15
 
 SOCKET_ADDRESS = ("127.0.0.1", 31500)
-UPDATE_INTERVAL = 24            # in hours
+# UPDATE_INTERVAL = 24            # in hours
+UPDATE_INTERVAL = 0            # in hours

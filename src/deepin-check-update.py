@@ -39,6 +39,9 @@ from traceback import print_exc
 from constant import *
 import socket
 import stat
+import dbus.mainloop.glib
+
+dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
 
 class CheckUpdate(td.Thread):
     """Check update."""
@@ -57,19 +60,38 @@ class CheckUpdate(td.Thread):
         self.finish = False
         self.updateNum = 0
         
+    def onCancelSignal(self, signum, frame):
+        """Callback for a cancel signal."""
+        if self.transaction and self.transaction.status != enums.STATUS_SETTING_UP:
+            self.transaction.cancel()
+
+    def onException(self, error):
+        """Error callback."""
+        sys.exit(error)
+
     def run(self):
         """Update cache"""
         self.client.update_cache(reply_handler=self.runTransaction, error_handler=self.onException)
 
-    def setTransaction(self, transaction):
-        """Monitor the given transaction"""
-        self.transaction = transaction
-        self.transaction.connect("status-changed", self.onStatus)
-        self.transaction.connect("progress-changed", self.onProgress)
-        self.transaction.connect("finished", self.onExit)
+    def runTransaction(self, trans):
+        """Callback which runs a requested transaction."""
+        self.transaction = trans
+        self.transaction.connect("status-changed", self.onStatusChanged)
+        self.transaction.connect("progress-changed", self.onProgressChanged)
+        self.transaction.connect("finished", self.onFinish)
         self.transaction.set_allow_unauthenticated(self.allowUnauthenticated)
+        self.transaction.run()
+        
+    def onStatusChanged(self, trans, status):
+        """Callback for the Status signal of the transaction"""
+        self.status = enums.get_status_string_from_enum(status)
 
-    def onExit(self, trans, enum):
+    def onProgressChanged(self, trans, percent):
+        """Callback for the Progress signal of the transaction"""
+        if percent < 100:
+            self.percent = percent
+
+    def onFinish(self, trans, enum):
         """Callback for the exit state of the transaction"""
         # Print error but don't stop.
         if enum == enums.EXIT_FAILED:
@@ -97,31 +119,6 @@ class CheckUpdate(td.Thread):
             if pkg.candidate != None and pkg.is_upgradable:
                 self.updateNum += 1
 
-    def onStatus(self, transaction, status):
-        """Callback for the Status signal of the transaction"""
-        self.status = enums.get_status_string_from_enum(status)
-
-    def onProgress(self, transaction, percent):
-        """Callback for the Progress signal of the transaction"""
-        if percent < 100:
-            self.percent = percent
-
-    def onCancelSignal(self, signum, frame):
-        """Callback for a cancel signal."""
-        if self.transaction and \
-           self.transaction.status != enums.STATUS_SETTING_UP:
-            self.transaction.cancel()
-
-    def onException(self, error):
-        """Error callback."""
-        print error
-        sys.exit(msg)
-
-    def runTransaction(self, trans):
-        """Callback which runs a requested transaction."""
-        self.setTransaction(trans)
-        self.transaction.run()
-        
 class TrayIcon:
     '''Tray icon.'''
     
@@ -301,7 +298,7 @@ class TrayIcon:
         agoHours = self.getLastUpdateHours()
         
         # Just update one day after.
-        if agoHours != None and agoHours >= 0:
+        if agoHours != None and agoHours >= UPDATE_INTERVAL:
             print "Update package list..."
             
             gtk.gdk.threads_init()        

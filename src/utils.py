@@ -31,6 +31,7 @@ import pangocairo
 import pygtk
 import subprocess
 import time
+import locale
 pygtk.require('2.0')
 
 def isDoubleClick(event):
@@ -118,7 +119,13 @@ def getPkgShortDesc(pkg):
     '''Get package's short description.'''
     pkgPath = "./pkgInfo/" + pkg.name
     if os.path.exists(pkgPath):
-        return ((evalFile(pkgPath))["zh-CN"])["shortDesc"]
+        lang = getDefaultLanguage()
+        if lang == "zh_CN":
+            return ((evalFile(pkgPath))["zh-CN"])["shortDesc"]
+        elif lang == "zh_TW":
+            return ((evalFile(pkgPath))["zh-TW"])["shortDesc"]
+        else:
+            return ((evalFile(pkgPath))["en"])["shortDesc"]
     else:
         return pkg.candidate.summary
 
@@ -126,7 +133,13 @@ def getPkgLongDesc(pkg):
     '''Get package's long description.'''
     pkgPath = "./pkgInfo/" + pkg.name
     if os.path.exists(pkgPath):
-        return ((evalFile(pkgPath))["zh-CN"])["longDesc"]
+        lang = getDefaultLanguage()
+        if lang == "zh_CN":
+            return ((evalFile(pkgPath))["zh-CN"])["longDesc"]
+        elif lang == "zh_TW":
+            return ((evalFile(pkgPath))["zh-TW"])["longDesc"]
+        else:
+            return ((evalFile(pkgPath))["en"])["longDesc"]
     else:
         return pkg.candidate.description
 
@@ -424,3 +437,9 @@ def touchFile(filepath):
         
     # Touch file.
     open(filepath, "w").close()
+
+def getDefaultLanguage():
+    '''Get default language.'''
+    (lang, _) = locale.getdefaultlocale()
+    return lang
+

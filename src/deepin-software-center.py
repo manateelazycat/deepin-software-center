@@ -192,6 +192,9 @@ class DeepinSoftwareCenter():
             
     def switchStatus(self, pkgName, appStatus):
         '''Switch status.'''
+        # Update slide bar.
+        self.recommendPage.slidebar.switchToStatus(pkgName, appStatus)
+        
         # Update recommand view.
         recommendView = self.recommendPage.recommendView
         recommendView.switchToStatus(pkgName, appStatus)
@@ -220,6 +223,9 @@ class DeepinSoftwareCenter():
             # Update Application information.
             appInfo = self.repoCache.cache[pkgName]
             appInfo.updateDownloadStatus(progress, feedback, status)
+            
+            # Update slide bar.
+            self.recommendPage.slidebar.updateDownloadStatus(pkgName, progress, feedback)
             
             # Update recommand view.
             recommendView = self.recommendPage.recommendView
@@ -256,6 +262,9 @@ class DeepinSoftwareCenter():
                 appStatus = APP_STATE_INSTALLING
             appInfo.switchStatus(appStatus)
                 
+            # Update slide bar.
+            self.recommendPage.slidebar.switchToStatus(pkgName, appStatus)
+            
             # Update application view.
             recommendView = self.recommendPage.recommendView
             recommendView.switchToStatus(pkgName, appStatus)
@@ -296,6 +305,9 @@ class DeepinSoftwareCenter():
             else:
                 appStatus = APP_STATE_NORMAL
             
+            # Update slide bar.
+            self.recommendPage.slidebar.switchToStatus(pkgName, appStatus)
+            
             # Update application view.
             recommendView = self.recommendPage.recommendView
             recommendView.switchToStatus(pkgName, appStatus)
@@ -328,6 +340,9 @@ class DeepinSoftwareCenter():
                 appInfo = self.repoCache.cache[pkgName]
                 appInfo.updateInstallStatus(progress, feedback)
                 
+                # Update slide bar.
+                self.recommendPage.slidebar.updateInstallingStatus(pkgName, progress, feedback)
+            
                 # Update application view.
                 recommendView = self.recommendPage.recommendView
                 recommendView.updateInstallingStatus(pkgName, progress, feedback)
@@ -349,6 +364,9 @@ class DeepinSoftwareCenter():
                 appInfo = self.repoCache.cache[pkgName]
                 appInfo.updateUpgradeStatus(progress, feedback)
                 
+                # Update slide bar.
+                self.recommendPage.slidebar.updateUpgradingStatus(pkgName, progress, feedback)
+            
                 # Update application view.
                 recommendView = self.recommendPage.recommendView
                 recommendView.updateUpgradingStatus(pkgName, progress, feedback)
@@ -402,6 +420,9 @@ class DeepinSoftwareCenter():
                     else:
                         appInfo.switchStatus(APP_STATE_INSTALLED)
                 
+                    # Update slide bar.
+                    self.recommendPage.slidebar.initNormalStatus(pkgName, isMarkDeleted)
+            
                     # Update recommend view.
                     recommendView = self.recommendPage.recommendView
                     recommendView.initNormalStatus(pkgName, isMarkDeleted)
@@ -448,6 +469,9 @@ class DeepinSoftwareCenter():
                         # Update notify number.
                         self.navigatebar.updateIcon.queue_draw()
                         
+                    # Update slide bar.
+                    self.recommendPage.slidebar.initNormalStatus(pkgName, isMarkDeleted)
+            
                     # Update recommend view.
                     recommendView = self.recommendPage.recommendView
                     recommendView.initNormalStatus(pkgName, isMarkDeleted)
@@ -478,6 +502,9 @@ class DeepinSoftwareCenter():
                     
                     self.updateUninstallView(pkgName, False)
                     
+                    # Update slide bar.
+                    self.recommendPage.slidebar.initNormalStatus(pkgName, isMarkDeleted)
+            
                     # Update recommend view.
                     recommendView = self.recommendPage.recommendView
                     recommendView.initNormalStatus(pkgName, isMarkDeleted)
@@ -506,6 +533,9 @@ class DeepinSoftwareCenter():
                 appInfo = self.repoCache.cache[pkgName]
                 appInfo.switchStatus(APP_STATE_NORMAL)
                 
+                # Update slide bar.
+                self.recommendPage.slidebar.initNormalStatus(pkgName, True)
+            
                 # Update recommend view.
                 recommendView = self.recommendPage.recommendView
                 recommendView.initNormalStatus(pkgName, True)
@@ -530,6 +560,9 @@ class DeepinSoftwareCenter():
                 appInfo = self.repoCache.cache[pkgName]
                 appInfo.switchStatus(APP_STATE_UPGRADE)
 
+                # Update slide bar.
+                self.recommendPage.slidebar.initNormalStatus(pkgName, APP_STATE_UPGRADE)
+            
                 # Update recommend view.
                 recommendView = self.recommendPage.recommendView
                 recommendView.switchToStatus(pkgName, APP_STATE_UPGRADE)
@@ -593,7 +626,7 @@ class DeepinSoftwareCenter():
         window.set_decorated(False)
         
         # Init.
-        window.set_title('æ·±åº¦Linuxè½¯ä»¶ä¸­å¿ƒ') 
+        window.set_title('ô»½ôŸLinuxôºžô©‡ô‘Ž¥ô‘…¥') 
         window.set_position(gtk.WIN_POS_CENTER_ALWAYS)
         (width, height) = utils.getScreenSize(window)
         window.set_default_size(self.DEFAULT_WIDTH, -1)
@@ -911,9 +944,9 @@ class SendVote(td.Thread):
         '''Run'''
         try:
             post = urllib2.urlopen(self.url, timeout=POST_TIMEOUT)
-            self.messageCallback("%s è¯„åˆ†æˆåŠŸï¼Œ æ„Ÿè°¢å‚ä¸Žï¼ :)" % (self.name))
+            self.messageCallback("%s ô¶µô¡‰ô›„ô£•ôƒ‡ ô¢¡ô‘…œô™«ô‘Š¦ô‚¼ :)" % (self.name))
         except Exception, e:
-            self.messageCallback("%s è¯„åˆ†å¤±è´¥ï¼Œ è¯·æ£€æŸ¥ä½ çš„ç½‘ç»œé“¾æŽ¥ã€‚:(" % (self.name))
+            self.messageCallback("%s ô¶µô¡‰ô¼”ô–½ôƒ‡ ô¸¾ô¨µôš†ô´œô»ô‘¿ô±¤ô¯“ô©ºô€‚:(" % (self.name))
             print "Error: ", e
             
 class FetchDetail(td.Thread):

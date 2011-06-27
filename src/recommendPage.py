@@ -120,6 +120,11 @@ class SlideItem(DownloadItem):
         '''Add addition status.'''
         status = self.appInfo.status
         if status in [APP_STATE_NORMAL, APP_STATE_UPGRADE, APP_STATE_INSTALLED]:
+            self.itemNameLabel.set_width_chars(70)
+        else:        
+            self.itemNameLabel.set_width_chars(35)
+        
+        if status in [APP_STATE_NORMAL, APP_STATE_UPGRADE, APP_STATE_INSTALLED]:
             self.initNormalStatus()
         elif status == APP_STATE_DOWNLOADING:
             self.initDownloadingStatus(self.appAdditionBox)
@@ -138,8 +143,6 @@ class SlideItem(DownloadItem):
             
         # Clean right box first.
         utils.containerRemoveAll(self.appAdditionBox)
-        
-        self.itemNameLabel.set_width_chars(70)
         
         # Add action button.
         (actionButtonBox, actionButtonAlign) = createActionButton(1.0, 0.5)
@@ -240,6 +243,38 @@ class SlideBar:
             appInfo = self.repoCache.cache[pkgName]
             slideItem = SlideItem(appInfo, name, image, self.maskHeight, switchStatus, downloadQueue)
             self.itemDict[pkgName] = slideItem
+            
+    def switchToStatus(self, pkgName, appStatus):
+        '''Switch to downloading status.'''
+        if self.itemDict.has_key(pkgName):
+            appItem = self.itemDict[pkgName]
+            appItem.appInfo.status = appStatus
+            appItem.initAdditionStatus()
+            
+    def initNormalStatus(self, pkgName, isMarkDeleted):
+        '''Init normal status.'''
+        if isMarkDeleted:
+            self.switchToStatus(pkgName, APP_STATE_NORMAL)
+        else:
+            self.switchToStatus(pkgName, APP_STATE_INSTALLED)
+            
+    def updateDownloadingStatus(self, pkgName, progress, feedback):
+        '''Update downloading status.'''
+        if self.itemDict.has_key(pkgName):
+            appItem = self.itemDict[pkgName]
+            appItem.updateDownloadingStatus(progress, feedback)
+            
+    def updateInstallingStatus(self, pkgName, progress, feedback):
+        '''Update installing status.'''
+        if self.itemDict.has_key(pkgName):
+            appItem = self.itemDict[pkgName]
+            appItem.updateInstallingStatus(progress, feedback)
+            
+    def updateUpgradingStatus(self, pkgName, progress, feedback):
+        '''Update upgrading status.'''
+        if self.itemDict.has_key(pkgName):
+            appItem = self.itemDict[pkgName]
+            appItem.updateUpgradingStatus(progress, feedback)
             
     def getSlideItem(self, index):
         '''Get slide item.'''
@@ -353,11 +388,15 @@ class SlideBar:
             self.alphaInterval = 1.0 / self.times
             
             # Change slide item.
-            utils.containerRemoveAll(self.slideItemBox)        
-            self.slideItemBox.pack_start(self.getSlideItem(self.targetIndex).itemFrame)
+            self.updateSlideItem()
                         
             # Start slide.
             glib.timeout_add(self.interval, self.slide)
+            
+    def updateSlideItem(self):
+        '''Update slide item.'''
+        utils.containerRemoveAll(self.slideItemBox)        
+        self.slideItemBox.pack_start(self.getSlideItem(self.targetIndex).itemFrame)
 
     def slide(self):
         '''Slide.'''

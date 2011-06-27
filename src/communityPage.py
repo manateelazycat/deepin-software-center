@@ -38,7 +38,7 @@ class CommunityPage:
         
         # Open linux deepin bbs.
         self.view = webkit.WebView()
-        self.view.open("http://www.linuxdeepin.com/forum/recent")
+        self.view.open("http://bbs.linuxdeepin.com/")
         
         # Make all link open in current window.
         self.view.connect("create-web-view", self.createWebViewCallback)

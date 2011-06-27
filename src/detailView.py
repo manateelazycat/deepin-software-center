@@ -121,7 +121,7 @@ class DetailView:
         
         pkgName = utils.getPkgName(pkg)
         appName = gtk.Label()
-        appName.set_markup("<span foreground='#000000' size='%s'><b>%s</b></span>" % (LABEL_FONT_XX_LARGE_SIZE, pkgName))
+        appName.set_markup("<span foreground='#000000' size='%s'><b>%s</b></span>" % (LABEL_FONT_XXX_LARGE_SIZE, pkgName))
         appNameAlign = gtk.Alignment()
         appNameAlign.set(0.0, 0.5, 0.0, 0.0)
         appNameAlign.add(appName)
@@ -624,7 +624,7 @@ class DetailView:
             notifyPaddingY = 20
             commentNotifyLabel = gtk.Label()
             commentNotifyLabel.set_markup(
-                "<span foreground='#1A3E88' size='%s'><b>还不快抢沙发?</b></span>" % (LABEL_FONT_X_LARGE_SIZE))
+                "<span foreground='#1A3E88' size='%s'><b>还不快抢沙发?</b></span>" % (LABEL_FONT_XX_LARGE_SIZE))
             self.commentNotifyAlign = gtk.Alignment()
             self.commentNotifyAlign.set(0.5, 0.5, 0.0, 0.0)
             self.commentNotifyAlign.set_padding(notifyPaddingY, notifyPaddingY, 0, 0)

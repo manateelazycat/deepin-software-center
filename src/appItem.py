@@ -205,12 +205,12 @@ class UninstallItem:
         if not self.appInfo.status == APP_STATE_UNINSTALLING and self.appVoteView != None:
             self.appVoteView.updateVote(starLevel, voteNum)
                 
-def createActionButton():
+def createActionButton(alignX=0.5, alignY=0.5):
     '''Create action button.'''
     appButtonBox = gtk.VBox()
     appButtonBox.set_size_request(ACTION_BUTTON_WIDTH, -1)
     appButtonAlign = gtk.Alignment()
-    appButtonAlign.set(0.5, 0.5, 1.0, 1.0)
+    appButtonAlign.set(alignX, alignY, 1.0, 1.0)
     appButtonAlign.set_padding(0, 0, ACTION_BUTTON_PADDING_X, ACTION_BUTTON_PADDING_X)
     appButtonAlign.add(appButtonBox)
     

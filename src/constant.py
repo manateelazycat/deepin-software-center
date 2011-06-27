@@ -77,7 +77,7 @@ CLASSIFY_LIST = [(CLASSIFY_WEB,          ("web.png", [])),
                  (CLASSIFY_MULTIMEDIA,   ("multimedia.png", [])),
                  (CLASSIFY_GAME,         ("game.png", [])),
                  (CLASSIFY_GRAPHICS,     ("graphics.png", [])),
-                 (CLASSIFY_WORD,        ("desktop.png", [])),
+                 (CLASSIFY_WORD,         ("desktop.png", [])),
                  (CLASSIFY_PROFESSIONAL, ("project.png", [])),
                  (CLASSIFY_PROGRAMMING,  ("develop.png", [])),
                  (CLASSIFY_DRIVER,       ("office.png", [])),
@@ -88,7 +88,7 @@ CLASSIFY_LIST = [(CLASSIFY_WEB,          ("web.png", [])),
 RECOMMEND_LIST = [
     (CLASSIFY_NEWS,             False, ["gedit", "g2ipmsg", "eog", "vlc", "network-manager-gnome"]),
     (CLASSIFY_RECOMMEND,        False, ["stellarium", "xpdf", "wireshark", "playonlinux", "amarok"]),
-    (CLASSIFY_WEB,              True,  ["chromium-browser", "uget", "pidgin", "thunderbird", "qbittorrent"]),
+    (CLASSIFY_WEB,              True,  ["amule", "uget", "pidgin", "thunderbird", "qbittorrent"]),
     (CLASSIFY_MULTIMEDIA,       True,  ["rhythmbox", "gtk-recordmydesktop", "openshot", "moovida", "audacity"]),
     (CLASSIFY_GAME,             True,  ["beneath-a-steel-sky", "freedroid", "flightgear", "supertuxkart", "alien-arena"]),
     (CLASSIFY_GRAPHICS,         True,  ["gwenview", "gnome-paint", "blender", "inkscape", "gimp"]),
@@ -123,11 +123,13 @@ LINE_RIGHT = 3
 DEFAULT_FONT_SIZE = 10
 BUTTON_FONT_SIZE_SMALL = 10
 BUTTON_FONT_SIZE_MEDIUM = 11
+BUTTON_FONT_SIZE_LARGE = 12
 LABEL_FONT_SIZE = 10 * 1000
 LABEL_FONT_MEDIUM_SIZE = 11 * 1000
 LABEL_FONT_LARGE_SIZE = 12 * 1000
-LABEL_FONT_X_LARGE_SIZE = 15 * 1000
-LABEL_FONT_XX_LARGE_SIZE = 20 * 1000
+LABEL_FONT_X_LARGE_SIZE = 13 * 1000
+LABEL_FONT_XX_LARGE_SIZE = 15 * 1000
+LABEL_FONT_XXX_LARGE_SIZE = 20 * 1000
 
 DOWNLOAD_TIMEOUT = 30           # times
 POST_TIMEOUT = 10               # seconds

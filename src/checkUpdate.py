@@ -285,12 +285,17 @@ class TrayIcon:
     @postGUI
     def finishCheck(self):
         '''Finish check.'''
-        # Send IP information to server for statistics.
-        print "Send IP: %s" % (self.getMyIP())
-        
         # Show detail information.
         self.hoverIcon()
-    
+        
+        # Send IP information to server for statistics.
+        try:
+            myIP = self.getMyIP()
+            connection = urllib2.urlopen("http://test-linux.gteasy.com/record.php?i=" + str(myIP), timeout=POST_TIMEOUT)
+            print "Send ip %s success." % (myIP)
+        except Exception, e:
+            print "Send ip %s failed" % (myIP)
+        
     def getLastUpdateHours(self):
         """
         Return the number of hours since the last successful apt-get update

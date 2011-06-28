@@ -201,8 +201,8 @@ class SlideBar:
                 ("eio", None)
                 ])
         self.initItems(self.infoList, switchStatus, downloadQueue, entryDetailCallback)
-        self.sourceIndex = 0
-        self.targetIndex = 1
+        self.sourceIndex = 1
+        self.targetIndex = 0
         
         self.sourceImage = self.createSlideImage(self.sourceIndex)
         self.targetImage = self.createSlideImage(self.targetIndex)

@@ -329,7 +329,7 @@ class TrayIcon:
             gtk.gdk.threads_init()        
             
             self.trayIcon = gtk.StatusIcon()
-            self.trayIcon.set_from_file("./icons/icon/icon.ico")
+            self.trayIcon.set_from_file("./trayIcon/icon.png")
             self.trayIcon.set_has_tooltip(True)
             self.trayIcon.set_visible(True)
             self.trayIcon.connect("activate", lambda w: self.showSoftwareCenter())

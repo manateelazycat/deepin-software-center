@@ -31,9 +31,11 @@ class Progressbar():
 	
     def __init__(self, width,
                  bgLeftImg, bgMiddleImg, bgRightImg,
-                 fgLeftImg, fgMiddleImg, fgRightImg):
+                 fgLeftImg, fgMiddleImg, fgRightImg,
+                 withoutBorder=False):
         '''Init for progress bar.'''
         self.box = gtk.HBox()
+        self.withoutBorder = withoutBorder
         
         self.bgLeftPixbuf = gtk.gdk.pixbuf_new_from_file(bgLeftImg)
         self.bgMiddlePixbuf = gtk.gdk.pixbuf_new_from_file(bgMiddleImg)
@@ -69,26 +71,32 @@ class Progressbar():
         if progress == 0:
             self.leftImage.set_from_pixbuf(self.bgLeftPixbuf)
         else:
-            bgLeftPixbuf = self.bgLeftPixbuf.copy()
-            self.fgLeftPixbuf.copy_area(
-                0, 0, self.fgBorderWidth, self.fgHeight,
-                bgLeftPixbuf, 
-                (self.bgBorderWidth - self.fgBorderWidth),
-                (self.bgHeight - self.fgHeight) / 2)
-            
-            self.leftImage.set_from_pixbuf(bgLeftPixbuf)
+            if self.withoutBorder:
+                self.leftImage.set_from_pixbuf(self.fgLeftPixbuf)
+            else:
+                bgLeftPixbuf = self.bgLeftPixbuf.copy()
+                self.fgLeftPixbuf.copy_area(
+                    0, 0, self.fgBorderWidth, self.fgHeight,
+                    bgLeftPixbuf, 
+                    (self.bgBorderWidth - self.fgBorderWidth),
+                    (self.bgHeight - self.fgHeight) / 2)
+                
+                self.leftImage.set_from_pixbuf(bgLeftPixbuf)
     
     def setRightImage(self, progress):
         '''Get right image.'''
         if progress == 100:
-            bgRightPixbuf = self.bgRightPixbuf.copy()
-            self.fgRightPixbuf.copy_area(
-                0, 0, self.fgBorderWidth, self.fgHeight,
-                bgRightPixbuf, 
-                0,
-                (self.bgHeight - self.fgHeight) / 2)
-            
-            self.rightImage.set_from_pixbuf(bgRightPixbuf)
+            if self.withoutBorder:
+                self.rightImage.set_from_pixbuf(self.fgRightPixbuf)
+            else:
+                bgRightPixbuf = self.bgRightPixbuf.copy()
+                self.fgRightPixbuf.copy_area(
+                    0, 0, self.fgBorderWidth, self.fgHeight,
+                    bgRightPixbuf, 
+                    0,
+                    (self.bgHeight - self.fgHeight) / 2)
+                
+                self.rightImage.set_from_pixbuf(bgRightPixbuf)
         else:
             self.rightImage.set_from_pixbuf(self.bgRightPixbuf)
         

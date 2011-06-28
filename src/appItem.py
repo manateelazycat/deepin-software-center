@@ -169,12 +169,13 @@ class UninstallItem:
             appUninstallBox.connect("button-release-event", lambda widget, event: self.switchToNormal(True))
             actionButtonBox.pack_start(appUninstallAlign)
             
-    def initUninstallingStatus(self):
+    def initUninstallingStatus(self, withoutBorder=False):
         '''Init uninstalling status.'''
         (progressbar, feedbackLabel) = initActionStatus(
             self.appAdditionBox, 
             self.appInfo.uninstallingProgress,
-            self.appInfo.uninstallingFeedback)
+            self.appInfo.uninstallingFeedback,
+            withoutBorder)
         
         self.uninstallingProgressbar = progressbar
         self.uninstallingFeedbackLabel = feedbackLabel
@@ -233,14 +234,17 @@ class DownloadItem:
         self.downloadingFeedbackLabel = None
         self.appVoteView = None
         
-    def initDownloadingStatus(self, appAdditionBox):
+    def initDownloadingStatus(self, appAdditionBox, withoutBorder=False):
         '''Init downloading status.'''
         # Clean right box first.
         utils.containerRemoveAll(appAdditionBox)
         
         # Add progress.
         progress = self.appInfo.downloadingProgress
-        progressbar = drawProgressbar(self.PROGRESS_WIDTH)
+        if withoutBorder:
+            progressbar = drawProgressbarWithoutBorder(self.PROGRESS_WIDTH)
+        else:
+            progressbar = drawProgressbar(self.PROGRESS_WIDTH)
         progressbar.setProgress(progress)
         self.downloadingProgressbar = progressbar
         appAdditionBox.pack_start(progressbar.box)
@@ -277,14 +281,17 @@ class DownloadItem:
         self.downloadingFeedbackLabel = feedbackLabel
         actionBox.pack_start(feedbackLabel)
         
-    def initDownloadPauseStatus(self, appAdditionBox):
+    def initDownloadPauseStatus(self, appAdditionBox, withoutBorder=False):
         '''Init download pause status.'''
         # Clean right box first.
         utils.containerRemoveAll(appAdditionBox)
         
         # Add progress.
         progress = self.appInfo.downloadingProgress
-        progressbar = drawProgressbar(self.PROGRESS_WIDTH)
+        if withoutBorder:
+            progressbar = drawProgressbarWithoutBorder(self.PROGRESS_WIDTH)
+        else:
+            progressbar = drawProgressbar(self.PROGRESS_WIDTH)
         progressbar.setProgress(progress)
         appAdditionBox.pack_start(progressbar.box)
         
@@ -319,22 +326,24 @@ class DownloadItem:
         pauseLabel.set_alignment(0.5, 0.5)
         actionBox.pack_start(pauseLabel)
         
-    def initInstallingStatus(self):
+    def initInstallingStatus(self, withoutBorder=False):
         '''Init installing status.'''
         (progressbar, feedbackLabel) = initActionStatus(
             self.appAdditionBox, 
             self.appInfo.installingProgress,
-            self.appInfo.installingFeedback)
+            self.appInfo.installingFeedback, 
+            withoutBorder)
         
         self.installingProgressbar = progressbar
         self.installingFeedbackLabel = feedbackLabel
         
-    def initUpgradingStatus(self):
+    def initUpgradingStatus(self, withoutBorder=False):
         '''Init upgrading status.'''
         (progressbar, feedbackLabel) = initActionStatus(
             self.appAdditionBox, 
             self.appInfo.upgradingProgress, 
-            self.appInfo.upgradingFeedback)
+            self.appInfo.upgradingFeedback,
+            withoutBorder)
         
         self.upgradingProgressbar = progressbar
         self.upgradingFeedbackLabel = feedbackLabel
@@ -678,7 +687,7 @@ def createStarBox(starLevel=5.0, starSize=16, paddingX=0):
         
     return appStarBox
 
-def initActionStatus(appAdditionBox, progress, feedback):
+def initActionStatus(appAdditionBox, progress, feedback, withoutBorder=False):
     '''Init action status.'''
     APP_RIGHT_PADDING_X = 20
     PROGRESS_WIDTH = 170
@@ -687,7 +696,10 @@ def initActionStatus(appAdditionBox, progress, feedback):
     utils.containerRemoveAll(appAdditionBox)
     
     # Add progress.
-    progressbar = drawProgressbar(PROGRESS_WIDTH)
+    if withoutBorder:
+        progressbar = drawProgressbarWithoutBorder(PROGRESS_WIDTH)
+    else:
+        progressbar = drawProgressbar(PROGRESS_WIDTH)
     progressbar.setProgress(progress)
     appAdditionBox.pack_start(progressbar.box)
     

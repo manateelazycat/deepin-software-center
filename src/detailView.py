@@ -322,11 +322,16 @@ class DetailView:
         return align
     
     def initCommentArea(self, detailBox):
+        paddingY = 10
         commentAreaLabel = gtk.Label()
         commentAreaLabel.set_markup(
             "<span foreground='#1A3E88' size='%s'>%s</span>"
             % (LABEL_FONT_MEDIUM_SIZE, "正在进行社区整合调试，我们将在下一个版本开放评论功能。:)"))
-        detailBox.pack_start(commentAreaLabel)
+        commentAreaAlign = gtk.Alignment()
+        commentAreaAlign.set(0.5, 0.5, 0.0, 0.0)
+        commentAreaAlign.set_padding(paddingY, paddingY, 0, 0)
+        commentAreaAlign.add(commentAreaLabel)
+        detailBox.pack_start(commentAreaAlign)
         
     def initCommentArea_(self, detailBox):
         '''Init comment area.'''
@@ -901,8 +906,9 @@ class AppInfoItem(DownloadItem):
         self.itemFrame = gtk.VBox()
         self.itemBox = gtk.HBox()
         itemEventBox = gtk.EventBox()
+        itemEventBox.set_visible_window(False)
         itemEventBox.add(self.itemBox)
-        itemEventBox.connect("expose-event", lambda w, e: drawBackground(w, e, "#6FA2FE", "#6085C7"))
+        itemEventBox.connect("expose-event", lambda w, e: drawDetailItemBackground(w, e))
         itemAlign = gtk.Alignment()
         itemAlign.set_padding(0, 0, self.ALIGN_X, self.ALIGN_X)
         itemAlign.set(0.0, 0.5, 1.0, 1.0)
@@ -949,7 +955,7 @@ class AppInfoItem(DownloadItem):
         # Add application version.
         appVersion = gtk.Label()
         appVersion.set_markup(
-            "<span foreground='#000000' size='%s'>%s</span> <span foreground='#FFFFFF' size='%s'>%s</span>"
+            "<span foreground='#000000' size='%s'>%s</span> <span foreground='#000000' size='%s'>%s</span>"
             % (LABEL_FONT_MEDIUM_SIZE, "版本:",
                LABEL_FONT_MEDIUM_SIZE, utils.getPkgVersion(pkg)))
         appVersion.set_alignment(0.0, 0.5)
@@ -962,7 +968,7 @@ class AppInfoItem(DownloadItem):
             (_, releaseSize) = utils.getPkgDependSize(self.aptCache, pkg, ACTION_UNINSTALL)
             releaseSizeLabel = gtk.Label()
             releaseSizeLabel.set_markup(
-                "<span foreground='#000000' size='%s'>%s</span> <span foreground='#FFFFFF' size='%s'>%s</span> <span foreground='#000000' size='%s'>%s</span>"
+                "<span foreground='#000000' size='%s'>%s</span> <span foreground='#000000' size='%s'>%s</span> <span foreground='#000000' size='%s'>%s</span>"
                 % (LABEL_FONT_MEDIUM_SIZE, "卸载后释放",
                    LABEL_FONT_MEDIUM_SIZE, utils.formatFileSize(releaseSize),
                    LABEL_FONT_MEDIUM_SIZE, "空间"))
@@ -979,14 +985,14 @@ class AppInfoItem(DownloadItem):
                 actionLabel = "安装"
                 (downloadSize, useSize) = utils.getPkgDependSize(self.aptCache, pkg, ACTION_INSTALL)
             useSizeLabel.set_markup(
-                "    <span foreground='#000000' size='%s'>%s</span> <span foreground='#FFFFFF' size='%s'>%s</span> <span foreground='#000000' size='%s'>%s</span>" 
+                "    <span foreground='#000000' size='%s'>%s</span> <span foreground='#000000' size='%s'>%s</span> <span foreground='#000000' size='%s'>%s</span>" 
                 % (LABEL_FONT_MEDIUM_SIZE, actionLabel + "后占用", 
                    LABEL_FONT_MEDIUM_SIZE, utils.formatFileSize(useSize),
                    LABEL_FONT_MEDIUM_SIZE, "空间"))
                 
             downloadSizeLabel = gtk.Label()
             downloadSizeLabel.set_markup(
-                "<span foreground='#000000' size='%s'>%s</span> <span foreground='#FFFFFF' size='%s'>%s</span>"
+                "<span foreground='#000000' size='%s'>%s</span> <span foreground='#000000' size='%s'>%s</span>"
                 % (LABEL_FONT_MEDIUM_SIZE, "需要下载", 
                    LABEL_FONT_MEDIUM_SIZE, utils.formatFileSize(downloadSize)))
             downloadSizeLabel.set_alignment(0.0, 0.5)

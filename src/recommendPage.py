@@ -136,13 +136,13 @@ class SlideItem(DownloadItem):
         if status in [APP_STATE_NORMAL, APP_STATE_UPGRADE, APP_STATE_INSTALLED]:
             self.initNormalStatus()
         elif status == APP_STATE_DOWNLOADING:
-            self.initDownloadingStatus(self.appAdditionBox)
+            self.initDownloadingStatus(self.appAdditionBox, True)
         elif status == APP_STATE_DOWNLOAD_PAUSE:
-            self.initDownloadPauseStatus(self.appAdditionBox)
+            self.initDownloadPauseStatus(self.appAdditionBox, True)
         elif status == APP_STATE_INSTALLING:
-            self.initInstallingStatus()
+            self.initInstallingStatus(True)
         elif status == APP_STATE_UPGRADING:
-            self.initUpgradingStatus()
+            self.initUpgradingStatus(True)
             
         self.itemFrame.show_all()
         

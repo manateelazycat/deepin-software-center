@@ -564,6 +564,26 @@ def drawBackground(widget, event, color, borderColor=None, borderWidth=3):
         
     return True
 
+def drawDetailItemBackground(widget, event):
+    '''Draw detail item background.'''
+    rect = widget.allocation
+    x, y = rect.x, rect.y
+    leftPixbuf = gtk.gdk.pixbuf_new_from_file("./icons/detail/left.png")
+    borderWidth, borderHeight = leftPixbuf.get_width(), leftPixbuf.get_height()
+    middlePixbuf = gtk.gdk.pixbuf_new_from_file("./icons/detail/middle.png").scale_simple(
+        rect.width - borderWidth * 2, borderHeight, gtk.gdk.INTERP_BILINEAR)
+    rightPixbuf = gtk.gdk.pixbuf_new_from_file("./icons/detail/right.png")
+
+    cr = widget.window.cairo_create()
+    drawPixbuf(cr, leftPixbuf, x, y)
+    drawPixbuf(cr, middlePixbuf, x + borderWidth, y)
+    drawPixbuf(cr, rightPixbuf, x + rect.width - borderWidth, y)
+    
+    if widget.get_child() != None:
+        widget.propagate_expose(widget.get_child(), event)
+        
+    return True
+
 def drawRoundRectangle(cr, x, y, width, height, r):
     '''Draw round rectangle.'''
     cr.move_to(x + r, y);
@@ -849,5 +869,18 @@ def drawProgressbar(width):
         "./icons/cell/download_fg_left.png",
         "./icons/cell/download_fg_middle.png",
         "./icons/cell/download_fg_right.png",
+        )
+    
+def drawProgressbarWithoutBorder(width):
+    '''Draw progressbar without border.'''
+    return pb.Progressbar(
+        width,
+        "./icons/cell/progress_bg_left.png",
+        "./icons/cell/progress_bg_middle.png",
+        "./icons/cell/progress_bg_right.png",
+        "./icons/cell/progress_fg_left.png",
+        "./icons/cell/progress_fg_middle.png",
+        "./icons/cell/progress_fg_right.png",
+        True
         )
     

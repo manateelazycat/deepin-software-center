@@ -1,4 +1,3 @@
-ppstream
 aconnectgui
 aeolus
 alsamixergui
@@ -168,6 +167,7 @@ phasex
 picard
 pitivi
 potamus
+ppstream
 projectm-jack
 projectm-pulseaudio
 promoe

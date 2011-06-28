@@ -129,6 +129,7 @@ tkcvs
 tora
 umbrello
 usbprog
+vim
 virtaal
 visualvm
 vite
@@ -140,4 +141,3 @@ xdot
 xmlcopyeditor
 xsddiagram
 xvile
-vim

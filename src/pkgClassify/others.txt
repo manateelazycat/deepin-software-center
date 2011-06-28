@@ -1,4 +1,3 @@
-deepin-software-center
 accerciser
 agave
 alarm-clock
@@ -56,6 +55,7 @@ dasher
 dates
 deb-gview
 debgtd
+deepin-software-center
 deja-dup
 deskscribe
 desktopnova
@@ -123,6 +123,7 @@ gapcmon
 gastman
 gbirthday
 gbonds
+gcalctool
 gcipher
 gco
 gcolor2

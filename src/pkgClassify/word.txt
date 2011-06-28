@@ -1,4 +1,3 @@
-eio
 almanah
 artha
 babiloo
@@ -13,6 +12,7 @@ chmsee
 comix
 djvusmooth
 ebview
+eio
 epdfview
 evince
 fantasdic
@@ -23,6 +23,7 @@ gbgoffice
 gedit
 gnome-office
 gnote
+gnumeric
 goldendict
 gpdftext
 gtodo

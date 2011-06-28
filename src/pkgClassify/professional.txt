@@ -47,7 +47,6 @@ gambit
 gamgi
 garlic
 gausssum
-gcalctool
 gdis
 gdpc
 geda-gattrib
@@ -62,7 +61,6 @@ ghkl
 glfer
 gmfsk
 gmsh
-gnumeric
 gnusim8085
 gperiodic
 gpredict

@@ -86,18 +86,18 @@ CLASSIFY_LIST = [(CLASSIFY_WEB,          ("web.png", [])),
                  ]
 
 RECOMMEND_LIST = [
-    (CLASSIFY_NEWS,             False, ["gedit", "g2ipmsg", "eog", "vlc", "qbittorrent"]),
-    (CLASSIFY_RECOMMEND,        False, ["stellarium", "xpdf", "wireshark", "gnome-mplayer", "amarok"]),
-    (CLASSIFY_WEB,              True,  ["firefox", "amule", "uget", "pidgin", "thunderbird"]),
-    (CLASSIFY_MULTIMEDIA,       True,  ["rhythmbox", "gtk-recordmydesktop", "openshot", "moovida", "audacity"]),
-    (CLASSIFY_GAME,             True,  ["beneath-a-steel-sky", "freedroid", "flightgear", "supertuxkart", "alien-arena"]),
-    (CLASSIFY_GRAPHICS,         True,  ["gwenview", "gnome-paint", "blender", "inkscape", "gimp"]),
-    (CLASSIFY_WORD,             True,  ["libreoffice", "liferea", "tomboy", "evince", "kchmviewer"]),
-    (CLASSIFY_PROFESSIONAL,     True,  ["qcad", "mayavi2", "maxima", "axiom", "cadabra"]),
-    (CLASSIFY_PROGRAMMING,      True,  ["emacs", "vim", "eclipse", "anjuta", "codeblocks"]),
-    (CLASSIFY_DRIVER,           True,  ["jockey-gtk", "ntfs-config", "fglrx", "ndisgtk", "xserver-xorg-video-nv"]),
-    (CLASSIFY_WINDOWS,          True,  ["wine", "playonlinux", "q4wine", "winetricks", "wine1.3"]),
-    (CLASSIFY_OTHERS,           True,  ["ibus-pinyin", "camorama", "brasero", "gparted", "unetbootin"]),
+    (CLASSIFY_NEWS,             False, ["deepin-software-center", "iptux", "transmission", "vlc", "thunderbird"]),
+    (CLASSIFY_RECOMMEND,        False, ["amarok", "comix", "goldendict", "stellarium", "bluefish"]),
+    (CLASSIFY_WEB,              True,  ["firefox", "amule", "uget", "pidgin", "liferea"]), # 
+    (CLASSIFY_MULTIMEDIA,       True,  ["audacious", "smplayer", "openshot", "audacity", "brasero"]), # 
+    (CLASSIFY_GAME,             True,  ["aisleriot", "frozen-bubble", "hedgewars", "supertuxkart", "alien-arena"]), # 
+    (CLASSIFY_GRAPHICS,         True,  ["gnome-paint", "gwenview", "gimp", "inkscape", "blender"]), # 
+    (CLASSIFY_WORD,             True,  ["tomboy", "libreoffice", "evince", "kchmviewer", "stardict"]), # 
+    (CLASSIFY_PROFESSIONAL,     True,  ["qcad", "ballview", "amide", "scilab", "celestia"]), # 
+    (CLASSIFY_PROGRAMMING,      True,  ["emacs", "vim", "eclipse", "codeblocks", "gitg"]), # 
+    (CLASSIFY_DRIVER,           True,  ["jockey-gtk", "ntfs-config", "ndisgtk", "fglrx", "nvidia-current"]), # 
+    (CLASSIFY_WINDOWS,          True,  ["playonlinux", "wine", "q4wine", "winetricks", "wine1.3"]), # 
+    (CLASSIFY_OTHERS,           True,  ["ibus-pinyin", "camorama", "shutter", "gparted", "unetbootin"]),
     ]
 
 LANGUAGE = [

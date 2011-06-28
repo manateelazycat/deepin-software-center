@@ -420,7 +420,7 @@ def setCustomizeCursor(widget, cursorPath):
                                             0, 0))
 def runCommand(command):
     '''Run command.'''
-    subprocess.Popen("nohup %s > /dev/null" % (command), shell=True)
+    subprocess.Popen("nohup %s > /dev/null 2>&1" % (command), shell=True)
     
 def touchFile(filepath):
     '''Touch file.'''

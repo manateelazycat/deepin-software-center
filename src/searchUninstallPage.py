@@ -36,11 +36,12 @@ pygtk.require('2.0')
 class SearchUninstallPage:
     '''Search page.'''
 	
-    def __init__(self, pageId, repoCache, keyword, pkgList, 
+    def __init__(self, searchQuery, pageId, repoCache, keyword, pkgList, 
                  actionQueue, 
                  entryDetailCallback, sendVoteCallback, fetchVoteCallback, exitSearchPageCallback):
         '''Init for search page.'''
         # Init.
+        self.searchQuery = searchQuery
         self.repoCache = repoCache
         self.pkgList = pkgList
         self.content = keyword
@@ -75,7 +76,7 @@ class SearchUninstallPage:
     
     def update(self, pkgName):
         '''Update.'''
-        self.pkgList = filter (lambda n: n in self.repoCache.uninstallablePkgs, search.do_search(self.keywords))
+        self.pkgList = filter (lambda n: n in self.repoCache.uninstallablePkgs, self.searchQuery.query(self.keywords))
         
         self.topbar.searchCompletion.hide()
         self.topbar.updateTopbar(self.content, len(self.pkgList))
@@ -87,7 +88,7 @@ class SearchUninstallPage:
         self.content = editable.get_chars(0, -1)
         self.keywords = self.content.split()
         if len(self.keywords) != 0:
-            pkgList = filter (lambda n: n in self.repoCache.uninstallablePkgs, search.do_search(self.keywords))
+            pkgList = filter (lambda n: n in self.repoCache.uninstallablePkgs, self.searchQuery.query(self.keywords))
             self.pkgList = pkgList
             self.topbar.searchCompletion.hide()
             self.topbar.updateTopbar(self.content, len(pkgList))

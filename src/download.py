@@ -179,7 +179,7 @@ class Download(td.Thread):
                 
             for uri in version.uris:
                 # Debug.
-                # print "Add link %s" % (uri)
+                print "Add link %s" % (uri)
 
                 lines.append('<url priority="1">{0}</url>'.format(uri))
                 

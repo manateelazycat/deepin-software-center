@@ -38,7 +38,7 @@ pygtk.require('2.0')
 class RepoPage:
     '''Interface for repository page.'''
     
-    def __init__(self, repoCache, switchStatus, downloadQueue, entryDetailCallback, 
+    def __init__(self, repoCache, searchQuery, switchStatus, downloadQueue, entryDetailCallback, 
                  entrySearchCallback, sendVoteCallback, fetchVoteCallback):
         '''Init for repository page.'''
         # Init.
@@ -47,6 +47,7 @@ class RepoPage:
         self.categorybar = categorybar.CategoryBar(self.repoCache.getCategorys(), self.selectCategory)
         self.contentBox = gtk.HBox()
         self.topbar = Topbar(
+            searchQuery,
             CLASSIFY_WEB, 
             self.repoCache.getCategoryNumber(CLASSIFY_WEB),
             self.repoCache.cache.values(),
@@ -94,8 +95,9 @@ class Topbar:
 	
     SEARCH_ENTRY_WIDTH = 300
     
-    def __init__(self, category, itemNum, appInfos, entrySearchCallback):
+    def __init__(self, searchQuery, category, itemNum, appInfos, entrySearchCallback):
         '''Init for top bar.'''
+        self.searchQuery = searchQuery
         self.paddingX = 5
         self.box = gtk.HBox()
         self.boxAlign = gtk.Alignment()
@@ -128,7 +130,7 @@ class Topbar:
         content = self.searchEntry.get_chars(0, -1)
         keywords = content.split()
         if len(keywords) != 0:
-            pkgList = search.do_search(keywords)
+            pkgList = self.searchQuery.query(keywords)
             self.entrySearchCallback(PAGE_REPO, content, pkgList)
         
     def clickCandidate(self, candidate):

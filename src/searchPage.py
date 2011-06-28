@@ -35,11 +35,12 @@ pygtk.require('2.0')
 class SearchPage:
     '''Search page.'''
 	
-    def __init__(self, pageId, repoCache, keyword, pkgList, 
+    def __init__(self, searchQuery, pageId, repoCache, keyword, pkgList, 
                  switchStatus, downloadQueue, 
                  entryDetailCallback, sendVoteCallback, fetchVoteCallback, exitSearchPageCallback):
         '''Init for search page.'''
         # Init.
+        self.searchQuery = searchQuery
         self.repoCache = repoCache
         self.pkgList = pkgList
         
@@ -76,7 +77,7 @@ class SearchPage:
         content = editable.get_chars(0, -1)
         keywords = content.split()
         if len(keywords) != 0:
-            pkgList = search.do_search(keywords)
+            pkgList = self.searchQuery.query(keywords)
             self.pkgList = pkgList
             self.topbar.searchCompletion.hide()
             self.topbar.updateTopbar(content, len(pkgList))

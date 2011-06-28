@@ -77,6 +77,7 @@ class DeepinSoftwareCenter():
         apt_pkg.init()
         self.aptCache = apt.Cache()
         self.repoCache = repoCache.RepoCache(self.aptCache)
+        self.searchQuery = search.Search()
         self.detailViewDict = {}
         self.searchViewDict = {}
         self.noscreenshotList = []
@@ -130,6 +131,7 @@ class DeepinSoftwareCenter():
             )
         self.repoPage = repoPage.RepoPage(
             self.repoCache, 
+            self.searchQuery,
             self.switchStatus,
             self.downloadQueue,
             self.entryDetailView,
@@ -148,6 +150,7 @@ class DeepinSoftwareCenter():
             )
         self.uninstallPage = uninstallPage.UninstallPage(
             self.repoCache, 
+            self.searchQuery,
             self.actionQueue,
             self.entryDetailView,
             self.entrySearchView,
@@ -820,11 +823,13 @@ class DeepinSoftwareCenter():
         '''Entry search view.'''
         if pageId == PAGE_REPO:
             page = searchPage.SearchPage(
+                self.searchQuery,
                 pageId, self.repoCache, keyword, pkgList,
                 self.switchStatus, self.downloadQueue, 
                 self.entryDetailView, self.sendVote, self.fetchVote, self.exitSearchView)
         elif pageId == PAGE_UNINSTALL:
             page = sp.SearchUninstallPage(
+                self.searchQuery,
                 pageId, self.repoCache, keyword, pkgList,
                 self.actionQueue, 
                 self.entryDetailView, self.sendVote, self.fetchVote, self.exitSearchView)

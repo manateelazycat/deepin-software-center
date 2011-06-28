@@ -34,15 +34,17 @@ pygtk.require('2.0')
 class UninstallPage:
     '''Interface for uninstall page.'''
 	
-    def __init__(self, repoCache, actionQueue, entryDetailCallback, entrySearchCallback, 
+    def __init__(self, repoCache, searchQuery, actionQueue, entryDetailCallback, entrySearchCallback, 
                  sendVoteCallback, fetchVoteCallback):
         '''Init for uninstall page.'''
         # Init.
         self.repoCache = repoCache
+        self.searchQuery = searchQuery
         self.box = gtk.VBox()
         self.topbar = Topbar(len(self.repoCache.uninstallablePkgs),
                              repoCache,
-                             entrySearchCallback)
+                             entrySearchCallback,
+                             searchQuery)
         self.uninstallView = uninstallView.UninstallView(
             len(self.repoCache.uninstallablePkgs), 
             self.repoCache.getUninstallableAppList,
@@ -62,9 +64,10 @@ class Topbar:
 	
     SEARCH_ENTRY_WIDTH = 300
     
-    def __init__(self, upgradeNum, repoCache, entrySearchCallback):
+    def __init__(self, upgradeNum, repoCache, entrySearchCallback, searchQuery):
         '''Init for top bar.'''
         # Init.
+        self.searchQuery = searchQuery
         self.paddingX = 5
         self.numColor = '#00BBBB'
         self.textColor = '#1A3E88'
@@ -106,7 +109,7 @@ class Topbar:
         content = self.searchEntry.get_chars(0, -1)
         keywords = content.split()
         if len(keywords) != 0:
-            pkgList = filter (lambda n: n in self.repoCache.uninstallablePkgs, search.do_search(keywords))
+            pkgList = filter (lambda n: n in self.repoCache.uninstallablePkgs, self.searchQuery.query(keywords))
             self.entrySearchCallback(PAGE_UNINSTALL, content, pkgList)
         
     def clickCandidate(self, candidate):

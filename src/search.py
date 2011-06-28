@@ -237,16 +237,23 @@ class DB(object):
             return
         self.cache.remove_option("last", key)
         
-def do_search(args):
-    "search [terms]: start a new search"
-    db = DB()
-    db.set_query_args(args)
-    db.build_query()
-    
-    matches = db.enquire.get_mset(0, db.db.get_doccount())
-    return (map (lambda m: m.document.get_data(), matches))
+class Search:
+    '''Search.'''
+	
+    def __init__(self):
+        '''Init search.'''
+        self.database = DB()
+        
+    def query(self, args):
+        '''Query.'''
+        self.database.set_query_args(args)
+        self.database.build_query()
+        
+        matches = self.database.enquire.get_mset(0, self.database.db.get_doccount())
+        return (map (lambda m: m.document.get_data(), matches))
     
 if __name__ == "__main__":
-    result = do_search(["python"])
+    search = Search()
+    result = search.query(["python"])
     print result
     print len(result)

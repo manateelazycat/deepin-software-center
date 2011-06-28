@@ -3,20 +3,20 @@
 
 # Copyright (C) 2011 Deepin, Inc.
 #               2011 Yong Wang
-# 
+#
 # Author:     Yong Wang <lazycat.manatee@gmail.com>
 # Maintainer: Yong Wang <lazycat.manatee@gmail.com>
-# 
+#
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -24,6 +24,7 @@ from constant import *
 from draw import *
 from tooltips import *
 from utils import postGUI
+import checkUpdate
 import action
 import apt
 import apt_pkg
@@ -31,6 +32,7 @@ import communityPage
 import detailView
 import download
 import glib
+import subprocess
 import gobject
 import gtk
 import json
@@ -60,19 +62,19 @@ import os
 class DeepinSoftwareCenter():
     '''Interface for software center.'''
     DEFAULT_WIDTH = 890
-    
+
     def __init__(self):
         '''Init.'''
         # Init gdk threads.
-        gtk.gdk.threads_init()        
-        
+        gtk.gdk.threads_init()
+
         # Shape.
         self.topbarPixbuf = gtk.gdk.pixbuf_new_from_file("./icons/navigate/background.png")
         self.topHeight = self.topbarPixbuf.get_height()
-            
+
         self.bottombarPixbuf = gtk.gdk.pixbuf_new_from_file("./icons/statusbar/background.png")
         self.bottomHeight = self.bottombarPixbuf.get_height()
-        
+
         # Init apt cache.
         apt_pkg.init()
         self.aptCache = apt.Cache()
@@ -81,7 +83,7 @@ class DeepinSoftwareCenter():
         self.detailViewDict = {}
         self.searchViewDict = {}
         self.noscreenshotList = []
-        
+
         # Download queue.
         self.downloadQueue = download.DownloadQueue(
             self.downloadUpdateCallback,
@@ -89,7 +91,7 @@ class DeepinSoftwareCenter():
             self.downloadFailedCallback,
             self.message
             )
-        
+
         # Action queue.
         self.actionQueue = action.ActionQueue(
             self.actionUpdateCallback,
@@ -97,7 +99,7 @@ class DeepinSoftwareCenter():
             self.actionFailedCallback,
             self.message
             )
-        
+
         # Init widgets.
         self.window = self.initMainWindow()
         self.window.connect("size-allocate", lambda w, a: self.updateShape(w, a))
@@ -109,13 +111,13 @@ class DeepinSoftwareCenter():
         self.mainBox = gtk.VBox()
         self.topbox = gtk.VBox()
         self.topbar = gtk.EventBox()
-        
+
         eventBoxSetBackground(
             self.topbar,
             True, False,
             "./icons/navigate/background.png")
         # make window movable or resizable even window is decorated.
-        self.topbar.connect('button-press-event', 
+        self.topbar.connect('button-press-event',
                             lambda w, e: utils.moveWindow(w, e, self.window))
         self.topbar.connect("button-press-event", self.doubleClickWindow)
         self.titlebar = titlebar.Titlebar(self.minWindow, self.toggleWindow, self.closeWindow)
@@ -123,14 +125,14 @@ class DeepinSoftwareCenter():
         self.bodyBox = gtk.HBox()
         self.contentBox = gtk.VBox()
         self.recommendPage = recommendPage.RecommendPage(
-            self.repoCache, 
+            self.repoCache,
             self.switchStatus,
             self.downloadQueue,
             self.entryDetailView,
             self.selectCategory,
             )
         self.repoPage = repoPage.RepoPage(
-            self.repoCache, 
+            self.repoCache,
             self.searchQuery,
             self.switchStatus,
             self.downloadQueue,
@@ -140,7 +142,7 @@ class DeepinSoftwareCenter():
             self.fetchVote,
             )
         self.updatePage = updatePage.UpdatePage(
-            self.repoCache, 
+            self.repoCache,
             self.switchStatus,
             self.downloadQueue,
             self.entryDetailView,
@@ -149,7 +151,7 @@ class DeepinSoftwareCenter():
             self.upgradeSelectedPkgs,
             )
         self.uninstallPage = uninstallPage.UninstallPage(
-            self.repoCache, 
+            self.repoCache,
             self.searchQuery,
             self.actionQueue,
             self.entryDetailView,
@@ -162,54 +164,54 @@ class DeepinSoftwareCenter():
         self.statusbar = statusbar.Statusbar()
         self.statusbar.eventbox.connect("button-press-event", lambda w, e: utils.resizeWindow(w, e, self.window))
         self.statusbar.eventbox.connect("button-press-event", lambda w, e: utils.moveWindow(w, e, self.window))
-        
+
         self.window.connect_after("show", lambda w: self.createTooltips())
-        
+
     def createTooltips(self):
         '''Create tooltips.'''
-        self.tooltips = Tooltips(self.window, self.statusbar.eventbox)    
-        
+        self.tooltips = Tooltips(self.window, self.statusbar.eventbox)
+
     def message(self, message):
         '''Show message.'''
-        self.tooltips.start(message)    
-        
+        self.tooltips.start(message)
+
     def updateShape(self, widget, allocation):
         '''Update shape.'''
         if allocation.width > 0 and allocation.height > 0:
             width, height = allocation.width, allocation.height
-            middleHeight = height - self.topHeight - self.bottomHeight 
-            
+            middleHeight = height - self.topHeight - self.bottomHeight
+
             topPixbuf = self.topbarPixbuf.scale_simple(width, self.topHeight, gtk.gdk.INTERP_BILINEAR)
             middlePixbuf = gtk.gdk.Pixbuf(gtk.gdk.COLORSPACE_RGB, False, 8, width, middleHeight)
             bottomPixbuf = self.bottombarPixbuf.scale_simple(width, self.bottomHeight, gtk.gdk.INTERP_BILINEAR)
-            
+
             pixbuf = gtk.gdk.Pixbuf(gtk.gdk.COLORSPACE_RGB, True, 8, width, height)
-            
+
             topPixbuf.copy_area(0, 0, width, self.topHeight, pixbuf, 0, 0)
             middlePixbuf.copy_area(0, 0, width, middleHeight, pixbuf, 0, self.topHeight)
             bottomPixbuf.copy_area(0, 0, width, self.bottomHeight, pixbuf, 0, self.topHeight + middleHeight)
-            
+
             (_, mask) = pixbuf.render_pixmap_and_mask(255)
             if mask != None:
                 self.window.shape_combine_mask(mask, 0, 0)
-            
+
     def switchStatus(self, pkgName, appStatus):
         '''Switch status.'''
         # Update slide bar.
         self.recommendPage.slidebar.switchToStatus(pkgName, appStatus)
-        
+
         # Update recommand view.
         recommendView = self.recommendPage.recommendView
         recommendView.switchToStatus(pkgName, appStatus)
-        
+
         # Update repo view.
         repoView = self.repoPage.repoView
         repoView.switchToStatus(pkgName, appStatus)
-        
+
         # Update application view.
         updateView = self.updatePage.updateView
         updateView.switchToStatus(pkgName, appStatus)
-            
+
         # Update detail view.
         for pageId in [PAGE_RECOMMEND, PAGE_REPO, PAGE_UPGRADE, PAGE_UNINSTALL]:
             if self.detailViewDict.has_key(pageId):
@@ -218,7 +220,7 @@ class DeepinSoftwareCenter():
             elif pageId == PAGE_REPO and self.searchViewDict.has_key(pageId):
                 searchView = self.searchViewDict[pageId].searchView
                 searchView.switchToStatus(pkgName, appStatus)
-                
+
     @postGUI
     def downloadUpdateCallback(self, pkgName, progress, feedback, status=APP_STATE_DOWNLOADING):
         '''Update downloading callback.'''
@@ -226,22 +228,22 @@ class DeepinSoftwareCenter():
             # Update Application information.
             appInfo = self.repoCache.cache[pkgName]
             appInfo.updateDownloadStatus(progress, feedback, status)
-            
+
             # Update slide bar.
             self.recommendPage.slidebar.updateDownloadingStatus(pkgName, progress, feedback)
-            
+
             # Update recommand view.
             recommendView = self.recommendPage.recommendView
             recommendView.updateDownloadingStatus(pkgName, progress, feedback)
-            
+
             # Update repo view.
             repoView = self.repoPage.repoView
             repoView.updateDownloadingStatus(pkgName, progress, feedback)
-            
+
             # Update application view.
             updateView = self.updatePage.updateView
             updateView.updateDownloadingStatus(pkgName, progress, feedback)
-            
+
             # Update detail view.
             for pageId in [PAGE_RECOMMEND, PAGE_REPO, PAGE_UPGRADE, PAGE_UNINSTALL]:
                 if self.detailViewDict.has_key(pageId):
@@ -252,7 +254,7 @@ class DeepinSoftwareCenter():
                     searchView.updateDownloadingStatus(pkgName, progress, feedback)
         else:
             print "Impossible: %s not in RepoCache" % (pkgName)
-        
+
     @postGUI
     def downloadFinishCallback(self, pkgName):
         '''Download finish callback.'''
@@ -264,22 +266,22 @@ class DeepinSoftwareCenter():
             else:
                 appStatus = APP_STATE_INSTALLING
             appInfo.switchStatus(appStatus)
-                
+
             # Update slide bar.
             self.recommendPage.slidebar.switchToStatus(pkgName, appStatus)
-            
+
             # Update application view.
             recommendView = self.recommendPage.recommendView
             recommendView.switchToStatus(pkgName, appStatus)
-                
+
             # Update repo view.
             repoView = self.repoPage.repoView
             repoView.switchToStatus(pkgName, appStatus)
-                
+
             # Update update view.
             updateView = self.updatePage.updateView
             updateView.switchToStatus(pkgName, appStatus)
-                
+
             # Update detail view.
             for pageId in [PAGE_RECOMMEND, PAGE_REPO, PAGE_UPGRADE, PAGE_UNINSTALL]:
                 if self.detailViewDict.has_key(pageId):
@@ -288,7 +290,7 @@ class DeepinSoftwareCenter():
                 elif pageId == PAGE_REPO and self.searchViewDict.has_key(pageId):
                     searchView = self.searchViewDict[pageId].searchView
                     searchView.switchToStatus(pkgName, appStatus)
-                    
+
             # Require new install action.
             if appStatus == APP_STATE_UPGRADING:
                 self.actionQueue.addAction(pkgName, ACTION_UPGRADE)
@@ -296,7 +298,7 @@ class DeepinSoftwareCenter():
                 self.actionQueue.addAction(pkgName, ACTION_INSTALL)
         else:
             print "Impossible: %s not in RepoCache" % (pkgName)
-            
+
     @postGUI
     def downloadFailedCallback(self, pkgName):
         '''Download failed callback.'''
@@ -307,22 +309,22 @@ class DeepinSoftwareCenter():
                 appStatus = APP_STATE_UPGRADE
             else:
                 appStatus = APP_STATE_NORMAL
-            
+
             # Update slide bar.
             self.recommendPage.slidebar.switchToStatus(pkgName, appStatus)
-            
+
             # Update application view.
             recommendView = self.recommendPage.recommendView
             recommendView.switchToStatus(pkgName, appStatus)
-                
+
             # Update repo view.
             repoView = self.repoPage.repoView
             repoView.switchToStatus(pkgName, appStatus, True)
-                
+
             # Update update view.
             updateView = self.updatePage.updateView
             updateView.switchToStatus(pkgName, appStatus, True)
-                
+
             # Update detail view.
             for pageId in [PAGE_RECOMMEND, PAGE_REPO, PAGE_UPGRADE, PAGE_UNINSTALL]:
                 if self.detailViewDict.has_key(pageId):
@@ -333,7 +335,7 @@ class DeepinSoftwareCenter():
                     searchView.switchToStatus(pkgName, appStatus, True)
         else:
             print "Impossible: %s not in RepoCache" % (pkgName)
-            
+
     @postGUI
     def actionUpdateCallback(self, actionType, pkgName, progress, feedback):
         '''Installing update callback.'''
@@ -342,18 +344,18 @@ class DeepinSoftwareCenter():
                 # Update application information.
                 appInfo = self.repoCache.cache[pkgName]
                 appInfo.updateInstallStatus(progress, feedback)
-                
+
                 # Update slide bar.
                 self.recommendPage.slidebar.updateInstallingStatus(pkgName, progress, feedback)
-            
+
                 # Update application view.
                 recommendView = self.recommendPage.recommendView
                 recommendView.updateInstallingStatus(pkgName, progress, feedback)
-                    
+
                 # Update repo view.
                 repoView = self.repoPage.repoView
                 repoView.updateInstallingStatus(pkgName, progress, feedback)
-                
+
                 # Update detail view.
                 for pageId in [PAGE_RECOMMEND, PAGE_REPO, PAGE_UPGRADE, PAGE_UNINSTALL]:
                     if self.detailViewDict.has_key(pageId):
@@ -366,22 +368,22 @@ class DeepinSoftwareCenter():
                 # Update application information.
                 appInfo = self.repoCache.cache[pkgName]
                 appInfo.updateUpgradeStatus(progress, feedback)
-                
+
                 # Update slide bar.
                 self.recommendPage.slidebar.updateUpgradingStatus(pkgName, progress, feedback)
-            
+
                 # Update application view.
                 recommendView = self.recommendPage.recommendView
                 recommendView.updateUpgradingStatus(pkgName, progress, feedback)
-                    
+
                 # Update repo view.
                 repoView = self.repoPage.repoView
                 repoView.updateUpgradingStatus(pkgName, progress, feedback)
-                    
+
                 # Update update view.
                 updateView = self.updatePage.updateView
                 updateView.updateUpgradingStatus(pkgName, progress, feedback)
-                
+
                 # Update detail view.
                 for pageId in [PAGE_RECOMMEND, PAGE_REPO, PAGE_UPGRADE, PAGE_UNINSTALL]:
                     if self.detailViewDict.has_key(pageId):
@@ -394,11 +396,11 @@ class DeepinSoftwareCenter():
                 # Update application information.
                 appInfo = self.repoCache.cache[pkgName]
                 appInfo.updateUninstallStatus(progress, feedback)
-                
+
                 # Update application view.
                 uninstallView = self.uninstallPage.uninstallView
                 uninstallView.updateUninstallingStatus(pkgName, progress, feedback)
-                
+
                 # Update detail view.
                 for pageId in [PAGE_RECOMMEND, PAGE_REPO, PAGE_UPGRADE, PAGE_UNINSTALL]:
                     if self.detailViewDict.has_key(pageId):
@@ -409,7 +411,7 @@ class DeepinSoftwareCenter():
                         searchView.updateUninstallingStatus(pkgName, progress, feedback)
         else:
             print "Impossible: %s not in RepoCache" % (pkgName)
-            
+
     @postGUI
     def actionFinishCallback(self, actionType, pkgList):
         '''Installing finish callback.'''
@@ -422,18 +424,18 @@ class DeepinSoftwareCenter():
                         appInfo.switchStatus(APP_STATE_NORMAL)
                     else:
                         appInfo.switchStatus(APP_STATE_INSTALLED)
-                
+
                     # Update slide bar.
                     self.recommendPage.slidebar.initNormalStatus(pkgName, isMarkDeleted)
-            
+
                     # Update recommend view.
                     recommendView = self.recommendPage.recommendView
                     recommendView.initNormalStatus(pkgName, isMarkDeleted)
-                    
+
                     # Update repo view.
                     repoView = self.repoPage.repoView
                     repoView.initNormalStatus(pkgName, isMarkDeleted, True)
-                    
+
                     # Update detail view.
                     for pageId in [PAGE_RECOMMEND, PAGE_REPO, PAGE_UPGRADE, PAGE_UNINSTALL]:
                         if self.detailViewDict.has_key(pageId):
@@ -442,7 +444,7 @@ class DeepinSoftwareCenter():
                         elif pageId == PAGE_REPO and self.searchViewDict.has_key(pageId):
                             searchView = self.searchViewDict[pageId].searchView
                             searchView.initNormalStatus(pkgName, isMarkDeleted, True)
-                        
+
                     # Add in uninstall list.
                     self.updateUninstallView(pkgName, not isMarkDeleted)
                 else:
@@ -459,30 +461,30 @@ class DeepinSoftwareCenter():
 
                         # Remove upgradabled packages.
                         self.repoCache.removePkgFromUpgradableList(pkgName)
-                        
+
                         # Update topbar.
                         pkgNum = len(self.repoCache.upgradablePkgs)
                         self.updatePage.topbar.updateNum(pkgNum)
-                        
+
                         # Update update view.
                         updateView = self.updatePage.updateView
                         updateView.unselectPkg(pkgName) # remove from select list
                         updateView.update(pkgNum)
-                        
+
                         # Update notify number.
                         self.navigatebar.updateIcon.queue_draw()
-                        
+
                     # Update slide bar.
                     self.recommendPage.slidebar.initNormalStatus(pkgName, isMarkDeleted)
-            
+
                     # Update recommend view.
                     recommendView = self.recommendPage.recommendView
                     recommendView.initNormalStatus(pkgName, isMarkDeleted)
-                    
+
                     # Update repo view.
                     repoView = self.repoPage.repoView
                     repoView.initNormalStatus(pkgName, isMarkDeleted, True)
-                    
+
                     # Update detail view.
                     for pageId in [PAGE_RECOMMEND, PAGE_REPO, PAGE_UPGRADE, PAGE_UNINSTALL]:
                         if self.detailViewDict.has_key(pageId):
@@ -491,7 +493,7 @@ class DeepinSoftwareCenter():
                         elif pageId == PAGE_REPO and self.searchViewDict.has_key(pageId):
                             searchView = self.searchViewDict[pageId].searchView
                             searchView.initNormalStatus(pkgName, isMarkDeleted, True)
-                        
+
                     # Add in uninstall list.
                     self.updateUninstallView(pkgName, not isMarkDeleted)
                 else:
@@ -502,20 +504,20 @@ class DeepinSoftwareCenter():
                     # Update application information.
                     appInfo = self.repoCache.cache[pkgName]
                     appInfo.switchStatus(APP_STATE_NORMAL)
-                    
+
                     self.updateUninstallView(pkgName, False)
-                    
+
                     # Update slide bar.
                     self.recommendPage.slidebar.initNormalStatus(pkgName, isMarkDeleted)
-            
+
                     # Update recommend view.
                     recommendView = self.recommendPage.recommendView
                     recommendView.initNormalStatus(pkgName, isMarkDeleted)
-                    
+
                     # Update repo view.
                     repoView = self.repoPage.repoView
                     repoView.initNormalStatus(pkgName, isMarkDeleted, True)
-                    
+
                     # Update detail view.
                     for pageId in [PAGE_RECOMMEND, PAGE_REPO, PAGE_UPGRADE, PAGE_UNINSTALL]:
                         if self.detailViewDict.has_key(pageId):
@@ -526,7 +528,7 @@ class DeepinSoftwareCenter():
                             searchPage.update(pkgName)
                 else:
                     print "Impossible: %s not in RepoCache" % (pkgName)
-                    
+
     @postGUI
     def actionFailedCallback(self, actionType, pkgName):
         '''Installing failed callback.'''
@@ -535,18 +537,18 @@ class DeepinSoftwareCenter():
                 # Update application information.
                 appInfo = self.repoCache.cache[pkgName]
                 appInfo.switchStatus(APP_STATE_NORMAL)
-                
+
                 # Update slide bar.
                 self.recommendPage.slidebar.initNormalStatus(pkgName, True)
-            
+
                 # Update recommend view.
                 recommendView = self.recommendPage.recommendView
                 recommendView.initNormalStatus(pkgName, True)
-                
+
                 # Update repo view.
                 repoView = self.repoPage.repoView
                 repoView.initNormalStatus(pkgName, True, True)
-                
+
                 # Update detail view.
                 for pageId in [PAGE_RECOMMEND, PAGE_REPO, PAGE_UPGRADE, PAGE_UNINSTALL]:
                     if self.detailViewDict.has_key(pageId):
@@ -565,19 +567,19 @@ class DeepinSoftwareCenter():
 
                 # Update slide bar.
                 self.recommendPage.slidebar.initNormalStatus(pkgName, APP_STATE_UPGRADE)
-            
+
                 # Update recommend view.
                 recommendView = self.recommendPage.recommendView
                 recommendView.switchToStatus(pkgName, APP_STATE_UPGRADE)
-                
+
                 # Update repo view.
                 repoView = self.repoPage.repoView
                 repoView.switchToStatus(pkgName, APP_STATE_UPGRADE, True)
-                
+
                 # Update update view.
                 updateView = self.updatePage.updateView
                 updateView.switchToStatus(pkgName, APP_STATE_UPGRADE, True)
-                
+
                 # Update detail view.
                 for pageId in [PAGE_RECOMMEND, PAGE_REPO, PAGE_UPGRADE, PAGE_UNINSTALL]:
                     if self.detailViewDict.has_key(pageId):
@@ -593,11 +595,11 @@ class DeepinSoftwareCenter():
                 # Update application information.
                 appInfo = self.repoCache.cache[pkgName]
                 appInfo.switchStatus(APP_STATE_INSTALLED)
-                
+
                 # Update uninstall view.
                 uninstallView = self.uninstallPage.uninstallView
                 uninstallView.initUninstallStatus(pkgName, True)
-                
+
                 # Update detail view.
                 for pageId in [PAGE_RECOMMEND, PAGE_REPO, PAGE_UPGRADE, PAGE_UNINSTALL]:
                     if self.detailViewDict.has_key(pageId):
@@ -608,7 +610,7 @@ class DeepinSoftwareCenter():
                         searchView.initUninstallStatus(pkgName, True)
             else:
                 print "Impossible: %s not in RepoCache" % (pkgName)
-                
+
     def updateUninstallView(self, pkgName, isAdd):
         '''Update uninstall view.'''
         if isAdd:
@@ -618,64 +620,64 @@ class DeepinSoftwareCenter():
 
         pkgNum = len(self.repoCache.uninstallablePkgs)
         self.uninstallPage.topbar.updateNum(pkgNum)
-        
+
         uninstallView = self.uninstallPage.uninstallView
         uninstallView.update(pkgNum)
-        
+
     def initMainWindow(self):
         '''Init main window.'''
         # Create main window.
         window = gtk.Window(gtk.WINDOW_TOPLEVEL)
         window.set_decorated(False)
-        
+
         # Init.
-        window.set_title('ô»½ôŸLinuxôºžô©‡ô‘Ž¥ô‘…¥') 
+        window.set_title('ô»½ôŸLinuxôºžô©‡ô‘Ž¥ô‘…¥')
         window.set_position(gtk.WIN_POS_CENTER_ALWAYS)
         (width, height) = utils.getScreenSize(window)
         window.set_default_size(self.DEFAULT_WIDTH, -1)
-        
+
         # Set icon.
         gtk.window_set_default_icon_from_file("./icons/icon/icon.ico")
-            
+
         return window
-    
+
     def minWindow(self):
         '''Minimum window.'''
-        self.window.iconify()     
-        
+        self.window.iconify()
+
     def doubleClickWindow(self, widget, event):
         '''Handle double click on window.'''
         if utils.isDoubleClick(event):
             self.toggleWindow()
-        
+
     def toggleWindow(self):
         '''Toggle window.'''
         if self.hasMax:
             self.window.unmaximize()
         else:
             self.window.maximize()
-            
+
         self.hasMax = not self.hasMax
-        
+
     def closeWindow(self):
         '''Close window'''
         # Hide window immediately when user click close button,
         # user will feeling this software very quick, ;p
         self.window.hide_all()
-        
-        self.destroy(self.window)    
-        
+
+        self.destroy(self.window)
+
     def destroy(self, widget, data=None):
         '''Destroy main window.'''
         # Stop download thread.
         if self.downloadQueue.downloadQueue != None:
             self.downloadQueue.downloadQueue.put("STOP")
-            
+
         # Close socket.
         self.socketThread.socket.close()
-            
-    	gtk.main_quit()
-    
+
+        gtk.main_quit()
+
     def main(self):
         '''Main'''
         # Connect components.
@@ -688,61 +690,61 @@ class DeepinSoftwareCenter():
         self.bodyBox.pack_start(self.leftLine, False, False)
         self.bodyBox.pack_start(self.contentBox)
         self.bodyBox.pack_start(self.rightLine, False, False)
-        
+
         # Register navigate click event.
         self.navigatebar.recommendIcon.connect(
-            "button-press-event", 
+            "button-press-event",
             lambda widget, event: self.selectPage(PAGE_RECOMMEND))
         self.navigatebar.repositoryIcon.connect(
-            "button-press-event", 
+            "button-press-event",
             lambda widget, event: self.selectPage(PAGE_REPO))
         self.navigatebar.updateIcon.connect(
-            "button-press-event", 
+            "button-press-event",
             lambda widget, event: self.selectPage(PAGE_UPGRADE))
         self.navigatebar.uninstallIcon.connect(
-            "button-press-event", 
+            "button-press-event",
             lambda widget, event: self.selectPage(PAGE_UNINSTALL))
         self.navigatebar.communityIcon.connect(
-            "button-press-event", 
+            "button-press-event",
             lambda widget, event: self.selectPage(PAGE_COMMUNITY))
         # self.navigatebar.moreIcon.connect(
-        #     "button-press-event", 
+        #     "button-press-event",
         #     lambda widget, event: self.selectPage(PAGE_MORE))
-        
+
         # Default select recommend page.
         self.selectPage(PAGE_RECOMMEND)
-        
+
         # Add statusbar.
         self.mainBox.pack_start(self.statusbar.eventbox, False, False)
-        
+
         # Adjust body box height.
         topbarHeight = gtk.gdk.pixbuf_new_from_file("./icons/topbar/background.png").get_height()
         subCategoryHeight = gtk.gdk.pixbuf_new_from_file("./icons/category/sidebar_normal.png").get_height()
         subCategoryNum = len(self.repoCache.getCategorys())
         self.bodyBox.set_size_request(-1, topbarHeight + subCategoryHeight * subCategoryNum)
-        
+
         # Set main window.
         self.window.connect("destroy", self.destroy)
         self.window.show_all()
-        
+
         # Select software update page if add "--show-update" option.
         if len(sys.argv) == 2 and sys.argv[1] == "--show-update":
             self.selectPage(PAGE_UPGRADE)
-            
+
         # Listen socket message for select upgrade page.
         self.socketThread = SocketThread(self.showUpgrade)
         self.socketThread.start()
-            
+
         # Run.
         gtk.main()
-        
+
     def selectPage(self, pageId):
         '''Select recommend page.'''
         utils.containerRemoveAll(self.contentBox)
-        
+
         self.navigatebar.pageId = pageId
         self.navigatebar.box.queue_draw()
-        
+
         if self.detailViewDict.has_key(pageId):
             child = self.detailViewDict[pageId].scrolledWindow
         elif self.searchViewDict.has_key(pageId):
@@ -758,93 +760,93 @@ class DeepinSoftwareCenter():
                 child = self.uninstallPage.box
             elif pageId == PAGE_COMMUNITY:
                 child = self.communityPage.box
-            # else: 
+            # else:
             #     child = self.morePage.box
-        
+
         self.contentBox.pack_start(child)
         self.contentBox.show_all()
-        
+
     def selectCategory(self, category, categoryId):
         '''Select category.'''
         # Delete PAGE_REPO value from detailViewDict and searchViewDict.
         if self.detailViewDict.has_key(PAGE_REPO):
             self.detailViewDict.pop(PAGE_REPO)
-        
+
         if self.searchViewDict.has_key(PAGE_REPO):
             self.searchViewDict.pop(PAGE_REPO)
-            
+
         # Select repo page.
         self.selectPage(PAGE_REPO)
-        
+
         # Select category.
         self.repoPage.selectCategory(category, categoryId)
-                        
+
     @postGUI
     def showUpgrade(self):
         '''Show upgrade page.'''
         # Delete PAGE_UPGRADE value from detailViewDict and searchViewDict.
         if self.detailViewDict.has_key(PAGE_UPGRADE):
             self.detailViewDict.pop(PAGE_UPGRADE)
-        
+
         if self.searchViewDict.has_key(PAGE_UPGRADE):
             self.searchViewDict.pop(PAGE_UPGRADE)
-            
+
         # Select upgrade page.
         self.selectPage(PAGE_UPGRADE)
-        
+
     def entryDetailView(self, pageId, appInfo):
         '''Entry detail view.'''
         view = detailView.DetailView(
             self.aptCache, pageId, appInfo, self.switchStatus, self.downloadQueue, self.actionQueue,
             self.exitDetailView, self.noscreenshotList, self.updateMoreComment, self.message)
         self.detailViewDict[pageId] = view
-        
+
         # Fetch detail thread.
         fetchDetailThread = FetchDetail(pageId, utils.getPkgName(appInfo.pkg), self.updateDetailView)
         fetchDetailThread.start()
-        
+
         self.selectPage(pageId)
-        
+
     def sendVote(self, name, vote):
         '''Send vote.'''
         sendVoteThread = SendVote("http://test-linux.gteasy.com/vote.php?n=%s&m=%s" % (name, vote), name, self.message)
         sendVoteThread.start()
-        
+
     def exitDetailView(self, pageId):
         '''Exit detail view.'''
         # Remove detail view first.
         if self.detailViewDict.has_key(pageId):
             self.detailViewDict.pop(pageId)
-        
+
         # Back page.
         self.selectPage(pageId)
-        
+
     def entrySearchView(self, pageId, keyword, pkgList):
         '''Entry search view.'''
         if pageId == PAGE_REPO:
             page = searchPage.SearchPage(
                 self.searchQuery,
                 pageId, self.repoCache, keyword, pkgList,
-                self.switchStatus, self.downloadQueue, 
+                self.switchStatus, self.downloadQueue,
                 self.entryDetailView, self.sendVote, self.fetchVote, self.exitSearchView)
         elif pageId == PAGE_UNINSTALL:
             page = sp.SearchUninstallPage(
                 self.searchQuery,
                 pageId, self.repoCache, keyword, pkgList,
-                self.actionQueue, 
+                self.actionQueue,
                 self.entryDetailView, self.sendVote, self.fetchVote, self.exitSearchView)
         self.searchViewDict[pageId] = page
         self.selectPage(pageId)
-        
+
     def exitSearchView(self, pageId):
         '''Exit search view.'''
         # Remove search view first.
         if self.searchViewDict.has_key(pageId):
             self.searchViewDict.pop(pageId)
-            
+
         # Select page.
         self.selectPage(pageId)
-        
+
     def fetchVote(self, pageId, appList, isSearchPage=False):
         '''Fetch vote data.'''
         fetchVoteThread = FetchVote(pageId, appList, self.updateVote, isSearchPage)
@@ -860,7 +862,7 @@ class DeepinSoftwareCenter():
                     view = self.searchViewDict[pageId].searchView
             else:
                 view = self.repoPage.repoView
-                
+
         elif pageId == PAGE_UPGRADE:
             view = self.updatePage.updateView
         elif pageId == PAGE_UNINSTALL:
@@ -869,7 +871,7 @@ class DeepinSoftwareCenter():
                     view = self.searchViewDict[pageId].searchView
             else:
                 view = self.uninstallPage.uninstallView
-            
+
         if view != None:
             for vote in voteJson.items():
                 # print vote
@@ -878,14 +880,14 @@ class DeepinSoftwareCenter():
     @postGUI
     def updateDetailView(self, pageId, pkgName, voteJson):
         pass
-    
+
     def updateDetailView_(self, pageId, pkgName, voteJson):
         '''Update vote view.'''
         if self.detailViewDict.has_key(pageId):
             detailView = self.detailViewDict[pageId]
             if pkgName == utils.getPkgName(detailView.appInfo.pkg):
                 detailView.updateInfo(voteJson)
-                
+
     @postGUI
     def updateMoreComment(self, pageId, pkgName, voteJson):
         '''Update vote view.'''
@@ -893,57 +895,57 @@ class DeepinSoftwareCenter():
             detailView = self.detailViewDict[pageId]
             if pkgName == utils.getPkgName(detailView.appInfo.pkg):
                 detailView.updateMoreComment(voteJson)
-                
+
     def upgradeSelectedPkgs(self, selectList):
         '''Upgrade select packages.'''
         # Get download and action packages.
         downloadPkgs = self.downloadQueue.getDownloadPkgs()
         actionPkgs = self.actionQueue.getActionPkgs()
-        
+
         # Upgrade package if it not in wait queue.
         for pkgName in selectList:
             if not pkgName in downloadPkgs + actionPkgs:
                 # Switch status.
                 self.repoCache.cache[pkgName].switchStatus(APP_STATE_DOWNLOADING)
                 self.switchStatus(pkgName, APP_STATE_DOWNLOADING)
-                
+
                 # Add in download queue.
                 self.downloadQueue.addDownload(pkgName)
                 print "Upgrade %s" % (pkgName)
-        
+
 class FetchVote(td.Thread):
     '''Fetch vote.'''
-	
+
     def __init__(self, pageId, pkgNames, updateVoteCallback, isSearchPage):
         '''Init for fetch vote.'''
         td.Thread.__init__(self)
-        self.setDaemon(True) # make thread exit when main program exit 
-        
+        self.setDaemon(True) # make thread exit when main program exit
+
         self.pageId = pageId
         self.isSearchPage = isSearchPage
         self.updateVoteCallback = updateVoteCallback
-        
+
         self.pkgArguments = ""
         for pkgName in pkgNames:
             self.pkgArguments += pkgName + ","
         self.pkgArguments = self.pkgArguments.rstrip(",") # remove last , from arguments
-        
+
     def run(self):
         '''Run.'''
         try:
             connection = urllib2.urlopen("http://test-linux.gteasy.com/getMark.php?n=" + self.pkgArguments, timeout=GET_TIMEOUT)
-            voteJson = json.loads(connection.read())        
+            voteJson = json.loads(connection.read())
             self.updateVoteCallback(voteJson, self.pageId, self.isSearchPage)
         except Exception, e:
             print "Fetch vote data failed."
-        
+
 class SendVote(td.Thread):
     '''Vote'''
-	
+
     def __init__(self, url, name, messageCallback):
         '''Init for vote.'''
         td.Thread.__init__(self)
-        self.setDaemon(True) # make thread exit when main program exit 
+        self.setDaemon(True) # make thread exit when main program exit
         self.url = url
         self.name = name
         self.messageCallback = messageCallback
@@ -956,14 +958,14 @@ class SendVote(td.Thread):
         except Exception, e:
             self.messageCallback("%s ô¶µô¡‰ô¼”ô–½ôƒ‡ ô¸¾ô¨µôš†ô´œô»ô‘¿ô±¤ô¯“ô©ºô€‚:(" % (self.name))
             print "Error: ", e
-            
+
 class FetchDetail(td.Thread):
     '''Fetch detail view data.'''
-	
+
     def __init__(self, pageId, pkgName, updateDetailViewCallback):
         '''Init for fetch detail.'''
         td.Thread.__init__(self)
-        self.setDaemon(True) # make thread exit when main program exit 
+        self.setDaemon(True) # make thread exit when main program exit
         self.pageId  = pageId
         self.pkgName = pkgName
         self.updateDetailViewCallback = updateDetailViewCallback
@@ -972,32 +974,126 @@ class FetchDetail(td.Thread):
         '''Run'''
         try:
             connection = urllib2.urlopen("http://test-linux.gteasy.com/getComment.php?n=" + self.pkgName, timeout=GET_TIMEOUT)
-            voteJson = json.loads(connection.read())        
+            voteJson = json.loads(connection.read())
             self.updateDetailViewCallback(self.pageId, self.pkgName, voteJson)
         except Exception, e:
             print "Fetch detail view data failed."
-            
+
 class SocketThread(td.Thread):
     '''Socekt thread.'''
-	
+
     def __init__(self, callback):
         '''Init socket thread.'''
         td.Thread.__init__(self)
-        self.setDaemon(True) # make thread exit when main program exit 
+        self.setDaemon(True) # make thread exit when main program exit
 
         self.callback = callback
-        
+
     def run(self):
         '''Run.'''
-        self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  
-        self.socket.bind(SOCKET_SOFTWARECENTER_ADDRESS)  
-          
-        while True:  
-            data, addr = self.socket.recvfrom(2048)  
-            print "received:", data, "from", addr  
+        self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.socket.bind(SOCKET_SOFTWARECENTER_ADDRESS)
+
+        while True:
+            data, addr = self.socket.recvfrom(2048)
+            print "received:", data, "from", addr
             self.callback()
-          
+
         self.socket.close()
-            
+
+class RebuildSearchIndex(td.Thread):
+    '''Rebuild search index.'''
+	
+    def __init__(self, finishCallback):
+        '''Init for RebuildSearchIndex.'''
+        td.Thread.__init__(self)
+        self.setDaemon(True) # make thread exit when main program exit
+        
+        self.finishCallback = finishCallback
+
+    def run(self):
+        '''Run.'''
+        subprocess.call(["update-apt-xapian-index"])
+        self.finishCallback()
+        
+class FirstRun:
+    '''Run check when first time.'''
+
+    PROGRESS_WIDTH = 200
+    
+    def __init__(self):
+        '''Init.'''
+        self.lockFile = "./firstLock"    
+
+    def run(self):
+        '''Run.'''
+        # Just run when first time.
+        if os.path.exists(self.lockFile):
+            # Init gdk threads.
+            gtk.gdk.threads_init()
+
+            # Init window.
+            self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
+            self.window.set_decorated(False)
+
+            self.window.set_title('è½¯ä»¶ä¸­å¿ƒåˆå§‹åŒ–æ‰«æ')
+            self.window.set_position(gtk.WIN_POS_CENTER_ALWAYS)
+
+            # Set window icon.
+            gtk.window_set_default_icon_from_file("./icons/icon/icon.ico")
+
+            # Add widget.
+            self.mainBox = gtk.VBox()
+            self.window.add(self.mainBox)
+
+            self.progressbar = drawProgressbar(self.PROGRESS_WIDTH)
+            self.mainBox.pack_start(self.progressbar.box)
+
+            self.statusLabel = gtk.Label()
+            self.statusLabel.set_alignment(0.0, 0.5)
+            self.mainBox.pack_start(self.statusLabel)
+
+            # Start update.
+            self.checker = checkUpdate.CheckUpdate(self.updateStatus, self.updateFinish, False)
+            self.checker.start()
+
+            self.window.show_all()
+
+            gtk.main()
+
+    @postGUI
+    def updateStatus(self, status, percent):
+        '''Update status.'''
+        # Update status.
+        self.statusLabel.set_markup(status + " ...")
+        self.progressbar.setProgress(percent)
+
+    @postGUI
+    def updateFinish(self):
+        '''Update finish.'''
+        # Update status.
+        self.statusLabel.set_markup("æ­£åœ¨æž„å»ºè½¯ä»¶åŒ…ç´¢å¼• ...")
+        self.progressbar.setProgress(99)
+        
+        # Start rebuild index.
+        rebuildSearchIndex = RebuildSearchIndex(self.finish)
+        rebuildSearchIndex.start()
+
+    @postGUI
+    def finish(self):
+        '''Finish.'''
+        # Update status.
+        self.statusLabel.set_markup("æ‰«æå®Œæ¯•!")
+        self.progressbar.setProgress(100)
+
+        # Delete lock file.
+        # if os.path.exists(self.lockFile):
+        #     os.unlink(self.lockFile)
+        
+        # Exit window.
+        self.window.hide_all()
+        gtk.main_quit()
+
 if __name__ == "__main__":
+    # FirstRun().run()
     DeepinSoftwareCenter().main()

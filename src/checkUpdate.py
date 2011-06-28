@@ -48,11 +48,14 @@ threads_init()
 
 class CheckUpdate(td.Thread):
     """Check update."""
-    def __init__(self, finishCallback, allowUnauthenticated=False, details=False):
+    def __init__(self, progressCallback, finishCallback, 
+                 calculateUpdate=True, allowUnauthenticated=False, details=False):
         td.Thread.__init__(self)
         self.setDaemon(True) # make thread exit when main program exit 
         
+        self.progressCallback = progressCallback
         self.finishCallback = finishCallback
+        self.calculateUpdate = calculateUpdate
         self.client = client.AptClient()
         signal.signal(signal.SIGINT, self.onCancelSignal)
         signal.signal(signal.SIGQUIT, self.onCancelSignal)
@@ -84,11 +87,15 @@ class CheckUpdate(td.Thread):
     def onStatusChanged(self, trans, status):
         """Callback for the Status signal of the transaction"""
         self.status = enums.get_status_string_from_enum(status)
+        if self.progressCallback != None:
+            self.progressCallback(self.status, self.percent)
 
     def onProgressChanged(self, trans, percent):
         """Callback for the Progress signal of the transaction"""
         if percent < 100:
             self.percent = percent
+            if self.progressCallback != None:
+                self.progressCallback(self.status, self.percent)
 
     def onFinish(self, trans, enum):
         """Callback for the exit state of the transaction"""
@@ -102,9 +109,10 @@ class CheckUpdate(td.Thread):
             print msg
         
         # Calculate update number.
-        self.percent = 99
-        self.status = "计算可以升级的包"
-        self.calculateUpdateNumber()
+        if self.calculateUpdate:
+            self.percent = 99
+            self.status = "计算可以升级的包"
+            self.calculateUpdateNumber()
         
         # Finish callback.
         self.finish = True
@@ -327,7 +335,7 @@ class TrayIcon:
             self.trayIcon.connect("activate", lambda w: self.showSoftwareCenter())
             self.trayIcon.connect("query-tooltip", self.hoverIcon)
             
-            self.checker = CheckUpdate(self.finishCheck)
+            self.checker = CheckUpdate(None, self.finishCheck)
             self.checker.start()
             
             gtk.main()

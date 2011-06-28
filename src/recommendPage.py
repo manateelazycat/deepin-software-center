@@ -40,7 +40,7 @@ class RecommendPage:
         self.box = gtk.VBox()
         
         # Add slide bar.
-        self.slidebar = SlideBar(repoCache, switchStatus, downloadQueue)
+        self.slidebar = SlideBar(repoCache, switchStatus, downloadQueue, entryDetailCallback)
         
         # Add recommend view.
         self.recommendView = recommendView.RecommendView(
@@ -76,10 +76,11 @@ class RecommendPage:
 class SlideItem(DownloadItem):
     '''Slide item.'''
 	
-    def __init__(self, appInfo, name, image, height, switchStatus, downloadQueue):
+    def __init__(self, appInfo, name, image, height, switchStatus, downloadQueue, entryDetailCallback):
         '''Init for slide item.'''
         DownloadItem.__init__(self, appInfo, switchStatus, downloadQueue)
         
+        self.entryDetailCallback = entryDetailCallback
         self.appInfo = appInfo
         self.name = name
         self.imagePath = "./images/" + image
@@ -104,7 +105,14 @@ class SlideItem(DownloadItem):
             "<span foreground='#FFFFFF' size='%s'>%s</span>"
             % (LABEL_FONT_XXX_LARGE_SIZE, self.name))
         self.itemNameLabel.set_alignment(0.0, 0.5)
-        self.itemBox.pack_start(self.itemNameLabel)
+        self.itemNameBox = gtk.EventBox()
+        self.itemNameBox.set_visible_window(False)
+        self.itemNameBox.add(self.itemNameLabel)
+        self.itemNameBox.connect(
+            "button-press-event", 
+            lambda w, e: self.entryDetailCallback(PAGE_RECOMMEND, self.appInfo))
+        self.itemBox.pack_start(self.itemNameBox)
+        utils.setClickableCursor(self.itemNameBox)
         
         self.appAdditionBox = gtk.HBox()
         self.appAdditionAlign = gtk.Alignment()
@@ -139,8 +147,6 @@ class SlideItem(DownloadItem):
         
     def initNormalStatus(self):
         '''Init normal status.'''
-        pkg = self.appInfo.pkg
-            
         # Clean right box first.
         utils.containerRemoveAll(self.appAdditionBox)
         
@@ -171,7 +177,7 @@ class SlideItem(DownloadItem):
 class SlideBar:
     '''Slide bar'''
 	
-    def __init__(self, repoCache, switchStatus, downloadQueue):
+    def __init__(self, repoCache, switchStatus, downloadQueue, entryDetailCallback):
         '''Init for slide bar.'''
         # Init.
         self.padding = 10
@@ -193,7 +199,7 @@ class SlideBar:
                 ("ppstream", None), 
                 ("eio", None)
                 ])
-        self.initItems(self.infoList, switchStatus, downloadQueue)
+        self.initItems(self.infoList, switchStatus, downloadQueue, entryDetailCallback)
         self.sourceIndex = 0
         self.targetIndex = 1
         
@@ -237,11 +243,11 @@ class SlideBar:
         
         self.align.add(self.box)
         
-    def initItems(self, infoList, switchStatus, downloadQueue):
+    def initItems(self, infoList, switchStatus, downloadQueue, entryDetailCallback):
         '''Init items.'''
         for (pkgName, name, image) in infoList:
             appInfo = self.repoCache.cache[pkgName]
-            slideItem = SlideItem(appInfo, name, image, self.maskHeight, switchStatus, downloadQueue)
+            slideItem = SlideItem(appInfo, name, image, self.maskHeight, switchStatus, downloadQueue, entryDetailCallback)
             self.itemDict[pkgName] = slideItem
             
     def switchToStatus(self, pkgName, appStatus):
@@ -262,19 +268,19 @@ class SlideBar:
         '''Update downloading status.'''
         if self.itemDict.has_key(pkgName):
             appItem = self.itemDict[pkgName]
-            appItem.updateDownloadingStatus(progress, feedback)
+            appItem.updateDownloadingStatus(progress, feedback, "#FFFFFF")
             
     def updateInstallingStatus(self, pkgName, progress, feedback):
         '''Update installing status.'''
         if self.itemDict.has_key(pkgName):
             appItem = self.itemDict[pkgName]
-            appItem.updateInstallingStatus(progress, feedback)
+            appItem.updateInstallingStatus(progress, feedback, "#FFFFFF")
             
     def updateUpgradingStatus(self, pkgName, progress, feedback):
         '''Update upgrading status.'''
         if self.itemDict.has_key(pkgName):
             appItem = self.itemDict[pkgName]
-            appItem.updateUpgradingStatus(progress, feedback)
+            appItem.updateUpgradingStatus(progress, feedback, "#FFFFFF")
             
     def getSlideItem(self, index):
         '''Get slide item.'''

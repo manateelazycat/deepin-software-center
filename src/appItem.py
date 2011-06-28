@@ -360,30 +360,36 @@ class DownloadItem:
             self.switchStatus(pkgName, APP_STATE_NORMAL)
         self.downloadQueue.stopDownload(pkgName)
 
-    def updateDownloadingStatus(self, progress, feedback):
+    def updateDownloadingStatus(self, progress, feedback, color="#000000"):
         '''Update downloading status.'''
         if self.appInfo.status == APP_STATE_DOWNLOADING:
             if self.downloadingProgressbar != None and self.downloadingFeedbackLabel != None:
                 self.downloadingProgressbar.setProgress(progress)
-                self.downloadingFeedbackLabel.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, feedback))
+                self.downloadingFeedbackLabel.set_markup(
+                    "<span foreground='%s' size='%s'>%s</span>"
+                    % (color, LABEL_FONT_SIZE, feedback))
                 
                 self.itemFrame.show_all()
                 
-    def updateInstallingStatus(self, progress, feedback):
+    def updateInstallingStatus(self, progress, feedback, color="#000000"):
         '''Update installing status.'''
         if self.appInfo.status == APP_STATE_INSTALLING:
             if self.installingProgressbar != None and self.installingFeedbackLabel != None:
                 self.installingProgressbar.setProgress(progress)
-                self.installingFeedbackLabel.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, "安装中"))
+                self.installingFeedbackLabel.set_markup(
+                    "<span foreground='%s' size='%s'>%s</span>"
+                    % (color, LABEL_FONT_SIZE, "安装中"))
                 
                 self.itemFrame.show_all()
                 
-    def updateUpgradingStatus(self, progress, feedback):
+    def updateUpgradingStatus(self, progress, feedback, color="#000000"):
         '''Update upgrading status.'''
         if self.appInfo.status == APP_STATE_UPGRADING:
             if self.upgradingProgressbar != None and self.upgradingFeedbackLabel != None:
                 self.upgradingProgressbar.setProgress(progress)
-                self.upgradingFeedbackLabel.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, "升级中"))
+                self.upgradingFeedbackLabel.set_markup(
+                    "<span foreground='%s' size='%s'>%s</span>"
+                    % (color, LABEL_FONT_SIZE, "升级中"))
                 
                 self.itemFrame.show_all()
                 

@@ -76,7 +76,7 @@ class SortedDict(dict):
             yield key, super(SortedDict, self).__getitem__(key)
             
     def has_key(self, key):
-        super(SortedDict, self).has_key(key)
+        return super(SortedDict, self).has_key(key)
     
     def keys(self):
         return self.keyOrder[:]

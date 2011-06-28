@@ -225,7 +225,7 @@ class DeepinSoftwareCenter():
             appInfo.updateDownloadStatus(progress, feedback, status)
             
             # Update slide bar.
-            self.recommendPage.slidebar.updateDownloadStatus(pkgName, progress, feedback)
+            self.recommendPage.slidebar.updateDownloadingStatus(pkgName, progress, feedback)
             
             # Update recommand view.
             recommendView = self.recommendPage.recommendView

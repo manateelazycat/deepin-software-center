@@ -317,6 +317,19 @@ class DetailView:
             self.screenshotImage.set_from_pixbuf(gtk.gdk.pixbuf_new_from_file("./icons/screenshot/upload.png"))        
 
         # Add comment label.
+        self.initCommentArea(detailBox)
+        
+        return align
+    
+    def initCommentArea(self, detailBox):
+        commentAreaLabel = gtk.Label()
+        commentAreaLabel.set_markup(
+            "<span foreground='#1A3E88' size='%s'>%s</span>"
+            % (LABEL_FONT_MEDIUM_SIZE, "正在进行社区整合调试，我们将在下一个版本开放评论功能。:)"))
+        detailBox.pack_start(commentAreaLabel)
+        
+    def initCommentArea_(self, detailBox):
+        '''Init comment area.'''
         self.commentAreaBox = gtk.VBox()
         detailBox.pack_start(self.commentAreaBox)
             
@@ -342,8 +355,6 @@ class DetailView:
         commentWaitLabel.set_markup("<span foreground='#1A3E88' size='%s'><b>读取用户评论...</b></span>"
                                     % (LABEL_FONT_LARGE_SIZE))
         commentWaitBox.pack_start(commentWaitLabel, False, False)
-        
-        return align
     
     def showBigScreenshot(self, imageWidget, pkgName, noscreenshotList):
         '''Show big screenshot.'''

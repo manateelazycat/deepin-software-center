@@ -130,7 +130,7 @@ class SlideItem(DownloadItem):
         if status in [APP_STATE_NORMAL, APP_STATE_UPGRADE, APP_STATE_INSTALLED]:
             self.itemNameLabel.set_width_chars(70)
         else:        
-            self.itemNameLabel.set_width_chars(35)
+            self.itemNameLabel.set_width_chars(45)
         
         if status in [APP_STATE_NORMAL, APP_STATE_UPGRADE, APP_STATE_INSTALLED]:
             self.initNormalStatus()

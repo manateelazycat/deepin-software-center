@@ -77,10 +77,10 @@ CLASSIFY_LIST = [(CLASSIFY_WEB,          ("web.png", [])),
                  (CLASSIFY_MULTIMEDIA,   ("multimedia.png", [])),
                  (CLASSIFY_GAME,         ("game.png", [])),
                  (CLASSIFY_GRAPHICS,     ("graphics.png", [])),
-                 (CLASSIFY_WORD,         ("desktop.png", [])),
-                 (CLASSIFY_PROFESSIONAL, ("project.png", [])),
+                 (CLASSIFY_WORD,         ("word.png", [])),
+                 (CLASSIFY_PROFESSIONAL, ("professional.png", [])),
                  (CLASSIFY_PROGRAMMING,  ("develop.png", [])),
-                 (CLASSIFY_DRIVER,       ("office.png", [])),
+                 (CLASSIFY_DRIVER,       ("driver.png", [])),
                  (CLASSIFY_WINDOWS,      ("win.png", [])),
                  (CLASSIFY_OTHERS,       ("other.png", []))
                  ]

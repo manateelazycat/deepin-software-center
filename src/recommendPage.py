@@ -76,7 +76,7 @@ class RecommendPage:
 class SlideItem(DownloadItem):
     '''Slide item.'''
 	
-    def __init__(self, appInfo, name, image, height, switchStatus, downloadQueue, entryDetailCallback):
+    def __init__(self, appInfo, name, image, smallImage, height, switchStatus, downloadQueue, entryDetailCallback):
         '''Init for slide item.'''
         DownloadItem.__init__(self, appInfo, switchStatus, downloadQueue)
         
@@ -84,6 +84,7 @@ class SlideItem(DownloadItem):
         self.appInfo = appInfo
         self.name = name
         self.imagePath = "./images/" + image
+        self.smallImagePath = "./images/" + smallImage
         
         # Widget that status will change.
         self.installingProgressbar = None
@@ -190,9 +191,9 @@ class SlideBar:
 
         self.repoCache = repoCache
         self.infoList = [
-            ("chromium-browser", "谷歌浏览器", "chromium-browser.png"),
-            ("ppstream", "PPStream网络电视", "ppstream.png"),
-            ("eio", "永中集成Office", "eio.png")
+            ("chromium-browser", "谷歌浏览器", "chromium-browser.png", "chromium-browser_small.png"),
+            ("ppstream", "PPStream网络电视", "ppstream.png", "ppstream_small.png"),
+            ("eio", "永中集成Office", "eio.png", "eio_small.png")
             ] 
         self.itemDict = sortedDict.SortedDict([
                 ("chromium-browser", None), 
@@ -245,9 +246,11 @@ class SlideBar:
         
     def initItems(self, infoList, switchStatus, downloadQueue, entryDetailCallback):
         '''Init items.'''
-        for (pkgName, name, image) in infoList:
+        for (pkgName, name, image, smallImage) in infoList:
             appInfo = self.repoCache.cache[pkgName]
-            slideItem = SlideItem(appInfo, name, image, self.maskHeight, switchStatus, downloadQueue, entryDetailCallback)
+            slideItem = SlideItem(
+                appInfo, name, image, smallImage, 
+                self.maskHeight, switchStatus, downloadQueue, entryDetailCallback)
             self.itemDict[pkgName] = slideItem
             
     def switchToStatus(self, pkgName, appStatus):
@@ -296,7 +299,9 @@ class SlideBar:
     def createSlideLabel(self, index):
         '''Create slide label.'''
         imagePath = (self.getSlideItem(index)).imagePath
-        image = gtk.DrawingArea()
+        # image = gtk.DrawingArea()
+        image = gtk.EventBox()
+        image.set_visible_window(False)
         image.set_size_request(self.imageWidth / 3, 
                                (self.imageHeight - self.smallImagePaddingY * 2) / 3)
         image.connect("expose_event", lambda w, e: self.exposeSmallArea(w, e, index))
@@ -319,13 +324,13 @@ class SlideBar:
     def exposeSmallArea(self, drawArea, event, index):
         '''Expose small area.'''
         # Draw image.
+        x, y = drawArea.allocation.x, drawArea.allocation.y
         imgPath = (self.getSlideItem(index)).imagePath
         sourcePath = (self.getSlideItem(self.sourceIndex)).imagePath
         targetPath = (self.getSlideItem(self.targetIndex)).imagePath
-        width, height = drawArea.allocation.width, drawArea.allocation.height
-        pixbuf = gtk.gdk.pixbuf_new_from_file(imgPath).scale_simple(width, height, gtk.gdk.INTERP_BILINEAR)
+        pixbuf = gtk.gdk.pixbuf_new_from_file((self.getSlideItem(index)).smallImagePath)
         cr = drawArea.window.cairo_create()
-        cr.set_source_pixbuf(pixbuf, 0, 0)
+        cr.set_source_pixbuf(pixbuf, x, y)
         
         interval = 0.5 / self.times
         if targetPath == imgPath:

@@ -1024,11 +1024,14 @@ class FirstRun:
     def __init__(self):
         '''Init.'''
         self.lockFile = "./firstLock"    
+        self.windowWidth = 301
+        self.windowHeight = 124
+        self.backgroundPixbuf = gtk.gdk.pixbuf_new_from_file("./icons/icon/splash.png")
 
     def run(self):
         '''Run.'''
         # Just run when first time.
-        if os.path.exists(self.lockFile):
+        if not os.path.exists(self.lockFile):
             # Init gdk threads.
             gtk.gdk.threads_init()
 
@@ -1038,13 +1041,29 @@ class FirstRun:
 
             self.window.set_title('软件中心初始化扫描')
             self.window.set_position(gtk.WIN_POS_CENTER_ALWAYS)
+            self.window.set_default_size(self.windowWidth, self.windowHeight)
+            self.window.connect("size-allocate", lambda w, a: self.updateShape(w, a))
 
             # Set window icon.
             gtk.window_set_default_icon_from_file("./icons/icon/icon.ico")
 
             # Add widget.
+            self.eventbox = gtk.EventBox()
+            self.eventbox.set_visible_window(False)
+            self.eventbox.connect("expose-event", lambda w, e: self.draw(w, e))
+            self.window.add(self.eventbox)
+            
             self.mainBox = gtk.VBox()
-            self.window.add(self.mainBox)
+            self.mainAlign = gtk.Alignment()
+            self.mainAlign.set(0.0, 0.5, 0.0, 0.0)
+            self.mainAlign.set_padding(0, 0, 80, 0)
+            self.mainAlign.add(self.mainBox)
+            self.eventbox.add(self.mainAlign)
+            
+            self.titleLabel = gtk.Label()
+            self.titleLabel.set_alignment(0.0, 0.0)
+            self.titleLabel.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_MEDIUM_SIZE, "正在更新软件列表， 请稍等..."))
+            self.mainBox.pack_start(self.titleLabel)
 
             self.progressbar = drawProgressbar(self.PROGRESS_WIDTH)
             self.mainBox.pack_start(self.progressbar.box)
@@ -1060,19 +1079,36 @@ class FirstRun:
             self.window.show_all()
 
             gtk.main()
+            
+    def draw(self, widget, event):
+        '''Draw.'''
+        cr = widget.window.cairo_create()
+        drawPixbuf(cr, self.backgroundPixbuf, 0, 0)
 
+    def updateShape(self, widget, allocation):
+        '''Update shape.'''
+        if allocation.width > 0 and allocation.height > 0:
+            width, height = allocation.width, allocation.height
+            
+            pixbuf = gtk.gdk.Pixbuf(gtk.gdk.COLORSPACE_RGB, True, 8, width, height)
+            self.backgroundPixbuf.copy_area(0, 0, width, height, pixbuf, 0, 0)
+
+            (_, mask) = pixbuf.render_pixmap_and_mask(255)
+            if mask != None:
+                self.window.shape_combine_mask(mask, 0, 0)
+                
     @postGUI
     def updateStatus(self, status, percent):
         '''Update status.'''
         # Update status.
-        self.statusLabel.set_markup(status + " ...")
+        self.statusLabel.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, status))
         self.progressbar.setProgress(percent)
 
     @postGUI
     def updateFinish(self):
         '''Update finish.'''
         # Update status.
-        self.statusLabel.set_markup("正在构建软件包索引 ...")
+        self.statusLabel.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, "正在构建软件包索引"))
         self.progressbar.setProgress(99)
         
         # Start rebuild index.
@@ -1083,17 +1119,17 @@ class FirstRun:
     def finish(self):
         '''Finish.'''
         # Update status.
-        self.statusLabel.set_markup("扫描完毕!")
+        self.statusLabel.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, "扫描完毕!"))
         self.progressbar.setProgress(100)
 
-        # Delete lock file.
-        # if os.path.exists(self.lockFile):
-        #     os.unlink(self.lockFile)
+        # Touch lock file.
+        if not os.path.exists(self.lockFile):
+            utils.touchFile(self.lockFile)
         
         # Exit window.
         self.window.hide_all()
         gtk.main_quit()
 
 if __name__ == "__main__":
-    # FirstRun().run()
+    FirstRun().run()
     DeepinSoftwareCenter().main()

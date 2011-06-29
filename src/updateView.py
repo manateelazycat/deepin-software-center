@@ -165,7 +165,7 @@ class UpdateItem(DownloadItem):
         
         currentVersionNum = gtk.Label()
         currentVersionNum.set_ellipsize(pango.ELLIPSIZE_MIDDLE)
-        currentVersionNum.set_markup("<span foreground='#333333' size='%s'>%s</span>" % (LABEL_FONT_SIZE, currentVersion))
+        currentVersionNum.set_markup("<span foreground='#7d8087' size='%s'>%s</span>" % (LABEL_FONT_SIZE, currentVersion))
         currentVersionNum.set_size_request(self.VERSION_LABEL_WIDTH, -1)
         currentVersionNum.set_alignment(0.0, 0.5)
         currentVersionBox.pack_start(currentVersionNum, False, False)

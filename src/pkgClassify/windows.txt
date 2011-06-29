@@ -1,6 +1,7 @@
+picasa
 playonlinux
 q4wine
 wine
+wine-thunder
 wine1.2
 wine1.3
-picasa

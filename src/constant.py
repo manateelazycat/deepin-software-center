@@ -96,7 +96,7 @@ RECOMMEND_LIST = [
     (CLASSIFY_PROFESSIONAL,     True,  ["qcad", "ballview", "amide", "scilab", "celestia"]),  
     (CLASSIFY_PROGRAMMING,      True,  ["emacs", "vim", "eclipse", "codeblocks", "geany"]),  
     (CLASSIFY_DRIVER,           True,  ["jockey-gtk", "ntfs-config", "ndisgtk", "fglrx", "nvidia-current"]),  
-    (CLASSIFY_WINDOWS,          True,  ["picasa", "playonlinux", "wine", "q4wine", "winetricks"]),  
+    (CLASSIFY_WINDOWS,          True,  ["wine-thunder", "picasa", "playonlinux", "wine", "q4wine"]),  
     (CLASSIFY_OTHERS,           True,  ["ibus-pinyin", "camorama", "shutter", "gparted", "unetbootin"]),
     ]
 

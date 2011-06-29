@@ -1043,6 +1043,7 @@ class FirstRun:
             self.window.set_position(gtk.WIN_POS_CENTER_ALWAYS)
             self.window.set_default_size(self.windowWidth, self.windowHeight)
             self.window.connect("size-allocate", lambda w, a: self.updateShape(w, a))
+            self.window.connect("destroy", self.destroy)
 
             # Set window icon.
             gtk.window_set_default_icon_from_file("./icons/icon/icon.ico")
@@ -1128,6 +1129,12 @@ class FirstRun:
         
         # Exit window.
         self.window.hide_all()
+        gtk.main_quit()
+        
+    def destroy(self, widget, data=None):
+        '''Destroy main window.'''
+        self.checker.exit()
+        
         gtk.main_quit()
 
 if __name__ == "__main__":

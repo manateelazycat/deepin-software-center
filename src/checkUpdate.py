@@ -74,7 +74,12 @@ class CheckUpdate(td.Thread):
         """Callback for a cancel signal."""
         if self.transaction and self.transaction.status != enums.STATUS_SETTING_UP:
             self.transaction.cancel()
-
+            
+    def exit(self):
+        '''Exit.'''
+        self.transaction.cancel()
+        sys.exit(error)
+            
     def runTransaction(self, trans):
         """Callback which runs a requested transaction."""
         self.transaction = trans

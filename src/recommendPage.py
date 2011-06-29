@@ -76,11 +76,10 @@ class RecommendPage:
 class SlideItem(DownloadItem):
     '''Slide item.'''
 	
-    def __init__(self, appInfo, name, image, smallImage, height, switchStatus, downloadQueue, entryDetailCallback):
+    def __init__(self, appInfo, name, image, smallImage, height, switchStatus, downloadQueue):
         '''Init for slide item.'''
         DownloadItem.__init__(self, appInfo, switchStatus, downloadQueue)
         
-        self.entryDetailCallback = entryDetailCallback
         self.appInfo = appInfo
         self.name = name
         self.imagePath = "./images/" + image
@@ -109,9 +108,6 @@ class SlideItem(DownloadItem):
         self.itemNameBox = gtk.EventBox()
         self.itemNameBox.set_visible_window(False)
         self.itemNameBox.add(self.itemNameLabel)
-        self.itemNameBox.connect(
-            "button-press-event", 
-            lambda w, e: self.entryDetailCallback(PAGE_RECOMMEND, self.appInfo))
         self.itemBox.pack_start(self.itemNameBox)
         utils.setClickableCursor(self.itemNameBox)
         
@@ -181,6 +177,7 @@ class SlideBar:
     def __init__(self, repoCache, switchStatus, downloadQueue, entryDetailCallback):
         '''Init for slide bar.'''
         # Init.
+        self.entryDetailCallback = entryDetailCallback
         self.padding = 10
         self.imageWidth = 600
         self.imageHeight = 300
@@ -200,7 +197,7 @@ class SlideBar:
                 ("ppstream", None), 
                 ("eio", None)
                 ])
-        self.initItems(self.infoList, switchStatus, downloadQueue, entryDetailCallback)
+        self.initItems(self.infoList, switchStatus, downloadQueue)
         self.sourceIndex = 1
         self.targetIndex = 0
         
@@ -227,6 +224,10 @@ class SlideBar:
         self.drawingArea.set_visible_window(False)
         self.drawingArea.set_size_request(self.imageWidth, self.imageHeight)
         self.drawingArea.connect("expose_event", self.exposeBigArea)
+        self.drawingArea.connect(
+            "button-press-event",
+            lambda w, e: self.entryDetailView())
+        utils.setClickableCursor(self.drawingArea)
         self.drawingArea.queue_draw()
         
         self.slideItemBox = gtk.VBox()
@@ -244,13 +245,18 @@ class SlideBar:
         
         self.align.add(self.box)
         
-    def initItems(self, infoList, switchStatus, downloadQueue, entryDetailCallback):
+    def entryDetailView(self):
+        '''Entry detail view.'''
+        appInfo = self.getSlideItem(self.targetIndex).appInfo
+        self.entryDetailCallback(PAGE_RECOMMEND, appInfo)
+        
+    def initItems(self, infoList, switchStatus, downloadQueue):
         '''Init items.'''
         for (pkgName, name, image, smallImage) in infoList:
             appInfo = self.repoCache.cache[pkgName]
             slideItem = SlideItem(
                 appInfo, name, image, smallImage, 
-                self.maskHeight, switchStatus, downloadQueue, entryDetailCallback)
+                self.maskHeight, switchStatus, downloadQueue)
             self.itemDict[pkgName] = slideItem
             
     def switchToStatus(self, pkgName, appStatus):

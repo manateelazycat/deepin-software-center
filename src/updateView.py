@@ -179,7 +179,7 @@ class UpdateItem(DownloadItem):
         
         upgradeVersionNum = gtk.Label()
         upgradeVersionNum.set_ellipsize(pango.ELLIPSIZE_MIDDLE)
-        upgradeVersionNum.set_markup("<span foreground='#00BB00' size='%s'>%s</span>" % (LABEL_FONT_SIZE, upgradeVersion))
+        upgradeVersionNum.set_markup("<span foreground='#006efe' size='%s'>%s</span>" % (LABEL_FONT_SIZE, upgradeVersion))
         upgradeVersionNum.set_size_request(self.VERSION_LABEL_WIDTH, -1)
         upgradeVersionNum.set_alignment(0.0, 0.5)
         upgradeVersionBox.pack_start(upgradeVersionNum, False, False)

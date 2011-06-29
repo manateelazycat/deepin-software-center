@@ -69,7 +69,7 @@ class Topbar:
         # Init.
         self.searchQuery = searchQuery
         self.paddingX = 5
-        self.numColor = '#00BBBB'
+        self.numColor = '#006efe'
         self.textColor = '#1A3E88'
         self.repoCache = repoCache
         self.entrySearchCallback = entrySearchCallback

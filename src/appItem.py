@@ -439,7 +439,7 @@ def createItemBasicBox(appInfo, maxWidth, parent, showVersion=True):
     
     pkgVersion = utils.getPkgVersion(pkg)
     nameMarkup = "<span foreground='#1A3E88' size='%s'>%s</span>" % (LABEL_FONT_SIZE, pkgName)
-    versionMarkup = "<span foreground='#00BB00' size='%s'> (%s)</span>" % (LABEL_FONT_SIZE, pkgVersion)
+    versionMarkup = "<span foreground='#7d8087' size='%s'> (%s)</span>" % (LABEL_FONT_SIZE, pkgVersion)
     if showVersion:
         appName.set_markup(nameMarkup + versionMarkup)
     else:

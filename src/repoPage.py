@@ -140,9 +140,9 @@ class Topbar:
         
     def updateTopbar(self, category, itemNum):
         '''Set number label.'''
-        self.categoryLabel.set_markup("<span foreground='#00BBBB' size='%s'><b>%s</b></span>" % (LABEL_FONT_SIZE, category))
+        self.categoryLabel.set_markup("<span foreground='#26466d' size='%s'><b>%s</b></span>" % (LABEL_FONT_SIZE, category))
         self.numLabel.set_markup(
             ("<span size='%s'>共</span>" % (LABEL_FONT_SIZE))
-            + "<span foreground='#00BB00' size='%s'> %s</span>" % (LABEL_FONT_SIZE, str(itemNum))
+            + "<span foreground='#006efe' size='%s'> %s</span>" % (LABEL_FONT_SIZE, str(itemNum))
             + ("<span size='%s'> 款软件</span>" % (LABEL_FONT_SIZE)))
     

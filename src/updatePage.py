@@ -68,7 +68,7 @@ class Topbar:
         '''Init for top bar.'''
         # Init.
         self.paddingX = 5
-        self.numColor = '#00BBBB'
+        self.numColor = '#006efe'
         self.textColor = '#1A3E88'
         self.selectColor = '#0084FF'
         

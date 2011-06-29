@@ -133,11 +133,11 @@ class CheckUpdate(td.Thread):
 class TrayIcon:
     '''Tray icon.'''
     
-    TOOLTIP_WIDTH = 320
-    TOOLTIP_HEIGHT = 70
-    TOOLTIP_OFFSET_X = 10
-    TOOLTIP_OFFSET_Y = 30
-    PROGRESS_WIDTH = 200
+    TOOLTIP_WIDTH = 150
+    TOOLTIP_HEIGHT = 50
+    TOOLTIP_OFFSET_X = 100
+    TOOLTIP_OFFSET_Y = 10
+    PROGRESS_WIDTH = 120
 	
     def __init__(self):
         '''Init tray icon.'''
@@ -146,10 +146,7 @@ class TrayIcon:
         self.times = 20
         self.ticker = 0
         self.interval = 100     # in milliseconds
-        self.tooltipPixbuf = gtk.gdk.pixbuf_new_from_file_at_size(
-            "./trayIcon/window.png", 
-            self.TOOLTIP_WIDTH, 
-            self.TOOLTIP_HEIGHT)
+        self.tooltipPixbuf = gtk.gdk.pixbuf_new_from_file("./trayIcon/window.png")
         
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  
         self.socket.bind(SOCKET_UPDATEMANAGER_ADDRESS)
@@ -189,9 +186,9 @@ class TrayIcon:
         # Draw.
         label = gtk.Label()
         if self.checker.updateNum == 0:
-            label.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, "你的系统已经是最新的了！ :)"))
+            label.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, "你的系统已经是最新的了"))
         else:
-            label.set_markup("<span size='%s'>有%s个软件包可以升级。</span>" % (LABEL_FONT_SIZE, self.checker.updateNum))
+            label.set_markup("<span size='%s'>有%s个软件包可以升级</span>" % (LABEL_FONT_SIZE, self.checker.updateNum))
         
         self.tooltipEventBox.add(label)
         self.tooltipWindow.show_all()
@@ -200,9 +197,7 @@ class TrayIcon:
         '''Draw updating.'''
         # Draw.
         self.progressbar.setProgress(self.checker.percent)
-        self.progressStatus.set_markup(
-            "<span size='%s'>(%s) %s</span>"
-            % (LABEL_FONT_SIZE, str(self.checker.percent) + "%", self.checker.status))
+        self.progressStatus.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, self.checker.status))
         
         self.tooltipWindow.show_all()
         
@@ -257,26 +252,34 @@ class TrayIcon:
             
             self.progressbarBox = gtk.VBox()
             self.progressbarAlign = gtk.Alignment()
-            self.progressbarAlign.set(0.5, 0.5, 0.0, 0.0)
+            self.progressbarAlign.set(0.5, 0.7, 0.0, 0.0)
             self.progressbarAlign.add(self.progressbarBox)
             self.tooltipEventBox.add(self.progressbarAlign)
             
             self.progressbar = drawProgressbar(self.PROGRESS_WIDTH)
             self.progressbarBox.pack_start(self.progressbar.box)
             
+            paddingY = 5
             self.progressStatus = gtk.Label()
-            self.progressStatus.set_alignment(0.0, 0.5)
-            self.progressbarBox.pack_start(self.progressStatus)
+            self.progressStatusAlign = gtk.Alignment()
+            self.progressStatusAlign.set(0.0, 0.0, 0.0, 0.0)
+            self.progressStatusAlign.set_padding(paddingY, 0, 0, 0)
+            self.progressStatusAlign.add(self.progressStatus)
+            self.progressbarBox.pack_start(self.progressStatusAlign)
             
             glib.timeout_add(self.interval, self.redraw)
-            
+
+        (iconScreen, iconRect, orientation) = self.trayIcon.get_geometry()
         self.tooltipWindow.set_opacity(0.9)
-        self.tooltipWindow.move(gtk.gdk.screen_width() - self.TOOLTIP_WIDTH - self.TOOLTIP_OFFSET_X, self.TOOLTIP_OFFSET_Y)
+        self.tooltipWindow.move(
+            iconRect.x - iconRect.width,
+            iconRect.y + iconRect.height + self.TOOLTIP_OFFSET_Y)
         self.tooltipWindow.show_all()
         
     def updateShape(self, widget, allocation):
         '''Update shape.'''
         if allocation.width > 0 and allocation.height > 0:
+            
             width, height = allocation.width, allocation.height
             
             pixbuf = gtk.gdk.Pixbuf(gtk.gdk.COLORSPACE_RGB, True, 8, width, height)

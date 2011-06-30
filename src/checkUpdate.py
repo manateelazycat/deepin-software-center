@@ -140,8 +140,7 @@ class TrayIcon:
     
     TOOLTIP_WIDTH = 150
     TOOLTIP_HEIGHT = 50
-    TOOLTIP_OFFSET_X = 100
-    TOOLTIP_OFFSET_Y = 10
+    TOOLTIP_OFFSET_Y = 4
     PROGRESS_WIDTH = 120
 	
     def __init__(self):

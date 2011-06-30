@@ -49,9 +49,14 @@ install: build
 	mkdir -p $(CURDIR)/debian/deepin-software-center/usr/share/deepin-software-center
 	mkdir -p $(CURDIR)/debian/deepin-software-center/usr/share/applications
 	mkdir -p $(CURDIR)/debian/deepin-software-center/usr/bin
+	mkdir -p $(CURDIR)/debian/deepin-software-center/etc/xdg/autostart
 	cp -r $(CURDIR)/src/* $(CURDIR)/debian/deepin-software-center/usr/share/deepin-software-center
 	mv $(CURDIR)/debian/deepin-software-center/usr/share/deepin-software-center/deepin-software-center.desktop $(CURDIR)/debian/deepin-software-center/usr/share/applications
 	mv $(CURDIR)/debian/deepin-software-center/usr/share/deepin-software-center/deepin-software-center $(CURDIR)/debian/deepin-software-center/usr/bin
+	mv $(CURDIR)/debian/deepin-software-center/usr/share/deepin-software-center/deepin-check-update $(CURDIR)/debian/deepin-software-center/usr/bin
+	chmod +x $(CURDIR)/debian/deepin-software-center/usr/bin/deepin-software-center
+	chmod +x $(CURDIR)/debian/deepin-software-center/usr/bin/deepin-check-update
+	mv $(CURDIR)/debian/deepin-software-center/usr/share/deepin-software-center/deepin-check-update.desktop $(CURDIR)/debian/deepin-software-center/etc/xdg/autostart 
 
 # Build architecture-independent files here.
 binary-indep: build install

@@ -295,7 +295,7 @@ class DetailView:
         if os.path.exists (screenshotPath):
             self.screenshotImage.set_from_pixbuf(
                 gtk.gdk.pixbuf_new_from_file_at_size(screenshotPath, screenshotWidth, screenshotHeight))
-            utils.setCustomizeClickableCursor(self.imageBox, self.screenshotImage, "./icons/screenshot/zoom.png")
+            utils.setCustomizeClickableCursor(self.imageBox, self.screenshotImage, "./icons/screenshot/zoom_in.png")
         # Otherwise just fetch screenshot when not in black list.
         elif not pkgName in noscreenshotList:
             # Init fetch thread.
@@ -1242,6 +1242,8 @@ class BigScreenshot:
         self.window.connect("destroy", lambda w: exitCallback())
         self.window.connect("button-press-event", self.click)
         self.eventbox.connect("expose-event", self.show)
+        self.eventbox.connect("button-press-event", lambda w, e: self.exit())
+        utils.setCustomizeClickableCursor(self.eventbox, self.eventbox, "./icons/screenshot/zoom_out.png")
         
         self.window.show_all()
 
@@ -1328,10 +1330,6 @@ class BigScreenshot:
                              self.closeIconAdjust)
         cr.paint()
         
-        # (_, mask) = pixbuf.render_pixmap_and_mask(255)
-        # if mask != None:
-        #     self.window.shape_combine_mask(mask, 0, 0)
-
         if widget.get_child() != None:
             widget.propagate_expose(widget.get_child(), event)
 

@@ -46,6 +46,9 @@ import urllib2
 from dbus.mainloop.glib import threads_init
 threads_init()
 
+# Note: If you got error "dbus.exceptions.DBusException: org.freedesktop.DBus.Error.Spawn.ChildExited: Launch helper exited with unknown return code 1"
+# It's a bug of of python-aptdaemon that missing python-pkg-resources dependency (http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=603662)
+# Please do command "sudo apt-get install python-pkg-resources" fix this problem.
 class CheckUpdate(td.Thread):
     """Check update."""
     def __init__(self, progressCallback, finishCallback, 
@@ -102,6 +105,7 @@ class CheckUpdate(td.Thread):
             self.percent = percent
             if self.progressCallback != None:
                 self.progressCallback(self.status, self.percent)
+                print "%s, %s" % (self.status, self.percent)
 
     def onFinish(self, trans, enum):
         """Callback for the exit state of the transaction"""

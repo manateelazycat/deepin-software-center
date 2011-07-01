@@ -77,8 +77,9 @@ class CheckUpdate(td.Thread):
             
     def exit(self):
         '''Exit.'''
-        self.transaction.cancel()
-        sys.exit(error)
+        if self.transaction != None:
+            self.transaction.cancel()
+        sys.exit("Exit")
             
     def runTransaction(self, trans):
         """Callback which runs a requested transaction."""

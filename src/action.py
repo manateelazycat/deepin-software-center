@@ -106,7 +106,7 @@ class Action(td.Thread):
             self.finish()
         except Exception, e:
             # Debug.
-            self.messageCallback("%s: 安装失败， 请确保没有其他APT进程在运行." % self.pkgName)
+            self.messageCallback("%s: 安装失败, 请确保没有其他APT进程在运行." % self.pkgName)
             print "Got error `%s` when commit apt action." % (e)
             
             # Call failed callback.

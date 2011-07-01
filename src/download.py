@@ -203,7 +203,7 @@ class Download(td.Thread):
             
             # Stop download if reach retry times.
             if self.retryTicker > DOWNLOAD_TIMEOUT:
-                self.messageCallback("%s: 下载超时， 请检查你的网络链接." % (self.pkgName))
+                self.messageCallback("%s: 下载超时, 请检查你的网络链接." % (self.pkgName))
                 self.updateCallback(self.pkgName, self.progress, "下载超时")
                 return DOWNLOAD_STATUS_TIMEOUT
             elif self.retryTicker > 0:

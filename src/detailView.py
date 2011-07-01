@@ -326,7 +326,7 @@ class DetailView:
         commentAreaLabel = gtk.Label()
         commentAreaLabel.set_markup(
             "<span foreground='#1A3E88' size='%s'>%s</span>"
-            % (LABEL_FONT_MEDIUM_SIZE, "正在进行社区整合调试，我们将在下一个版本开放评论功能。:)"))
+            % (LABEL_FONT_MEDIUM_SIZE, "正在进行社区整合调试,我们将在下一个版本开放评论功能。:)"))
         commentAreaAlign = gtk.Alignment()
         commentAreaAlign.set(0.5, 0.5, 0.0, 0.0)
         commentAreaAlign.set_padding(paddingY, paddingY, 0, 0)
@@ -477,7 +477,7 @@ class DetailView:
         helpBox.pack_start(statusBox, False, False)
         
         statusLabel = gtk.Label()
-        statusLabel.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, "目前文档尚未翻译完成， 感谢您帮助我们!"))
+        statusLabel.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, "目前文档尚未翻译完成, 感谢您帮助我们!"))
         statusLabel.set_alignment(0.0, 0.5)
         statusBox.pack_start(statusLabel)
         
@@ -786,7 +786,7 @@ class DetailView:
         self.switchCommentInit()
 
         # Notify user.
-        self.messageCallback("发表 %s 评论失败， 请检查你的网络链接" % (pkgName))
+        self.messageCallback("发表 %s 评论失败, 请检查你的网络链接" % (pkgName))
         
     def fetchMoreComment(self):
         '''Fetch more comment.'''

@@ -159,6 +159,7 @@ class DeepinSoftwareCenter():
             self.sendVote,
             self.fetchVote,
             )
+        
         self.communityPage = communityPage.CommunityPage()
         # self.morePage = morePage.MorePage()
         self.statusbar = statusbar.Statusbar()
@@ -954,9 +955,9 @@ class SendVote(td.Thread):
         '''Run'''
         try:
             post = urllib2.urlopen(self.url, timeout=POST_TIMEOUT)
-            self.messageCallback("%s ô¶µô¡‰ô›„ô£•ôƒ‡ ô¢¡ô‘…œô™«ô‘Š¦ô‚¼ :)" % (self.name))
+            self.messageCallback("%s è¯„åˆ†æˆåŠŸ, æ„Ÿè°¢å‚ä¸Ž!" % (self.name))
         except Exception, e:
-            self.messageCallback("%s ô¶µô¡‰ô¼”ô–½ôƒ‡ ô¸¾ô¨µôš†ô´œô»ô‘¿ô±¤ô¯“ô©ºô€‚:(" % (self.name))
+            self.messageCallback("%s è¯„åˆ†å¤±è´¥, ô¸¾ô¨µôš†ô´œô»ô‘¿ô±¤ô¯“ô©º." % (self.name))
             print "Error: ", e
 
 class FetchDetail(td.Thread):
@@ -1063,7 +1064,7 @@ class FirstRun:
             
             self.titleLabel = gtk.Label()
             self.titleLabel.set_alignment(0.0, 0.0)
-            self.titleLabel.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_MEDIUM_SIZE, "æ­£åœ¨æ›´æ–°è½¯ä»¶åˆ—è¡¨ï¼Œ è¯·ç¨ç­‰..."))
+            self.titleLabel.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_MEDIUM_SIZE, "æ­£åœ¨æ›´æ–°è½¯ä»¶åˆ—è¡¨, è¯·ç¨ç­‰..."))
             self.mainBox.pack_start(self.titleLabel)
 
             self.progressbar = drawProgressbar(self.PROGRESS_WIDTH)

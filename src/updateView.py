@@ -146,7 +146,7 @@ class UpdateItem(DownloadItem):
         # Add application version.
         currentVersion = pkg.installed.version
         if len(pkg.versions) == 0:
-            upgradeVersion = "错误的版本， 请报告错误！"
+            upgradeVersion = "错误的版本, 请报告错误！"
         else:
             upgradeVersion = pkg.versions[0].version
             

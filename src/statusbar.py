@@ -44,7 +44,7 @@ class Statusbar:
         self.box = gtk.HBox()
         
         self.name = gtk.Label()
-        self.name.set_markup("<span foreground='#FFFFFF' size='%s'>深度Linux软件中心 1.0</span>" % (LABEL_FONT_SIZE))
+        self.initStatus()
         self.nameAlignment = gtk.Alignment()
         self.nameAlignment.set_padding(self.paddingY, self.paddingY, self.paddingX, self.paddingX)
         self.nameAlignment.set(0.0, 0.0, 0.0, 1.0)
@@ -67,3 +67,11 @@ class Statusbar:
         # Connect components.
         self.eventbox.add(self.box)
         self.eventbox.show_all()
+        
+    def initStatus(self):
+        '''Init status.'''
+        self.name.set_markup("<span foreground='#FFFFFF' size='%s'>深度Linux软件中心 1.0</span>" % (LABEL_FONT_SIZE))
+
+    def setStatus(self, status):
+        '''Set status.'''
+        self.name.set_markup("<span foreground='#FFFFFF' size='%s'>%s</span>" % (LABEL_FONT_SIZE, status))

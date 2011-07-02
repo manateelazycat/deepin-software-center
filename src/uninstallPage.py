@@ -110,7 +110,8 @@ class Topbar:
         keywords = content.split()
         if len(keywords) != 0:
             pkgList = filter (lambda n: n in self.repoCache.uninstallablePkgs, self.searchQuery.query(keywords))
-            self.entrySearchCallback(PAGE_UNINSTALL, content, pkgList)
+            if pkgList != []:
+                self.entrySearchCallback(PAGE_UNINSTALL, content, pkgList)
         
     def clickCandidate(self, candidate):
         '''Click candidate.'''

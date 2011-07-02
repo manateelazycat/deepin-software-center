@@ -21,10 +21,13 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from ConfigParser import RawConfigParser
+import glib
 import axi
 import os, re
 import sys
 import xapian
+import threading as td
+import subprocess
 
 XDG_CACHE_HOME = os.environ.get("XDG_CACHE_HOME", os.path.expanduser("~/.cache"))
 CACHEFILE = os.path.join(XDG_CACHE_HOME, "axi-cache.state")
@@ -240,18 +243,67 @@ class DB(object):
 class Search:
     '''Search.'''
 	
-    def __init__(self):
+    def __init__(self, messageCallback, statusbar):
         '''Init search.'''
+        self.messageCallback = messageCallback
+        self.statusbar = statusbar
+        
+        if os.path.exists("/var/lib/apt-xapian-index/index"):
+            self.database = DB()
+        else:
+            # Init.
+            self.database = None
+            self.statusbar.setStatus("正在为搜索建立索引文件...")
+            
+            # Start rebuild thread.
+            rebuildSearchIndex = RebuildSearchIndex(self.initDB)
+            rebuildSearchIndex.start()
+            
+    def initDB(self):
+        '''Init DB.'''
         self.database = DB()
+        self.statusbar.setStatus("搜索索引文件建立完毕.")
+        
+        glib.timeout_add_seconds(2, self.resetStatus)
+        
+    def resetStatus(self):
+        '''Reseet status.'''
+        self.statusbar.initStatus()
+    
+        return False
         
     def query(self, args):
         '''Query.'''
-        self.database.set_query_args(args)
-        self.database.build_query()
-        
-        matches = self.database.enquire.get_mset(0, self.database.db.get_doccount())
-        return (map (lambda m: m.document.get_data(), matches))
+        if self.database == None:
+            self.messageCallback("正在建立索引， 请稍候再试搜索功能. :)")
+            return []
+        else:
+            self.database.set_query_args(args)
+            self.database.build_query()
+            
+            matches = self.database.enquire.get_mset(0, self.database.db.get_doccount())
+            results = map(lambda m: m.document.get_data(), matches)
+            
+            if results == []:
+                self.messageCallback("没有搜索到和 %s 相关的包" % (" ".join(args)))
+            
+            return results
     
+class RebuildSearchIndex(td.Thread):
+    '''Rebuild search index.'''
+	
+    def __init__(self, finishCallback):
+        '''Init for RebuildSearchIndex.'''
+        td.Thread.__init__(self)
+        self.setDaemon(True) # make thread exit when main program exit
+        
+        self.finishCallback = finishCallback
+
+    def run(self):
+        '''Run.'''
+        subprocess.call(["update-apt-xapian-index"])
+        self.finishCallback()
+        
 if __name__ == "__main__":
     search = Search()
     result = search.query(["python"])

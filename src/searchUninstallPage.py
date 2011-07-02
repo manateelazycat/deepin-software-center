@@ -89,10 +89,11 @@ class SearchUninstallPage:
         self.keywords = self.content.split()
         if len(self.keywords) != 0:
             pkgList = filter (lambda n: n in self.repoCache.uninstallablePkgs, self.searchQuery.query(self.keywords))
-            self.pkgList = pkgList
-            self.topbar.searchCompletion.hide()
-            self.topbar.updateTopbar(self.content, len(pkgList))
-            self.searchView.updateSearch(len(pkgList))
+            if pkgList != []:
+                self.pkgList = pkgList
+                self.topbar.searchCompletion.hide()
+                self.topbar.updateTopbar(self.content, len(pkgList))
+                self.searchView.updateSearch(len(pkgList))
         
     def clickCandidate(self, candidate):
         '''Click candidate.'''

@@ -131,7 +131,8 @@ class Topbar:
         keywords = content.split()
         if len(keywords) != 0:
             pkgList = self.searchQuery.query(keywords)
-            self.entrySearchCallback(PAGE_REPO, content, pkgList)
+            if pkgList != []:
+                self.entrySearchCallback(PAGE_REPO, content, pkgList)
         
     def clickCandidate(self, candidate):
         '''Click candidate.'''

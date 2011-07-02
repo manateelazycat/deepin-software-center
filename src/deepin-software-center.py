@@ -79,7 +79,10 @@ class DeepinSoftwareCenter():
         apt_pkg.init()
         self.aptCache = apt.Cache()
         self.repoCache = repoCache.RepoCache(self.aptCache)
-        self.searchQuery = search.Search()
+        self.statusbar = statusbar.Statusbar()
+        self.statusbar.eventbox.connect("button-press-event", lambda w, e: utils.resizeWindow(w, e, self.window))
+        self.statusbar.eventbox.connect("button-press-event", lambda w, e: utils.moveWindow(w, e, self.window))
+        self.searchQuery = search.Search(self.message, self.statusbar)
         self.detailViewDict = {}
         self.searchViewDict = {}
         self.noscreenshotList = []
@@ -162,9 +165,6 @@ class DeepinSoftwareCenter():
         
         self.communityPage = communityPage.CommunityPage()
         # self.morePage = morePage.MorePage()
-        self.statusbar = statusbar.Statusbar()
-        self.statusbar.eventbox.connect("button-press-event", lambda w, e: utils.resizeWindow(w, e, self.window))
-        self.statusbar.eventbox.connect("button-press-event", lambda w, e: utils.moveWindow(w, e, self.window))
 
         self.window.connect_after("show", lambda w: self.createTooltips())
 
@@ -1139,5 +1139,5 @@ class FirstRun:
         gtk.main_quit()
 
 if __name__ == "__main__":
-    FirstRun().run()
+    # FirstRun().run()
     DeepinSoftwareCenter().main()

@@ -78,10 +78,11 @@ class SearchPage:
         keywords = content.split()
         if len(keywords) != 0:
             pkgList = self.searchQuery.query(keywords)
-            self.pkgList = pkgList
-            self.topbar.searchCompletion.hide()
-            self.topbar.updateTopbar(content, len(pkgList))
-            self.searchView.updateSearch(len(pkgList))
+            if pkgList != []:
+                self.pkgList = pkgList
+                self.topbar.searchCompletion.hide()
+                self.topbar.updateTopbar(content, len(pkgList))
+                self.searchView.updateSearch(len(pkgList))
             
     def clickCandidate(self, candidate):
         '''Click candidate.'''

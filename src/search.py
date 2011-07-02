@@ -21,6 +21,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from ConfigParser import RawConfigParser
+import utils
 import glib
 import axi
 import os, re
@@ -245,10 +246,11 @@ class Search:
 	
     def __init__(self, messageCallback, statusbar):
         '''Init search.'''
+        self.lockFile = "./firstLock"    
         self.messageCallback = messageCallback
         self.statusbar = statusbar
         
-        if os.path.exists("/var/lib/apt-xapian-index/index"):
+        if os.path.exists(self.lockFile):
             self.database = DB()
         else:
             # Init.
@@ -263,6 +265,10 @@ class Search:
         '''Init DB.'''
         self.database = DB()
         self.statusbar.setStatus("搜索索引文件建立完毕.")
+        
+        # Touch lock file.
+        if not os.path.exists(self.lockFile):
+            utils.touchFile(self.lockFile)
         
         glib.timeout_add_seconds(2, self.resetStatus)
         
@@ -301,8 +307,11 @@ class RebuildSearchIndex(td.Thread):
 
     def run(self):
         '''Run.'''
-        subprocess.call(["update-apt-xapian-index"])
-        self.finishCallback()
+        try:
+            subprocess.call(["update-apt-xapian-index"])
+            self.finishCallback()
+        except Exception, e:
+            print "RebuildSearchIndex error."
         
 if __name__ == "__main__":
     search = Search()

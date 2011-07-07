@@ -94,10 +94,6 @@ pypibrowser
 pyragua
 pyroom
 python-poker2d
-python2.6
-python2.7
-python3.1
-python3.2
 qa-assistant
 qdevelop
 qgit

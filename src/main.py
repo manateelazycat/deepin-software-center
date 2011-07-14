@@ -22,5 +22,5 @@
 
 import subprocess
 
-proc = subprocess.Popen(["gksu", "./deepin-software-center.py"])
+proc = subprocess.Popen(["gksu-polkit", "./deepin-software-center.py"])
 proc.wait()

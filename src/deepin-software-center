@@ -1,4 +1,4 @@
 #!/bin/sh
 
 cd /usr/share/deepin-software-center
-gksu ./deepin-software-center.py
+gksu-polkit ./deepin-software-center.py

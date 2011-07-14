@@ -223,9 +223,9 @@ class TrayIcon:
             
             # Create file showUpdate.
             if self.checker.finish and self.checker.updateNum > 0:
-                runCommand("gksu ./deepin-show-update.py")
+                runCommand("gksu-polkit ./deepin-show-update.py")
             else:
-                runCommand("gksu ./deepin-software-center.py")
+                runCommand("gksu-polkit ./deepin-software-center.py")
         except Exception, e:
             print e
             

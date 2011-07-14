@@ -331,11 +331,17 @@ class TrayIcon:
   
     def main(self):
         '''Main.'''
+        # Get input.
+        if len(sys.argv) == 2 and sys.argv[1] == "--now":
+            ignoreInterval = True
+        else:
+            ignoreInterval = False
+        
         # Get last update hours.
         agoHours = self.getLastUpdateHours()
         
         # Just update one day after.
-        if agoHours != None and agoHours >= UPDATE_INTERVAL:
+        if ignoreInterval or (agoHours != None and agoHours >= UPDATE_INTERVAL):
             print "Update package list..."
             
             gtk.gdk.threads_init()        

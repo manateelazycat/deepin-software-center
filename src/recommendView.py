@@ -326,7 +326,7 @@ class RecommendItem(DownloadItem):
                 if self.appInfo.status == APP_STATE_DOWNLOAD_PAUSE:
                     self.downloadingFeedbackLabel.set_markup("<span size='%s'>暂停</span>" % (LABEL_FONT_SIZE))
                 else:
-                    self.downloadingFeedbackLabel.set_markup("<span size='%s'>下载中</span>" % (LABEL_FONT_SIZE))
+                    self.downloadingFeedbackLabel.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, feedback))
                 
                 self.itemFrame.show_all()
                 

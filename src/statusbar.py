@@ -20,6 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from constant import *
 from draw import *
 import cairo
 import gtk
@@ -70,7 +71,7 @@ class Statusbar:
         
     def initStatus(self):
         '''Init status.'''
-        self.name.set_markup("<span foreground='#FFFFFF' size='%s'>深度Linux软件中心 1.0</span>" % (LABEL_FONT_SIZE))
+        self.name.set_markup("<span foreground='#FFFFFF' size='%s'>深度Linux软件中心 %s</span>" % (LABEL_FONT_SIZE, VERSION))
 
     def setStatus(self, status):
         '''Set status.'''

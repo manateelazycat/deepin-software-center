@@ -20,6 +20,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+VERSION = "1.1"
+
 APP_STATE_NORMAL = 1
 APP_STATE_UPGRADE = 2
 APP_STATE_INSTALLED = 3

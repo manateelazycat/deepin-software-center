@@ -632,7 +632,7 @@ class DeepinSoftwareCenter():
         window.set_decorated(False)
 
         # Init.
-        window.set_title('ô»½ôŸLinuxôºžô©‡ô‘Ž¥ô‘…¥')
+        window.set_title('æ·±åº¦ Linux è½¯ä»¶ä¸­å¿ƒ')
         window.set_position(gtk.WIN_POS_CENTER_ALWAYS)
         (width, height) = utils.getScreenSize(window)
         window.set_default_size(self.DEFAULT_WIDTH, -1)

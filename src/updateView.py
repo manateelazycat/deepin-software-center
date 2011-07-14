@@ -92,7 +92,7 @@ class UpdateItem(DownloadItem):
         self.checkAlign.add(self.checkButton)
         self.itemBox.pack_start(self.checkAlign, False, False)
         
-        self.appBasicBox = createItemBasicBox(self.appInfo, 560, self.itemBox, False) 
+        self.appBasicBox = createItemBasicBox(self.appInfo, 560, self.itemBox, self.entryDetailView, False) 
         self.itemBox.pack_start(self.appBasicBox, True, True)
         
         self.appAdditionBox = gtk.HBox()
@@ -114,10 +114,14 @@ class UpdateItem(DownloadItem):
         else:
             self.unselectPkgCallback(pkgName)
         
+    def entryDetailView(self):
+        '''Entry detail view.'''
+        self.entryDetailCallback(PAGE_UPGRADE, self.appInfo)
+        
     def clickItem(self, widget, event):
         '''Click item.'''
         if utils.isDoubleClick(event):
-            self.entryDetailCallback(PAGE_UPGRADE, self.appInfo)
+            self.entryDetailView()
         else:
             self.setSelectIndex(self.index)
         

@@ -342,12 +342,28 @@ class RecommendItem(DownloadItem):
         # Add application name.
         pkgName = utils.getPkgName(pkg)
         appName = gtk.Label()
-        appName.set_markup("<span foreground='#1A3E88' size='%s'>%s</span>" % (LABEL_FONT_SIZE, pkgName))
+        nameMarkup = "<span foreground='#1A3E88' size='%s'>%s</span>" % (LABEL_FONT_SIZE, pkgName)
+        nameActiveMarkup = "<span foreground='#0084FF' size='%s'>%s</span>" % (LABEL_FONT_SIZE, pkgName)
+        appName.set_markup(nameMarkup)
         appName.set_size_request(self.NAME_WIDTH, -1)
         appName.set_single_line_mode(True)
         appName.set_ellipsize(pango.ELLIPSIZE_END)
         appName.set_alignment(0.0, 0.5)
-        self.appNameBox.pack_start(appName, False, False)
+        appNameEventBox = gtk.EventBox()
+        appNameEventBox.add(appName)
+        appNameEventBox.set_visible_window(False)
+        appNameEventBox.connect(
+            "button-press-event",
+            lambda w, e: self.entryDetailView())
+        
+        utils.setClickableLabel(
+            appNameEventBox,
+            appName,
+            nameMarkup,
+            nameActiveMarkup,
+            )
+        
+        self.appNameBox.pack_start(appNameEventBox, False, False)
         
         # Add application summary.
         summary = utils.getPkgShortDesc(pkg)
@@ -360,7 +376,11 @@ class RecommendItem(DownloadItem):
         appSummary.set_alignment(0.0, 0.5)
         appSummaryBox.pack_start(appSummary, False, False)
         self.appSummaryBox.pack_start(appSummaryBox, False, False)
-
+        
+    def entryDetailView(self):
+        '''Entry detail view.'''
+        self.entryDetailCallback(PAGE_RECOMMEND, self.appInfo)
+        
 def clickItem(widget, event, entryDetailCallback, appInfo):
     '''Click item.'''
     if utils.isDoubleClick(event):

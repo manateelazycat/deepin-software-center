@@ -79,7 +79,7 @@ class UninstallItem:
         self.itemFrame.set(0.0, 0.5, 1.0, 1.0)
         self.itemFrame.add(self.itemEventBox)
         
-        self.appBasicBox = createItemBasicBox(self.appInfo, 200, self.itemBox)
+        self.appBasicBox = createItemBasicBox(self.appInfo, 200, self.itemBox, self.entryDetailView)
         self.itemBox.pack_start(self.appBasicBox, True, True, self.APP_LEFT_PADDING_X)
         
         self.appAdditionBox = gtk.HBox()
@@ -92,10 +92,14 @@ class UninstallItem:
         
         self.itemFrame.show_all()
         
+    def entryDetailView(self):
+        '''Entry detail view.'''
+        self.entryDetailCallback(PAGE_UNINSTALL, self.appInfo)
+        
     def clickItem(self, widget, event):
         '''Click item.'''
         if utils.isDoubleClick(event):
-            self.entryDetailCallback(PAGE_UNINSTALL, self.appInfo)
+            self.entryDetailView()
         else:
             self.setSelectIndex(self.index)
         
@@ -402,7 +406,7 @@ class DownloadItem:
                 
                 self.itemFrame.show_all()
                 
-def createItemBasicBox(appInfo, maxWidth, parent, showVersion=True):
+def createItemBasicBox(appInfo, maxWidth, parent, entryDetailCallback, showVersion=True):
     '''Create item information.'''
     # Init.
     appBasicAlign = gtk.Alignment()
@@ -435,15 +439,35 @@ def createItemBasicBox(appInfo, maxWidth, parent, showVersion=True):
     appName.set_single_line_mode(True)
     appName.set_ellipsize(pango.ELLIPSIZE_END)
     appName.set_alignment(0.0, 0.5)
-    appBox.pack_start(appName, False, False)
+    appNameEventBox = gtk.EventBox()
+    appNameEventBox.add(appName)
+    appNameEventBox.set_visible_window(False)
+    appNameEventBox.connect(
+        "button-press-event",
+        lambda w, e: entryDetailCallback())
+    appBox.pack_start(appNameEventBox, False, False)
     
     pkgVersion = utils.getPkgVersion(pkg)
     nameMarkup = "<span foreground='#1A3E88' size='%s'>%s</span>" % (LABEL_FONT_SIZE, pkgName)
+    nameActiveMarkup = "<span foreground='#0084FF' size='%s'>%s</span>" % (LABEL_FONT_SIZE, pkgName)
     versionMarkup = "<span foreground='#7d8087' size='%s'> (%s)</span>" % (LABEL_FONT_SIZE, pkgVersion)
+    versionActiveMarkup = "<span foreground='#555555' size='%s'> (%s)</span>" % (LABEL_FONT_SIZE, pkgVersion)
     if showVersion:
         appName.set_markup(nameMarkup + versionMarkup)
+        utils.setClickableLabel(
+            appNameEventBox,
+            appName,
+            nameMarkup + versionMarkup,
+            nameActiveMarkup + versionActiveMarkup,
+            )
     else:
         appName.set_markup(nameMarkup)
+        utils.setClickableLabel(
+            appNameEventBox,
+            appName,
+            nameMarkup,
+            nameActiveMarkup,
+            )
     
     # Add application summary.
     summary = utils.getPkgShortDesc(pkg)

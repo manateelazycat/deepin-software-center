@@ -1169,7 +1169,7 @@ class FetchScreenshot(td.Thread):
         # Set screenshot.
         if self.returnCode == DOWNLOAD_SUCCESS:
             self.image.set_from_pixbuf(gtk.gdk.pixbuf_new_from_file_at_size(screenshotPath, self.width, self.height))
-            utils.setCustomizeClickableCursor(self.imageBox, self.image, "./icons/screenshot/zoom.png")
+            utils.setCustomizeClickableCursor(self.imageBox, self.image, "./icons/screenshot/zoom_in.png")
         else:
             if self.killed:
                 pkgName = utils.getPkgName(self.appInfo.pkg)

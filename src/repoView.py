@@ -64,7 +64,7 @@ class RepoItem(DownloadItem):
         self.itemFrame = gtk.Alignment()
         self.itemFrame.set(0.0, 0.5, 1.0, 1.0)
         
-        self.appBasicBox = createItemBasicBox(self.appInfo, 200, self.itemBox)
+        self.appBasicBox = createItemBasicBox(self.appInfo, 200, self.itemBox, self.entryDetailView)
         
         # Widget that status will change.
         self.installingProgressbar = None
@@ -88,10 +88,14 @@ class RepoItem(DownloadItem):
         self.itemFrame.add(self.itemEventBox)
         self.itemFrame.show_all()
         
+    def entryDetailView(self):
+        '''Entry detail view.'''
+        self.entryDetailCallback(PAGE_REPO, self.appInfo)
+        
     def clickItem(self, widget, event):
         '''Click item.'''
         if utils.isDoubleClick(event):
-            self.entryDetailCallback(PAGE_REPO, self.appInfo)
+            self.entryDetailView()
         else:
             self.setSelectIndex(self.index)
         

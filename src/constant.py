@@ -135,7 +135,7 @@ LABEL_FONT_X_LARGE_SIZE = 13 * 1000
 LABEL_FONT_XX_LARGE_SIZE = 15 * 1000
 LABEL_FONT_XXX_LARGE_SIZE = 20 * 1000
 
-DOWNLOAD_TIMEOUT = 30           # times
+DOWNLOAD_TIMEOUT = 120          # times
 POST_TIMEOUT = 10               # seconds
 GET_TIMEOUT = 10                # seconds
 

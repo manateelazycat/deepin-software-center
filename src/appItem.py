@@ -586,6 +586,9 @@ class VoteView:
         self.starView.eventbox.connect("button-press-event", lambda w, e: self.sendVote())
         self.starView.eventbox.connect("button-press-event", lambda w, e: self.switchFocusStatus(self.FOCUS_NORMAL))
         
+        # Show help.
+        utils.setHelpTooltip(self.starView.eventbox, "点击评分")
+        
     def drawFocusNormal(self):
         '''Draw focus normal status.'''
         # Remove child first.

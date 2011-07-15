@@ -447,12 +447,13 @@ def getDefaultLanguage():
 
 def setHelpTooltip(widget, helpText):
     '''Set help tooltip.'''
+    widget.connect("enter-notify-event", lambda w, e: showHelpTooltip(w, helpText))
+
+def showHelpTooltip(widget, helpText):
+    '''Create help tooltip.'''
     widget.set_has_tooltip(True)
     widget.set_tooltip_text(helpText)
-    widget.connect("enter-notify-event", lambda w, e: createHelpTooltip(w, helpText))
-
-def createHelpTooltip(widget, helpText):
-    '''Create help tooltip.'''
     widget.trigger_tooltip_query()
     
     return False
+ 

@@ -20,6 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from message import *
 from constant import *
 from math import pi
 import cairo
@@ -380,10 +381,14 @@ def setClickableCursor(widget):
 def setCursor(widget, cursorType):
     '''Set cursor.'''
     widget.window.set_cursor(gtk.gdk.Cursor(cursorType))
+    
+    return False
 
 def setDefaultCursor(widget):
     '''Set default cursor.'''
     widget.window.set_cursor(None)
+    
+    return False
 
 def setLabelMarkup(widget, label, normalMarkup, activeMarkup):
     '''Set label markup.'''
@@ -393,6 +398,8 @@ def setLabelMarkup(widget, label, normalMarkup, activeMarkup):
 def setMarkup(label, markup):
     '''Set markup.'''
     label.set_markup(markup)
+    
+    return False
 
 def setClickableLabel(widget, label, normalMarkup, activeMarkup, resetAfterClick=True):
     '''Set clickable label.'''
@@ -418,6 +425,8 @@ def setCustomizeCursor(widget, cursorPath):
     widget.window.set_cursor(gtk.gdk.Cursor(gtk.gdk.display_get_default(),
                                             gtk.gdk.pixbuf_new_from_file_at_size(cursorPath, 32, 32),
                                             0, 0))
+    return False
+    
 def runCommand(command):
     '''Run command.'''
     subprocess.Popen("nohup %s > /dev/null 2>&1" % (command), shell=True)
@@ -437,3 +446,14 @@ def getDefaultLanguage():
     (lang, _) = locale.getdefaultlocale()
     return lang
 
+def setHelpTooltip(widget, helpText):
+    '''Set help tooltip.'''
+    widget.set_has_tooltip(True)
+    widget.set_tooltip_text(helpText)
+    widget.connect("enter-notify-event", lambda w, e: createHelpTooltip(w, helpText))
+
+def createHelpTooltip(widget, helpText):
+    '''Create help tooltip.'''
+    widget.trigger_tooltip_query()
+    
+    return False

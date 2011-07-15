@@ -447,6 +447,8 @@ def createItemBasicBox(appInfo, maxWidth, parent, entryDetailCallback, showVersi
         lambda w, e: entryDetailCallback())
     appBox.pack_start(appNameEventBox, False, False)
     
+    utils.setHelpTooltip(appNameEventBox, "点击查看详细信息")
+    
     pkgVersion = utils.getPkgVersion(pkg)
     nameMarkup = "<span foreground='#1A3E88' size='%s'>%s</span>" % (LABEL_FONT_SIZE, pkgName)
     nameActiveMarkup = "<span foreground='#0084FF' size='%s'>%s</span>" % (LABEL_FONT_SIZE, pkgName)

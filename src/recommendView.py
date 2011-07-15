@@ -356,6 +356,8 @@ class RecommendItem(DownloadItem):
             "button-press-event",
             lambda w, e: self.entryDetailView())
         
+        utils.setHelpTooltip(appNameEventBox, "点击查看详细信息")
+        
         utils.setClickableLabel(
             appNameEventBox,
             appName,

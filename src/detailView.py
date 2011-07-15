@@ -296,6 +296,7 @@ class DetailView:
             self.screenshotImage.set_from_pixbuf(
                 gtk.gdk.pixbuf_new_from_file_at_size(screenshotPath, screenshotWidth, screenshotHeight))
             utils.setCustomizeClickableCursor(self.imageBox, self.screenshotImage, "./icons/screenshot/zoom_in.png")
+            utils.setHelpTooltip(self.imageBox, "点击放大")
         # Otherwise just fetch screenshot when not in black list.
         elif not pkgName in noscreenshotList:
             # Init fetch thread.
@@ -1170,6 +1171,7 @@ class FetchScreenshot(td.Thread):
         if self.returnCode == DOWNLOAD_SUCCESS:
             self.image.set_from_pixbuf(gtk.gdk.pixbuf_new_from_file_at_size(screenshotPath, self.width, self.height))
             utils.setCustomizeClickableCursor(self.imageBox, self.image, "./icons/screenshot/zoom_in.png")
+            utils.setHelpTooltip(self.imageBox, "点击放大")
         else:
             if self.killed:
                 pkgName = utils.getPkgName(self.appInfo.pkg)

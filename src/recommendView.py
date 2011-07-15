@@ -459,10 +459,10 @@ class RecommendView:
         
         # Show more label.
         if showMore:
-            moreLabelPaddingRight = 20
+            moreLabelPaddingRight = 15
             moreLabel = gtk.Label()
             moreLabel.set_markup(
-                "<span foreground='#000000' underline='single' size='%s'>%s</span>" % (LABEL_FONT_MEDIUM_SIZE, "更多"))
+                "<span foreground='#000000' size='%s'>%s</span>" % (LABEL_FONT_MEDIUM_SIZE, "更多 >>"))
             moreLabelEventBox = gtk.EventBox()
             moreLabelEventBox.add(moreLabel)
             moreLabelEventBox.set_visible_window(False)
@@ -482,8 +482,8 @@ class RecommendView:
             utils.setClickableLabel(
                 moreLabelEventBox,
                 moreLabel,
-                "<span foreground='#000000' underline='single' size='%s'>更多</span>" % (LABEL_FONT_MEDIUM_SIZE),
-                "<span foreground='#0084FF' underline='single' size='%s'>更多</span>" % (LABEL_FONT_MEDIUM_SIZE))
+                "<span foreground='#000000' size='%s'>更多 >></span>" % (LABEL_FONT_MEDIUM_SIZE),
+                "<span foreground='#0084FF' size='%s'>更多 >></span>" % (LABEL_FONT_MEDIUM_SIZE))
         
         # Content box.
         contentBox = gtk.HBox()

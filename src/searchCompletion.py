@@ -69,6 +69,7 @@ class SearchCompletion:
         self.frame = gtk.Frame()
         
         self.treeView.connect("row-activated", self.click)
+        self.treeView.connect("button-press-event", self.clickCandiate)
         self.entry.connect("focus-out-event", lambda w, e: self.hide())
         self.entry.connect("size-allocate", lambda widget, allocation: self.hide())
         self.entry.connect("changed", self.show)
@@ -97,7 +98,7 @@ class SearchCompletion:
                 
                 w, h = rect.width, (min (len(candidates), self.MAX_CELL_NUMBER)) * self.CELL_HEIGHT + self.CELL_HEIGHT / 2
                 # FIXME, i don't know why entry'height is bigger than i need, so i decrease 8 pixel here.
-                self.window.move(wx, wy + rect.height - 12)
+                self.window.move(wx, wy + rect.height - 8)
                 self.window.set_size_request(w, h)
                 self.window.resize(w, h)
                 self.window.show_all()    
@@ -123,7 +124,7 @@ class SearchCompletion:
                 utils.treeViewFocusNextToplevelNode(self.treeView)
             elif eventName == "Return":
                 selectedPath = utils.treeViewGetSelectedPath(self.treeView)
-                self.click(self.treeView, selectedPath, None)
+                self.click(self.treeView, (selectedPath), None)
             else:
                 self.entry.event(keyPressEvent)
             self.propagateLock = False
@@ -131,6 +132,13 @@ class SearchCompletion:
             return True
         else:
             return False
+        
+    def clickCandiate(self, widget, event):
+        '''Enter candidate.'''
+        ex = int(event.x)
+        ey = int(event.y)
+        (selectedPath, _, cx, cy) = self.treeView.get_path_at_pos(ex, ey)
+        self.click(self.treeView, selectedPath, None)
         
     def hide(self):
         '''Hide search completion.'''

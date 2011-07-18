@@ -456,4 +456,43 @@ def showHelpTooltip(widget, helpText):
     widget.trigger_tooltip_query()
     
     return False
+
+def treeViewGetToplevelNodeCount(treeview):
+    '''Get toplevel node count.'''
+    model = treeview.get_model()
+    if model != None:
+        return model.iter_n_children(None)
+    else:
+        return 0
+    
+def treeViewGetSelectedPath(treeview):
+    '''Get selected path.'''
+    selection = treeview.get_selection()
+    (_, treePaths) = selection.get_selected_rows()
+    return (treePaths[0])[0]
  
+def treeViewFocusFirstToplevelNode(treeview):
+    '''Focus first toplevel node.'''
+    treeview.set_cursor((0))
+    
+def treeViewFocusLastToplevelNode(treeview):
+    '''Focus last toplevel node.'''
+    nodeCount = treeViewGetToplevelNodeCount(treeview)
+    if nodeCount > 0:
+        path = (nodeCount - 1)
+    else:
+        path = (0)
+    treeview.set_cursor(path)
+
+def treeViewFocusNextToplevelNode(treeview):
+    '''Focus next toplevel node.'''
+    selectedPath = treeViewGetSelectedPath(treeview)
+    nodeCount = treeViewGetToplevelNodeCount(treeview)
+    if selectedPath < nodeCount - 1:
+        treeview.set_cursor((selectedPath + 1))
+
+def treeViewFocusPrevToplevelNode(treeview):
+    '''Focus previous toplevel node.'''
+    selectedPath = treeViewGetSelectedPath(treeview)
+    if selectedPath > 0:
+        treeview.set_cursor((selectedPath - 1))

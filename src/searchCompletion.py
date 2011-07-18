@@ -45,6 +45,7 @@ class SearchCompletion:
         self.getCandidatesCallback = getCandidatesCallback
         self.clickCandidateCallback = clickCandidateCallback
         self.showCompletion = True
+        self.propagateLock = False
         
         self.window = gtk.Window()
         self.window.set_type_hint(gtk.gdk.WINDOW_TYPE_HINT_DIALOG)
@@ -71,6 +72,7 @@ class SearchCompletion:
         self.entry.connect("focus-out-event", lambda w, e: self.hide())
         self.entry.connect("size-allocate", lambda widget, allocation: self.hide())
         self.entry.connect("changed", self.show)
+        self.entry.connect("key-press-event", lambda w, e: self.handleKeyPress(w, e))
         
         self.scrolledwindow.add(self.treeView)
         self.frame.add(self.scrolledwindow)
@@ -95,18 +97,46 @@ class SearchCompletion:
                 
                 w, h = rect.width, (min (len(candidates), self.MAX_CELL_NUMBER)) * self.CELL_HEIGHT + self.CELL_HEIGHT / 2
                 # FIXME, i don't know why entry'height is bigger than i need, so i decrease 8 pixel here.
-                self.window.move(wx, wy + rect.height - 8)
+                self.window.move(wx, wy + rect.height - 12)
                 self.window.set_size_request(w, h)
                 self.window.resize(w, h)
                 self.window.show_all()    
+
+                # Focus first candidate.
+                self.treeView.set_cursor((0))
+                gtk.Widget.grab_focus(self.treeView)
             else:
                 self.window.hide_all()
+                
+    def handleKeyPress(self, entry, keyPressEvent):
+        '''Handle key press.'''
+        if not self.propagateLock:
+            self.propagateLock = True
+            eventName = gtk.gdk.keyval_name(keyPressEvent.keyval)
+            if eventName == "Home":
+                utils.treeViewFocusFirstToplevelNode(self.treeView)
+            elif eventName == "End":
+                utils.treeViewFocusLastToplevelNode(self.treeView)
+            elif eventName == "Up":
+                utils.treeViewFocusPrevToplevelNode(self.treeView)
+            elif eventName == "Down":
+                utils.treeViewFocusNextToplevelNode(self.treeView)
+            elif eventName == "Return":
+                selectedPath = utils.treeViewGetSelectedPath(self.treeView)
+                self.click(self.treeView, selectedPath, None)
+            else:
+                self.entry.event(keyPressEvent)
+            self.propagateLock = False
+        
+            return True
+        else:
+            return False
         
     def hide(self):
         '''Hide search completion.'''
         self.window.hide_all()
     
-    def click(self, treeView, path, view_column):
+    def click(self, treeView, path, _):
         '''Click search completion.'''
         pathIter = self.listStore.get_iter(path)
         candidate = self.listStore.get_value(pathIter, self.TEXT_COLUMN)

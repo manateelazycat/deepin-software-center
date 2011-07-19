@@ -329,6 +329,41 @@ class TrayIcon:
         agoHours = int((time.time() - mtime) / (60 * 60))
         return agoHours
   
+    def handleRightClick(self, icon, button, time):
+        menu = gtk.Menu()
+        
+        aboutIcon = gtk.Image()
+        aboutIcon.set_from_file("./icons/menu/about.png")
+        aboutItem = gtk.ImageMenuItem()
+        aboutItem.set_label("关于")
+        aboutItem.set_image(aboutIcon)
+        aboutItem.connect("activate", self.showAboutDialog)
+        menu.append(aboutItem)
+        
+        quitIcon = gtk.Image()
+        quitIcon.set_from_file("./icons/menu/quit.png")
+        quitItem = gtk.ImageMenuItem()
+        quitItem.set_label("退出")
+        quitItem.set_image(quitIcon)
+        quitItem.connect("activate", lambda w: self.exit())
+        menu.append(quitItem)
+        
+        menu.show_all()
+        
+        menu.popup(None, None, gtk.status_icon_position_menu, button, time, self.trayIcon)
+        
+    def showAboutDialog(self, widget):
+        aboutDialog = gtk.AboutDialog()
+
+        aboutDialog.set_destroy_with_parent(True)
+        aboutDialog.set_name("深度Linux更新管理器")
+        aboutDialog.set_version(VERSION)
+        aboutDialog.set_authors(AUTHOR)
+        aboutDialog.set_artists(ARTISTS)
+        		
+        aboutDialog.run()
+        aboutDialog.destroy()        
+
     def main(self):
         '''Main.'''
         # Get input.
@@ -352,6 +387,7 @@ class TrayIcon:
             self.trayIcon.set_visible(True)
             self.trayIcon.connect("activate", lambda w: self.showSoftwareCenter())
             self.trayIcon.connect("query-tooltip", self.hoverIcon)
+            self.trayIcon.connect("popup-menu", self.handleRightClick)
             
             self.checker = CheckUpdate(None, self.finishCheck)
             self.checker.start()
@@ -359,6 +395,7 @@ class TrayIcon:
             gtk.main()
         else:
             print "Just update system %s hours ago" % (agoHours)
+            
 
 if __name__ == "__main__":
     TrayIcon().main()

@@ -21,6 +21,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 VERSION = "1.1"
+AUTHOR = ["Yong Wang"]
+ARTISTS = ["Can Yang"]
 
 APP_STATE_NORMAL = 1
 APP_STATE_UPGRADE = 2

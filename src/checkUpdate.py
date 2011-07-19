@@ -248,11 +248,10 @@ class TrayIcon:
         else:
             print "Please wait update finish."
                 
-    @postGUI
     def exit(self):
         '''Exit'''
         self.socket.close()
-        self.checker.exit("Network disconnected")
+        self.checker.exit()
 
         gtk.main_quit()    
         

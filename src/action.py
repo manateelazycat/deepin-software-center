@@ -24,6 +24,7 @@ from constant import *
 import apt
 import apt.progress.base as apb
 import threading as td
+import socket
 
 class InstallProgress(apb.InstallProgress):
     '''Install progress.'''
@@ -105,9 +106,18 @@ class Action(td.Thread):
             # Call finish callback if action commit successfully.
             self.finish()
         except Exception, e:
-            # Debug.
-            self.messageCallback("%s: 安装失败, 请确保没有其他APT进程在运行." % self.pkgName)
             print "Got error `%s` when commit apt action." % (e)
+            
+            s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  
+            try:
+                s.bind(SOCKET_UPDATEMANAGER_ADDRESS)
+                s.close()
+                
+                self.messageCallback("%s: 安装失败, 请确保没有其他APT进程在运行." % self.pkgName)
+            except Exception, e:
+                s.close()
+                
+                self.messageCallback("%s: 安装失败, 更新管理器正在运行." % self.pkgName)
             
             # Call failed callback.
             self.failed()

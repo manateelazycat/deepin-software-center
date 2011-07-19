@@ -496,3 +496,4 @@ def treeViewFocusPrevToplevelNode(treeview):
     selectedPath = treeViewGetSelectedPath(treeview)
     if selectedPath > 0:
         treeview.set_cursor((selectedPath - 1))
+

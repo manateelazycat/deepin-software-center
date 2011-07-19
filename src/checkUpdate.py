@@ -22,8 +22,8 @@
 
 from constant import *
 from draw import *
-from traceback import print_exc
 from utils import *
+from utils import postGUI
 import apt
 import apt_pkg
 import aptdaemon.client as client
@@ -53,21 +53,23 @@ class CheckUpdate(td.Thread):
     """Check update."""
     def __init__(self, progressCallback, finishCallback, 
                  calculateUpdate=True, allowUnauthenticated=False, details=False):
+        # Init thread.
         td.Thread.__init__(self)
         self.setDaemon(True) # make thread exit when main program exit 
         
+        # Init.
         self.progressCallback = progressCallback
         self.finishCallback = finishCallback
         self.calculateUpdate = calculateUpdate
         self.client = client.AptClient()
-        signal.signal(signal.SIGINT, self.onCancelSignal)
-        signal.signal(signal.SIGQUIT, self.onCancelSignal)
         self.status = ""
         self.percent = 0
         self.allowUnauthenticated = allowUnauthenticated
         self.transaction = None
         self.finish = False
         self.updateNum = 0
+        signal.signal(signal.SIGINT, self.onCancelSignal)
+        signal.signal(signal.SIGQUIT, self.onCancelSignal)
         
     def run(self):
         """Update cache"""
@@ -77,12 +79,6 @@ class CheckUpdate(td.Thread):
         """Callback for a cancel signal."""
         if self.transaction and self.transaction.status != enums.STATUS_SETTING_UP:
             self.transaction.cancel()
-            
-    def exit(self):
-        '''Exit.'''
-        if self.transaction != None:
-            self.transaction.cancel()
-        sys.exit("Exit")
             
     def runTransaction(self, trans):
         """Callback which runs a requested transaction."""
@@ -127,10 +123,20 @@ class CheckUpdate(td.Thread):
         # Finish callback.
         self.finish = True
         self.finishCallback()
+        
+    def exit(self, exitMsg="Exit"):
+        '''Exit.'''
+        if self.transaction != None:
+            try:
+                self.transaction.cancel()
+            except Exception, e:
+                print "*** ", e
+                
+        sys.exit(exitMsg)
             
     def onException(self, error):
         """Error callback."""
-        sys.exit(error)
+        self.exit(error)
 
     def calculateUpdateNumber(self):
         '''Calculate update number.'''
@@ -212,40 +218,44 @@ class TrayIcon:
         
     def showSoftwareCenter(self):
         '''Show software center.'''
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  
-        
-        try:
-            # Software center is not running if address is not bind.
-            s.bind(SOCKET_SOFTWARECENTER_ADDRESS)
-            
-            # Close socket.
-            s.close()
-            
-            # Create file showUpdate.
-            if self.checker.finish and self.checker.updateNum > 0:
-                runCommand("gksu-polkit ./deepin-show-update.py")
-            else:
-                runCommand("gksu-polkit ./deepin-software-center.py")
-        except Exception, e:
-            print e
-            
-            # Just need send show update request if software center has running.
-            if self.checker.finish and self.checker.updateNum > 0:
-                s.sendto("show update request", SOCKET_SOFTWARECENTER_ADDRESS)  
-            
-            # Close socket.
-            s.close()  
-        
-        # Quit.
         if self.checker.finish:
-            self.exit()
+            s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  
             
+            try:
+                # Software center is not running if address is not bind.
+                s.bind(SOCKET_SOFTWARECENTER_ADDRESS)
+                
+                # Close socket.
+                s.close()
+                
+                # Create file showUpdate.
+                if self.checker.finish and self.checker.updateNum > 0:
+                    runCommand("gksu-polkit ./deepin-show-update.py")
+                else:
+                    runCommand("gksu-polkit ./deepin-software-center.py")
+            except Exception, e:
+                print e
+                
+                # Just need send show update request if software center has running.
+                if self.checker.finish and self.checker.updateNum > 0:
+                    s.sendto("show update request", SOCKET_SOFTWARECENTER_ADDRESS)  
+                
+                # Close socket.
+                s.close()  
+            
+            # Quit.
+            self.exit()
+        else:
+            print "Please wait update finish."
+                
+    @postGUI
     def exit(self):
         '''Exit'''
         self.socket.close()
+        self.checker.exit("Network disconnected")
 
         gtk.main_quit()    
-    
+        
     def hoverIcon(self, *args):
         '''Hover icon.'''
         self.ticker = self.times
@@ -279,10 +289,14 @@ class TrayIcon:
             glib.timeout_add(self.interval, self.redraw)
 
         (iconScreen, iconRect, orientation) = self.trayIcon.get_geometry()
+        (screenWidth, screenHeight) = getScreenSize(self.trayIcon)
+        tooltipX = iconRect.x - iconRect.width
+        if iconRect.y + iconRect.height > screenHeight:
+            tooltipY = iconRect.y - self.TOOLTIP_HEIGHT - self.TOOLTIP_OFFSET_Y 
+        else:
+            tooltipY = iconRect.y + iconRect.height + self.TOOLTIP_OFFSET_Y
         self.tooltipWindow.set_opacity(0.9)
-        self.tooltipWindow.move(
-            iconRect.x - iconRect.width,
-            iconRect.y + iconRect.height + self.TOOLTIP_OFFSET_Y)
+        self.tooltipWindow.move(tooltipX, tooltipY)
         self.tooltipWindow.show_all()
         
     def updateShape(self, widget, allocation):
@@ -396,7 +410,6 @@ class TrayIcon:
         else:
             print "Just update system %s hours ago" % (agoHours)
             
-
 if __name__ == "__main__":
     TrayIcon().main()
 

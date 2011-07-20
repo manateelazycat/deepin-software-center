@@ -126,14 +126,16 @@ class CheckUpdate(td.Thread):
         
     def exit(self, exitMsg="Exit"):
         '''Exit.'''
+        print "3"
+        
         if self.transaction != None:
             try:
                 self.transaction.cancel()
             except Exception, e:
                 print "*** ", e
                 
-        sys.exit(exitMsg)
-            
+        print "4"
+                
     def onException(self, error):
         """Error callback."""
         self.exit(error)
@@ -164,6 +166,7 @@ class TrayIcon:
         self.tooltipPixbuf = gtk.gdk.pixbuf_new_from_file("./trayIcon/window.png")
         
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  
+        self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) # make sure socket port always work
         self.socket.bind(SOCKET_UPDATEMANAGER_ADDRESS)
         
     def redraw(self):
@@ -250,10 +253,29 @@ class TrayIcon:
                 
     def exit(self):
         '''Exit'''
+        print "0"
         self.socket.close()
         self.checker.exit()
 
+        print "1"
+        
         gtk.main_quit()    
+        
+        print "2"
+        
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  
+        
+        try:
+            s.bind(SOCKET_UPDATEMANAGER_ADDRESS)
+            s.close()
+            
+            print "** APT"
+        except Exception, e:
+            print "*** ", e
+            
+            s.close()
+            
+            print "*** Update manager"        
         
     def hoverIcon(self, *args):
         '''Hover icon.'''

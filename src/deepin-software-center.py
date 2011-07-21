@@ -68,7 +68,7 @@ class DeepinSoftwareCenter():
         '''Init.'''
         # Init gdk threads.
         gtk.gdk.threads_init()
-
+        
         # Shape.
         self.topbarPixbuf = gtk.gdk.pixbuf_new_from_file("./icons/navigate/background.png")
         self.topHeight = self.topbarPixbuf.get_height()
@@ -96,10 +96,12 @@ class DeepinSoftwareCenter():
             self.message
             )
 
-        # Remove lock file.
-        # utils.removeFile(lock.status_lock.path)
-        # utils.removeFile(lock.archive_lock.path)
-        # utils.removeFile(lock.lists_lock.path)
+        # for param in os.environ.keys():
+        #     print "%20s %s" % (param,os.environ[param])                
+
+        # dpkg will failed if not set TERM and PATH environment variable.  
+        os.environ["TERM"] = "xterm"
+        os.environ["PATH"] = "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/X11R6/bin"
         
         # Action queue.
         self.actionQueue = action.ActionQueue(

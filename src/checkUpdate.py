@@ -39,6 +39,7 @@ import sys
 import threading as td
 import urllib2
 import subprocess
+import os
 
 # Must init thread before any thread code running.
 # Otherwise you will got segmentation fault about dbus_connection_get_dispatch_status, 
@@ -218,11 +219,16 @@ class TrayIcon:
         self.progressStatus.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, self.checker.status))
         
         self.tooltipWindow.show_all()
-        
+
     def showSoftwareCenter(self):
         '''Show software center.'''
-        # if self.checker.finish:
-        if True:
+        # if True:
+        if self.checker.finish:
+            # Init.
+            startup = False
+            finish = self.checker.finish
+            updateNum = self.checker.updateNum
+            
             s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  
             
             try:
@@ -232,8 +238,8 @@ class TrayIcon:
                 # Close socket.
                 s.close()
                 
-                # Create file showUpdate.
-                self.startSoftwareCenter()
+                # Enable start flag.
+                startup = True
             except Exception, e:
                 print e
                 
@@ -244,18 +250,20 @@ class TrayIcon:
                 # Close socket.
                 s.close()  
             
-            # Quit.
+            # Exit update manager.
             self.exit()
+            
+            # Must startup software center after current loop exit.
+            # Otherwise socket and other resources of current process will keep that 
+            # make software center can't works correctly.
+            if startup:
+                if finish and updateNum > 0:
+                    subprocess.Popen(["gksu-polkit", "./deepin-software-center.py", "show-update"])
+                else:
+                    subprocess.Popen(["gksu-polkit", "./deepin-software-center.py"])
         else:
             print "Please wait update finish."
             
-    def startSoftwareCenter(self):
-        '''Start software center.'''
-        if self.checker.finish and self.checker.updateNum > 0:
-            subprocess.Popen(["gksu-polkit", "./deepin-software-center.py", "show-update"])
-        else:
-            subprocess.Popen(["gksu-polkit", "./deepin-software-center.py"])
-                
     def exit(self):
         '''Exit'''
         self.socket.close()
@@ -419,4 +427,3 @@ class TrayIcon:
             
 if __name__ == "__main__":
     TrayIcon().main()
-

@@ -27,6 +27,7 @@ import threading as td
 import socket
 import utils
 import subprocess
+import os
 
 class InstallProgress(apb.InstallProgress):
     '''Install progress.'''
@@ -109,7 +110,6 @@ class Action(td.Thread):
             self.finish()
         except Exception, e:
             print "Got error `%s` when commit apt action." % (e)
-            # subprocess.Popen("echo %s > ~/log" % str(e), shell=True)
             
             s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  
             try:

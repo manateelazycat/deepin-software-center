@@ -23,7 +23,6 @@
 from constant import *
 from draw import *
 from utils import *
-from utils import postGUI
 import apt
 import apt_pkg
 import aptdaemon.client as client
@@ -39,6 +38,7 @@ import stat
 import sys
 import threading as td
 import urllib2
+import subprocess
 
 # Must init thread before any thread code running.
 # Otherwise you will got segmentation fault about dbus_connection_get_dispatch_status, 
@@ -124,17 +124,17 @@ class CheckUpdate(td.Thread):
         self.finish = True
         self.finishCallback()
         
+        # Exit.
+        self.exit()
+        
     def exit(self, exitMsg="Exit"):
         '''Exit.'''
-        print "3"
-        
         if self.transaction != None:
             try:
                 self.transaction.cancel()
+                self.transaction = None
             except Exception, e:
                 print "*** ", e
-                
-        print "4"
                 
     def onException(self, error):
         """Error callback."""
@@ -221,7 +221,8 @@ class TrayIcon:
         
     def showSoftwareCenter(self):
         '''Show software center.'''
-        if self.checker.finish:
+        # if self.checker.finish:
+        if True:
             s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  
             
             try:
@@ -232,10 +233,7 @@ class TrayIcon:
                 s.close()
                 
                 # Create file showUpdate.
-                if self.checker.finish and self.checker.updateNum > 0:
-                    runCommand("gksu-polkit ./deepin-show-update.py")
-                else:
-                    runCommand("gksu-polkit ./deepin-software-center.py")
+                self.startSoftwareCenter()
             except Exception, e:
                 print e
                 
@@ -250,32 +248,20 @@ class TrayIcon:
             self.exit()
         else:
             print "Please wait update finish."
+            
+    def startSoftwareCenter(self):
+        '''Start software center.'''
+        if self.checker.finish and self.checker.updateNum > 0:
+            subprocess.Popen(["gksu-polkit", "./deepin-software-center.py", "show-update"])
+        else:
+            subprocess.Popen(["gksu-polkit", "./deepin-software-center.py"])
                 
     def exit(self):
         '''Exit'''
-        print "0"
         self.socket.close()
         self.checker.exit()
-
-        print "1"
         
         gtk.main_quit()    
-        
-        print "2"
-        
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  
-        
-        try:
-            s.bind(SOCKET_UPDATEMANAGER_ADDRESS)
-            s.close()
-            
-            print "** APT"
-        except Exception, e:
-            print "*** ", e
-            
-            s.close()
-            
-            print "*** Update manager"        
         
     def hoverIcon(self, *args):
         '''Hover icon.'''

@@ -54,6 +54,7 @@ import uninstallPage
 import updatePage
 import urllib2
 import utils
+import aptdaemon.lock as lock
 pygtk.require('2.0')
 
 import socket
@@ -95,6 +96,11 @@ class DeepinSoftwareCenter():
             self.message
             )
 
+        # Remove lock file.
+        # utils.removeFile(lock.status_lock.path)
+        # utils.removeFile(lock.archive_lock.path)
+        # utils.removeFile(lock.lists_lock.path)
+        
         # Action queue.
         self.actionQueue = action.ActionQueue(
             self.actionUpdateCallback,
@@ -678,7 +684,7 @@ class DeepinSoftwareCenter():
         self.socketThread.socket.close()
 
         gtk.main_quit()
-
+        
     def main(self):
         '''Main'''
         # Connect components.
@@ -728,8 +734,8 @@ class DeepinSoftwareCenter():
         self.window.connect("destroy", self.destroy)
         self.window.show_all()
 
-        # Select software update page if add "--show-update" option.
-        if len(sys.argv) == 2 and sys.argv[1] == "--show-update":
+        # Select software update page if add "show-update" option.
+        if len(sys.argv) == 2 and sys.argv[1] == "show-update":
             self.selectPage(PAGE_UPGRADE)
 
         # Listen socket message for select upgrade page.

@@ -497,3 +497,8 @@ def treeViewFocusPrevToplevelNode(treeview):
     if selectedPath > 0:
         treeview.set_cursor((selectedPath - 1))
 
+def removeFile(path):
+    '''Remove file.'''
+    if os.path.exists(path):
+        print "Remove ", path
+        os.remove(path)

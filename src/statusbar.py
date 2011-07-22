@@ -61,7 +61,7 @@ class Statusbar:
         self.joinBox = gtk.EventBox()
         self.joinBox.set_visible_window(False)
         self.joinBox.add(self.joinAlignment)
-        self.joinBox.connect("button-press-event", lambda w, e: utils.runCommand("xdg-open http://www.linuxdeepin.net"))
+        self.joinBox.connect("button-press-event", lambda w, e: utils.runCommand("xdg-open http://www.linuxdeepin.com/job-offers"))
         self.box.pack_start(self.joinBox)
         utils.setClickableCursor(self.joinBox)
         

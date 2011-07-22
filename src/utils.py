@@ -120,12 +120,12 @@ def getPkgShortDesc(pkg):
     pkgPath = "./pkgInfo/" + pkg.name
     if os.path.exists(pkgPath):
         lang = getDefaultLanguage()
-        if lang == "zh_CN":
-            return ((evalFile(pkgPath))["zh-CN"])["shortDesc"]
+        if lang == "en":
+            return ((evalFile(pkgPath))["en"])["shortDesc"]
         elif lang == "zh_TW":
             return ((evalFile(pkgPath))["zh-TW"])["shortDesc"]
         else:
-            return ((evalFile(pkgPath))["en"])["shortDesc"]
+            return ((evalFile(pkgPath))["zh-CN"])["shortDesc"]
     else:
         return pkg.candidate.summary
 
@@ -134,12 +134,12 @@ def getPkgLongDesc(pkg):
     pkgPath = "./pkgInfo/" + pkg.name
     if os.path.exists(pkgPath):
         lang = getDefaultLanguage()
-        if lang == "zh_CN":
-            return ((evalFile(pkgPath))["zh-CN"])["longDesc"]
+        if lang == "en":
+            return ((evalFile(pkgPath))["en"])["longDesc"]
         elif lang == "zh_TW":
             return ((evalFile(pkgPath))["zh-TW"])["longDesc"]
         else:
-            return ((evalFile(pkgPath))["en"])["longDesc"]
+            return ((evalFile(pkgPath))["zh-CN"])["longDesc"]
     else:
         return pkg.candidate.description
 

@@ -50,24 +50,24 @@ class Download(td.Thread):
         self.updateCallback = updateCallback
         self.finishCallback = finishCallback
         self.messageCallback = messageCallback
-        self.hash_check = True
-        self.print_metalink = False
+        self.hashCheck = True
         self.server = xmlrpclib.ServerProxy('http://localhost:6800/rpc')
         self.downloadStatus = {}
         self.totalLength = 0
         self.cacheLength = 0
         self.progress = 0
-        self.archive_dir = apt_pkg.config.find_dir('Dir::Cache::Archives')
-        self.partial_dir = os.path.join(self.archive_dir, 'partial')
+        self.archiveDir = apt_pkg.config.find_dir('Dir::Cache::Archives')
+        self.partialDir = os.path.join(self.archiveDir, 'partial')
         self.retryTicker = 0    # retry ticker
         self.updateInterval = 1 # in seconds
         self.queue = Q.Queue()
-        self.max_concurrent_downloads = 50 # maximum number of parallel downloads for every static (HTTP/FTP) URI,
-                                           # torrent and metalink.
-        self.metalink_servers = 5          # the number of servers to connect to simultaneously
-        self.max_connection_per_server = 10 # the maximum number of connections to one server for each download
-        self.min_split_size = "1M"          # minimum split size (1M - 1024M)
-        if not self.archive_dir:
+        self.maxConcurrentDownloads = 50 # maximum number of parallel downloads for every static (HTTP/FTP) URI,
+                                         # torrent and metalink.
+        self.metalinkServers = 5         # the number of servers to connect to simultaneously
+        self.maxConnectionPerServer = 10 # the maximum number of connections to one server for each download
+        self.minSplitSize = "1M"         # minimum split size (1M - 1024M)
+        self.autoSaveInterval = 10       # time to auto save progress, in seconds
+        if not self.archiveDir:
             raise Exception(('No archive dir is set.'
                              ' Usually it is /var/cache/apt/archives/'))
     
@@ -77,24 +77,24 @@ class Download(td.Thread):
         cmdline = ['aria2c',
                    '--file-allocation=none',
                    '--auto-file-renaming=false',
-                   '--dir=%s' % (self.partial_dir),
+                   '--dir=%s' % (self.partialDir),
                    '--summary-interval=0',
-                   '--no-conf',
+                   '--no-conf=true',
                    '--remote-time=true',
-                   '--auto-save-interval=0',
-                   '--continue',
-                   '--enable-xml-rpc',
-                   '--max-concurrent-downloads=%s' % (self.max_concurrent_downloads),
-                   '--metalink-servers=%s' % (self.metalink_servers),
+                   '--auto-save-interval=%s' % (self.autoSaveInterval),
+                   '--continue=true',
+                   '--enable-xml-rpc=true',
+                   '--max-concurrent-downloads=%s' % (self.maxConcurrentDownloads),
+                   '--metalink-servers=%s' % (self.metalinkServers),
                    ]
         
         # Add `max-connection-per-server` and `min-split-size` options if aria2c >= 1.10.x.
         if ARIA2_MAJOR_VERSION >= 1 and ARIA2_MINOR_VERSION >= 10:
-            cmdline.append('--max-connection-per-server=%s' % (self.max_connection_per_server))
-            cmdline.append('--min-split-size=%s' % (self.min_split_size))
+            cmdline.append('--max-connection-per-server=%s' % (self.maxConnectionPerServer))
+            cmdline.append('--min-split-size=%s' % (self.minSplitSize))
         
         # Whether check hash value?
-        if self.hash_check:
+        if self.hashCheck:
             cmdline.append('--check-integrity=true')
 
         # Append proxy configuration.
@@ -126,6 +126,8 @@ class Download(td.Thread):
         # Kill child process.
         proc.kill()
         
+        print proc.returncode
+        
         # Call callback.
         self.finishCallback(self.pkgName, result)
             
@@ -150,7 +152,7 @@ class Download(td.Thread):
             self.totalLength = self.cache.required_download
             
             # Get packages to download.
-            pkgs = [pkg for pkg in pkgs if not pkg.marked_delete and not self._file_downloaded(pkg, self.hash_check)]
+            pkgs = [pkg for pkg in pkgs if not pkg.marked_delete and not self._file_downloaded(pkg, self.hashCheck)]
             
             # Return DOWNLOAD_STATUS_DONT_NEED haven't packages need download,  
             if len(pkgs) == 0:
@@ -258,8 +260,8 @@ class Download(td.Thread):
         # Link archives/partial/*.deb to archives/
         for pkg in pkgs:
             filename = get_filename(pkg.candidate)
-            dst = os.path.join(self.archive_dir, filename)
-            src = os.path.join(self.partial_dir, filename)
+            dst = os.path.join(self.archiveDir, filename)
+            src = os.path.join(self.partialDir, filename)
             ctrl_file = ''.join([src, '.aria2'])
             # If control file exists, we assume download is not
             # complete.
@@ -288,13 +290,13 @@ class Download(td.Thread):
         else:
             return DOWNLOAD_STATUS_FAILED
 
-    def _file_downloaded(self, pkg, hash_check=False):
+    def _file_downloaded(self, pkg, hashCheck=False):
         # Check whether file has downloaded.
         candidate = pkg.candidate
-        path = os.path.join(self.archive_dir, get_filename(candidate))
+        path = os.path.join(self.archiveDir, get_filename(candidate))
         if not os.path.exists(path) or os.stat(path).st_size != candidate.size:
             return False
-        if hash_check:
+        if hashCheck:
             hash_type, hash_value = get_hash(pkg.candidate)
             try:
                 return check_hash(path, hash_type, hash_value)

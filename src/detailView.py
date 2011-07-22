@@ -909,7 +909,7 @@ class AppInfoItem(DownloadItem):
         itemEventBox = gtk.EventBox()
         itemEventBox.set_visible_window(False)
         itemEventBox.add(self.itemBox)
-        itemEventBox.connect("expose-event", lambda w, e: drawDetailItemBackground(w, e))
+        drawDetailItemBackground(itemEventBox)
         itemAlign = gtk.Alignment()
         itemAlign.set_padding(0, 0, self.ALIGN_X, self.ALIGN_X)
         itemAlign.set(0.0, 0.5, 1.0, 1.0)

@@ -84,6 +84,8 @@ class SlideItem(DownloadItem):
         self.name = name
         self.imagePath = "./images/" + image
         self.smallImagePath = "./images/" + smallImage
+        self.pixbuf = gtk.gdk.pixbuf_new_from_file(self.imagePath)
+        self.smallPixbuf = gtk.gdk.pixbuf_new_from_file(self.smallImagePath)
         
         # Widget that status will change.
         self.installingProgressbar = None
@@ -297,10 +299,7 @@ class SlideBar:
         
     def createSlideImage(self, index):
         '''Create slide image.'''
-        return gtk.gdk.pixbuf_new_from_file_at_size(
-            (self.getSlideItem(index)).imagePath,
-            self.imageWidth, 
-            self.imageHeight)    
+        return (self.getSlideItem(index)).pixbuf
     
     def createSlideLabel(self, index):
         '''Create slide label.'''
@@ -334,9 +333,8 @@ class SlideBar:
         imgPath = (self.getSlideItem(index)).imagePath
         sourcePath = (self.getSlideItem(self.sourceIndex)).imagePath
         targetPath = (self.getSlideItem(self.targetIndex)).imagePath
-        pixbuf = gtk.gdk.pixbuf_new_from_file((self.getSlideItem(index)).smallImagePath)
         cr = drawArea.window.cairo_create()
-        cr.set_source_pixbuf(pixbuf, x, y)
+        cr.set_source_pixbuf((self.getSlideItem(index)).smallPixbuf, x, y)
         
         interval = 0.5 / self.times
         if targetPath == imgPath:

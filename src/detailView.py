@@ -1212,6 +1212,7 @@ class BigScreenshot:
         self.bottommiddlePixbuf = gtk.gdk.pixbuf_new_from_file("./icons/screenshot/background_bottommiddle.png")
         self.leftPixbuf = gtk.gdk.pixbuf_new_from_file("./icons/screenshot/background_left.png")
         self.rightPixbuf = gtk.gdk.pixbuf_new_from_file("./icons/screenshot/background_right.png")
+        self.closePixbuf = gtk.gdk.pixbuf_new_from_file("./icons/screenshot/close.png")
         
         self.window = gtk.Window()
         self.window.set_decorated(False)
@@ -1326,8 +1327,7 @@ class BigScreenshot:
         cr.set_source_pixbuf(pixbuf, 0, 0)
         cr.paint()
         
-        closePixbuf = gtk.gdk.pixbuf_new_from_file("./icons/screenshot/close.png")
-        cr.set_source_pixbuf(closePixbuf, 
+        cr.set_source_pixbuf(self.closePixbuf, 
                              self.windowWidth - self.closeIconWidth - self.closeIconAdjust,
                              self.closeIconAdjust)
         cr.paint()

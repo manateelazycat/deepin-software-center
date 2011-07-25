@@ -164,7 +164,7 @@ class TrayIcon:
         self.times = 20
         self.ticker = 0
         self.interval = 100     # in milliseconds
-        self.tooltipPixbuf = gtk.gdk.pixbuf_new_from_file("./trayIcon/window.png")
+        self.tooltipPixbuf = gtk.gdk.pixbuf_new_from_file("./icons/tray/window.png")
         
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  
         self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) # make sure socket port always work
@@ -411,7 +411,7 @@ class TrayIcon:
             gtk.gdk.threads_init()        
             
             self.trayIcon = gtk.StatusIcon()
-            self.trayIcon.set_from_file("./trayIcon/icon.png")
+            self.trayIcon.set_from_file("./icons/tray/icon.png")
             self.trayIcon.set_has_tooltip(True)
             self.trayIcon.set_visible(True)
             self.trayIcon.connect("activate", lambda w: self.showSoftwareCenter())

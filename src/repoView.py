@@ -243,3 +243,5 @@ class RepoView(appView.AppView):
             
         return box
 
+
+#  LocalWords:  ScrolledWindow

@@ -173,7 +173,7 @@ class DetailView:
         
         self.toggleTab = gtk.CheckButton()
         self.toggleTab.connect("button-press-event", lambda w, e: self.selectTab())
-        # NOTE: Uncomment below line when finish translate help features.
+        # NOTE: Un-comment below line when finish translate help features.
         # self.actionBox.pack_start(self.toggleTab, False, False)
         toggleTabSetBackground(
             self.toggleTab,
@@ -1064,7 +1064,7 @@ class AppInfoItem(DownloadItem):
         self.upgradingFeedbackLabel = feedbackLabel
         
     def initUninstallingStatus(self):
-        '''Init uninstalling status.'''
+        '''Init un-installing status.'''
         (progressbar, feedbackLabel) = initActionStatus(
             self.appAdditionBox, 
             self.appInfo.uninstallingProgress,
@@ -1074,7 +1074,7 @@ class AppInfoItem(DownloadItem):
         self.uninstallingFeedbackLabel = feedbackLabel
         
     def switchToUninstalling(self):
-        '''Switch to uninstalling.'''
+        '''Switch to un-installing.'''
         self.appInfo.status = APP_STATE_UNINSTALLING
         self.initAdditionStatus()
         self.actionQueue.addAction(utils.getPkgName(self.appInfo.pkg), ACTION_UNINSTALL)
@@ -1098,7 +1098,7 @@ class AppInfoItem(DownloadItem):
                 self.itemFrame.show_all()
                 
     def updateUninstallingStatus(self, progress, feedback):
-        '''Update uninstalling status.'''
+        '''Update un installing status.'''
         if self.appInfo.status == APP_STATE_UNINSTALLING:
             if self.uninstallingProgressbar != None and self.uninstallingFeedbackLabel != None:
                 self.uninstallingProgressbar.setProgress(progress)
@@ -1336,3 +1336,13 @@ class BigScreenshot:
             widget.propagate_expose(widget.get_child(), event)
 
         return True
+
+#  LocalWords:  FFFFFF toggleTab xdg DDDDDD nums cuid cid feedbackLabel td
+#  LocalWords:  initActionStatus appAdditionBox uninstallingProgressbar appInfo
+#  LocalWords:  uninstallingFeedbackLabel switchToUninstalling UNINSTALLING
+#  LocalWords:  initAdditionStatus getPkgName updateInstallingStatus imageBox
+#  LocalWords:  installingProgressbar installingFeedbackLabel FetchScreenshot
+#  LocalWords:  updateUpgradingStatus upgradingProgressbar noscreenshotList
+#  LocalWords:  upgradingFeedbackLabel updateUninstallingStatus setDaemon
+#  LocalWords:  returnCode waitSpinner waitAlign pkgName screenshotPath cmdline
+#  LocalWords:  subprocess

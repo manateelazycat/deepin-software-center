@@ -122,7 +122,6 @@ class Topbar:
         # Connect widgets.
         self.box.pack_start(self.categoryLabel, False, False, self.paddingX)
         self.box.pack_start(self.numLabel, False, False, self.paddingX)
-        # self.box.pack_start(sortAlign, True, True, self.paddingX)
         self.box.pack_start(searchAlign)
         
     def search(self, editable):
@@ -147,3 +146,5 @@ class Topbar:
             + "<span foreground='#006efe' size='%s'> %s</span>" % (LABEL_FONT_SIZE, str(itemNum))
             + ("<span size='%s'> 款软件</span>" % (LABEL_FONT_SIZE)))
     
+
+#  LocalWords:  categorybar repoView's sortAlign efe

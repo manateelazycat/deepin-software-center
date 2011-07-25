@@ -130,7 +130,7 @@ class Action(td.Thread):
             
     # NOTE: Don't use interface `finish_update` in apt.progress.base.InstallProgress.
     # Because interface `finish_update` got finish signal *BEFORE* function `cache.commit`,
-    # so interface `finish_update` can't handle error when exception throwed.
+    # so interface `finish_update` can't handle error when exception throw.
     # Right way should follow this function after `cache.commit` then wrap in try...except block.
     def finish(self):
         '''Progress finish update.'''

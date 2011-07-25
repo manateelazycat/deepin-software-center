@@ -231,7 +231,7 @@ class AppView:
             return None
         
     def createNumIcon(self, index):
-        '''Create num icon.'''
+        '''Create number icon.'''
         numBox = gtk.EventBox()
         numLabel = gtk.Label()
         if self.pageIndex == index:
@@ -292,3 +292,6 @@ class AppView:
         if self.itemDict.has_key(pkgName):
             appItem = self.itemDict[pkgName]
             appItem.updateVoteView(starLevel, voteNum)
+
+#  LocalWords:  FFFFFF eventbox GtkEventBox ScrolledWindow numBox EventBox
+#  LocalWords:  numLabel pageIndex numColor

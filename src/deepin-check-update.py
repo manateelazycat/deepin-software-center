@@ -91,3 +91,5 @@ if __name__ == "__main__":
     
     # Run loop.
     loop.run()
+
+#  LocalWords:  NetworkWatcher StateChanged

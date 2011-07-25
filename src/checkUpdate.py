@@ -427,3 +427,8 @@ class TrayIcon:
             
 if __name__ == "__main__":
     TrayIcon().main()
+
+#  LocalWords:  aptdaemon gksu polkit IP urllib urlopen postGUI finishCheck ip
+#  LocalWords:  hoverIcon myIP getMyIP getLastUpdateHours mtime os agoHours
+#  LocalWords:  handleRightClick aboutIcon aboutItem ImageMenuItem quitIcon
+#  LocalWords:  showAboutDialog quitItem trayIcon aboutDialog AboutDialog

@@ -36,7 +36,7 @@ class CommunityPage:
         self.scrolledwindow.set_shadow_type(gtk.SHADOW_NONE)
         self.scrolledwindow.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
         
-        # Open linux deepin bbs.
+        # Open Linux Deepin BBS.
         self.view = webkit.WebView()
         self.view.open("http://bbs.linuxdeepin.com/")
         

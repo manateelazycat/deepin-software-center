@@ -434,3 +434,5 @@ class DownloadQueue:
         else:
             return self.queue + [self.pkgName]
      
+
+#  LocalWords:  completedLength

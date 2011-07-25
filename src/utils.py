@@ -165,7 +165,7 @@ def getPkgSize(pkg):
     return pkg.candidate.size
 
 def getPkgHomepage(pkg):
-    '''Get homgepage of package.'''
+    '''Get homepage of package.'''
     return pkg.candidate.homepage
 
 def getPkgInstalledSize(pkg):
@@ -221,7 +221,7 @@ def getKernelPackages():
 KERNEL_PACKAGES = getKernelPackages()    
     
 def isPkgUninstallable(pkg, checkInstalled=True):
-    '''Is pkg is uninstallable?'''
+    '''Is pkg is un-installable?'''
     inFilterSection = pkg.candidate.section in ["libs", "libdevel", "oldlibs"]
     isKernelPackages = pkg.name in KERNEL_PACKAGES
     
@@ -287,7 +287,7 @@ def setProgress(progressbar, progress):
         progressbar.set_text(str(progress) + "%")
 
 def resizeWindow(widget, event, window):
-    '''Resize window.'''
+    '''Re-size window.'''
     # If a shift key is pressed, start resizing
     if event.state & gtk.gdk.SHIFT_MASK:
         window.begin_resize_drag(
@@ -370,7 +370,7 @@ def getCurrentTime():
     return time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
 
 def setClickableCursor(widget):
-    '''Set clickable cursor.'''
+    '''Set click-able cursor.'''
     # Use widget in lambda, and not widget pass in function.
     # Otherwise, if widget free before callback, you will got error:
     # free variable referenced before assignment in enclosing scope, 
@@ -401,7 +401,7 @@ def setMarkup(label, markup):
     return False
 
 def setClickableLabel(widget, label, normalMarkup, activeMarkup, resetAfterClick=True):
-    '''Set clickable label.'''
+    '''Set click-able label.'''
     # Set label markup.
     widget.connect("enter-notify-event", lambda w, e: setMarkup(label, activeMarkup))
     widget.connect("leave-notify-event", lambda w, e: setMarkup(label, normalMarkup))
@@ -415,7 +415,7 @@ def setClickableLabel(widget, label, normalMarkup, activeMarkup, resetAfterClick
         widget.connect("button-press-event", lambda w, e: setMarkup(label, normalMarkup))
 
 def setCustomizeClickableCursor(eventbox, widget, cursorPath):
-    '''Set clickable cursor.'''
+    '''Set click-able cursor.'''
     eventbox.connect("enter-notify-event", lambda w, e: setCustomizeCursor(widget, cursorPath))
     eventbox.connect("leave-notify-event", lambda w, e: setDefaultCursor(widget))
         
@@ -502,3 +502,19 @@ def removeFile(path):
     if os.path.exists(path):
         print "Remove ", path
         os.remove(path)
+
+#  LocalWords:  halfstar AppIcon pkgInfo shortDesc zh TW longDesc downloadSize
+#  LocalWords:  getPkgInstalledSize getPkgDependSize useSize uname libdevel ZB
+#  LocalWords:  oldlibs resize moveWindow addInScrolledWindow scrolledWindow
+#  LocalWords:  shadowType viewport newButtonWithoutPadding getFontYCoordinate
+#  LocalWords:  fontSize xmlrpclib ServerProxy getVersion getAria versionList
+#  LocalWords:  getCommandOutput getCandidates pkgs len preStr matchStr restStr
+#  LocalWords:  BBBB setMarkup activeMarkup normalMarkup setCursor eventbox
+#  LocalWords:  setDefaultCursor resetAfterClick setCustomizeClickableCursor
+#  LocalWords:  cursorPath setCustomizeCursor runCommand subprocess touchFile
+#  LocalWords:  filepath makedirs getDefaultLanguage lang getdefaultlocale iter
+#  LocalWords:  setHelpTooltip helpText showHelpTooltip treeview toplevel
+#  LocalWords:  treeViewGetToplevelNodeCount treeViewGetSelectedPath treePaths
+#  LocalWords:  treeViewFocusFirstToplevelNode treeViewFocusLastToplevelNode
+#  LocalWords:  nodeCount treeViewFocusNextToplevelNode selectedPath removeFile
+#  LocalWords:  treeViewFocusPrevToplevelNode

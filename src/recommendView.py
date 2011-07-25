@@ -472,13 +472,13 @@ class RecommendView:
             moreLabelAlign.add(moreLabelEventBox)
             nameLabelBox.pack_start(moreLabelAlign)
             
-            # Switch to repo page and select category.
+            # Switch to repository page and select category.
             categoryIndex = (map (lambda (k, _): k, CLASSIFY_LIST)).index(itemName)
             moreLabelEventBox.connect(
                 "button-press-event", 
                 lambda w, e: self.selectCategoryCallback(itemName, categoryIndex))
             
-            # Make it clickable.
+            # Make it click-able.
             utils.setClickableLabel(
                 moreLabelEventBox,
                 moreLabel,
@@ -550,3 +550,5 @@ class RecommendView:
             self.switchToStatus(pkgName, APP_STATE_NORMAL)
         else:
             self.switchToStatus(pkgName, APP_STATE_INSTALLED)
+
+#  LocalWords:  BBE repoCache

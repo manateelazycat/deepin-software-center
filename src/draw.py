@@ -903,3 +903,10 @@ def drawProgressbarWithoutBorder(width):
         True
         )
     
+
+#  LocalWords:  scaleX imageWidth scaleY imageHeight pixbuf cr drawPixbuf
+#  LocalWords:  buttonSetBackground normalImg hoverImg pressImg buttonLabel
+#  LocalWords:  fontSize labelColor normalPixbuf hoverPixbuf pressPixbuf
+#  LocalWords:  requestWidth requestHeight buttonOnExpose PRELIGHT normalColor
+#  LocalWords:  simpleButtonSetBackground simpleButtonOnExpose hoverColor
+#  LocalWords:  fontButtonSetBackground selectColor fontButtonOnExpose

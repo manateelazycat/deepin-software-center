@@ -174,7 +174,7 @@ class UninstallItem:
             actionButtonBox.pack_start(appUninstallAlign)
             
     def initUninstallingStatus(self, withoutBorder=False):
-        '''Init uninstalling status.'''
+        '''Init un-installing status.'''
         (progressbar, feedbackLabel) = initActionStatus(
             self.appAdditionBox, 
             self.appInfo.uninstallingProgress,
@@ -191,13 +191,13 @@ class UninstallItem:
         self.initAdditionStatus()
         
     def switchToUninstalling(self):
-        '''Switch to uninstalling.'''
+        '''Switch to un-installing.'''
         self.appInfo.status = APP_STATE_UNINSTALLING
         self.initAdditionStatus()
         self.actionQueue.addAction(utils.getPkgName(self.appInfo.pkg), ACTION_UNINSTALL)
 
     def updateUninstallingStatus(self, progress, feedback):
-        '''Update uninstalling status.'''
+        '''Update un installing status.'''
         if self.appInfo.status == APP_STATE_UNINSTALLING:
             if self.uninstallingProgressbar != None and self.uninstallingFeedbackLabel != None:
                 self.uninstallingProgressbar.setProgress(progress)
@@ -821,3 +821,15 @@ def newSearchUI(helpString, getCandidatesCallback, clickCandidateCallback, searc
     
     return (searchEntry, searchAlign, searchCompletion)
     
+
+#  LocalWords:  initActionStatus appAdditionBox withoutBorder switchToNormal
+#  LocalWords:  uninstallingProgressbar uninstallingFeedbackLabel UNINSTALLING
+#  LocalWords:  confirmUninstall initAdditionStatus switchToUninstalling alignX
+#  LocalWords:  getPkgName updateUninstallingStatus updateVoteView starLevel
+#  LocalWords:  voteNum appVoteView createActionButton alignY appButtonBox VBox
+#  LocalWords:  appButtonAlign DownloadItem appInfo switchStatus downloadQueue
+#  LocalWords:  downloadingProgressbar downloadingFeedbackLabel drawProgressbar
+#  LocalWords:  initDownloadingStatus containerRemoveAll setProgress actionBox
+#  LocalWords:  drawProgressbarWithoutBorder actionAlign buttonBox HBox
+#  LocalWords:  buttonAlign pauseIcon drawSimpleButton stopIcon ellipsize
+#  LocalWords:  ELLIPSIZE initDownloadPauseStatus

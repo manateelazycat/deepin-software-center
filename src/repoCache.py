@@ -179,7 +179,7 @@ class RepoCache:
         return appList
     
     def getUninstallableAppList(self, startIndex, endIndex):
-        '''Get uninstallable application list.'''
+        '''Get un-installable application list.'''
         appList = []
         for index in range(startIndex, endIndex):
             pkgName = self.uninstallablePkgs[index]
@@ -211,3 +211,8 @@ class RepoCache:
         else:
             return self.whiteListDict.has_key(pkg.name)
     
+
+#  LocalWords:  pkgClassify AppInfo appList startIndex endIndex pkgName
+#  LocalWords:  uninstallablePkgs removePkgFromUpgradableList upgradablePkgs
+#  LocalWords:  removePkgFromUninstallableList isPkgUninstallable
+#  LocalWords:  addPkgInUninstallableList checkInstalled

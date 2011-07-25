@@ -188,7 +188,7 @@ class DB(object):
             # If we don't sort by relevance, we need to specify a cutoff in order to
             # remove poor results from the output
             #
-            # Note: ept-cache implements an adaptive cutoff as follows:
+            # Note: apt-cache implements an adaptive cutoff as follows:
             # 1. Retrieve only one result, with default sorting.  Read its relevance as
             #    the maximum relevance.
             # 2. Set the cutoff as some percentage of the maximum relevance
@@ -318,3 +318,7 @@ if __name__ == "__main__":
     result = search.query(["python"])
     print result
     print len(result)
+
+#  LocalWords:  XT XP notmuch TIMESTAMP valuerangeprocessor ESet ConfigParser
+#  LocalWords:  API firstLock Reseet messageCallback RebuildSearchIndex td
+#  LocalWords:  finishCallback setDaemon

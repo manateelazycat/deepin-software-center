@@ -248,7 +248,7 @@ class UpdateView(appView.AppView):
             self.selectList.append(pkgName)
             
     def unselectPkg(self, pkgName):
-        '''Unselect package.'''
+        '''Un-select package.'''
         if pkgName in self.selectList:
             self.selectList.remove(pkgName)
             
@@ -359,3 +359,8 @@ class UpdateView(appView.AppView):
             
         return box
         
+
+#  LocalWords:  efe pkgName selectList getSelectStatus selectAllPkg selectPkg
+#  LocalWords:  unselectAllPkg Unselect unselectPkg getSelectList appNum EE
+#  LocalWords:  calculateMaxPageIndex pageIndex maxPageIndex scrollToTop
+#  LocalWords:  GtkEventBox ScrolledWindow

@@ -118,3 +118,5 @@ class Topbar:
         keyword = self.searchEntry.get_chars(0, -1)
         self.entrySearchCallback(PAGE_UNINSTALL, keyword, [candidate])
         
+
+#  LocalWords:  efe

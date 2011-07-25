@@ -136,3 +136,5 @@ class Topbar:
             + ("<span size='%s'> 个更新包可以升级</span>" % (LABEL_FONT_SIZE)))
                                  
     
+
+#  LocalWords:  efe

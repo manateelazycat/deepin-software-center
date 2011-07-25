@@ -121,3 +121,5 @@ class NavigateBar:
     def getUpgradableNum(self):
         '''Get upgradable packages number.'''
         return len(self.repoCache.upgradablePkgs)
+
+#  LocalWords:  moreIcon createNavIcon iconPadding

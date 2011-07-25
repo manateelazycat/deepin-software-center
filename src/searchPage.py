@@ -146,3 +146,5 @@ class Topbar:
             + "<span foreground='#00BB00' size='%s'>%s</span>" % (LABEL_FONT_SIZE, str(itemNum)) 
             + ("<span size='%s'>款</span>" % (LABEL_FONT_SIZE)))
     
+
+#  LocalWords:  BBBB

@@ -155,3 +155,5 @@ class SearchCompletion:
         self.showCompletion = True
         self.clickCandidateCallback(candidate)
         
+
+#  LocalWords:  entry'height

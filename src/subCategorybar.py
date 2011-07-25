@@ -122,3 +122,5 @@ class SubCategorybar:
                             lambda widget, event: self.callback(self.category, subCategory))
 
         return categoryBox
+
+#  LocalWords:  boxWidth BBBB

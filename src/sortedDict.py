@@ -132,3 +132,5 @@ class SortedDict(dict):
         super(SortedDict, self).clear()
         self.keyOrder = []
 
+
+#  LocalWords:  repr

@@ -127,7 +127,7 @@ class DeepinSoftwareCenter():
             self.topbar,
             True, False,
             "./icons/navigate/background.png")
-        # make window movable or resizable even window is decorated.
+        # make window movable or re-sizable even window is decorated.
         self.topbar.connect('button-press-event',
                             lambda w, e: utils.moveWindow(w, e, self.window))
         self.topbar.connect("button-press-event", self.doubleClickWindow)
@@ -209,11 +209,11 @@ class DeepinSoftwareCenter():
         # Update slide bar.
         self.recommendPage.slidebar.switchToStatus(pkgName, appStatus)
 
-        # Update recommand view.
+        # Update recommend view.
         recommendView = self.recommendPage.recommendView
         recommendView.switchToStatus(pkgName, appStatus)
 
-        # Update repo view.
+        # Update repository view.
         repoView = self.repoPage.repoView
         repoView.switchToStatus(pkgName, appStatus)
 
@@ -241,11 +241,11 @@ class DeepinSoftwareCenter():
             # Update slide bar.
             self.recommendPage.slidebar.updateDownloadingStatus(pkgName, progress, feedback)
 
-            # Update recommand view.
+            # Update recommend view.
             recommendView = self.recommendPage.recommendView
             recommendView.updateDownloadingStatus(pkgName, progress, feedback)
 
-            # Update repo view.
+            # Update repository view.
             repoView = self.repoPage.repoView
             repoView.updateDownloadingStatus(pkgName, progress, feedback)
 
@@ -283,7 +283,7 @@ class DeepinSoftwareCenter():
             recommendView = self.recommendPage.recommendView
             recommendView.switchToStatus(pkgName, appStatus)
 
-            # Update repo view.
+            # Update repository view.
             repoView = self.repoPage.repoView
             repoView.switchToStatus(pkgName, appStatus)
 
@@ -326,7 +326,7 @@ class DeepinSoftwareCenter():
             recommendView = self.recommendPage.recommendView
             recommendView.switchToStatus(pkgName, appStatus)
 
-            # Update repo view.
+            # Update repository view.
             repoView = self.repoPage.repoView
             repoView.switchToStatus(pkgName, appStatus, True)
 
@@ -361,7 +361,7 @@ class DeepinSoftwareCenter():
                 recommendView = self.recommendPage.recommendView
                 recommendView.updateInstallingStatus(pkgName, progress, feedback)
 
-                # Update repo view.
+                # Update repository view.
                 repoView = self.repoPage.repoView
                 repoView.updateInstallingStatus(pkgName, progress, feedback)
 
@@ -385,7 +385,7 @@ class DeepinSoftwareCenter():
                 recommendView = self.recommendPage.recommendView
                 recommendView.updateUpgradingStatus(pkgName, progress, feedback)
 
-                # Update repo view.
+                # Update repository view.
                 repoView = self.repoPage.repoView
                 repoView.updateUpgradingStatus(pkgName, progress, feedback)
 
@@ -441,7 +441,7 @@ class DeepinSoftwareCenter():
                     recommendView = self.recommendPage.recommendView
                     recommendView.initNormalStatus(pkgName, isMarkDeleted)
 
-                    # Update repo view.
+                    # Update repository view.
                     repoView = self.repoPage.repoView
                     repoView.initNormalStatus(pkgName, isMarkDeleted, True)
 
@@ -490,7 +490,7 @@ class DeepinSoftwareCenter():
                     recommendView = self.recommendPage.recommendView
                     recommendView.initNormalStatus(pkgName, isMarkDeleted)
 
-                    # Update repo view.
+                    # Update repository view.
                     repoView = self.repoPage.repoView
                     repoView.initNormalStatus(pkgName, isMarkDeleted, True)
 
@@ -523,7 +523,7 @@ class DeepinSoftwareCenter():
                     recommendView = self.recommendPage.recommendView
                     recommendView.initNormalStatus(pkgName, isMarkDeleted)
 
-                    # Update repo view.
+                    # Update repository view.
                     repoView = self.repoPage.repoView
                     repoView.initNormalStatus(pkgName, isMarkDeleted, True)
 
@@ -554,7 +554,7 @@ class DeepinSoftwareCenter():
                 recommendView = self.recommendPage.recommendView
                 recommendView.initNormalStatus(pkgName, True)
 
-                # Update repo view.
+                # Update repository view.
                 repoView = self.repoPage.repoView
                 repoView.initNormalStatus(pkgName, True, True)
 
@@ -581,7 +581,7 @@ class DeepinSoftwareCenter():
                 recommendView = self.recommendPage.recommendView
                 recommendView.switchToStatus(pkgName, APP_STATE_UPGRADE)
 
-                # Update repo view.
+                # Update repository view.
                 repoView = self.repoPage.repoView
                 repoView.switchToStatus(pkgName, APP_STATE_UPGRADE, True)
 
@@ -784,7 +784,7 @@ class DeepinSoftwareCenter():
         if self.searchViewDict.has_key(PAGE_REPO):
             self.searchViewDict.pop(PAGE_REPO)
 
-        # Select repo page.
+        # Select repository page.
         self.selectPage(PAGE_REPO)
 
         # Select category.
@@ -863,7 +863,7 @@ class DeepinSoftwareCenter():
 
     @postGUI
     def updateVote(self, voteJson, pageId, isSearchPage):
-        '''Update vote ui.'''
+        '''Update vote UI.'''
         view = None
         if pageId == PAGE_REPO:
             if isSearchPage:
@@ -989,7 +989,7 @@ class FetchDetail(td.Thread):
             print "Fetch detail view data failed."
 
 class SocketThread(td.Thread):
-    '''Socekt thread.'''
+    '''Socket thread.'''
 
     def __init__(self, callback):
         '''Init socket thread.'''
@@ -1012,3 +1012,6 @@ class SocketThread(td.Thread):
 
 if __name__ == "__main__":
     DeepinSoftwareCenter().main()
+
+#  LocalWords:  param os morePage MorePage RepoCache upgradabled topbar REPO
+#  LocalWords:  selectPage statusbar detailViewDict searchViewDict setDaemon

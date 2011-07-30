@@ -469,7 +469,10 @@ def treeViewGetSelectedPath(treeview):
     '''Get selected path.'''
     selection = treeview.get_selection()
     (_, treePaths) = selection.get_selected_rows()
-    return (treePaths[0])[0]
+    if len(treePaths) != 0:
+        return (treePaths[0])[0]
+    else:
+        return None
  
 def treeViewFocusFirstToplevelNode(treeview):
     '''Focus first toplevel node.'''
@@ -487,15 +490,17 @@ def treeViewFocusLastToplevelNode(treeview):
 def treeViewFocusNextToplevelNode(treeview):
     '''Focus next toplevel node.'''
     selectedPath = treeViewGetSelectedPath(treeview)
-    nodeCount = treeViewGetToplevelNodeCount(treeview)
-    if selectedPath < nodeCount - 1:
-        treeview.set_cursor((selectedPath + 1))
+    if selectedPath != None:
+        nodeCount = treeViewGetToplevelNodeCount(treeview)
+        if selectedPath < nodeCount - 1:
+            treeview.set_cursor((selectedPath + 1))
 
 def treeViewFocusPrevToplevelNode(treeview):
     '''Focus previous toplevel node.'''
     selectedPath = treeViewGetSelectedPath(treeview)
-    if selectedPath > 0:
-        treeview.set_cursor((selectedPath - 1))
+    if selectedPath != None:
+        if selectedPath > 0:
+            treeview.set_cursor((selectedPath - 1))
 
 def removeFile(path):
     '''Remove file.'''

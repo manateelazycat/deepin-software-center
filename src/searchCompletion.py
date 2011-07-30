@@ -124,7 +124,8 @@ class SearchCompletion:
                 utils.treeViewFocusNextToplevelNode(self.treeView)
             elif eventName == "Return":
                 selectedPath = utils.treeViewGetSelectedPath(self.treeView)
-                self.click(self.treeView, (selectedPath), None)
+                if selectedPath != None:
+                    self.click(self.treeView, (selectedPath), None)
             else:
                 self.entry.event(keyPressEvent)
             self.propagateLock = False

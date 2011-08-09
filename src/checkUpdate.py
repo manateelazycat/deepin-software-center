@@ -258,9 +258,9 @@ class TrayIcon:
             # make software center can't works correctly.
             if startup:
                 if finish and updateNum > 0:
-                    subprocess.Popen(["gksu-polkit", "./deepin-software-center.py", "show-update"])
+                    subprocess.Popen(["gksu", "./deepin-software-center.py", "show-update"])
                 else:
-                    subprocess.Popen(["gksu-polkit", "./deepin-software-center.py"])
+                    subprocess.Popen(["gksu", "./deepin-software-center.py"])
         else:
             print "Please wait update finish."
             
@@ -428,7 +428,7 @@ class TrayIcon:
 if __name__ == "__main__":
     TrayIcon().main()
 
-#  LocalWords:  aptdaemon gksu-polkit polkit IP urllib urlopen postGUI finishCheck ip
+#  LocalWords:  aptdaemon gksu polkit IP urllib urlopen postGUI finishCheck ip
 #  LocalWords:  hoverIcon myIP getMyIP getLastUpdateHours mtime os agoHours
 #  LocalWords:  handleRightClick aboutIcon aboutItem ImageMenuItem quitIcon
 #  LocalWords:  showAboutDialog quitItem trayIcon aboutDialog AboutDialog

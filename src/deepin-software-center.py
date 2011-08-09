@@ -97,7 +97,7 @@ class DeepinSoftwareCenter():
             )
 
         # for param in os.environ.keys():
-        #     print "%20s %s" % (param,os.environ[param])                
+        #     print "*** %20s %s" % (param,os.environ[param])                
 
         # dpkg will failed if not set TERM and PATH environment variable.  
         os.environ["TERM"] = "xterm"

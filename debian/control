@@ -10,6 +10,6 @@ Homepage: <insert the upstream URL, if relevant>
 
 Package: deepin-software-center
 Architecture: all
-Depends: ${shlibs:Depends}, ${misc:Depends}, aria2, python-webkit, python-apt, apt-xapian-index, aptdaemon, python-pkg-resources, gksu-polkit
+Depends: ${shlibs:Depends}, ${misc:Depends}, aria2, python-webkit, python-apt, apt-xapian-index, aptdaemon, python-pkg-resources, gksu
 Description: <insert up to 60 chars description>
  <insert long description, indented with spaces>

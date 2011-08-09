@@ -304,7 +304,6 @@ class SlideBar:
     def createSlideLabel(self, index):
         '''Create slide label.'''
         imagePath = (self.getSlideItem(index)).imagePath
-        # image = gtk.DrawingArea()
         image = gtk.EventBox()
         image.set_visible_window(False)
         image.set_size_request(self.imageWidth / 3, 

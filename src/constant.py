@@ -20,7 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-VERSION = "1.1"
+VERSION = "1.1.1"
 AUTHOR = ["Yong Wang"]
 ARTISTS = ["Can Yang"]
 
@@ -151,6 +151,6 @@ TOPBAR_PADDING_UPDATE_RIGHT = 10
 TOPBAR_SEARCH_RIGHT = 30
 TOPBAR_SEARCH_ADJUST_RIGHT = 15
 
-SOCKET_SOFTWARECENTER_ADDRESS = ("127.0.0.1", 31500)
+SOCKET_SOFTWARECENTER_ADDRESS = ("127.0.0.1", 31502)
 SOCKET_UPDATEMANAGER_ADDRESS  = ("127.0.0.1", 31501)
 UPDATE_INTERVAL = 24            # in hours

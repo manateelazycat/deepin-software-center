@@ -24,6 +24,8 @@ from constant import *
 from math import pi
 import cairo
 import gtk
+import hashlib
+import locale
 import math
 import os
 import pango
@@ -31,7 +33,7 @@ import pangocairo
 import pygtk
 import subprocess
 import time
-import locale
+import uuid
 pygtk.require('2.0')
 
 def isDoubleClick(event):
@@ -508,6 +510,11 @@ def removeFile(path):
         print "Remove ", path
         os.remove(path)
 
+def getUserID():
+    '''Get Mac Address and MD5.'''
+    macAddress = uuid.getnode()
+    return (hashlib.md5(str(macAddress))).hexdigest()
+        
 #  LocalWords:  halfstar AppIcon pkgInfo shortDesc zh TW longDesc downloadSize
 #  LocalWords:  getPkgInstalledSize getPkgDependSize useSize uname libdevel ZB
 #  LocalWords:  oldlibs resize moveWindow addInScrolledWindow scrolledWindow

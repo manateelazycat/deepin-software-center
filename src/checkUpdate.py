@@ -31,15 +31,15 @@ import aptdaemon.errors as errors
 import glib
 import gobject
 import gtk
+import os
 import re
 import signal
 import socket
 import stat
+import subprocess
 import sys
 import threading as td
 import urllib2
-import subprocess
-import os
 
 # Must init thread before any thread code running.
 # Otherwise you will got segmentation fault about dbus_connection_get_dispatch_status, 
@@ -327,23 +327,19 @@ class TrayIcon:
             if mask != None:
                 self.tooltipWindow.shape_combine_mask(mask, 0, 0)
                 
-    def getMyIP(self):
-        '''Get my IP.'''
-        return re.search('\d+\.\d+\.\d+\.\d+',urllib2.urlopen("http://www.whereismyip.com").read()).group(0)
-        
     @postGUI
     def finishCheck(self):
         '''Finish check.'''
         # Show detail information.
         self.hoverIcon()
         
-        # Send IP information to server for statistics.
+        # Send Mac address to server for statistics.
         try:
-            myIP = self.getMyIP()
-            connection = urllib2.urlopen("http://test-linux.gteasy.com/record.php?i=" + str(myIP), timeout=POST_TIMEOUT)
-            print "Send ip %s success." % (myIP)
+            userId = getUserID()
+            connection = urllib2.urlopen("http://test-linux.gteasy.com/record.php?i=" + str(userId), timeout=POST_TIMEOUT)
+            print "Send mac address %s success." % (userId)
         except Exception, e:
-            print "Send ip %s failed" % (myIP)
+            print "Send mac address %s failed" % (userId)
         
     def getLastUpdateHours(self):
         """
@@ -429,6 +425,6 @@ if __name__ == "__main__":
     TrayIcon().main()
 
 #  LocalWords:  aptdaemon gksu polkit IP urllib urlopen postGUI finishCheck ip
-#  LocalWords:  hoverIcon myIP getMyIP getLastUpdateHours mtime os agoHours
+#  LocalWords:  hoverIcon getLastUpdateHours mtime os agoHours
 #  LocalWords:  handleRightClick aboutIcon aboutItem ImageMenuItem quitIcon
 #  LocalWords:  showAboutDialog quitItem trayIcon aboutDialog AboutDialog

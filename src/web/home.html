@@ -1,34 +1,40 @@
 <html>
-  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <meta charset="utf-8">
   <head>
 	<script src="jquery-1.6.2.min.js"></script>
 	<script language="javascript">
 	  $(document).ready(function() {
 	      //Tooltips
-	      $(".tip_trigger").hover(function(){
-	      	tip = $(this).find('.tip');
-	      	tip.show(); //Show tooltip
-	      }, function() {
-	      	tip.hide(); //Hide tooltip		  
-	      }).mousemove(function(e) {
-	      	var mousex = e.pageX + 10; //Get X coodrinates
-	      	var mousey = e.pageY + 10; //Get Y coordinates
-	      	var tipWidth = tip.width(); //Find width of tooltip
-	      	var tipHeight = tip.height(); //Find height of tooltip
-	      	
-	      	//Distance of element from the right edge of viewport
-	      	var tipVisX = $(window).width() - (mousex + tipWidth);
-	      	//Distance of element from the bottom of viewport
-	      	var tipVisY = $(window).height() - (mousey + tipHeight);
-	      	  
-	      	if ( tipVisX < 10 ) { //If tooltip exceeds the X coordinate of viewport
-	      		mousex = e.pageX - tipWidth - 10;
-	      	} if ( tipVisY < 10 ) { //If tooltip exceeds the Y coordinate of viewport
-	      		mousey = e.pageY - tipHeight - 10;
-	      	} 
-	      	tip.css({  top: mousey, left: mousex });
-	      });
-	  
+          var tip = null;
+
+          $(".tip_trigger").hover(function(){
+              //缓存工具提示，并把它从内容块中删除，并把它应用到body
+              tip = $(this).find('.tip').remove();
+              $('body').append(tip);
+	      
+              tip.show(); //显示工具提示
+          }, function() {
+              tip.hide().remove(); //隐藏并移除body中的工具提示
+              $(this).append(tip); //返回原来的位置
+          }).mousemove(function(e) {
+          //console.log(e.pageX)
+                if ( tip == null ) return;
+	      
+                var mousex = e.pageX + 15; //获取鼠标在文档的X值加15
+                var mousey = e.pageY + 10; //获取鼠标的Y值加10
+                var tipWidth = tip.width(); //.tip的宽度
+                var tipHeight = tip.height(); //.tip的高度
+	      
+                //计算.tip距离右边缘的位置
+                var tipVisX = $(window).width() - (mousex + tipWidth);
+                var tipVisY = $(window).height() - (mousey + tipHeight);
+	      
+              if ( tipVisX < 15 ) { //If tooltip exceeds the X coordinate of viewport
+                  mousex = e.pageX - tipWidth - 15;
+              }
+			  tip.css({  top: mousey, left: mousex });
+          });
+
           var i_curIndex = 0;
           var beauBeauSlide;
           var i_curID = 0;//cursor id
@@ -105,13 +111,17 @@
          list-style:none;
          }
 		 
+		 .tip_trigger:hover {
+		 color: #0084FF;
+		 }
+		 
 		 .tip {
+		 position:absolute;	
 		 color: #fff;
 		 background:#363636;
 		 display:none; /*--Hides by default--*/
 		 font-size:14px;
 		 padding:4px;
-		 position:absolute;	
 		 z-index:1000;
 		 -webkit-border-radius: 3px;
 		 -moz-border-radius: 3px;
@@ -190,6 +200,36 @@
          opacity:0.5;
          }
 
+		 #bigImageButton {
+		 position: absolute;
+		 cursor: pointer;
+		 display: inline-block;
+		 background-image: url("../icons/cell/search_normal.png");
+		 background-repeat: no-repeat;
+		 height: 25px;
+		 width:63px;
+		 left:510px;
+		 top:264px;
+		 bottom:24px;
+		 color: #000;
+		 }
+		 
+		 #bigImageButton span {
+		 position: relative;
+		 left:15px;
+		 top:3px;
+		 font-size:16px;
+		 color: #FFF;
+		 }
+		 
+		 #bigImageButton:hover {
+		 background-image: url("../icons/cell/search_hover.png");
+		 }
+
+		 #bigImageButton:active {
+		 background-image: url("../icons/cell/search_press.png");
+		 }
+		 
 		 #borderWrap1 {
 		 position:absolute;
 		 top:315px;
@@ -267,6 +307,11 @@
 		 margin-top:10px;
 		 margin-left:330px;
 		 font-size:15px;
+		 color: #000;
+		 }
+		 
+		 .borderTitleMore:hover {
+		 color: #0084FF;
 		 }
 		 
 		 p.border {
@@ -329,13 +374,72 @@
 		 top:-18px;
 		 color:#000000;
 		 font-size:13px;
+		 overflow:hidden;
+		 text-overflow:ellipsis;		 
+		 white-space:nowrap;
+		 width:270px;
+		 }
+
+		 #installButton {
+		 position: absolute;
+		 cursor: pointer;
+		 display: inline-block;
+		 background-image: url("../icons/cell/install_normal.png");
+		 background-repeat: no-repeat;
+		 height: 23px;
+		 width:60px;
+		 left:330px;
+		 bottom:24px;
+		 color: #000;
+		 }
+		 
+		 #installButton span {
+		 font-size: 13px;
+		 position: relative;
+		 left:16px;
+		 top:4px;
+		 }
+		 
+		 #installButton:hover {
+		 background-image: url("../icons/cell/install_hover.png");
+		 }
+
+		 #installButton:active {
+		 background-image: url("../icons/cell/install_press.png");
+		 }
+
+		 #updateButton {
+		 position: absolute;
+		 cursor: pointer;
+		 display: inline-block;
+		 background-image: url("../icons/cell/update_normal.png");
+		 background-repeat: no-repeat;
+		 height: 23px;
+		 width:60px;
+		 left:330px;
+		 bottom:24px;
+		 color: #000;
+		 }
+		 
+		 #updateButton span {
+		 font-size: 13px;
+		 position: relative;
+		 left:16px;
+		 top:4px;
+		 }
+		 
+		 #updateButton:hover {
+		 background-image: url("../icons/cell/update_hover.png");
+		 }
+
+		 #updateButton:active {
+		 background-image: url("../icons/cell/update_press.png");
 		 }
 	  -->
 	</style>
   </head>
   <body>
 	<div id="wrap">
-	  <!-- <a class="tip_trigger">Test<span class="tip">点击查看详细信息</span></a> -->
 	  <!-- Big image -->
 	  <div id="bigImage">
 		<ul id="bigImageList">
@@ -345,6 +449,7 @@
 		</ul>
 		
   	    <img id="bigImageMask" src="../images/mask.png">
+		<a id="bigImageButton" href="#"><span>安装</span></a>
 		
 		<ul id="bigImageText">
 		  <li class="normal"><span>谷歌浏览器</span></li>
@@ -378,55 +483,86 @@
 	        <img id="itemIcon"
 	      	     src="../AppIcon/deepin-software-center.png">
 	        <div id="itemName">
-			  deepin-software-center
+			  <a href="#" class="tip_trigger">
+				deepin-software-center
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 	      	  深度Linux软件中心
 	        </div>
+			<!-- <a id="installButton" href="#"><span>安装</span></a> -->
+			<a id="updateButton" href="#"><span>升级</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	      <div id="item2">
 	        <img id="itemIcon"
 	      	     src="../AppIcon/iptux.png">
 	        <div id="itemName">
-	      	  iptux
+			  <a href="#" class="tip_trigger">
+	      		iptux
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 	      	  一个Linux的局域网通讯工具
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	      <div id="item3">
 	        <img id="itemIcon"
 	      	     src="../AppIcon/transmission.png">
 	        <div id="itemName">
-	      	  transmission
+			  <a href="#" class="tip_trigger">
+	      		transmission
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 	      	  轻量级的BT客户端
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	      <div id="item4">
 	        <img id="itemIcon"
 	      	     src="../AppIcon/vlc.png">
 	        <div id="itemName">
-	      	  vlc
+			  <a href="#" class="tip_trigger">
+	      		vlc
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 	      	  多媒体播放器和流服务器
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	      <div id="item5">
 	        <img id="itemIcon"
 	      	     src="../AppIcon/thunderbird.png">
 	        <div id="itemName">
-	      	  thunderbird
+			  <a href="#" class="tip_trigger">
+	      		thunderbird
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 	      	  集成RSS和垃圾邮件过滤支持的邮件/新闻客户端
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	    </div>
@@ -448,55 +584,85 @@
 	        <img id="itemIcon"
 	      	     src="../AppIcon/amarok.png">
 	        <div id="itemName">
-	      	  amarok
+			  <a href="#" class="tip_trigger">
+	      		amarok
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 			  基于KDE平台的易于使用的媒体播放器
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	      <div id="item2">
 	        <img id="itemIcon"
 	      	     src="../AppIcon/comix.png">
 	        <div id="itemName">
-	      	  comix
+			  <a href="#" class="tip_trigger">
+	      		comix
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 	      	  GTK的漫画图书阅读器
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	      <div id="item3">
 	        <img id="itemIcon"
 	      	     src="../AppIcon/virtualbox-4.0.png">
 	        <div id="itemName">
-	      	  virtualbox-4.0
+			  <a href="#" class="tip_trigger">
+	      		virtualbox-4.0
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 	      	  甲骨文的VirtualBox虚拟机
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	      <div id="item4">
 	        <img id="itemIcon"
 	      	     src="../AppIcon/stellarium.png">
 	        <div id="itemName">
-	      	  stellarium
+			  <a href="#" class="tip_trigger">
+	      		stellarium
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 	      	  实时照片般逼真的天空生成器
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	      <div id="item5">
 	        <img id="itemIcon"
 	      	     src="../AppIcon/bluefish.png">
 	        <div id="itemName">
-	      	  bluefish
+			  <a href="#" class="tip_trigger">
+	      		bluefish
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 	      	  高级GTK+ HTML编辑器
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	    </div>
@@ -513,8 +679,8 @@
 	      
 	      <span class="borderTitleText">网络应用</span>
 
-	      <span class="borderTitleMore">更多>></span>
-	      
+		  <a href="#" class="borderTitleMore">更多>></a>
+		  
 	      <p class="border">
 	      </p>
 	      
@@ -522,55 +688,85 @@
 	        <img id="itemIcon"
 	      	     src="../AppIcon/firefox.png">
 	        <div id="itemName">
-	      	  firefox
+			  <a href="#" class="tip_trigger">
+	      		firefox
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 	      	  火狐浏览器
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	      <div id="item2">
 	        <img id="itemIcon"
 	      	     src="../AppIcon/amule.png">
 	        <div id="itemName">
-	      	  amule
+			  <a href="#" class="tip_trigger">
+	      		amule
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 	      	  eD2k和Kad网络客户端， 类似于 eMule
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	      <div id="item3">
 	        <img id="itemIcon"
 	      	     src="../AppIcon/uget.png">
 	        <div id="itemName">
-	      	  uget
+			  <a href="#" class="tip_trigger">
+	      		uget
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 	      	  易于使用的下载管理器
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	      <div id="item4">
 	        <img id="itemIcon"
 	      	     src="../AppIcon/pidgin.png">
 	        <div id="itemName">
-	      	  pidgin
+			  <a href="#" class="tip_trigger">
+	      		pidgin
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 	      	  支持多协议的即时通讯客户端
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	      <div id="item5">
 	        <img id="itemIcon"
 	      	     src="../AppIcon/liferea.png">
 	        <div id="itemName">
-	      	  liferea
+			  <a href="#" class="tip_trigger">
+	      		liferea
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 	      	  用于GNOME的新闻聚合器
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	    </div>
@@ -585,7 +781,7 @@
 	      
 	      <span class="borderTitleText">影音播放</span>
 	      
-	      <span class="borderTitleMore">更多>></span>
+	      <a href="#" class="borderTitleMore">更多>></a>
 		  
 	      <p class="border">
 	      </p>
@@ -594,55 +790,85 @@
 	        <img id="itemIcon"
 	      	     src="../AppIcon/audacious.png">
 	        <div id="itemName">
-	      	  audacious
+			  <a href="#" class="tip_trigger">
+	      		audacious
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 			  轻巧快速的音频播放器， 支持很多格式
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	      <div id="item2">
 	        <img id="itemIcon"
 	      	     src="../AppIcon/smplayer.png">
 	        <div id="itemName">
-	      	  smplayer
+			  <a href="#" class="tip_trigger">
+	      		smplayer
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 	      	  完整的Mplayer前段
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	      <div id="item3">
 	        <img id="itemIcon"
 	      	     src="../AppIcon/openshot.png">
 	        <div id="itemName">
-	      	  openshot
+			  <a href="#" class="tip_trigger">
+	      		openshot
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 	      	  创建和编辑视频和电影
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	      <div id="item4">
 	        <img id="itemIcon"
 	      	     src="../AppIcon/audacity.png">
 	        <div id="itemName">
-	      	  audacity
+			  <a href="#" class="tip_trigger">
+	      		audacity
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 	      	  快速的， 跨平台的音频编辑器
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	      <div id="item5">
 	        <img id="itemIcon"
 	      	     src="../AppIcon/brasero.png">
 	        <div id="itemName">
-	      	  brasero
+			  <a href="#" class="tip_trigger">
+	      		brasero
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 	      	  GNOME的CD/DVD刻录机
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	    </div>
@@ -659,7 +885,7 @@
 	      
 	      <span class="borderTitleText">游戏娱乐</span>
 		  
-	      <span class="borderTitleMore">更多>></span>
+	      <a href="#" class="borderTitleMore">更多>></a>
 	      
 	      <p class="border">
 	      </p>
@@ -668,55 +894,85 @@
 	        <img id="itemIcon"
 	      	     src="../AppIcon/aisleriot.png">
 	        <div id="itemName">
-	      	  aisleriot
+			  <a href="#" class="tip_trigger">
+	      		aisleriot
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 	      	  单人纸牌游戏
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	      <div id="item2">
 	        <img id="itemIcon"
 	      	     src="../AppIcon/frozen-bubble.png">
 	        <div id="itemName">
-	      	  frozen-bubble
+			  <a href="#" class="tip_trigger">
+	      		frozen-bubble
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 	      	  泡泡龙游戏
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	      <div id="item3">
 	        <img id="itemIcon"
 	      	     src="../AppIcon/hedgewars.png">
 	        <div id="itemName">
-	      	  hedgewars
+			  <a href="#" class="tip_trigger">
+	      		hedgewars
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 	      	  蠕虫式的游戏
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	      <div id="item4">
 	        <img id="itemIcon"
 	      	     src="../AppIcon/supertuxkart.png">
 	        <div id="itemName">
-	      	  supertuxkart
+			  <a href="#" class="tip_trigger">
+	      		supertuxkart
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 	      	  卡丁车赛车游戏
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	      <div id="item5">
 	        <img id="itemIcon"
 	      	     src="../AppIcon/alien-arena.png">
 	        <div id="itemName">
-	      	  alien-arena
+			  <a href="#" class="tip_trigger">
+	      		alien-arena
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 	      	  单机版3D第一人称在线死亡竞赛游戏
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	    </div>
@@ -731,7 +987,7 @@
 	      
 	      <span class="borderTitleText">图形图像</span>
 	      
-	      <span class="borderTitleMore">更多>></span>
+	      <a href="#" class="borderTitleMore">更多>></a>
 		  
 	      <p class="border">
 	      </p>
@@ -740,55 +996,85 @@
 	        <img id="itemIcon"
 	      	     src="../AppIcon/gnome-paint.png">
 	        <div id="itemName">
-	      	  gnome-paint
+			  <a href="#" class="tip_trigger">
+	      		gnome-paint
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 			  简单，易用的GNOME画图程序
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	      <div id="item2">
 	        <img id="itemIcon"
 	      	     src="../AppIcon/gwenview.png">
 	        <div id="itemName">
-	      	  gwenview
+			  <a href="#" class="tip_trigger">
+	      		gwenview
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 	      	  KDE的图像浏览器
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	      <div id="item3">
 	        <img id="itemIcon"
 	      	     src="../AppIcon/gimp.png">
 	        <div id="itemName">
-	      	  gimp
+			  <a href="#" class="tip_trigger">
+	      		gimp
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 	      	  GNU图形处理程序
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	      <div id="item4">
 	        <img id="itemIcon"
 	      	     src="../AppIcon/inkscape.png">
 	        <div id="itemName">
-	      	  inkscape
+			  <a href="#" class="tip_trigger">
+	      		inkscape
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 	      	  矢量图绘制程序
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	      <div id="item5">
 	        <img id="itemIcon"
 	      	     src="../AppIcon/blender.png">
 	        <div id="itemName">
-	      	  blender
+			  <a href="#" class="tip_trigger">
+	      		blender
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 	      	  非常快速和灵活的3D建模/渲染软件
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	    </div>
@@ -805,7 +1091,7 @@
 	      
 	      <span class="borderTitleText">文字处理</span>
 	      
-	      <span class="borderTitleMore">更多>></span>
+	      <a href="#" class="borderTitleMore">更多>></a>
 		  
 	      <p class="border">
 	      </p>
@@ -814,55 +1100,85 @@
 	        <img id="itemIcon"
 	      	     src="../AppIcon/tomboy.png">
 	        <div id="itemName">
-	      	  tomboy
+			  <a href="#" class="tip_trigger">
+	      		tomboy
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 	      	  使用维基风格链接的桌面记事本软件
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	      <div id="item2">
 	        <img id="itemIcon"
 	      	     src="../AppIcon/libreoffice.png">
 	        <div id="itemName">
-	      	  libreoffice
+			  <a href="#" class="tip_trigger">
+	      		libreoffice
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 	      	  办公生产力套件
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	      <div id="item3">
 	        <img id="itemIcon"
 	      	     src="../AppIcon/evince.png">
 	        <div id="itemName">
-	      	  evince
+			  <a href="#" class="tip_trigger">
+	      		evince
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 	      	  文档阅读器 (PostScript, PDF)
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	      <div id="item4">
 	        <img id="itemIcon"
 	      	     src="../AppIcon/kchmviewer.png">
 	        <div id="itemName">
-	      	  kchmviewer
+			  <a href="#" class="tip_trigger">
+	      		kchmviewer
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 	      	  KDE的CHM文件查看器
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	      <div id="item5">
 	        <img id="itemIcon"
 	      	     src="../AppIcon/stardict.png">
 	        <div id="itemName">
-	      	  stardict
+			  <a href="#" class="tip_trigger">
+	      		stardict
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 	      	  星际译王
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	    </div>
@@ -877,7 +1193,7 @@
 	      
 	      <span class="borderTitleText">行业软件</span>
 	      
-	      <span class="borderTitleMore">更多>></span>
+	      <a href="#" class="borderTitleMore">更多>></a>
 		  
 	      <p class="border">
 	      </p>
@@ -886,55 +1202,85 @@
 	        <img id="itemIcon"
 	      	     src="../AppIcon/qcad.png">
 	        <div id="itemName">
-	      	  qcad
+			  <a href="#" class="tip_trigger">
+	      		qcad
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 			  专业的CAD系统
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	      <div id="item2">
 	        <img id="itemIcon"
 	      	     src="../AppIcon/ballview.png">
 	        <div id="itemName">
-	      	  ballview
+			  <a href="#" class="tip_trigger">
+	      		ballview
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 	      	  一款免费的分子模型和分子图形工具
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	      <div id="item3">
 	        <img id="itemIcon"
 	      	     src="../AppIcon/amide.png">
 	        <div id="itemName">
-	      	  amide
+			  <a href="#" class="tip_trigger">
+	      		amide
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 	      	  医学影像软件
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	      <div id="item4">
 	        <img id="itemIcon"
 	      	     src="../AppIcon/scilab.png">
 	        <div id="itemName">
-	      	  scilab
+			  <a href="#" class="tip_trigger">
+	      		scilab
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 	      	  用于数值计算的科学软件包
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	      <div id="item5">
 	        <img id="itemIcon"
 	      	     src="../AppIcon/celestia.png">
 	        <div id="itemName">
-	      	  celestia
+			  <a href="#" class="tip_trigger">
+	      		celestia
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 	      	  一个实时虚拟控件模拟
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	    </div>
@@ -951,7 +1297,7 @@
 	      
 	      <span class="borderTitleText">编程开发</span>
 	      
-	      <span class="borderTitleMore">更多>></span>
+	      <a href="#" class="borderTitleMore">更多>></a>
 		  
 	      <p class="border">
 	      </p>
@@ -960,55 +1306,85 @@
 	        <img id="itemIcon"
 	      	     src="../AppIcon/emacs.png">
 	        <div id="itemName">
-	      	  emacs
+			  <a href="#" class="tip_trigger">
+	      		emacs
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 	      	  GNU Emacs编辑器
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	      <div id="item2">
 	        <img id="itemIcon"
 	      	     src="../AppIcon/vim.png">
 	        <div id="itemName">
-	      	  vim
+			  <a href="#" class="tip_trigger">
+	      		vim
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 	      	  vi编辑器
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	      <div id="item3">
 	        <img id="itemIcon"
 	      	     src="../AppIcon/eclipse.png">
 	        <div id="itemName">
-	      	  eclipse
+			  <a href="#" class="tip_trigger">
+	      		eclipse
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 	      	  JAVA的工具平台和可扩展IDE
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	      <div id="item4">
 	        <img id="itemIcon"
 	      	     src="../AppIcon/codeblocks.png">
 	        <div id="itemName">
-	      	  codeblocks
+			  <a href="#" class="tip_trigger">
+	      		codeblocks
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 	      	  Code::Block 集成开发环境
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	      <div id="item5">
 	        <img id="itemIcon"
 	      	     src="../AppIcon/geany.png">
 	        <div id="itemName">
-	      	  geany
+			  <a href="#" class="tip_trigger">
+	      		geany
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 	      	  一个快速和轻量级的IDE
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	    </div>
@@ -1023,7 +1399,7 @@
 	      
 	      <span class="borderTitleText">硬件驱动</span>
 	      
-	      <span class="borderTitleMore">更多>></span>
+	      <a href="#" class="borderTitleMore">更多>></a>
 		  
 	      <p class="border">
 	      </p>
@@ -1032,55 +1408,85 @@
 	        <img id="itemIcon"
 	      	     src="../AppIcon/jockey-gtk.png">
 	        <div id="itemName">
-	      	  jockey-gtk
+			  <a href="#" class="tip_trigger">
+	      		jockey-gtk
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 			  GNOME用户界面和桌面集成的驱动管理器
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	      <div id="item2">
 	        <img id="itemIcon"
 	      	     src="../AppIcon/ntfs-config.png">
 	        <div id="itemName">
-	      	  ntfs-config
+			  <a href="#" class="tip_trigger">
+	      		ntfs-config
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 	      	  启用/禁用任何NTFS设备的写支持
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	      <div id="item3">
 	        <img id="itemIcon"
 	      	     src="../AppIcon/ndisgtk.png">
 	        <div id="itemName">
-	      	  ndisgtk
+			  <a href="#" class="tip_trigger">
+	      		ndisgtk
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 	      	  Windows无线驱动安装程序
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	      <div id="item4">
 	        <img id="itemIcon"
 	      	     src="../AppIcon/fglrx.png">
 	        <div id="itemName">
-	      	  fglrx
+			  <a href="#" class="tip_trigger">
+	      		fglrx
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 	      	  ATI显卡加速器和视频驱动程序
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	      <div id="item5">
 	        <img id="itemIcon"
 	      	     src="../AppIcon/nvidia-current.png">
 	        <div id="itemName">
-	      	  nvidia-current
+			  <a href="#" class="tip_trigger">
+	      		nvidia-current
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 	      	  NVIDIA 二进制Xorg驱动， 内核模块和VDPAU库
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	    </div>
@@ -1098,7 +1504,7 @@
 	      
 	      <span class="borderTitleText">WIN 软件</span>
 	      
-	      <span class="borderTitleMore">更多>></span>
+	      <a href="#" class="borderTitleMore">更多>></a>
 		  
 	      <p class="border">
 	      </p>
@@ -1107,55 +1513,85 @@
 	        <img id="itemIcon"
 	      	     src="../AppIcon/deepin-wine-tm2009.png">
 	        <div id="itemName">
-	      	  deepin-wine-tm2009
+			  <a href="#" class="tip_trigger">
+	      		deepin-wine-tm2009
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 	      	  腾讯QQ 2009
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	      <div id="item2">
 	        <img id="itemIcon"
 	      	     src="../AppIcon/deepin-wine-rtx2010.png">
 	        <div id="itemName">
-	      	  deepin-wine-rtx2010
+			  <a href="#" class="tip_trigger">
+	      		deepin-wine-rtx2010
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 	      	  腾讯RTX 2010
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	      <div id="item3">
 	        <img id="itemIcon"
 	      	     src="../AppIcon/wine-thunder.png">
 	        <div id="itemName">
-	      	  wine-thunder
+			  <a href="#" class="tip_trigger">
+	      		wine-thunder
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 	      	  迅雷
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	      <div id="item4">
 	        <img id="itemIcon"
 	      	     src="../AppIcon/picasa.png">
 	        <div id="itemName">
-	      	  picasa
+			  <a href="#" class="tip_trigger">
+	      		picasa
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 	      	  谷歌的图片管理程序
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	      <div id="item5">
 	        <img id="itemIcon"
 	      	     src="../AppIcon/playonlinux.png">
 	        <div id="itemName">
-	      	  playonlinux
+			  <a href="#" class="tip_trigger">
+	      		playonlinux
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 	      	  Wine的前段界面
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	    </div>
@@ -1170,7 +1606,7 @@
 	      
 	      <span class="borderTitleText">其他软件</span>
 	      
-	      <span class="borderTitleMore">更多>></span>
+	      <a href="#" class="borderTitleMore">更多>></a>
 		  
 	      <p class="border">
 	      </p>
@@ -1179,55 +1615,85 @@
 	        <img id="itemIcon"
 	      	     src="../AppIcon/ibus-pinyin.png">
 	        <div id="itemName">
-	      	  ibus-pinyin
+			  <a href="#" class="tip_trigger">
+	      		ibus-pinyin
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 			  IBus拼音输入法
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	      <div id="item2">
 	        <img id="itemIcon"
 	      	     src="../AppIcon/camorama.png">
 	        <div id="itemName">
-	      	  camorama
+			  <a href="#" class="tip_trigger">
+	      		camorama
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 	      	  查看和抓拍摄像头
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	      <div id="item3">
 	        <img id="itemIcon"
 	      	     src="../AppIcon/shutter.png">
 	        <div id="itemName">
-	      	  shutter
+			  <a href="#" class="tip_trigger">
+	      		shutter
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 	      	  功能丰富的屏幕截图程序
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	      <div id="item4">
 	        <img id="itemIcon"
 	      	     src="../AppIcon/gparted.png">
 	        <div id="itemName">
-	      	  gparted
+			  <a href="#" class="tip_trigger">
+	      		gparted
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 	      	  GNOME分区编辑器
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	      <div id="item5">
 	        <img id="itemIcon"
 	      	     src="../AppIcon/unetbootin.png">
 	        <div id="itemName">
-	      	  unetbootin
+			  <a href="#" class="tip_trigger">
+	      		unetbootin
+				<span class="tip">
+				  点击查看详细信息
+				</span>
+			  </a>
 	        </div>
 	        <div id="itemShortDesc">
 	      	  Linux/BSD的发行版分区和U盘安装工具
 	        </div>
+			<a id="installButton" href="#"><span>安装</span></a>
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	    </div>

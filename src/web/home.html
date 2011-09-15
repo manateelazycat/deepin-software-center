@@ -18,16 +18,16 @@
               $(this).append(tip); //返回原来的位置
           }).mousemove(function(e) {
           //console.log(e.pageX)
-                if ( tip == null ) return;
+              if ( tip == null ) return;
 	      
-                var mousex = e.pageX + 15; //获取鼠标在文档的X值加15
-                var mousey = e.pageY + 10; //获取鼠标的Y值加10
-                var tipWidth = tip.width(); //.tip的宽度
-                var tipHeight = tip.height(); //.tip的高度
+              var mousex = e.pageX + 15; //获取鼠标在文档的X值加15
+              var mousey = e.pageY + 10; //获取鼠标的Y值加10
+              var tipWidth = tip.width(); //.tip的宽度
+              var tipHeight = tip.height(); //.tip的高度
 	      
-                //计算.tip距离右边缘的位置
-                var tipVisX = $(window).width() - (mousex + tipWidth);
-                var tipVisY = $(window).height() - (mousey + tipHeight);
+              //计算.tip距离右边缘的位置
+              var tipVisX = $(window).width() - (mousex + tipWidth);
+              var tipVisY = $(window).height() - (mousey + tipHeight);
 	      
               if ( tipVisX < 15 ) { //If tooltip exceeds the X coordinate of viewport
                   mousex = e.pageX - tipWidth - 15;
@@ -112,20 +112,20 @@
          }
 		 
 		 .tip_trigger:hover {
-		 color: #0084FF;
+		 color:#0084FF;
 		 }
 		 
 		 .tip {
 		 position:absolute;	
-		 color: #fff;
+		 color:#fff;
 		 background:#363636;
 		 display:none; /*--Hides by default--*/
 		 font-size:14px;
 		 padding:4px;
 		 z-index:1000;
-		 -webkit-border-radius: 3px;
-		 -moz-border-radius: 3px;
-		 border-radius: 3px;
+		 -webkit-border-radius:3px;
+		 -moz-border-radius:3px;
+		 border-radius:3px;
          opacity:0.9;
 		 }		 
          
@@ -201,33 +201,33 @@
          }
 
 		 #bigImageButton {
-		 position: absolute;
-		 cursor: pointer;
-		 display: inline-block;
-		 background-image: url("../icons/cell/search_normal.png");
-		 background-repeat: no-repeat;
-		 height: 25px;
+		 position:absolute;
+		 cursor:pointer;
+		 display:inline-block;
+		 background-image:url("../icons/cell/search_normal.png");
+		 background-repeat:no-repeat;
+		 height:25px;
 		 width:63px;
 		 left:510px;
 		 top:264px;
 		 bottom:24px;
-		 color: #000;
+		 color:#000;
 		 }
 		 
 		 #bigImageButton span {
-		 position: relative;
+		 position:relative;
 		 left:15px;
 		 top:3px;
 		 font-size:16px;
-		 color: #FFF;
+		 color:#FFF;
 		 }
 		 
 		 #bigImageButton:hover {
-		 background-image: url("../icons/cell/search_hover.png");
+		 background-image:url("../icons/cell/search_hover.png");
 		 }
 
 		 #bigImageButton:active {
-		 background-image: url("../icons/cell/search_press.png");
+		 background-image:url("../icons/cell/search_press.png");
 		 }
 		 
 		 #borderWrap1 {
@@ -307,11 +307,11 @@
 		 margin-top:10px;
 		 margin-left:330px;
 		 font-size:15px;
-		 color: #000;
+		 color:#000;
 		 }
 		 
 		 .borderTitleMore:hover {
-		 color: #0084FF;
+		 color:#0084FF;
 		 }
 		 
 		 p.border {
@@ -366,6 +366,10 @@
 		 top:-36px;
 		 color:#1A3E88;
 		 font-size:13px;
+		 overflow:hidden;
+		 text-overflow:ellipsis;		 
+		 white-space:nowrap;
+		 width:90px;
 		 }
 
 		 #itemShortDesc {
@@ -381,59 +385,147 @@
 		 }
 
 		 #installButton {
-		 position: absolute;
-		 cursor: pointer;
-		 display: inline-block;
-		 background-image: url("../icons/cell/install_normal.png");
-		 background-repeat: no-repeat;
-		 height: 23px;
+		 position:absolute;
+		 cursor:pointer;
+		 display:inline-block;
+		 background-image:url("../icons/cell/install_normal.png");
+		 background-repeat:no-repeat;
+		 height:23px;
 		 width:60px;
 		 left:330px;
 		 bottom:24px;
-		 color: #000;
+		 color:#000;
 		 }
 		 
 		 #installButton span {
-		 font-size: 13px;
-		 position: relative;
+		 font-size:13px;
+		 position:relative;
 		 left:16px;
 		 top:4px;
 		 }
 		 
 		 #installButton:hover {
-		 background-image: url("../icons/cell/install_hover.png");
+		 background-image:url("../icons/cell/install_hover.png");
 		 }
 
 		 #installButton:active {
-		 background-image: url("../icons/cell/install_press.png");
+		 background-image:url("../icons/cell/install_press.png");
 		 }
 
 		 #updateButton {
-		 position: absolute;
-		 cursor: pointer;
-		 display: inline-block;
-		 background-image: url("../icons/cell/update_normal.png");
-		 background-repeat: no-repeat;
-		 height: 23px;
+		 position:absolute;
+		 cursor:pointer;
+		 display:inline-block;
+		 background-image:url("../icons/cell/update_normal.png");
+		 background-repeat:no-repeat;
+		 height:23px;
 		 width:60px;
 		 left:330px;
 		 bottom:24px;
-		 color: #000;
+		 color:#000;
 		 }
 		 
 		 #updateButton span {
-		 font-size: 13px;
-		 position: relative;
+		 font-size:13px;
+		 position:relative;
 		 left:16px;
 		 top:4px;
 		 }
 		 
 		 #updateButton:hover {
-		 background-image: url("../icons/cell/update_hover.png");
+		 background-image:url("../icons/cell/update_hover.png");
 		 }
 
 		 #updateButton:active {
-		 background-image: url("../icons/cell/update_press.png");
+		 background-image:url("../icons/cell/update_press.png");
+		 }
+
+		 #installed {
+		 position:absolute;
+		 left:340px;
+		 bottom:25px;
+		 font-size:13px;
+		 color:#1A3E88;
+		 }
+
+		 #installing {
+		 position:absolute;
+		 left:340px;
+		 bottom:25px;
+		 font-size:13px;
+		 color:#000;
+		 }
+		 
+		 #progressBgLeft {
+		 position:absolute;
+		 left:150px;
+		 top:-33px;
+		 }
+
+		 #progressBgMiddle {
+		 position:absolute;
+		 left:153px;
+		 top:-33px;
+		 width:165px;
+		 height:10px;
+		 }
+
+		 #progressBgRight {
+		 position:absolute;
+		 left:318px;
+		 top:-33px;
+		 }
+		 
+		 #progressFgLeft {
+		 position:absolute;
+		 left:151px;
+		 top:-32px;
+		 }
+
+		 #progressFgMiddle {
+		 position:absolute;
+		 left:153px;
+		 top:-32px;
+		 width:165px;
+		 height:8px;
+		 }
+
+		 #progressFgRight {
+		 position:absolute;
+		 left:318px;
+		 top:-32px;
+		 }
+		 
+		 #itemPause {
+		 position:absolute;
+		 left:345px;
+		 top:-34px;
+		 }
+
+		 #itemContinue {
+		 position:absolute;
+		 left:345px;
+		 top:-34px;
+		 }
+
+		 #itemStop {
+		 position:absolute;
+		 left:365px;
+		 top:-34px;
+		 }
+		 
+		 #itemSpeed {
+		 position:absolute;
+		 left:335px;
+		 top:-15px;
+		 font-size:13px;
+		 }
+
+		 #itemPausing {
+		 position:absolute;
+		 left:348px;
+		 top:-15px;
+		 font-size:13px;
 		 }
 	  -->
 	</style>
@@ -443,9 +535,9 @@
 	  <!-- Big image -->
 	  <div id="bigImage">
 		<ul id="bigImageList">
-		  <li><a href="#" target="_blank"><img  src="../images/chromium-browser.png"></a></li>
-		  <li><a href="#" target="_blank"><img  src="../images/ppstream.png"></a></li>
-		  <li><a href="#" target="_blank"><img  src="../images/eio.png"></a></li>
+		  <li><a href="#" target="_blank"><img src="../images/chromium-browser.png"></a></li>
+		  <li><a href="#" target="_blank"><img src="../images/ppstream.png"></a></li>
+		  <li><a href="#" target="_blank"><img src="../images/eio.png"></a></li>
 		</ul>
 		
   	    <img id="bigImageMask" src="../images/mask.png">
@@ -459,9 +551,9 @@
 	  </div>
 	  
 	  <ul id="smallImageList">
-		<li class="i_cur" id="p0"><img  src="../images/chromium-browser_small.png"></li>
-		<li id="p1"><img  src="../images/ppstream_small.png"></li>
-		<li id="p2"><img  src="../images/eio_small.png"></li>
+		<li class="i_cur" id="p0"><img src="../images/chromium-browser_small.png"></li>
+		<li id="p1"><img src="../images/ppstream_small.png"></li>
+		<li id="p2"><img src="../images/eio_small.png"></li>
 	  </ul>
 	  
 	  <!-- Border -->
@@ -511,7 +603,8 @@
 	        <div id="itemShortDesc">
 	      	  一个Linux的局域网通讯工具
 	        </div>
-			<a id="installButton" href="#"><span>安装</span></a>
+			<span id="installed">已安装</span>
+			<!-- <a id="installButton" href="#"><span>安装</span></a> -->
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	      <div id="item3">
@@ -528,7 +621,14 @@
 	        <div id="itemShortDesc">
 	      	  轻量级的BT客户端
 	        </div>
-			<a id="installButton" href="#"><span>安装</span></a>
+			<img id="progressBgLeft" src="../icons/cell/download_bg_left.png">
+			<img id="progressBgMiddle" src="../icons/cell/download_bg_middle.png">
+			<img id="progressBgRight" src="../icons/cell/download_bg_right.png">
+			<img id="progressFgLeft" src="../icons/cell/download_fg_left.png">
+			<img id="progressFgMiddle" src="../icons/cell/download_fg_middle.png">
+			<img id="progressFgRight" src="../icons/cell/download_fg_right.png">
+			<span id="installing">安装中</span>
+			<!-- <a id="installButton" href="#"><span>安装</span></a> -->
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	      <div id="item4">
@@ -545,7 +645,16 @@
 	        <div id="itemShortDesc">
 	      	  多媒体播放器和流服务器
 	        </div>
-			<a id="installButton" href="#"><span>安装</span></a>
+			<img id="progressBgLeft" src="../icons/cell/download_bg_left.png">
+			<img id="progressBgMiddle" src="../icons/cell/download_bg_middle.png">
+			<img id="progressBgRight" src="../icons/cell/download_bg_right.png">
+			<img id="progressFgLeft" src="../icons/cell/download_fg_left.png">
+			<img id="progressFgMiddle" src="../icons/cell/download_fg_middle.png">
+			<img id="progressFgRight" src="../icons/cell/download_fg_right.png">
+			<img id="itemPause" src="../icons/cell/pause.png">
+			<img id="itemStop" src="../icons/cell/stop.png">
+			<span id="itemSpeed">400KB/s</span>
+			<!-- <a id="installButton" href="#"><span>安装</span></a> -->
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	      <div id="item5">
@@ -562,7 +671,16 @@
 	        <div id="itemShortDesc">
 	      	  集成RSS和垃圾邮件过滤支持的邮件/新闻客户端
 	        </div>
-			<a id="installButton" href="#"><span>安装</span></a>
+			<img id="progressBgLeft" src="../icons/cell/download_bg_left.png">
+			<img id="progressBgMiddle" src="../icons/cell/download_bg_middle.png">
+			<img id="progressBgRight" src="../icons/cell/download_bg_right.png">
+			<img id="progressFgLeft" src="../icons/cell/download_fg_left.png">
+			<img id="progressFgMiddle" src="../icons/cell/download_fg_middle.png">
+			<img id="progressFgRight" src="../icons/cell/download_fg_right.png">
+			<img id="itemContinue" src="../icons/cell/continue.png">
+			<img id="itemStop" src="../icons/cell/stop.png">
+			<span id="itemPausing">暂停</span>
+			<!-- <a id="installButton" href="#"><span>安装</span></a> -->
 	        <hr align="left" width="398" color="#E5E5E5" size="1">
 	      </div>
 	    </div>

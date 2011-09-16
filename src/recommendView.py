@@ -41,10 +41,11 @@ class RecommendItem(DownloadItem):
     VOTE_PADDING_X = 3
     VOTE_PADDING_Y = 1
     
-    NAME_WIDTH = 100
+    STATUS_WIDTH = 70
+    NAME_WIDTH = 280
     SUMMARY_WIDTH = 280
     ACTION_WIDTH = 70
-    PROGRESS_WIDTH = 165
+    PROGRESS_WIDTH = 200
         
     def __init__(self, appInfo, switchStatus, downloadQueue, entryDetailCallback, index, getSelectIndex, setSelectIndex):
         '''Init for application item.'''
@@ -102,8 +103,10 @@ class RecommendItem(DownloadItem):
         self.appFeedbackBox = gtk.VBox()
         self.appTopBox.pack_start(self.appFeedbackBox, False, False)
         
+        self.appStatusBox = gtk.VBox()
+        self.appAdditionBox.pack_start(self.appStatusBox, False, False)
+        
         self.appSummaryBox = gtk.VBox()
-        self.appAdditionBox.pack_start(self.appSummaryBox, False, False)
         
         self.appActionBox = gtk.VBox()
         self.appActionBox.set_size_request(self.ACTION_WIDTH, -1)
@@ -143,6 +146,10 @@ class RecommendItem(DownloadItem):
         # Clean feedback box.
         utils.containerRemoveAll(self.appFeedbackBox)
         utils.containerRemoveAll(self.appActionBox)
+        utils.containerRemoveAll(self.appStatusBox)
+        
+        # Add summary.
+        self.appStatusBox.pack_start(self.appSummaryBox, False, False)
         
         # Add action button.
         appButtonBox = gtk.VBox()
@@ -170,17 +177,26 @@ class RecommendItem(DownloadItem):
             
     def initDownloadingStatus(self):
         '''Init downloading status.'''
-        # Clean right box first.
-        utils.containerRemoveAll(self.appFeedbackBox)
+        # Clean summary box first.
+        utils.containerRemoveAll(self.appStatusBox)
         
-        # Add progress.
+        # Create status box.
+        statusPaddingY = 5
+        statusBox = gtk.HBox()
+        statusAlign = gtk.Alignment()
+        statusAlign.set(0.0, 0.5, 0.0, 0.0)
+        statusAlign.set_padding(statusPaddingY, 0, 0, 0)
+        statusAlign.add(statusBox)
+        self.appStatusBox.pack_start(statusAlign)
+        
+        # Add progressbar.
         progress = self.appInfo.downloadingProgress
         progressbar = drawProgressbar(self.PROGRESS_WIDTH)
         progressbar.setProgress(progress)
+        statusBox.pack_start(progressbar.box)
         self.downloadingProgressbar = progressbar
-        self.appFeedbackBox.pack_start(progressbar.box)
         
-        # Alignment box.
+        # Add action box.
         utils.containerRemoveAll(self.appActionBox)
         
         actionBox = gtk.VBox()
@@ -190,10 +206,11 @@ class RecommendItem(DownloadItem):
         self.appActionBox.pack_start(actionAlign)
         
         # Add pause icon.
-        buttonPaddingY = 5
+        buttonPaddingY = 8
         buttonBox = gtk.HBox()
         buttonAlign = gtk.Alignment()
-        buttonAlign.set_padding(0, buttonPaddingY, 0, 0)
+        buttonAlign.set(0.5, 0.0, 0.0, 0.0)
+        buttonAlign.set_padding(buttonPaddingY, 0, 0, 0)
         buttonAlign.add(buttonBox)
         actionBox.pack_start(buttonAlign, False, False)
         
@@ -209,25 +226,39 @@ class RecommendItem(DownloadItem):
         buttonBox.pack_start(stopIcon, False, False, self.BUTTON_PADDING_X)
         
         # Add feedback label.
+        feedbackPaddingY = 5
         feedbackLabel = gtk.Label()
         feedbackLabel.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, self.appInfo.downloadingFeedback))
-        feedbackLabel.set_alignment(0.0, 0.5)
+        feedbackLabel.set_size_request(self.STATUS_WIDTH, -1)
+        feedbackAlign = gtk.Alignment()
+        feedbackAlign.set(1.0, 0.0, 0.0, 0.0)
+        feedbackAlign.set_padding(feedbackPaddingY, 0, 0, 0)
+        feedbackAlign.add(feedbackLabel)
         self.downloadingFeedbackLabel = feedbackLabel
-        actionBox.pack_start(feedbackLabel)
+        actionBox.pack_start(feedbackAlign)
         
     def initDownloadPauseStatus(self):
         '''Init download pause status.'''
-        # Clean right box first.
-        utils.containerRemoveAll(self.appFeedbackBox)
+        # Clean summary box first.
+        utils.containerRemoveAll(self.appStatusBox)
         
-        # Add progress.
+        # Create status box.
+        statusPaddingY = 5
+        statusBox = gtk.HBox()
+        statusAlign = gtk.Alignment()
+        statusAlign.set(0.0, 0.5, 0.0, 0.0)
+        statusAlign.set_padding(statusPaddingY, 0, 0, 0)
+        statusAlign.add(statusBox)
+        self.appStatusBox.pack_start(statusAlign)
+        
+        # Add progressbar.
         progress = self.appInfo.downloadingProgress
         progressbar = drawProgressbar(self.PROGRESS_WIDTH)
         progressbar.setProgress(progress)
+        statusBox.pack_start(progressbar.box)
         self.downloadingProgressbar = progressbar
-        self.appFeedbackBox.pack_start(progressbar.box)
         
-        # Alignment box.
+        # Add action box.
         utils.containerRemoveAll(self.appActionBox)
         
         actionBox = gtk.VBox()
@@ -236,11 +267,12 @@ class RecommendItem(DownloadItem):
         actionAlign.add(actionBox)
         self.appActionBox.pack_start(actionAlign)
         
-        # Add continue icon.
-        buttonPaddingY = 5
+        # Add pause icon.
+        buttonPaddingY = 8
         buttonBox = gtk.HBox()
         buttonAlign = gtk.Alignment()
-        buttonAlign.set_padding(0, buttonPaddingY, 0, 0)
+        buttonAlign.set(0.5, 0.0, 0.0, 0.0)
+        buttonAlign.set_padding(buttonPaddingY, 0, 0, 0)
         buttonAlign.add(buttonBox)
         actionBox.pack_start(buttonAlign, False, False)
         
@@ -256,25 +288,39 @@ class RecommendItem(DownloadItem):
         buttonBox.pack_start(stopIcon, False, False, self.BUTTON_PADDING_X)
         
         # Add feedback label.
+        feedbackPaddingY = 5
         feedbackLabel = gtk.Label()
         feedbackLabel.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, self.appInfo.downloadingFeedback))
-        feedbackLabel.set_alignment(0.0, 0.5)
+        feedbackLabel.set_size_request(self.STATUS_WIDTH, -1)
+        feedbackAlign = gtk.Alignment()
+        feedbackAlign.set(1.0, 0.0, 0.0, 0.0)
+        feedbackAlign.set_padding(feedbackPaddingY, 0, 0, 0)
+        feedbackAlign.add(feedbackLabel)
         self.downloadingFeedbackLabel = feedbackLabel
-        actionBox.pack_start(feedbackLabel)
+        actionBox.pack_start(feedbackAlign)
         
     def initInstallingStatus(self):
         '''Init installing status.'''
-        # Clean right box first.
-        utils.containerRemoveAll(self.appFeedbackBox)
+        # Clean summary box first.
+        utils.containerRemoveAll(self.appStatusBox)
         
-        # Add progress.
-        progress = self.appInfo.installingProgress
+        # Create status box.
+        statusPaddingY = 5
+        statusBox = gtk.HBox()
+        statusAlign = gtk.Alignment()
+        statusAlign.set(0.0, 0.5, 0.0, 0.0)
+        statusAlign.set_padding(statusPaddingY, 0, 0, 0)
+        statusAlign.add(statusBox)
+        self.appStatusBox.pack_start(statusAlign)
+        
+        # Add progressbar.
+        progress = self.appInfo.downloadingProgress
         progressbar = drawProgressbar(self.PROGRESS_WIDTH)
         progressbar.setProgress(progress)
+        statusBox.pack_start(progressbar.box)
         self.installingProgressbar = progressbar
-        self.appFeedbackBox.pack_start(progressbar.box)
         
-        # Alignment box.
+        # Add action box.
         utils.containerRemoveAll(self.appActionBox)
         
         actionBox = gtk.VBox()
@@ -284,25 +330,39 @@ class RecommendItem(DownloadItem):
         self.appActionBox.pack_start(actionAlign)
         
         # Add feedback label.
+        feedbackPaddingY = 6
         feedbackLabel = gtk.Label()
         feedbackLabel.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, self.appInfo.installingFeedback))
         feedbackLabel.set_alignment(0.0, 0.5)
+        feedbackAlign = gtk.Alignment()
+        feedbackAlign.set(0.0, 0.5, 0.0, 0.0)
+        feedbackAlign.set_padding(feedbackPaddingY, 0, 0, 0)
+        feedbackAlign.add(feedbackLabel)
         self.installingFeedbackLabel = feedbackLabel
-        actionBox.pack_start(feedbackLabel)
+        actionBox.pack_start(feedbackAlign)
         
     def initUpgradingStatus(self):
         '''Init upgrading status.'''
-        # Clean right box first.
-        utils.containerRemoveAll(self.appFeedbackBox)
+        # Clean summary box first.
+        utils.containerRemoveAll(self.appStatusBox)
         
-        # Add progress.
-        progress = self.appInfo.upgradingProgress
+        # Create status box.
+        statusPaddingY = 5
+        statusBox = gtk.HBox()
+        statusAlign = gtk.Alignment()
+        statusAlign.set(0.0, 0.5, 0.0, 0.0)
+        statusAlign.set_padding(statusPaddingY, 0, 0, 0)
+        statusAlign.add(statusBox)
+        self.appStatusBox.pack_start(statusAlign)
+        
+        # Add progressbar.
+        progress = self.appInfo.downloadingProgress
         progressbar = drawProgressbar(self.PROGRESS_WIDTH)
         progressbar.setProgress(progress)
+        statusBox.pack_start(progressbar.box)
         self.upgradingProgressbar = progressbar
-        self.appFeedbackBox.pack_start(progressbar.box)
         
-        # Alignment box.
+        # Add action box.
         utils.containerRemoveAll(self.appActionBox)
         
         actionBox = gtk.VBox()
@@ -312,12 +372,17 @@ class RecommendItem(DownloadItem):
         self.appActionBox.pack_start(actionAlign)
         
         # Add feedback label.
+        feedbackPaddingY = 6
         feedbackLabel = gtk.Label()
         feedbackLabel.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, self.appInfo.upgradingFeedback))
         feedbackLabel.set_alignment(0.0, 0.5)
+        feedbackAlign = gtk.Alignment()
+        feedbackAlign.set(0.0, 0.5, 0.0, 0.0)
+        feedbackAlign.set_padding(feedbackPaddingY, 0, 0, 0)
+        feedbackAlign.add(feedbackLabel)
         self.upgradingFeedbackLabel = feedbackLabel
-        actionBox.pack_start(feedbackLabel)
-        
+        actionBox.pack_start(feedbackAlign)
+
     def updateDownloadingStatus(self, progress, feedback):
         '''Update downloading status.'''
         if self.appInfo.status in [APP_STATE_DOWNLOAD_PAUSE, APP_STATE_DOWNLOADING]:
@@ -347,7 +412,6 @@ class RecommendItem(DownloadItem):
         appName.set_markup(nameMarkup)
         appName.set_size_request(self.NAME_WIDTH, -1)
         appName.set_single_line_mode(True)
-        appName.set_ellipsize(pango.ELLIPSIZE_END)
         appName.set_alignment(0.0, 0.5)
         appNameEventBox = gtk.EventBox()
         appNameEventBox.add(appName)
@@ -378,6 +442,7 @@ class RecommendItem(DownloadItem):
         appSummary.set_alignment(0.0, 0.5)
         appSummaryBox.pack_start(appSummary, False, False)
         self.appSummaryBox.pack_start(appSummaryBox, False, False)
+        self.appStatusBox.pack_start(self.appSummaryBox, False, False)
         
     def entryDetailView(self):
         '''Entry detail view.'''

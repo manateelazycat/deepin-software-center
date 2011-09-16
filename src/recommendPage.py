@@ -136,7 +136,7 @@ class SlideItem(DownloadItem):
         elif status == APP_STATE_DOWNLOADING:
             self.initDownloadingStatus(self.appAdditionBox, True)
         elif status == APP_STATE_DOWNLOAD_PAUSE:
-            self.initDownloadPauseStatus(self.appAdditionBox, True)
+             self.initDownloadPauseStatus(self.appAdditionBox, True, "#FFFFFF")
         elif status == APP_STATE_INSTALLING:
             self.initInstallingStatus(True)
         elif status == APP_STATE_UPGRADING:

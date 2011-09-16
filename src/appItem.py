@@ -285,7 +285,7 @@ class DownloadItem:
         self.downloadingFeedbackLabel = feedbackLabel
         actionBox.pack_start(feedbackLabel)
         
-    def initDownloadPauseStatus(self, appAdditionBox, withoutBorder=False):
+    def initDownloadPauseStatus(self, appAdditionBox, withoutBorder=False, fontColor="#000000"):
         '''Init download pause status.'''
         # Clean right box first.
         utils.containerRemoveAll(appAdditionBox)
@@ -324,7 +324,7 @@ class DownloadItem:
         
         # Add pause label.
         pauseLabel = gtk.Label()
-        pauseLabel.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, "暂停"))
+        pauseLabel.set_markup("<span foreground='%s' size='%s'>%s</span>" % (fontColor, LABEL_FONT_SIZE, "暂停"))
         pauseLabel.set_width_chars(self.PROGRESS_LABEL_WIDTH_CHARS)
         pauseLabel.set_ellipsize(pango.ELLIPSIZE_END)
         pauseLabel.set_alignment(0.5, 0.5)

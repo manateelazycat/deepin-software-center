@@ -267,6 +267,9 @@ class DetailView:
                 "<span foreground='#1A3E88' size='%s' underline='single'>%s</span>" % (LABEL_FONT_SIZE, "访问首页"),
                 "<span foreground='#0084FF' size='%s' underline='single'>%s</span>" % (LABEL_FONT_SIZE, "访问首页"),
                 )
+            
+            # Show home page when hover link.
+            utils.setHelpTooltip(homepageEventBox, homepage)
         
         # Add screenshot.
         screenshotBox = gtk.VBox()

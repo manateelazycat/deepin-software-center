@@ -887,10 +887,12 @@ class DeepinSoftwareCenter():
                 (pkgName, [starLevel, voteNum]) = vote
                 view.updateVoteView(pkgName, starLevel, voteNum)
     @postGUI
-    def updateDetailView(self, pageId, pkgName, voteJson):
+    # Replace function for `updateDetailView` to toggle comment features.
+    def updateDetailView_(self, pageId, pkgName, voteJson):
         pass
 
-    def updateDetailView_(self, pageId, pkgName, voteJson):
+    @postGUI
+    def updateDetailView(self, pageId, pkgName, voteJson):
         '''Update vote view.'''
         if self.detailViewDict.has_key(pageId):
             detailView = self.detailViewDict[pageId]

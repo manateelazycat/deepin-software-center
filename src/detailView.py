@@ -322,7 +322,8 @@ class DetailView:
         
         return align
     
-    def initCommentArea(self, detailBox):
+    # Replace function for `initCommentArea` to toggle comment features.
+    def initCommentArea_(self, detailBox):
         paddingY = 10
         commentAreaLabel = gtk.Label()
         commentAreaLabel.set_markup(
@@ -334,7 +335,7 @@ class DetailView:
         commentAreaAlign.add(commentAreaLabel)
         detailBox.pack_start(commentAreaAlign)
         
-    def initCommentArea_(self, detailBox):
+    def initCommentArea(self, detailBox):
         '''Init comment area.'''
         self.commentAreaBox = gtk.VBox()
         detailBox.pack_start(self.commentAreaBox)

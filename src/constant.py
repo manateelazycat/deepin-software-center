@@ -20,7 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-VERSION = "1.1.1"
+VERSION = "2.0"
 AUTHOR = ["Yong Wang"]
 ARTISTS = ["Can Yang"]
 
@@ -91,19 +91,19 @@ CLASSIFY_LIST = [(CLASSIFY_WEB,          ("web.png", [])),
 
 TOP_RECOMMEND = ["chromium-browser", "ppstream", "eio"]
 
-RECOMMEND_LIST = [
-    (CLASSIFY_NEWS,             False, ["deepin-software-center", "iptux", "transmission", "vlc", "thunderbird"]),
-    (CLASSIFY_RECOMMEND,        False, ["amarok", "comix", "virtualbox-4.0", "stellarium", "bluefish"]),
-    (CLASSIFY_WEB,              True,  ["firefox", "amule", "uget", "pidgin", "liferea"]),  
-    (CLASSIFY_MULTIMEDIA,       True,  ["audacious", "smplayer", "openshot", "audacity", "brasero"]),  
-    (CLASSIFY_GAME,             True,  ["aisleriot", "frozen-bubble", "hedgewars", "supertuxkart", "alien-arena"]),  
-    (CLASSIFY_GRAPHICS,         True,  ["gnome-paint", "gwenview", "gimp", "inkscape", "blender"]),  
-    (CLASSIFY_WORD,             True,  ["tomboy", "libreoffice", "evince", "kchmviewer", "stardict"]),  
-    (CLASSIFY_PROFESSIONAL,     True,  ["qcad", "ballview", "amide", "scilab", "celestia"]),  
-    (CLASSIFY_PROGRAMMING,      True,  ["emacs", "vim", "eclipse", "codeblocks", "geany"]),  
-    (CLASSIFY_DRIVER,           True,  ["jockey-gtk", "ntfs-config", "ndisgtk", "fglrx", "nvidia-current"]),  
-    (CLASSIFY_WINDOWS,          True,  ["deepin-wine-tm2009", "deepin-wine-rtx2010", "wine-thunder", "picasa", "playonlinux"]),  
-    (CLASSIFY_OTHERS,           True,  ["ibus-pinyin", "camorama", "shutter", "gparted", "unetbootin"]),
+HOME_CLASSIFY_LIST = [
+    (CLASSIFY_NEWS,             False),
+    (CLASSIFY_RECOMMEND,        False),
+    (CLASSIFY_WEB,              True),  
+    (CLASSIFY_MULTIMEDIA,       True),  
+    (CLASSIFY_GAME,             True),  
+    (CLASSIFY_GRAPHICS,         True),  
+    (CLASSIFY_WORD,             True),  
+    (CLASSIFY_PROFESSIONAL,     True),  
+    (CLASSIFY_PROGRAMMING,      True),  
+    (CLASSIFY_DRIVER,           True),  
+    (CLASSIFY_WINDOWS,          True),  
+    (CLASSIFY_OTHERS,           True),
     ]
 
 LANGUAGE = [

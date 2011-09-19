@@ -1,0 +1,1 @@
+[("chromium-browser", "Chromium browser"), ("ppstream", "PPStream TV"), ("eio", "Evermore Integrated Office")]

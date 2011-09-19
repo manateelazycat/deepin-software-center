@@ -472,13 +472,21 @@ class RecommendView:
         self.ticker = 0
         
         # Create container box.
-        listLen = len(RECOMMEND_LIST)
+        listLen = len(HOME_CLASSIFY_LIST)
+        lang = getDefaultLanguage()
+        if lang == "zh_CN":
+            self.pkgRecomments = evalFile("./updateData/pkgRecommend/zh_CN/recommendList.txt")
+        elif lang == "zh_TW":
+            self.pkgRecomments = evalFile("./updateData/pkgRecommend/zh_TW/recommendList.txt")
+        else:
+            self.pkgRecomments = evalFile("./updateData/pkgRecommend/default/recommendList.txt")
         boxlist = map (lambda n: gtk.HBox(), range(0, listLen / 2 + listLen % 2))
         for box in boxlist:
             self.box.pack_start(box, False, False)
         
         # Add recommend list.
-        for (index, (itemName, showMore, appList)) in enumerate(RECOMMEND_LIST):
+        for (index, (itemName, showMore)) in enumerate(HOME_CLASSIFY_LIST):
+            appList = self.pkgRecomments[index]
             recommendList = self.createRecommendList(itemName, showMore, appList)
             box = boxlist[index / 2]
             box.pack_start(recommendList, False, False)

@@ -1,8 +1,8 @@
 #!/bin/sh
 
-for pkgfile in `ls ../pkgInfo/`
+for pkgfile in `ls ../pkgData/pkgInfo/`
 do
-    if [ ! -f ../AppIcon/$pkgfile.png ]
+    if [ ! -f ../pkgData/AppIcon/$pkgfile.png ]
     then
         echo $pkgfile
     fi

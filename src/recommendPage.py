@@ -76,14 +76,14 @@ class RecommendPage:
 class SlideItem(DownloadItem):
     '''Slide item.'''
 	
-    def __init__(self, appInfo, name, image, smallImage, height, switchStatus, downloadQueue):
+    def __init__(self, appInfo, name, slideDir, index, height, switchStatus, downloadQueue):
         '''Init for slide item.'''
         DownloadItem.__init__(self, appInfo, switchStatus, downloadQueue)
         
         self.appInfo = appInfo
         self.name = name
-        self.imagePath = "./images/" + image
-        self.smallImagePath = "./images/" + smallImage
+        self.imagePath = "%s/%s.png" % (slideDir, index)
+        self.smallImagePath = "%s/%s_small.png" % (slideDir, index)
         self.pixbuf = gtk.gdk.pixbuf_new_from_file(self.imagePath)
         self.smallPixbuf = gtk.gdk.pixbuf_new_from_file(self.smallImagePath)
         
@@ -189,23 +189,22 @@ class SlideBar:
         self.smallImagePaddingY = 10
 
         self.repoCache = repoCache
-        self.infoList = [
-            ("chromium-browser", "谷歌浏览器", "chromium-browser.png", "chromium-browser_small.png"),
-            ("ppstream", "PPStream网络电视", "ppstream.png", "ppstream_small.png"),
-            ("eio", "永中集成Office", "eio.png", "eio_small.png")
-            ] 
-        self.itemDict = sortedDict.SortedDict([
-                ("chromium-browser", None), 
-                ("ppstream", None), 
-                ("eio", None)
-                ])
-        self.initItems(self.infoList, switchStatus, downloadQueue)
+        lang = getDefaultLanguage()
+        if lang == "zh_CN":
+            self.slideDir = "./updateData/slide/zh_CN"
+        elif lang == "zh_TW":
+            self.slideDir = "./updateData/slide/zh_TW"
+        else:
+            self.slideDir = "./updateData/slide/default"
+        self.infoList = (evalFile("%s/index.txt" % (self.slideDir)))
+        self.itemDict = sortedDict.SortedDict(map(lambda (pkgName, _): (pkgName, None), self.infoList))
+        self.initItems(switchStatus, downloadQueue)
         self.sourceIndex = 1
         self.targetIndex = 0
         
         self.sourceImage = self.createSlideImage(self.sourceIndex)
         self.targetImage = self.createSlideImage(self.targetIndex)
-        self.maskPixbuf = gtk.gdk.pixbuf_new_from_file("./images/mask.png")
+        self.maskPixbuf = gtk.gdk.pixbuf_new_from_file("./updateData/slide/mask.png")
         
         self.stop = True
         self.ticker = self.times
@@ -252,12 +251,12 @@ class SlideBar:
         appInfo = self.getSlideItem(self.targetIndex).appInfo
         self.entryDetailCallback(PAGE_RECOMMEND, appInfo)
         
-    def initItems(self, infoList, switchStatus, downloadQueue):
+    def initItems(self, switchStatus, downloadQueue):
         '''Init items.'''
-        for (pkgName, name, image, smallImage) in infoList:
+        for (index, (pkgName, name)) in enumerate(self.infoList):
             appInfo = self.repoCache.cache[pkgName]
             slideItem = SlideItem(
-                appInfo, name, image, smallImage, 
+                appInfo, name, self.slideDir, index + 1,
                 self.maskHeight, switchStatus, downloadQueue)
             self.itemDict[pkgName] = slideItem
             

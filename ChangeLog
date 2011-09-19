@@ -1,6 +1,13 @@
 * News in 2.0
 
+2011-09-19 Wang Yong <lazycat.manatee@gmail.com>
+	* Add sort button at software repository page.
+
+	* Adjust directory of update data for package at server side.
+
 2011-09-16 Yong Wang <lazycat.manatee@gmail.com>
 	* recommendView.py: Adjust progressbar position to avoid hide software name.
+
 	* recommendPage.py: Adjust color of pause status in slide item.
+
 	* detailView.py: Show homepage tooltip when mouse hover homepage link.

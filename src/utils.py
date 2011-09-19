@@ -99,7 +99,7 @@ def getScreenSize(widget):
 
 def getPkgIcon(pkg, iconWidth=32, iconHeight=32):
     '''Get package icon.'''
-    iconPath = "./AppIcon/" + pkg.name + ".png"
+    iconPath = "./pkgData/AppIcon/" + pkg.name + ".png"
     if os.path.exists (iconPath):
         return gtk.image_new_from_pixbuf(gtk.gdk.pixbuf_new_from_file_at_size(iconPath, iconWidth, iconHeight))
     else:
@@ -119,29 +119,33 @@ def evalFile(filepath):
 
 def getPkgShortDesc(pkg):
     '''Get package's short description.'''
-    pkgPath = "./pkgInfo/" + pkg.name
+    pkgPath = "./pkgData/pkgInfo/" + pkg.name
     if os.path.exists(pkgPath):
         lang = getDefaultLanguage()
-        if lang == "en":
-            return ((evalFile(pkgPath))["en"])["shortDesc"]
+        if lang == "zh_CN":
+            return ((evalFile(pkgPath))["zh-CN"])["shortDesc"]
         elif lang == "zh_TW":
             return ((evalFile(pkgPath))["zh-TW"])["shortDesc"]
+        # Default use English.
         else:
-            return ((evalFile(pkgPath))["zh-CN"])["shortDesc"]
+            return ((evalFile(pkgPath))["en"])["shortDesc"]
+            
     else:
         return pkg.candidate.summary
 
 def getPkgLongDesc(pkg):
     '''Get package's long description.'''
-    pkgPath = "./pkgInfo/" + pkg.name
+    pkgPath = "./pkgData/pkgInfo/" + pkg.name
     if os.path.exists(pkgPath):
         lang = getDefaultLanguage()
-        if lang == "en":
-            return ((evalFile(pkgPath))["en"])["longDesc"]
+        if lang == "zh_CN":
+            return ((evalFile(pkgPath))["zh-CN"])["longDesc"]
         elif lang == "zh_TW":
             return ((evalFile(pkgPath))["zh-TW"])["longDesc"]
+        # Default use English.
         else:
-            return ((evalFile(pkgPath))["zh-CN"])["longDesc"]
+            return ((evalFile(pkgPath))["en"])["longDesc"]
+            
     else:
         return pkg.candidate.description
 
@@ -401,6 +405,40 @@ def setMarkup(label, markup):
     label.set_markup(markup)
     
     return False
+
+def setToggleLabel(widget, label, initMarkup, normalMarkup, hoverMarkup, selectMarkup, labelId, setLabelId, getCurrentId):
+    '''Set toggle label.'''
+    # Init.
+    widget.set_visible_window(False)
+    widget.add(label)
+    label.set_markup(initMarkup)
+    
+    # Set label id.
+    widget.connect("button-press-event", lambda w, e: setLabelId(labelId))
+    
+    # Set label markup.
+    widget.connect("enter-notify-event", 
+                   lambda w, e: setLabelEntryMarkup(label, hoverMarkup, selectMarkup, labelId, getCurrentId))
+    widget.connect("leave-notify-event", 
+                   lambda w, e: setLabelLeaveMarkup(label, normalMarkup, selectMarkup, labelId, getCurrentId))
+    
+    # Set label cursor.
+    widget.connect("enter-notify-event", lambda w, e: setCursor(w, gtk.gdk.HAND2))
+    widget.connect("leave-notify-event", lambda w, e: setDefaultCursor(w))
+    
+def setLabelEntryMarkup(label, hoverMarkup, selectMarkup, labelId, getCurrentId):
+    '''Set label markup color.'''
+    if labelId == getCurrentId():
+        setMarkup(label, selectMarkup)
+    else:
+        setMarkup(label, hoverMarkup)    
+        
+def setLabelLeaveMarkup(label, normalMarkup, selectMarkup, labelId, getCurrentId):
+    '''Set label markup color.'''
+    if labelId == getCurrentId():
+        setMarkup(label, selectMarkup)
+    else:
+        setMarkup(label, normalMarkup)    
 
 def setClickableLabel(widget, label, normalMarkup, activeMarkup, resetAfterClick=True):
     '''Set click-able label.'''

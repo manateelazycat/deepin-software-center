@@ -92,7 +92,8 @@ class RepoPage:
 
 class Topbar:
     '''Top bar.'''
-	
+
+    SORT_BOX_PADDING_X = 50
     SEARCH_ENTRY_WIDTH = 300
     
     def __init__(self, searchQuery, category, itemNum, appInfos, entrySearchCallback):
@@ -111,19 +112,113 @@ class Topbar:
         self.numLabel = gtk.Label()
         self.updateTopbar(category, itemNum)
         self.entrySearchCallback = entrySearchCallback
+        
+        # Add classify number.
+        self.box.pack_start(self.categoryLabel, False, False, self.paddingX)
+        self.box.pack_start(self.numLabel, False, False, self.paddingX)
+        
+        # Add sort buttons.
+        self.sortBox = gtk.HBox()
+        self.sortAlign = gtk.Alignment()
+        self.sortAlign.set(0.5, 0.5, 1.0, 1.0)
+        self.sortAlign.set_padding(0, 0, self.SORT_BOX_PADDING_X, self.SORT_BOX_PADDING_X)
+        self.sortAlign.add(self.sortBox)
+        
+        self.labelId = ""
+        self.sortDefaultId = "sortDefault"
+        self.sortDownloadId = "sortDownload"
+        self.sortVoteId = "sortVote"
 
+        self.normalColor = '#1A3E88'
+        self.hoverColor = '#0084FF'
+        self.selectColor = '#000000'
+        
+        self.sortDefaultLabel = gtk.Label()
+        self.sortDefaultEventBox = gtk.EventBox()
+        utils.setToggleLabel(
+            self.sortDefaultEventBox,
+            self.sortDefaultLabel,
+            "<span foreground='%s' size='%s' underline='single'>%s</span>" % (self.selectColor, LABEL_FONT_SIZE, "按默认排序"),
+            "<span foreground='%s' size='%s' >%s</span>" % (self.normalColor, LABEL_FONT_SIZE, "按默认排序"),
+            "<span foreground='%s' size='%s' >%s</span>" % (self.hoverColor, LABEL_FONT_SIZE, "按默认排序"),
+            "<span foreground='%s' size='%s' underline='single'>%s</span>" % (self.selectColor, LABEL_FONT_SIZE, "按默认排序"),
+            self.sortDefaultId,
+            self.setLabelId,
+            self.getLabelId
+            )
+        
+        self.sortDownloadLabel = gtk.Label()
+        self.sortDownloadEventBox = gtk.EventBox()
+        utils.setToggleLabel(
+            self.sortDownloadEventBox,
+            self.sortDownloadLabel,
+            "<span foreground='%s' size='%s' >%s</span>" % (self.normalColor, LABEL_FONT_SIZE, "按下载排序"),
+            "<span foreground='%s' size='%s' >%s</span>" % (self.normalColor, LABEL_FONT_SIZE, "按下载排序"),
+            "<span foreground='%s' size='%s' >%s</span>" % (self.hoverColor, LABEL_FONT_SIZE, "按下载排序"),
+            "<span foreground='%s' size='%s' underline='single'>%s</span>" % (self.selectColor, LABEL_FONT_SIZE, "按下载排序"),
+            self.sortDownloadId,
+            self.setLabelId,
+            self.getLabelId
+            )
+
+        self.sortVoteLabel = gtk.Label()
+        self.sortVoteEventBox = gtk.EventBox()
+        utils.setToggleLabel(
+            self.sortVoteEventBox,
+            self.sortVoteLabel,
+            "<span foreground='%s' size='%s' >%s</span>" % (self.normalColor, LABEL_FONT_SIZE, "按评分排序"),
+            "<span foreground='%s' size='%s' >%s</span>" % (self.normalColor, LABEL_FONT_SIZE, "按评分排序"),
+            "<span foreground='%s' size='%s' >%s</span>" % (self.hoverColor, LABEL_FONT_SIZE, "按评分排序"),
+            "<span foreground='%s' size='%s' underline='single'>%s</span>" % (self.selectColor, LABEL_FONT_SIZE, "按评分排序"),
+            self.sortVoteId,
+            self.setLabelId,
+            self.getLabelId
+            )
+        
+        self.sortButtonPaddingX = 5
+        self.sortBox.pack_start(self.sortDefaultEventBox, False, False, self.sortButtonPaddingX)
+        self.sortBox.pack_start(self.sortDownloadEventBox, False, False, self.sortButtonPaddingX)
+        self.sortBox.pack_start(self.sortVoteEventBox, False, False, self.sortButtonPaddingX)
+        self.box.pack_start(self.sortAlign, False, False)
+        
         # Add search entry and label.
         (self.searchEntry, searchAlign, self.searchCompletion) = newSearchUI(
             "请输入你要搜索的软件名称、版本或其他信息",
             lambda text: utils.getCandidates(map (lambda appInfo: appInfo.pkg.name, appInfos), text),
             self.clickCandidate,
             self.search)
-        
-        # Connect widgets.
-        self.box.pack_start(self.categoryLabel, False, False, self.paddingX)
-        self.box.pack_start(self.numLabel, False, False, self.paddingX)
         self.box.pack_start(searchAlign)
         
+    def setLabelId(self, lId):
+        '''Set label id.'''
+        self.labelId = lId
+        
+        if self.labelId == self.sortDefaultId:
+            self.sortDefaultLabel.set_markup(
+                "<span foreground='%s' size='%s' underline='single'>%s</span>" % (self.selectColor, LABEL_FONT_SIZE, "按默认排序"))
+            self.sortDownloadLabel.set_markup(
+                "<span foreground='%s' size='%s' >%s</span>" % (self.normalColor, LABEL_FONT_SIZE, "按下载排序"))
+            self.sortVoteLabel.set_markup(
+                "<span foreground='%s' size='%s' >%s</span>" % (self.normalColor, LABEL_FONT_SIZE, "按评分排序"))
+        elif self.labelId == self.sortDownloadId:
+            self.sortDefaultLabel.set_markup(
+                "<span foreground='%s' size='%s' >%s</span>" % (self.normalColor, LABEL_FONT_SIZE, "按默认排序"))
+            self.sortDownloadLabel.set_markup(
+                "<span foreground='%s' size='%s' underline='single'>%s</span>" % (self.selectColor, LABEL_FONT_SIZE, "按下载排序"))
+            self.sortVoteLabel.set_markup(
+                "<span foreground='%s' size='%s' >%s</span>" % (self.normalColor, LABEL_FONT_SIZE, "按评分排序"))
+        else:
+            self.sortDefaultLabel.set_markup(
+                "<span foreground='%s' size='%s' >%s</span>" % (self.normalColor, LABEL_FONT_SIZE, "按默认排序"))
+            self.sortDownloadLabel.set_markup(
+                "<span foreground='%s' size='%s' >%s</span>" % (self.normalColor, LABEL_FONT_SIZE, "按下载排序"))
+            self.sortVoteLabel.set_markup(
+                "<span foreground='%s' size='%s' underline='single'>%s</span>" % (self.selectColor, LABEL_FONT_SIZE, "按评分排序"))
+        
+    def getLabelId(self):
+        '''Get label id.'''
+        return self.labelId
+    
     def search(self, editable):
         '''Search'''
         content = self.searchEntry.get_chars(0, -1)

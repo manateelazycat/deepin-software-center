@@ -1,8 +1,8 @@
 #!/bin/sh
 # Convert jpg to png
 
-for img in `ls ../AppIcon/ | grep .jpg`
+for img in `ls ../pkgData/AppIcon/ | grep .jpg`
 do
-    convert ../AppIcon/$img ../AppIcon/${img%.*}.png
-    rm ../AppIcon/$img
+    convert ../pkgData/AppIcon/$img ../pkgData/AppIcon/${img%.*}.png
+    rm ../pkgData/AppIcon/$img
 done    

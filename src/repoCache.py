@@ -121,7 +121,7 @@ class RepoCache:
         # Scan category dict.
         whiteList = []
         for (categoryType, categoryFile) in CLASSIFY_FILES:
-            for line in open("./updateData/pkgClassify/sortByDefault/" + categoryFile).readlines():
+            for line in open("./updateData/pkgClassify/sortByDefault/zh_CN/" + categoryFile).readlines():
                 pkgName = line.rstrip("\n")
                 if cache.has_key(pkgName) and cache[pkgName].candidate != None:
                     # Add in category dict.

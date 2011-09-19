@@ -1,0 +1,6 @@
+fglrx
+jockey-gtk
+jockey-kde
+ndisgtk
+ntfs-config
+nvidia-current

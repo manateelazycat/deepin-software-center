@@ -39,6 +39,7 @@ class CategoryBar:
         self.paddingBottom = 5
         self.paddingLeft = 20
         self.paddingX = 10
+        (self.categoryName, _) = categoryList[0]
         self.categoryId = 0
         
         # Create category icon.
@@ -49,14 +50,14 @@ class CategoryBar:
         # Show.
         self.box.show_all()
         
-    def createCategoryIcon(self, iconName, iconPath, categoryId):
+    def createCategoryIcon(self, categoryName, iconPath, categoryId):
         '''Create category icon.'''
         # Create icon.
         eventButton = gtk.Button()
-        eventButton.connect("button-press-event", lambda widget, event: self.callback(iconName, categoryId))
+        eventButton.connect("button-press-event", lambda widget, event: self.callback(categoryName, categoryId))
         sideButtonSetBackground(
             eventButton,
-            iconName, iconPath,
+            categoryName, iconPath,
             "./icons/category/sidebar_normal.png",
             "./icons/category/sidebar_hover.png",
             "./icons/category/sidebar_press.png",

@@ -1,6 +1,6 @@
-accerciser
 agave
 alarm-clock
+accerciser
 alarm-clock-applet
 alltray
 apertium-tolk

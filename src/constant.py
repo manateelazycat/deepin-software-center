@@ -69,7 +69,7 @@ CLASSIFY_FILES = [(CLASSIFY_WEB,          "web.txt"),
                   (CLASSIFY_MULTIMEDIA,   "multimedia.txt"),
                   (CLASSIFY_GAME,         "game.txt"),
                   (CLASSIFY_GRAPHICS,     "graphics.txt"),
-                  (CLASSIFY_WORD,        "word.txt"),
+                  (CLASSIFY_WORD,         "word.txt"),
                   (CLASSIFY_PROFESSIONAL, "professional.txt"),
                   (CLASSIFY_PROGRAMMING,  "programming.txt"),
                   (CLASSIFY_DRIVER,       "driver.txt"),
@@ -77,16 +77,16 @@ CLASSIFY_FILES = [(CLASSIFY_WEB,          "web.txt"),
                   (CLASSIFY_OTHERS,       "others.txt")
                   ]
 
-CLASSIFY_LIST = [(CLASSIFY_WEB,          ("web.png", [])),
-                 (CLASSIFY_MULTIMEDIA,   ("multimedia.png", [])),
-                 (CLASSIFY_GAME,         ("game.png", [])),
-                 (CLASSIFY_GRAPHICS,     ("graphics.png", [])),
-                 (CLASSIFY_WORD,         ("word.png", [])),
-                 (CLASSIFY_PROFESSIONAL, ("professional.png", [])),
-                 (CLASSIFY_PROGRAMMING,  ("develop.png", [])),
-                 (CLASSIFY_DRIVER,       ("driver.png", [])),
-                 (CLASSIFY_WINDOWS,      ("win.png", [])),
-                 (CLASSIFY_OTHERS,       ("other.png", []))
+CLASSIFY_LIST = [(CLASSIFY_WEB,          ("web.png", None)),
+                 (CLASSIFY_MULTIMEDIA,   ("multimedia.png", None)),
+                 (CLASSIFY_GAME,         ("game.png", None)),
+                 (CLASSIFY_GRAPHICS,     ("graphics.png", None)),
+                 (CLASSIFY_WORD,         ("word.png", None)),
+                 (CLASSIFY_PROFESSIONAL, ("professional.png", None)),
+                 (CLASSIFY_PROGRAMMING,  ("develop.png", None)),
+                 (CLASSIFY_DRIVER,       ("driver.png", None)),
+                 (CLASSIFY_WINDOWS,      ("win.png", None)),
+                 (CLASSIFY_OTHERS,       ("other.png", None))
                  ]
 
 TOP_RECOMMEND = ["chromium-browser", "ppstream", "eio"]

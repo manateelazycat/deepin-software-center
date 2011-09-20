@@ -87,9 +87,9 @@ class Topbar:
         upgradeAlign.add(upgradeBox)
         
         self.numLabel = gtk.Label()
-        self.labelId = ""
         self.selectAllId = "selectAll"
         self.unselectAllId = "unselectAll"
+        self.labelId = self.selectAllId
         
         self.selectAllLabel = gtk.Label()
         self.selectAllEventBox = gtk.EventBox()

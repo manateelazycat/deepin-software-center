@@ -1,6 +1,6 @@
-deepin-wine-rtx2010
 deepin-wine-tm2009
 picasa
+deepin-wine-rtx2010
 playonlinux
 q4wine
 wine

@@ -1,6 +1,6 @@
-amsn
 amule
 arcjobtool
+amsn
 avahi-discover
 axel-kapt
 ayttm

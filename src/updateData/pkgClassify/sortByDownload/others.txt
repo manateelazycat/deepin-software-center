@@ -1,5 +1,5 @@
-accerciser
 agave
+accerciser
 alarm-clock
 alarm-clock-applet
 alltray

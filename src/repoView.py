@@ -168,7 +168,7 @@ class RepoItem(DownloadItem):
 class RepoView(appView.AppView):
     '''Application view.'''
 	
-    def __init__(self, category, appNum, getListFunc, switchStatus, downloadQueue, 
+    def __init__(self, category, appNum, getListFunc, getSortTypeFunc, switchStatus, downloadQueue, 
                  entryDetailCallback, sendVoteCallback, fetchVoteCallback):
         '''Init for application view.'''
         appView.AppView.__init__(self, appNum, PAGE_REPO)
@@ -176,6 +176,7 @@ class RepoView(appView.AppView):
         # Init.
         self.category = category
         self.getListFunc = getListFunc
+        self.getSortTypeFunc = getSortTypeFunc
         self.switchStatus = switchStatus
         self.downloadQueue = downloadQueue
         self.itemDict = {}
@@ -202,7 +203,9 @@ class RepoView(appView.AppView):
         
         if self.appNum != 0:
             # Get application list.
+            sortType = self.getSortTypeFunc()
             appList = self.getListFunc(self.category, 
+                                       sortType,
                                        (self.pageIndex - 1) * self.defaultRows,
                                        min(self.pageIndex * self.defaultRows, self.appNum)
                                        )

@@ -120,18 +120,62 @@ class RepoCache:
 
         # Scan category dict.
         whiteList = []
+        lang = utils.getDefaultLanguage()
+        if lang == "zh_CN":
+            sortDefaultDir = "./updateData/pkgClassify/sortByDefault/zh_CN/"
+        elif lang == "zh_TW":
+            sortDefaultDir = "./updateData/pkgClassify/sortByDefault/zh_TW/"
+        else:
+            sortDefaultDir = "./updateData/pkgClassify/sortByDefault/default/"
+        sortDownloadDir =  "./updateData/pkgClassify/sortByDownload/"
+        sortVoteDir =  "./updateData/pkgClassify/sortByVote/"
+        
         for (categoryType, categoryFile) in CLASSIFY_FILES:
-            for line in open("./updateData/pkgClassify/sortByDefault/zh_CN/" + categoryFile).readlines():
+            sortDefaultList = []
+            sortDownloadList = []
+            sortVoteList = []
+            
+            # Scan default sort list.
+            for line in open(sortDefaultDir + categoryFile).readlines():
                 pkgName = line.rstrip("\n")
                 if cache.has_key(pkgName) and cache[pkgName].candidate != None:
-                    # Add in category dict.
-                    (_, categoryList) = self.categoryDict[categoryType]
-                    categoryList.append(pkgName)
+                    # Append in default sort list.
+                    sortDefaultList.append(pkgName)
                     
                     # Add in white list.
                     whiteList.append(pkgName)
                 else:
-                    print "Haven't found package %s in cache." % (pkgName)
+                    print "Haven't found package '%s' in cache (%s)." % (pkgName, sortDefaultDir + categoryFile)
+                    
+            # Scan download sort list.
+            for line in open(sortDownloadDir + categoryFile).readlines():
+                pkgName = line.rstrip("\n")
+                if cache.has_key(pkgName) and cache[pkgName].candidate != None:
+                    # Append in download sort list.
+                    sortDownloadList.append(pkgName)
+                    
+                    # Add in white list.
+                    whiteList.append(pkgName)
+                else:
+                    print "Haven't found package '%s' in cache (%s)." % (pkgName, sortDownloadDir + categoryFile)
+                    
+            # Scan vote sort list.
+            for line in open(sortVoteDir + categoryFile).readlines():
+                pkgName = line.rstrip("\n")
+                if cache.has_key(pkgName) and cache[pkgName].candidate != None:
+                    # Append in vote sort list.
+                    sortVoteList.append(pkgName)
+                    
+                    # Add in white list.
+                    whiteList.append(pkgName)
+                else:
+                    print "Haven't found package '%s' in cache (%s)." % (pkgName, sortVoteDir + categoryFile)
+                    
+            # Add sort list in category dict.
+            (classifyIcon, _) = self.categoryDict[categoryType]
+            self.categoryDict[categoryType] = (classifyIcon, (sortDefaultList, sortDownloadList, sortVoteList))
+            
+        # Build white list dict.
         self.whiteListDict = dict.fromkeys(whiteList)
 
         # Scan all packages to store and rank. 
@@ -151,9 +195,18 @@ class RepoCache:
                 if self.isPkgUninstallable(pkg):
                     self.uninstallablePkgs.append(pkg.name)
                     
-    def getAppList(self, category, startIndex, endIndex):
+    def getAppList(self, category, sortType, startIndex, endIndex):
         '''Get application list in given range.'''
-        (_, pkgNames) = self.categoryDict[category]
+        (_, (sortDefaultList, sortDownloadList, sortVoteList)) = self.categoryDict[category]
+        if sortType == "sortDefault":
+            pkgNames = sortDefaultList
+        elif sortType == "sortDownload":
+            pkgNames = sortDownloadList
+        elif sortType == "sortVote":
+            pkgNames = sortVoteList
+        else:
+            print "Unknown sorte type: %s" % (sortType)
+            
         appList = []
         for index in range(startIndex, endIndex):
             pkgName = pkgNames[index]
@@ -162,7 +215,7 @@ class RepoCache:
     
     def getCategoryNumber(self, category):
         '''Get sub category number.'''
-        (_, categoryList) = self.categoryDict[category]
+        (_, (categoryList, _, _)) = self.categoryDict[category]
         return len(categoryList)
     
     def getCategorys(self):

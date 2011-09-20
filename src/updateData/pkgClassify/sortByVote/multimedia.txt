@@ -1,6 +1,6 @@
-aconnectgui
 aeolus
 alsamixergui
+aconnectgui
 alsoft-conf
 ams
 amsynth

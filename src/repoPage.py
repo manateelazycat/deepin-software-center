@@ -51,11 +51,13 @@ class RepoPage:
             CLASSIFY_WEB, 
             self.repoCache.getCategoryNumber(CLASSIFY_WEB),
             self.repoCache.cache.values(),
-            entrySearchCallback)
+            entrySearchCallback,
+            self.updateCategory)
         self.repoView = repoView.RepoView(
             CLASSIFY_WEB, 
             self.repoCache.getCategoryNumber(CLASSIFY_WEB),
             self.repoCache.getAppList,
+            self.topbar.getSortType,
             switchStatus, 
             downloadQueue,
             entryDetailCallback,
@@ -69,22 +71,28 @@ class RepoPage:
         self.contentBox.pack_start(self.categorybar.box, False, False)
         self.contentBox.pack_start(self.repoView.scrolledwindow)
         self.box.show_all()
+        
+    def updateCategory(self):
+        '''Update category.'''
+        self.selectCategory(self.categorybar.categoryName,
+                            self.categorybar.categoryId)
 
-    def selectCategory(self, category, categoryId):
+    def selectCategory(self, categoryName, categoryId):
         '''Select category.'''
+        self.categorybar.categoryName = categoryName
         self.categorybar.categoryId = categoryId
         self.categorybar.box.queue_draw()
         
         # Redraw sub-categorybar bar.
         self.topbar.updateTopbar(
-            category,
-            self.repoCache.getCategoryNumber(category)
+            categoryName,
+            self.repoCache.getCategoryNumber(categoryName)
             )
         
         # Update application view.
         self.repoView.update(
-            category, 
-            self.repoCache.getCategoryNumber(category)
+            categoryName, 
+            self.repoCache.getCategoryNumber(categoryName)
             )
 
         # Reset repoView's index.
@@ -96,7 +104,8 @@ class Topbar:
     SORT_BOX_PADDING_X = 50
     SEARCH_ENTRY_WIDTH = 300
     
-    def __init__(self, searchQuery, category, itemNum, appInfos, entrySearchCallback):
+    def __init__(self, searchQuery, category, itemNum, appInfos, 
+                 entrySearchCallback, updateCategoryCallback):
         '''Init for top bar.'''
         self.searchQuery = searchQuery
         self.paddingX = 5
@@ -112,6 +121,7 @@ class Topbar:
         self.numLabel = gtk.Label()
         self.updateTopbar(category, itemNum)
         self.entrySearchCallback = entrySearchCallback
+        self.updateCategoryCallback = updateCategoryCallback
         
         # Add classify number.
         self.box.pack_start(self.categoryLabel, False, False, self.paddingX)
@@ -124,10 +134,10 @@ class Topbar:
         self.sortAlign.set_padding(0, 0, self.SORT_BOX_PADDING_X, self.SORT_BOX_PADDING_X)
         self.sortAlign.add(self.sortBox)
         
-        self.labelId = ""
         self.sortDefaultId = "sortDefault"
         self.sortDownloadId = "sortDownload"
         self.sortVoteId = "sortVote"
+        self.sortType = self.sortDefaultId
 
         self.normalColor = '#1A3E88'
         self.hoverColor = '#0084FF'
@@ -143,9 +153,10 @@ class Topbar:
             "<span foreground='%s' size='%s' >%s</span>" % (self.hoverColor, LABEL_FONT_SIZE, "按默认排序"),
             "<span foreground='%s' size='%s' underline='single'>%s</span>" % (self.selectColor, LABEL_FONT_SIZE, "按默认排序"),
             self.sortDefaultId,
-            self.setLabelId,
-            self.getLabelId
+            self.setSortType,
+            self.getSortType
             )
+        self.sortDefaultEventBox.connect("button-press-event", lambda w, e: self.updateCategoryCallback())
         
         self.sortDownloadLabel = gtk.Label()
         self.sortDownloadEventBox = gtk.EventBox()
@@ -157,9 +168,10 @@ class Topbar:
             "<span foreground='%s' size='%s' >%s</span>" % (self.hoverColor, LABEL_FONT_SIZE, "按下载排序"),
             "<span foreground='%s' size='%s' underline='single'>%s</span>" % (self.selectColor, LABEL_FONT_SIZE, "按下载排序"),
             self.sortDownloadId,
-            self.setLabelId,
-            self.getLabelId
+            self.setSortType,
+            self.getSortType
             )
+        self.sortDownloadEventBox.connect("button-press-event", lambda w, e: self.updateCategoryCallback())
 
         self.sortVoteLabel = gtk.Label()
         self.sortVoteEventBox = gtk.EventBox()
@@ -171,9 +183,10 @@ class Topbar:
             "<span foreground='%s' size='%s' >%s</span>" % (self.hoverColor, LABEL_FONT_SIZE, "按评分排序"),
             "<span foreground='%s' size='%s' underline='single'>%s</span>" % (self.selectColor, LABEL_FONT_SIZE, "按评分排序"),
             self.sortVoteId,
-            self.setLabelId,
-            self.getLabelId
+            self.setSortType,
+            self.getSortType
             )
+        self.sortVoteEventBox.connect("button-press-event", lambda w, e: self.updateCategoryCallback())
         
         self.sortButtonPaddingX = 5
         self.sortBox.pack_start(self.sortDefaultEventBox, False, False, self.sortButtonPaddingX)
@@ -189,18 +202,18 @@ class Topbar:
             self.search)
         self.box.pack_start(searchAlign)
         
-    def setLabelId(self, lId):
-        '''Set label id.'''
-        self.labelId = lId
+    def setSortType(self, sType):
+        '''Set sort type.'''
+        self.sortType = sType
         
-        if self.labelId == self.sortDefaultId:
+        if self.sortType == self.sortDefaultId:
             self.sortDefaultLabel.set_markup(
                 "<span foreground='%s' size='%s' underline='single'>%s</span>" % (self.selectColor, LABEL_FONT_SIZE, "按默认排序"))
             self.sortDownloadLabel.set_markup(
                 "<span foreground='%s' size='%s' >%s</span>" % (self.normalColor, LABEL_FONT_SIZE, "按下载排序"))
             self.sortVoteLabel.set_markup(
                 "<span foreground='%s' size='%s' >%s</span>" % (self.normalColor, LABEL_FONT_SIZE, "按评分排序"))
-        elif self.labelId == self.sortDownloadId:
+        elif self.sortType == self.sortDownloadId:
             self.sortDefaultLabel.set_markup(
                 "<span foreground='%s' size='%s' >%s</span>" % (self.normalColor, LABEL_FONT_SIZE, "按默认排序"))
             self.sortDownloadLabel.set_markup(
@@ -215,9 +228,9 @@ class Topbar:
             self.sortVoteLabel.set_markup(
                 "<span foreground='%s' size='%s' underline='single'>%s</span>" % (self.selectColor, LABEL_FONT_SIZE, "按评分排序"))
         
-    def getLabelId(self):
-        '''Get label id.'''
-        return self.labelId
+    def getSortType(self):
+        '''Get sort type.'''
+        return self.sortType
     
     def search(self, editable):
         '''Search'''

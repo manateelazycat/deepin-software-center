@@ -1,3 +1,8 @@
+aisleriot
+frozen-bubble
+hedgewars
+supertuxkart
+alien-arena
 a7xpg
 abe
 abuse
@@ -6,7 +11,6 @@ adanaxisgpl
 adonthell
 airstrike
 alex4
-alien-arena
 alienblaster
 amor
 amphetamine
@@ -107,7 +111,6 @@ freetennis
 freevial
 fretsonfire-game
 frogatto
-frozen-bubble
 funguloids
 funnyboat
 gamazons
@@ -160,7 +163,6 @@ gunroar
 gvrng
 gweled
 hannah
-hedgewars
 hex-a-hop
 hexalate
 hitori
@@ -341,7 +343,6 @@ springlobby
 stormbaancoureur
 stroq
 supertux
-supertuxkart
 swell-foop
 tagua
 tanglet

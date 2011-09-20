@@ -472,7 +472,7 @@ class RecommendView:
         self.ticker = 0
         
         # Create container box.
-        listLen = len(HOME_CLASSIFY_LIST)
+        listLen = 12
         lang = getDefaultLanguage()
         if lang == "zh_CN":
             self.pkgRecomments = evalFile("./updateData/pkgRecommend/zh_CN/recommendList.txt")
@@ -484,11 +484,22 @@ class RecommendView:
         for box in boxlist:
             self.box.pack_start(box, False, False)
         
-        # Add recommend list.
-        for (index, (itemName, showMore)) in enumerate(HOME_CLASSIFY_LIST):
+        # Add home recommend list.
+        boxIndex = 0
+        for (index, itemName) in enumerate([CLASSIFY_NEWS, CLASSIFY_RECOMMEND]):
             appList = self.pkgRecomments[index]
-            recommendList = self.createRecommendList(itemName, showMore, appList)
-            box = boxlist[index / 2]
+            recommendList = self.createRecommendList(itemName, False, appList)
+            box = boxlist[boxIndex / 2]
+            boxIndex += 1
+            box.pack_start(recommendList, False, False)
+
+        # Add classify recommend list.
+        for categoryName in self.repoCache.getCategoryNames():
+            (_, (sortRecommendList, sortDownloadList, sortVoteList)) = self.repoCache.categoryDict[categoryName]
+            appList = sortRecommendList[0:5]
+            recommendList = self.createRecommendList(categoryName, True, appList)
+            box = boxlist[boxIndex / 2]
+            boxIndex += 1
             box.pack_start(recommendList, False, False)
             
         self.box.show_all()
@@ -511,6 +522,8 @@ class RecommendView:
         boxAlign = gtk.Alignment()
         boxAlign.set_padding(0, alignY, alignX, alignX)
         boxAlign.add(box)
+        recommendNum = 5        # default is 5
+        recommendIndex = 0
         
         # Add category name.
         nameBox = gtk.EventBox()
@@ -575,13 +588,18 @@ class RecommendView:
         
         # Add application information's.
         for appName in appList:
-            if self.repoCache.cache.has_key(appName):
-                appInfo = self.repoCache.cache[appName]
-                recommendItem = RecommendItem(appInfo, self.switchStatus, self.downloadQueue, self.entryDetailCallback,
-                                              self.ticker, self.getSelectIndex, self.setSelectIndex)
-                self.ticker = self.ticker + 1
-                middleBox.pack_start(recommendItem.itemFrame)
-                self.itemDict[appName] = recommendItem
+            # You can set appList longer than 5, but those code just use first 5 that exist in local cache.
+            # Longer list for protected software center won't crash if some package not exist in local cache.
+            if recommendIndex < recommendNum and self.repoCache.cache.has_key(appName):
+                  appInfo = self.repoCache.cache[appName]
+                  recommendItem = RecommendItem(
+                      appInfo, self.switchStatus, self.downloadQueue, self.entryDetailCallback,
+                      self.ticker, self.getSelectIndex, self.setSelectIndex)
+                  self.ticker = self.ticker + 1
+                  middleBox.pack_start(recommendItem.itemFrame)
+                  self.itemDict[appName] = recommendItem
+                  
+                  recommendIndex += 1
             else:
                 print "%s not in repoCache, skip it." % (appName)
                 

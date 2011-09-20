@@ -134,29 +134,29 @@ class Topbar:
         self.sortAlign.set_padding(0, 0, self.SORT_BOX_PADDING_X, self.SORT_BOX_PADDING_X)
         self.sortAlign.add(self.sortBox)
         
-        self.sortDefaultId = "sortDefault"
+        self.sortRecommendId = "sortRecommend"
         self.sortDownloadId = "sortDownload"
         self.sortVoteId = "sortVote"
-        self.sortType = self.sortDefaultId
+        self.sortType = self.sortRecommendId
 
         self.normalColor = '#1A3E88'
         self.hoverColor = '#0084FF'
         self.selectColor = '#000000'
         
-        self.sortDefaultLabel = gtk.Label()
-        self.sortDefaultEventBox = gtk.EventBox()
+        self.sortRecommendLabel = gtk.Label()
+        self.sortRecommendEventBox = gtk.EventBox()
         utils.setToggleLabel(
-            self.sortDefaultEventBox,
-            self.sortDefaultLabel,
-            "<span foreground='%s' size='%s' underline='single'>%s</span>" % (self.selectColor, LABEL_FONT_SIZE, "按默认排序"),
-            "<span foreground='%s' size='%s' >%s</span>" % (self.normalColor, LABEL_FONT_SIZE, "按默认排序"),
-            "<span foreground='%s' size='%s' >%s</span>" % (self.hoverColor, LABEL_FONT_SIZE, "按默认排序"),
-            "<span foreground='%s' size='%s' underline='single'>%s</span>" % (self.selectColor, LABEL_FONT_SIZE, "按默认排序"),
-            self.sortDefaultId,
+            self.sortRecommendEventBox,
+            self.sortRecommendLabel,
+            "<span foreground='%s' size='%s' underline='single'>%s</span>" % (self.selectColor, LABEL_FONT_SIZE, "按推荐排序"),
+            "<span foreground='%s' size='%s' >%s</span>" % (self.normalColor, LABEL_FONT_SIZE, "按推荐排序"),
+            "<span foreground='%s' size='%s' >%s</span>" % (self.hoverColor, LABEL_FONT_SIZE, "按推荐排序"),
+            "<span foreground='%s' size='%s' underline='single'>%s</span>" % (self.selectColor, LABEL_FONT_SIZE, "按推荐排序"),
+            self.sortRecommendId,
             self.setSortType,
             self.getSortType
             )
-        self.sortDefaultEventBox.connect("button-press-event", lambda w, e: self.updateCategoryCallback())
+        self.sortRecommendEventBox.connect("button-press-event", lambda w, e: self.updateCategoryCallback())
         
         self.sortDownloadLabel = gtk.Label()
         self.sortDownloadEventBox = gtk.EventBox()
@@ -189,7 +189,7 @@ class Topbar:
         self.sortVoteEventBox.connect("button-press-event", lambda w, e: self.updateCategoryCallback())
         
         self.sortButtonPaddingX = 5
-        self.sortBox.pack_start(self.sortDefaultEventBox, False, False, self.sortButtonPaddingX)
+        self.sortBox.pack_start(self.sortRecommendEventBox, False, False, self.sortButtonPaddingX)
         self.sortBox.pack_start(self.sortDownloadEventBox, False, False, self.sortButtonPaddingX)
         self.sortBox.pack_start(self.sortVoteEventBox, False, False, self.sortButtonPaddingX)
         self.box.pack_start(self.sortAlign, False, False)
@@ -206,23 +206,23 @@ class Topbar:
         '''Set sort type.'''
         self.sortType = sType
         
-        if self.sortType == self.sortDefaultId:
-            self.sortDefaultLabel.set_markup(
-                "<span foreground='%s' size='%s' underline='single'>%s</span>" % (self.selectColor, LABEL_FONT_SIZE, "按默认排序"))
+        if self.sortType == self.sortRecommendId:
+            self.sortRecommendLabel.set_markup(
+                "<span foreground='%s' size='%s' underline='single'>%s</span>" % (self.selectColor, LABEL_FONT_SIZE, "按推荐排序"))
             self.sortDownloadLabel.set_markup(
                 "<span foreground='%s' size='%s' >%s</span>" % (self.normalColor, LABEL_FONT_SIZE, "按下载排序"))
             self.sortVoteLabel.set_markup(
                 "<span foreground='%s' size='%s' >%s</span>" % (self.normalColor, LABEL_FONT_SIZE, "按评分排序"))
         elif self.sortType == self.sortDownloadId:
-            self.sortDefaultLabel.set_markup(
-                "<span foreground='%s' size='%s' >%s</span>" % (self.normalColor, LABEL_FONT_SIZE, "按默认排序"))
+            self.sortRecommendLabel.set_markup(
+                "<span foreground='%s' size='%s' >%s</span>" % (self.normalColor, LABEL_FONT_SIZE, "按推荐排序"))
             self.sortDownloadLabel.set_markup(
                 "<span foreground='%s' size='%s' underline='single'>%s</span>" % (self.selectColor, LABEL_FONT_SIZE, "按下载排序"))
             self.sortVoteLabel.set_markup(
                 "<span foreground='%s' size='%s' >%s</span>" % (self.normalColor, LABEL_FONT_SIZE, "按评分排序"))
         else:
-            self.sortDefaultLabel.set_markup(
-                "<span foreground='%s' size='%s' >%s</span>" % (self.normalColor, LABEL_FONT_SIZE, "按默认排序"))
+            self.sortRecommendLabel.set_markup(
+                "<span foreground='%s' size='%s' >%s</span>" % (self.normalColor, LABEL_FONT_SIZE, "按推荐排序"))
             self.sortDownloadLabel.set_markup(
                 "<span foreground='%s' size='%s' >%s</span>" % (self.normalColor, LABEL_FONT_SIZE, "按下载排序"))
             self.sortVoteLabel.set_markup(

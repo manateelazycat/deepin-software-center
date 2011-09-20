@@ -1,9 +1,12 @@
+qcad
+ballview
+amide
+scilab
+celestia
 achilles
 aeskulap
-amide
 avida-qt-viewer
 avogadro
-ballview
 bauble
 bibus
 bist
@@ -13,7 +16,6 @@ cadabra
 cantor
 caret
 carmetal
-celestia
 celestia-glut
 chemtool
 clustalx
@@ -135,7 +137,6 @@ pyrocket
 python-ifeffit
 pythoncad
 qalculate-gtk
-qcad
 qelectrotech
 qgis
 qmk-groundstation
@@ -149,7 +150,6 @@ rlplot
 rocs
 sagcad
 scidavis
-scilab
 seaview
 sixpack
 snappea

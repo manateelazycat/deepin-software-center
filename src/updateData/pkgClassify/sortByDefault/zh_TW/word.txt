@@ -1,3 +1,8 @@
+tomboy
+libreoffice
+evince
+kchmviewer
+stardict
 almanah
 artha
 babiloo
@@ -14,7 +19,6 @@ djvusmooth
 ebview
 eio
 epdfview
-evince
 fantasdic
 fbreader
 gaiksaurus
@@ -35,7 +39,6 @@ kasumi
 katoob
 kbedic
 kbibtex
-kchmviewer
 kexi
 kjots
 knotes
@@ -64,9 +67,7 @@ qstardict
 qtodo
 referencer
 rhinote
-stardict
 tasks
-tomboy
 treb
 tuxcards
 txtreader

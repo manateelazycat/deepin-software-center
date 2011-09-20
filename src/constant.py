@@ -89,23 +89,6 @@ CLASSIFY_LIST = [(CLASSIFY_WEB,          ("web.png", None)),
                  (CLASSIFY_OTHERS,       ("other.png", None))
                  ]
 
-TOP_RECOMMEND = ["chromium-browser", "ppstream", "eio"]
-
-HOME_CLASSIFY_LIST = [
-    (CLASSIFY_NEWS,             False),
-    (CLASSIFY_RECOMMEND,        False),
-    (CLASSIFY_WEB,              True),  
-    (CLASSIFY_MULTIMEDIA,       True),  
-    (CLASSIFY_GAME,             True),  
-    (CLASSIFY_GRAPHICS,         True),  
-    (CLASSIFY_WORD,             True),  
-    (CLASSIFY_PROFESSIONAL,     True),  
-    (CLASSIFY_PROGRAMMING,      True),  
-    (CLASSIFY_DRIVER,           True),  
-    (CLASSIFY_WINDOWS,          True),  
-    (CLASSIFY_OTHERS,           True),
-    ]
-
 LANGUAGE = [
     "简体中文",
     "繁体中文",

@@ -1,3 +1,8 @@
+gnome-paint
+gwenview
+gimp
+inkscape
+blender
 aqsis
 boats
 darkroom
@@ -18,9 +23,7 @@ fyre
 g3dviewer
 geeqie-gps
 gextractwinicons
-gimp
 gliv
-gnome-paint
 gosmore
 gpaint
 gpicview
@@ -30,9 +33,7 @@ gpscorrelate
 gpxviewer
 gthumb
 gtkam
-gwenview
 hugin
-inkscape
 javamorph
 josm
 kcolorchooser

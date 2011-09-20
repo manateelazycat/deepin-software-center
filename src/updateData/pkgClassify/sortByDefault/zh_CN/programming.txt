@@ -1,3 +1,8 @@
+emacs
+vim
+eclipse
+codeblocks
+geany
 anjuta
 basic256
 bless
@@ -9,7 +14,6 @@ bzr
 cameleon
 cervisia
 clips
-codeblocks
 codelite
 conduit
 conglomerate
@@ -19,7 +23,6 @@ devhelp
 diffuse
 dreampie
 drpython
-eclipse
 efte
 emacs-snapshot
 emacs23
@@ -34,7 +37,6 @@ gambas2
 gamera-gui
 gaphor
 gazpacho
-geany
 ghex
 giggle
 gitg
@@ -125,7 +127,6 @@ tkcvs
 tora
 umbrello
 usbprog
-vim
 virtaal
 visualvm
 vite

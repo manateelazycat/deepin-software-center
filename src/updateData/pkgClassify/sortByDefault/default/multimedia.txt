@@ -1,3 +1,8 @@
+audacious
+smplayer
+openshot
+audacity
+brasero
 aconnectgui
 aeolus
 alsamixergui
@@ -9,7 +14,6 @@ ardour
 ario
 asoundconf-gtk
 asunder
-audacity
 audex
 avidemux-qt
 bangarang
@@ -18,7 +22,6 @@ beast
 bitmeter
 bluemindo
 bombono-dvd
-brasero
 canorus
 cecilia
 clementine
@@ -156,7 +159,6 @@ nvtv
 oggconvert
 ogmrip
 openmovieeditor
-openshot
 padevchooser
 paman
 paprefs
@@ -195,7 +197,6 @@ ripperx
 rosegarden
 scolily
 seq24
-smplayer
 solfege
 sonata
 songwrite

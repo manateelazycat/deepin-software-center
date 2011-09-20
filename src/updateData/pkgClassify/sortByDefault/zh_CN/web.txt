@@ -1,5 +1,9 @@
-amsn
+firefox
 amule
+uget
+pidgin
+liferea
+amsn
 arcjobtool
 avahi-discover
 axel-kapt
@@ -41,7 +45,6 @@ evolution
 fatrat
 fennec
 filezilla
-firefox
 firefox-launchpad-plugin
 flashplugin-installer
 flush
@@ -122,7 +125,6 @@ last-exit
 lat
 lekhonee-gnome
 licq
-liferea
 links2
 linphone
 logjam
@@ -149,7 +151,6 @@ nzb
 openfetion
 openvas-client
 packeth
-pidgin
 pidgin-otr
 pidgin-plugin-pack
 ploader

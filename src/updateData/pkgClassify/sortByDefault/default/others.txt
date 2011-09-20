@@ -1,3 +1,8 @@
+ibus-pinyin
+camorama
+shutter
+gparted
+unetbootin
 accerciser
 agave
 alarm-clock
@@ -31,7 +36,6 @@ byobu
 cairo-clock
 cairo-dock
 cameramonitor
-camorama
 catfish
 cellwriter
 checkbox-gtk
@@ -188,7 +192,6 @@ googlizer
 gourmet
 gpa
 gpar2
-gparted
 gpass
 gpointing-device-settings
 gpomme
@@ -437,7 +440,6 @@ semantik
 sentinella
 series60-remote
 shrinkta
-shutter
 simdock
 simple-ccsm
 simple-scan
@@ -497,7 +499,6 @@ ubuntustudio-controls
 uck
 uim
 ukopp
-unetbootin
 unison2.27.57-gtk
 update-manager
 upnp-router-control

@@ -21,7 +21,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from ConfigParser import RawConfigParser
-import utils
+from utils import *
 import glib
 import axi
 import os, re
@@ -261,6 +261,7 @@ class Search:
             rebuildSearchIndex = RebuildSearchIndex(self.initDB)
             rebuildSearchIndex.start()
             
+    @postGUI
     def initDB(self):
         '''Init DB.'''
         self.database = DB()
@@ -268,7 +269,7 @@ class Search:
         
         # Touch lock file.
         if not os.path.exists(self.lockFile):
-            utils.touchFile(self.lockFile)
+            touchFile(self.lockFile)
         
         glib.timeout_add_seconds(2, self.resetStatus)
         

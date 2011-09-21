@@ -51,6 +51,7 @@ import sys
 import threading as td
 import titlebar
 import uninstallPage
+import updateList
 import updatePage
 import urllib2
 import utils
@@ -84,6 +85,7 @@ class DeepinSoftwareCenter():
         self.statusbar.eventbox.connect("button-press-event", lambda w, e: utils.resizeWindow(w, e, self.window))
         self.statusbar.eventbox.connect("button-press-event", lambda w, e: utils.moveWindow(w, e, self.window))
         self.searchQuery = search.Search(self.message, self.statusbar)
+        self.updateList = updateList.UpdateList(self.aptCache, self.statusbar)        
         self.detailViewDict = {}
         self.searchViewDict = {}
         self.noscreenshotList = []
@@ -739,6 +741,9 @@ class DeepinSoftwareCenter():
         # Select software update page if add "show-update" option.
         if len(sys.argv) == 2 and sys.argv[1] == "show-update":
             self.selectPage(PAGE_UPGRADE)
+            
+        # Update List.
+        self.updateList.start()
 
         # Listen socket message for select upgrade page.
         self.socketThread = SocketThread(self.showUpgrade)

@@ -49,7 +49,7 @@ class UpdateList(td.Thread):
     def run(self):
         '''Update package list.'''
         # Get last update hours.
-        agoHours = self.getLastUpdateHours()
+        agoHours = getLastUpdateHours("/var/lib/apt/periodic/update-success-stamp")
 
         # Just update one day after.
         if agoHours != None and agoHours >= UPDATE_INTERVAL:
@@ -81,19 +81,6 @@ class UpdateList(td.Thread):
     
         return False
         
-    def getLastUpdateHours(self):
-        """
-        Return the number of hours since the last successful apt-get update
-        
-        If the date is unknown, return "None"
-        """
-        if not os.path.exists("/var/lib/apt/periodic/update-success-stamp"):
-            return None
-        # calculate when the last apt-get update (or similar operation) was performed.
-        mtime = os.stat("/var/lib/apt/periodic/update-success-stamp")[stat.ST_MTIME]
-        agoHours = int((time.time() - mtime) / (60 * 60))
-        return agoHours
-
 class UpdateListProgress(apt.progress.FetchProgress):
     """ Ready to use progress object for terminal windows """
 

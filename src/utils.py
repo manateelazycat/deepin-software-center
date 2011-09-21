@@ -31,6 +31,7 @@ import os
 import pango
 import pangocairo
 import pygtk
+import stat
 import subprocess
 import time
 import uuid
@@ -552,6 +553,17 @@ def getUserID():
     '''Get Mac Address and MD5.'''
     macAddress = uuid.getnode()
     return (hashlib.md5(str(macAddress))).hexdigest()
+
+def getLastUpdateHours(filepath):
+    """
+    Return the number of hours since last update.
+    
+    If the date is unknown, return "None"
+    """
+    if not os.path.exists(filepath):
+        return None
+    agoHours = int((time.time() - os.stat(filepath)[stat.ST_MTIME]) / (60 * 60))
+    return agoHours
         
 #  LocalWords:  halfstar AppIcon pkgInfo shortDesc zh TW longDesc downloadSize
 #  LocalWords:  getPkgInstalledSize getPkgDependSize useSize uname libdevel ZB

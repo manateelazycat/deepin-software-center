@@ -33,6 +33,7 @@ import pangocairo
 import pygtk
 import stat
 import subprocess
+import threading as td
 import time
 import uuid
 pygtk.require('2.0')
@@ -564,6 +565,20 @@ def getLastUpdateHours(filepath):
         return None
     agoHours = int((time.time() - os.stat(filepath)[stat.ST_MTIME]) / (60 * 60))
     return agoHours
+
+class AnonymityThread(td.Thread):
+    '''Anonymity thread.'''
+
+    def __init__(self, callback):
+        '''Init anonymity thread.'''
+        td.Thread.__init__(self)
+        self.setDaemon(True) # make thread exit when main program exit
+
+        self.callback = callback
+        
+    def run(self):
+        '''Run.'''
+        self.callback()    
         
 #  LocalWords:  halfstar AppIcon pkgInfo shortDesc zh TW longDesc downloadSize
 #  LocalWords:  getPkgInstalledSize getPkgDependSize useSize uname libdevel ZB

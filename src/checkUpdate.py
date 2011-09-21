@@ -38,23 +38,15 @@ import sys
 import threading as td
 import urllib2
 
-class SendStatistics(td.Thread):
+def sendStatistics():
     '''Send statistics.'''
-
-    def __init__(self):
-        '''Init statistics thread.'''
-        td.Thread.__init__(self)
-        self.setDaemon(True) # make thread exit when main program exit
-
-    def run(self):
-        '''Run.'''
-        # Send Mac address to server for statistics.
-        try:
-            userId = getUserID()
-            connection = urllib2.urlopen("http://test-linux.gteasy.com/record.php?i=" + str(userId), timeout=POST_TIMEOUT)
-            print "Send mac address %s success." % (userId)
-        except Exception, e:
-            print "Send mac address %s failed" % (userId)
+    # Send Mac address to server for statistics.
+    try:
+        userId = getUserID()
+        connection = urllib2.urlopen("http://test-linux.gteasy.com/record.php?i=" + str(userId), timeout=POST_TIMEOUT)
+        print "Send mac address %s success." % (userId)
+    except Exception, e:
+        print "Send mac address %s failed" % (userId)
         
 class TrayIcon:
     '''Tray icon.'''
@@ -260,8 +252,7 @@ class TrayIcon:
             touchFile("./check-update-stamp")
                 
             # Send statistics information.
-            sendStatisticsThread = SendStatistics()
-            sendStatisticsThread.start()
+            AnonymityThread(sendStatistics).start()
             
             # Just show tray icon when have updatable packages.
             self.updateNum = self.calculateUpdateNumber()

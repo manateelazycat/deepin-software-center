@@ -55,7 +55,6 @@ import updateList
 import updatePage
 import urllib2
 import utils
-import aptdaemon.lock as lock
 pygtk.require('2.0')
 
 import socket

@@ -7,6 +7,9 @@
 
 	* updateList.py/utils.py: Make function getLastUpdateHours more generic.
 
+	* checkUpdate.py: Remove aptdeamon module from checkUpdate.py
+	  Just notify user when have updatable packages, move update code to software center.
+
 2011-09-20 Wang Yong <lazycat.manatee@gmail.com>
 	* Add recommend list length to protected software center won't crash if some package not exist in local cache.
 

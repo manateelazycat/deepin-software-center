@@ -33,13 +33,14 @@ import threading as td
 class UpdateList(td.Thread):
     '''Update package list.'''
 	
-    def __init__(self, cache, statusbar):
+    def __init__(self, cache, statusbar, refreshUpdateViewCallback):
         '''Init for UpdateList.'''
         td.Thread.__init__(self)
         self.setDaemon(True) # make thread exit when main program exit
         
         self.cache = cache
         self.statusbar = statusbar
+        self.refreshUpdateViewCallback = refreshUpdateViewCallback
         self.progress = UpdateListProgress(
             self.updateCallback,
             self.finishCallback
@@ -51,9 +52,11 @@ class UpdateList(td.Thread):
         agoHours = self.getLastUpdateHours()
 
         # Just update one day after.
-        # if agoHours != None and agoHours >= UPDATE_INTERVAL:
-        if True:
+        if agoHours != None and agoHours >= UPDATE_INTERVAL:
+        # if True:
             self.cache.update(self.progress)
+        else:
+            print "Just update system %s hours ago" % (agoHours)
         
     @postGUI
     def updateCallback(self, percent):
@@ -63,8 +66,13 @@ class UpdateList(td.Thread):
     @postGUI
     def finishCallback(self):
         '''Finish callback for progress.'''
+        # Refresh update view.
+        self.refreshUpdateViewCallback()
+
+        # Update status.
         self.statusbar.setStatus("更新软件列表完毕。")
         
+        # Reset statusbar after 2 seconds.
         glib.timeout_add_seconds(2, self.resetStatus)
         
     def resetStatus(self):

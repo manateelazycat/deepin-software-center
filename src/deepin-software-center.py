@@ -85,7 +85,7 @@ class DeepinSoftwareCenter():
         self.statusbar.eventbox.connect("button-press-event", lambda w, e: utils.resizeWindow(w, e, self.window))
         self.statusbar.eventbox.connect("button-press-event", lambda w, e: utils.moveWindow(w, e, self.window))
         self.searchQuery = search.Search(self.message, self.statusbar)
-        self.updateList = updateList.UpdateList(self.aptCache, self.statusbar)        
+        self.updateList = updateList.UpdateList(self.aptCache, self.statusbar, self.refreshUpdateView)        
         self.detailViewDict = {}
         self.searchViewDict = {}
         self.noscreenshotList = []
@@ -642,7 +642,7 @@ class DeepinSoftwareCenter():
         window.set_decorated(False)
 
         # Init.
-        window.set_title('深度 Linux 软件中心')
+        window.set_title('深度Linux软件中心')
         window.set_position(gtk.WIN_POS_CENTER_ALWAYS)
         (width, height) = utils.getScreenSize(window)
         window.set_default_size(self.DEFAULT_WIDTH, -1)
@@ -929,6 +929,21 @@ class DeepinSoftwareCenter():
                 self.downloadQueue.addDownload(pkgName)
                 print "Upgrade %s" % (pkgName)
 
+    @postGUI
+    def refreshUpdateView(self):
+        '''Refresh update view.'''
+        # Get update number.
+        pkgNum = len(self.repoCache.upgradablePkgs)
+        
+        # Update topbar.
+        self.updatePage.topbar.updateNum(pkgNum)
+    
+        # Update update view.
+        self.updatePage.updateView.update(pkgNum)
+    
+        # Update notify number.
+        self.navigatebar.updateIcon.queue_draw()
+
 class FetchVote(td.Thread):
     '''Fetch vote.'''
 
@@ -1016,7 +1031,7 @@ class SocketThread(td.Thread):
             self.callback()
 
         self.socket.close()
-
+        
 if __name__ == "__main__":
     DeepinSoftwareCenter().main()
 

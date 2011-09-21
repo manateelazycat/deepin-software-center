@@ -3,6 +3,8 @@
 2011-09-21 Wang Yong <lazycat.manatee@gmail.com>
 	* updateList.py Add new update package list module to instead update manager.
 
+	* Refresh update view after package list update complete.
+
 2011-09-20 Wang Yong <lazycat.manatee@gmail.com>
 	* Add recommend list length to protected software center won't crash if some package not exist in local cache.
 

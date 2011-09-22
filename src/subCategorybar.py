@@ -36,7 +36,7 @@ class SubCategorybar:
         eventBoxSetBackground(
             self.frame,
             True, False,
-            "./icons/subcategory/background.png"
+            "./theme/default/subcategory/background.png"
             )
         self.box = gtk.VBox()
         self.paddingX = 10

@@ -83,8 +83,8 @@ class UpdateItem(DownloadItem):
         checkButtonSetBackground(
             self.checkButton,
             False, False, 
-            "./icons/cell/select.png",
-            "./icons/cell/selected.png",
+            "./theme/default/cell/select.png",
+            "./theme/default/cell/selected.png",
             )
         self.checkAlign = gtk.Alignment()
         self.checkAlign.set(0.5, 0.5, 0.0, 0.0)
@@ -302,7 +302,7 @@ class UpdateView(appView.AppView):
             self.box.pack_start(notifyAlign)
             
             notifyIconAlignX = 5
-            notifyIcon = gtk.image_new_from_file("./icons/update/smile.gif")
+            notifyIcon = gtk.image_new_from_file("./theme/default/update/smile.gif")
             notifyIconAlign = gtk.Alignment()
             notifyIconAlign.set(0.5, 1.0, 0.0, 0.0)
             notifyIconAlign.set_padding(0, 0, notifyIconAlignX, notifyIconAlignX)

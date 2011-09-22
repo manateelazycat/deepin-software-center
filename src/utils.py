@@ -84,7 +84,7 @@ def getStarPath(starIndex, starLevel):
         else:
             imgPath = "star_gray.png"
             
-    imgDir = "./icons/cell/"
+    imgDir = "./theme/default/cell/"
     return imgDir + imgPath
 
 def getFontFamilies():
@@ -105,7 +105,7 @@ def getPkgIcon(pkg, iconWidth=32, iconHeight=32):
     if os.path.exists (iconPath):
         return gtk.image_new_from_pixbuf(gtk.gdk.pixbuf_new_from_file_at_size(iconPath, iconWidth, iconHeight))
     else:
-        return gtk.image_new_from_pixbuf(gtk.gdk.pixbuf_new_from_file_at_size("./icons/icon/appIcon.ico", 
+        return gtk.image_new_from_pixbuf(gtk.gdk.pixbuf_new_from_file_at_size("./theme/default/icon/appIcon.ico", 
                                                                               iconWidth, iconHeight))
 def getPkgName(pkg):
     '''Get package name.'''

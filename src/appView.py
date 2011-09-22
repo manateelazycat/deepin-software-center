@@ -147,7 +147,7 @@ class AppView:
             # Don't add first icon if at first *page*.
             if startIndex != 1:
                 # Add previous icon.
-                prev = gtk.image_new_from_pixbuf(gtk.gdk.pixbuf_new_from_file("./icons/index/backward.png"))
+                prev = gtk.image_new_from_pixbuf(gtk.gdk.pixbuf_new_from_file("./theme/default/index/backward.png"))
                 prevBox = gtk.EventBox()
                 prevBox.add(prev)
                 prevBox.connect("button-press-event", 
@@ -181,7 +181,7 @@ class AppView:
                 utils.setClickableCursor(lastBox)
                 
                 # Add next icon.
-                next = gtk.image_new_from_pixbuf(gtk.gdk.pixbuf_new_from_file("./icons/index/forward.png"))
+                next = gtk.image_new_from_pixbuf(gtk.gdk.pixbuf_new_from_file("./theme/default/index/forward.png"))
                 nextBox = gtk.EventBox()
                 nextBox.add(next)
                 nextBox.connect("button-press-event", 

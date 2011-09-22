@@ -41,7 +41,7 @@ class Statusbar:
         eventBoxSetBackground(
             self.eventbox,
             True, False,
-            "./icons/statusbar/background.png")
+            "./theme/default/statusbar/background.png")
         self.box = gtk.HBox()
         
         self.name = gtk.Label()

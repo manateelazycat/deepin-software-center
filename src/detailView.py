@@ -99,7 +99,7 @@ class DetailView:
         eventBoxSetBackground(
             titleEventbox,
             True, False,
-            "./icons/detail/background.png")
+            "./theme/default/detail/background.png")
 
         # Add title.
         appInfoBox = gtk.HBox()
@@ -178,8 +178,8 @@ class DetailView:
         toggleTabSetBackground(
             self.toggleTab,
             False, False,
-            "./icons/detail/detailTab.png",
-            "./icons/detail/helpTab.png",
+            "./theme/default/detail/detailTab.png",
+            "./theme/default/detail/helpTab.png",
             "详细信息",
             "协助翻译"
             )
@@ -298,7 +298,7 @@ class DetailView:
         if os.path.exists (screenshotPath):
             self.screenshotImage.set_from_pixbuf(
                 gtk.gdk.pixbuf_new_from_file_at_size(screenshotPath, screenshotWidth, screenshotHeight))
-            utils.setCustomizeClickableCursor(self.imageBox, self.screenshotImage, "./icons/screenshot/zoom_in.png")
+            utils.setCustomizeClickableCursor(self.imageBox, self.screenshotImage, "./theme/default/screenshot/zoom_in.png")
             utils.setHelpTooltip(self.imageBox, "点击放大")
         # Otherwise just fetch screenshot when not in black list.
         elif not pkgName in noscreenshotList:
@@ -318,7 +318,7 @@ class DetailView:
             print "No screenshot for %s, don't need fetch." % (pkgName)
             
             # Set upload image.
-            self.screenshotImage.set_from_pixbuf(gtk.gdk.pixbuf_new_from_file("./icons/screenshot/upload.png"))        
+            self.screenshotImage.set_from_pixbuf(gtk.gdk.pixbuf_new_from_file("./theme/default/screenshot/upload.png"))        
 
         # Add comment label.
         self.initCommentArea(detailBox)
@@ -663,7 +663,7 @@ class DetailView:
         # Add comment list.
         for comment in commentList:
             commentName = comment["cuid"]
-            commentIcon = "./icons/comment/me.png"
+            commentIcon = "./theme/default/comment/me.png"
             commentDate = comment["ctime"]
             commentContent = comment["content"]
             
@@ -764,7 +764,7 @@ class DetailView:
         self.messageCallback("发表 %s 评论成功" % (pkgName))
         
         # Add comment in comment list.
-        commentIcon = "./icons/comment/me.png"
+        commentIcon = "./theme/default/comment/me.png"
         commentDate = utils.getCurrentTime()
         commentName = "深度Linuxer %s" % (commentDate)
         commentBox = self.createComment((
@@ -1174,7 +1174,7 @@ class FetchScreenshot(td.Thread):
         # Set screenshot.
         if self.returnCode == DOWNLOAD_SUCCESS:
             self.image.set_from_pixbuf(gtk.gdk.pixbuf_new_from_file_at_size(screenshotPath, self.width, self.height))
-            utils.setCustomizeClickableCursor(self.imageBox, self.image, "./icons/screenshot/zoom_in.png")
+            utils.setCustomizeClickableCursor(self.imageBox, self.image, "./theme/default/screenshot/zoom_in.png")
             utils.setHelpTooltip(self.imageBox, "点击放大")
         else:
             if self.killed:
@@ -1191,7 +1191,7 @@ class FetchScreenshot(td.Thread):
                     self.noscreenshotList.append(pkgName)
                     
                 # Set upload image.
-                self.image.set_from_pixbuf(gtk.gdk.pixbuf_new_from_file("./icons/screenshot/upload.png"))
+                self.image.set_from_pixbuf(gtk.gdk.pixbuf_new_from_file("./theme/default/screenshot/upload.png"))
             
                 print "Haven't screenshot for %s !" % (pkgName)
 
@@ -1208,15 +1208,15 @@ class BigScreenshot:
         self.borderTopWidth = 7
         self.borderBottomWidth = 7
         
-        self.topleftPixbuf = gtk.gdk.pixbuf_new_from_file("./icons/screenshot/background_topleft.png")
-        self.toprightPixbuf = gtk.gdk.pixbuf_new_from_file("./icons/screenshot/background_topright.png")
-        self.topmiddlePixbuf = gtk.gdk.pixbuf_new_from_file("./icons/screenshot/background_topmiddle.png")
-        self.bottomleftPixbuf = gtk.gdk.pixbuf_new_from_file("./icons/screenshot/background_bottomleft.png")
-        self.bottomrightPixbuf = gtk.gdk.pixbuf_new_from_file("./icons/screenshot/background_bottomright.png")
-        self.bottommiddlePixbuf = gtk.gdk.pixbuf_new_from_file("./icons/screenshot/background_bottommiddle.png")
-        self.leftPixbuf = gtk.gdk.pixbuf_new_from_file("./icons/screenshot/background_left.png")
-        self.rightPixbuf = gtk.gdk.pixbuf_new_from_file("./icons/screenshot/background_right.png")
-        self.closePixbuf = gtk.gdk.pixbuf_new_from_file("./icons/screenshot/close.png")
+        self.topleftPixbuf = gtk.gdk.pixbuf_new_from_file("./theme/default/screenshot/background_topleft.png")
+        self.toprightPixbuf = gtk.gdk.pixbuf_new_from_file("./theme/default/screenshot/background_topright.png")
+        self.topmiddlePixbuf = gtk.gdk.pixbuf_new_from_file("./theme/default/screenshot/background_topmiddle.png")
+        self.bottomleftPixbuf = gtk.gdk.pixbuf_new_from_file("./theme/default/screenshot/background_bottomleft.png")
+        self.bottomrightPixbuf = gtk.gdk.pixbuf_new_from_file("./theme/default/screenshot/background_bottomright.png")
+        self.bottommiddlePixbuf = gtk.gdk.pixbuf_new_from_file("./theme/default/screenshot/background_bottommiddle.png")
+        self.leftPixbuf = gtk.gdk.pixbuf_new_from_file("./theme/default/screenshot/background_left.png")
+        self.rightPixbuf = gtk.gdk.pixbuf_new_from_file("./theme/default/screenshot/background_right.png")
+        self.closePixbuf = gtk.gdk.pixbuf_new_from_file("./theme/default/screenshot/close.png")
         
         self.window = gtk.Window()
         self.window.set_decorated(False)
@@ -1250,7 +1250,7 @@ class BigScreenshot:
         self.window.connect("button-press-event", self.click)
         self.eventbox.connect("expose-event", self.show)
         self.eventbox.connect("button-press-event", lambda w, e: self.exit())
-        utils.setCustomizeClickableCursor(self.eventbox, self.eventbox, "./icons/screenshot/zoom_out.png")
+        utils.setCustomizeClickableCursor(self.eventbox, self.eventbox, "./theme/default/screenshot/zoom_out.png")
         
         self.window.show_all()
 

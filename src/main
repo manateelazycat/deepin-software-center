@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 # Copyright (C) 2011 Deepin, Inc.
@@ -20,4 +20,29 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-gksu ./deepin-software-center.py
+from constant import *
+import socket
+import subprocess
+
+def startSoftwareCenter():
+    '''Start software center.'''
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  
+    
+    try:
+        # Software center is not running if address is not bind.
+        s.bind(SOCKET_SOFTWARECENTER_ADDRESS)
+        
+        # Close socket.
+        s.close()
+        
+        # Show software center.
+        subprocess.Popen(["gksu", "./deepin-software-center.py"])        
+    except Exception, e:
+        # Just need send show request if software center has running.
+        s.sendto("show", SOCKET_SOFTWARECENTER_ADDRESS)  
+        
+        # Close socket.
+        s.close()  
+    
+if __name__ == "__main__":
+    startSoftwareCenter()

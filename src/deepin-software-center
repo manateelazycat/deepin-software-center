@@ -21,4 +21,4 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 cd /usr/share/deepin-software-center
-gksu ./deepin-software-center.py
+./main

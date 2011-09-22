@@ -745,11 +745,19 @@ class DeepinSoftwareCenter():
         self.updateList.start()
 
         # Listen socket message for select upgrade page.
-        self.socketThread = SocketThread(self.showUpgrade)
+        self.socketThread = SocketThread(self.showUpgrade, self.raiseToTop)
         self.socketThread.start()
-
+        
         # Run.
         gtk.main()
+        
+    @postGUI
+    def raiseToTop(self):
+        '''Raise main window to top of the window stack.'''
+        # I don't know why function `gtk.window.present` can't work.
+        # So use `gtk.window.set_keep_above` instead.
+        self.window.set_keep_above(True)
+        self.window.set_keep_above(False)
 
     def selectPage(self, pageId):
         '''Select recommend page.'''
@@ -997,12 +1005,13 @@ class FetchDetail(td.Thread):
 class SocketThread(td.Thread):
     '''Socket thread.'''
 
-    def __init__(self, callback):
+    def __init__(self, showUpdateCallback, raiseToTopCallback):
         '''Init socket thread.'''
         td.Thread.__init__(self)
         self.setDaemon(True) # make thread exit when main program exit
 
-        self.callback = callback
+        self.showUpdateCallback = showUpdateCallback
+        self.raiseToTopCallback = raiseToTopCallback
 
     def run(self):
         '''Run.'''
@@ -1011,8 +1020,11 @@ class SocketThread(td.Thread):
 
         while True:
             data, addr = self.socket.recvfrom(2048)
-            print "received:", data, "from", addr
-            self.callback()
+            print "received: '%s' from %s" % (data, addr)
+            if data == "showUpdate":
+                self.showUpdateCallback()
+            elif data == "show":
+                self.raiseToTopCallback()
 
         self.socket.close()
         

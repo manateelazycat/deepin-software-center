@@ -124,7 +124,7 @@ class TrayIcon:
             print e
             
             # Just need send show update request if software center has running.
-            s.sendto("show update request", SOCKET_SOFTWARECENTER_ADDRESS)  
+            s.sendto("showUpdate", SOCKET_SOFTWARECENTER_ADDRESS)  
             
             # Close socket.
             s.close()  

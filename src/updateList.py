@@ -33,14 +33,13 @@ import threading as td
 class UpdateList(td.Thread):
     '''Update package list.'''
 	
-    def __init__(self, cache, statusbar, refreshUpdateViewCallback):
+    def __init__(self, cache, statusbar):
         '''Init for UpdateList.'''
         td.Thread.__init__(self)
         self.setDaemon(True) # make thread exit when main program exit
         
         self.cache = cache
         self.statusbar = statusbar
-        self.refreshUpdateViewCallback = refreshUpdateViewCallback
         self.progress = UpdateListProgress(
             self.updateCallback,
             self.finishCallback
@@ -52,8 +51,8 @@ class UpdateList(td.Thread):
         agoHours = getLastUpdateHours("/var/lib/apt/periodic/update-success-stamp")
 
         # Just update one day after.
-        if agoHours != None and agoHours >= UPDATE_INTERVAL:
-        # if True:
+        # if agoHours != None and agoHours >= UPDATE_INTERVAL:
+        if True:
             self.cache.update(self.progress)
         else:
             print "Just update system %s hours ago" % (agoHours)
@@ -66,9 +65,6 @@ class UpdateList(td.Thread):
     @postGUI
     def finishCallback(self):
         '''Finish callback for progress.'''
-        # Refresh update view.
-        self.refreshUpdateViewCallback()
-
         # Update status.
         self.statusbar.setStatus("更新软件列表完毕。")
         

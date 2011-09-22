@@ -84,7 +84,7 @@ class DeepinSoftwareCenter():
         self.statusbar.eventbox.connect("button-press-event", lambda w, e: utils.resizeWindow(w, e, self.window))
         self.statusbar.eventbox.connect("button-press-event", lambda w, e: utils.moveWindow(w, e, self.window))
         self.searchQuery = search.Search(self.message, self.statusbar)
-        self.updateList = updateList.UpdateList(self.aptCache, self.statusbar, self.refreshUpdateView)        
+        self.updateList = updateList.UpdateList(self.aptCache, self.statusbar)        
         self.detailViewDict = {}
         self.searchViewDict = {}
         self.noscreenshotList = []
@@ -927,21 +927,6 @@ class DeepinSoftwareCenter():
                 # Add in download queue.
                 self.downloadQueue.addDownload(pkgName)
                 print "Upgrade %s" % (pkgName)
-
-    @postGUI
-    def refreshUpdateView(self):
-        '''Refresh update view.'''
-        # Get update number.
-        pkgNum = len(self.repoCache.upgradablePkgs)
-        
-        # Update topbar.
-        self.updatePage.topbar.updateNum(pkgNum)
-    
-        # Update update view.
-        self.updatePage.updateView.update(pkgNum)
-    
-        # Update notify number.
-        self.navigatebar.updateIcon.queue_draw()
 
 class FetchVote(td.Thread):
     '''Fetch vote.'''

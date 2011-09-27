@@ -20,3 +20,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+class RunningView:
+    '''View for running process.'''
+	
+    def __init__(self):
+        '''Init for running view.'''
+        # Init.
+        self.installingNum = 0
+        self.updatingNum = 0
+        self.uninstallingNum = 0
+        
+        

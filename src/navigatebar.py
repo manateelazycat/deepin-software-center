@@ -68,7 +68,7 @@ class NavigateBar:
         self.runningIcon      = self.createNavIcon("正在运行", "./theme/default/navigate/nav_running.png", PAGE_RUNNING)
         self.navBox.pack_start(self.runningIcon, False, False, self.iconPadding)
         
-        self.moreIcon      = self.createNavIcon("更多功能", "./theme/default/navigate/nav_more.png", PAGE_COMMUNITY)
+        self.moreIcon      = self.createNavIcon("更多功能", "./theme/default/navigate/nav_more.png", PAGE_MORE)
         self.navBox.pack_start(self.moreIcon, False, False, self.iconPadding)
 
         self.box.show_all()

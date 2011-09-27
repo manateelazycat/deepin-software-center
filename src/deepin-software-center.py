@@ -28,7 +28,8 @@ import checkUpdate
 import action
 import apt
 import apt_pkg
-import communityPage
+import runningPage
+import morePage
 import detailView
 import download
 import glib
@@ -71,7 +72,6 @@ class DeepinSoftwareCenter():
         
         # Shape.
         self.topbarPixbuf = gtk.gdk.pixbuf_new_from_file("./theme/default/navigate/background.png")
-        self.topHeight = self.topbarPixbuf.get_height()
 
         self.bottombarPixbuf = gtk.gdk.pixbuf_new_from_file("./theme/default/statusbar/background.png")
         self.bottomHeight = self.bottombarPixbuf.get_height()
@@ -172,9 +172,10 @@ class DeepinSoftwareCenter():
             self.fetchVote,
             )
         
-        self.communityPage = communityPage.CommunityPage()
-        # self.morePage = morePage.MorePage()
-
+        self.runningPage = runningPage.RunningPage()
+        
+        self.morePage = morePage.MorePage()
+        
         self.window.connect_after("show", lambda w: self.createTooltips())
 
     def createTooltips(self):
@@ -188,18 +189,19 @@ class DeepinSoftwareCenter():
     def updateShape(self, widget, allocation):
         '''Update shape.'''
         if allocation.width > 0 and allocation.height > 0:
+            topHeight = self.topbarPixbuf.get_height()
             width, height = allocation.width, allocation.height
-            middleHeight = height - self.topHeight - self.bottomHeight
+            middleHeight = height - topHeight - self.bottomHeight
 
-            topPixbuf = self.topbarPixbuf.scale_simple(width, self.topHeight, gtk.gdk.INTERP_BILINEAR)
+            topPixbuf = self.topbarPixbuf.scale_simple(width, topHeight, gtk.gdk.INTERP_BILINEAR)
             middlePixbuf = gtk.gdk.Pixbuf(gtk.gdk.COLORSPACE_RGB, False, 8, width, middleHeight)
             bottomPixbuf = self.bottombarPixbuf.scale_simple(width, self.bottomHeight, gtk.gdk.INTERP_BILINEAR)
 
             pixbuf = gtk.gdk.Pixbuf(gtk.gdk.COLORSPACE_RGB, True, 8, width, height)
 
-            topPixbuf.copy_area(0, 0, width, self.topHeight, pixbuf, 0, 0)
-            middlePixbuf.copy_area(0, 0, width, middleHeight, pixbuf, 0, self.topHeight)
-            bottomPixbuf.copy_area(0, 0, width, self.bottomHeight, pixbuf, 0, self.topHeight + middleHeight)
+            topPixbuf.copy_area(0, 0, width, topHeight, pixbuf, 0, 0)
+            middlePixbuf.copy_area(0, 0, width, middleHeight, pixbuf, 0, topHeight)
+            bottomPixbuf.copy_area(0, 0, width, self.bottomHeight, pixbuf, 0, topHeight + middleHeight)
 
             (_, mask) = pixbuf.render_pixmap_and_mask(255)
             if mask != None:
@@ -714,12 +716,12 @@ class DeepinSoftwareCenter():
         self.navigatebar.uninstallIcon.connect(
             "button-press-event",
             lambda widget, event: self.selectPage(PAGE_UNINSTALL))
-        self.navigatebar.communityIcon.connect(
+        self.navigatebar.runningIcon.connect(
             "button-press-event",
-            lambda widget, event: self.selectPage(PAGE_COMMUNITY))
-        # self.navigatebar.moreIcon.connect(
-        #     "button-press-event",
-        #     lambda widget, event: self.selectPage(PAGE_MORE))
+            lambda widget, event: self.selectPage(PAGE_RUNNING))
+        self.navigatebar.moreIcon.connect(
+            "button-press-event",
+            lambda widget, event: self.selectPage(PAGE_MORE))
 
         # Default select recommend page.
         self.selectPage(PAGE_RECOMMEND)
@@ -779,10 +781,10 @@ class DeepinSoftwareCenter():
                 child = self.updatePage.box
             elif pageId == PAGE_UNINSTALL:
                 child = self.uninstallPage.box
-            elif pageId == PAGE_COMMUNITY:
-                child = self.communityPage.box
-            # else:
-            #     child = self.morePage.box
+            elif pageId == PAGE_RUNNING:
+                child = self.runningPage.box
+            elif pageId == PAGE_MORE:
+                child = self.morePage.box
 
         self.contentBox.pack_start(child)
         self.contentBox.show_all()

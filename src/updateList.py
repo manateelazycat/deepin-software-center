@@ -60,7 +60,7 @@ class UpdateList(td.Thread):
     @postGUI
     def updateCallback(self, percent):
         '''Update callback for progress.'''
-        self.statusbar.setStatus("正在更新软件列表%s%%." % percent)
+        self.statusbar.setStatus("正在更新软件列表...")
         
     @postGUI
     def finishCallback(self):

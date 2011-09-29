@@ -171,7 +171,7 @@ class RecommendItem(DownloadItem):
         else:
             appInstalledLabel = gtk.Label()
             appInstalledLabel.set_markup("<span foreground='#1A3E88' size='%s'>%s</span>" % (LABEL_FONT_SIZE, "已安装"))
-            buttonImage = gtk.gdk.pixbuf_new_from_file("./theme/default/cell/update_hover.png")
+            buttonImage = gtk.gdk.pixbuf_new_from_file("../theme/default/cell/update_hover.png")
             appInstalledLabel.set_size_request(buttonImage.get_width(), buttonImage.get_height())
             appButtonBox.pack_start(appInstalledLabel)
             
@@ -406,28 +406,15 @@ class RecommendItem(DownloadItem):
         
         # Add application name.
         pkgName = utils.getPkgName(pkg)
-        appName = gtk.Label()
-        nameMarkup = "<span foreground='#1A3E88' size='%s'>%s</span>" % (LABEL_FONT_SIZE, pkgName)
-        nameActiveMarkup = "<span foreground='#0084FF' size='%s'>%s</span>" % (LABEL_FONT_SIZE, pkgName)
-        appName.set_markup(nameMarkup)
+        (appName, appNameEventBox) = utils.setDefaultClickableLabel(pkgName)
         appName.set_size_request(self.NAME_WIDTH, -1)
         appName.set_single_line_mode(True)
         appName.set_alignment(0.0, 0.5)
-        appNameEventBox = gtk.EventBox()
-        appNameEventBox.add(appName)
-        appNameEventBox.set_visible_window(False)
         appNameEventBox.connect(
             "button-press-event",
             lambda w, e: self.entryDetailView())
         
         utils.setHelpTooltip(appNameEventBox, "点击查看详细信息")
-        
-        utils.setClickableLabel(
-            appNameEventBox,
-            appName,
-            nameMarkup,
-            nameActiveMarkup,
-            )
         
         self.appNameBox.pack_start(appNameEventBox, False, False)
         
@@ -475,11 +462,11 @@ class RecommendView:
         listLen = 12
         lang = getDefaultLanguage()
         if lang == "zh_CN":
-            self.pkgRecomments = evalFile("./updateData/pkgRecommend/zh_CN/recommendList.txt")
+            self.pkgRecomments = evalFile("../updateData/pkgRecommend/zh_CN/recommendList.txt")
         elif lang == "zh_TW":
-            self.pkgRecomments = evalFile("./updateData/pkgRecommend/zh_TW/recommendList.txt")
+            self.pkgRecomments = evalFile("../updateData/pkgRecommend/zh_TW/recommendList.txt")
         else:
-            self.pkgRecomments = evalFile("./updateData/pkgRecommend/default/recommendList.txt")
+            self.pkgRecomments = evalFile("../updateData/pkgRecommend/default/recommendList.txt")
         boxlist = map (lambda n: gtk.HBox(), range(0, listLen / 2 + listLen % 2))
         for box in boxlist:
             self.box.pack_start(box, False, False)
@@ -545,13 +532,9 @@ class RecommendView:
         
         # Show more label.
         if showMore:
+            (moreLabel, moreLabelEventBox) = utils.setDefaultClickableLabel(
+                "更多 >>", "#000000", "#0084FF", LABEL_FONT_MEDIUM_SIZE)
             moreLabelPaddingRight = 15
-            moreLabel = gtk.Label()
-            moreLabel.set_markup(
-                "<span foreground='#000000' size='%s'>%s</span>" % (LABEL_FONT_MEDIUM_SIZE, "更多 >>"))
-            moreLabelEventBox = gtk.EventBox()
-            moreLabelEventBox.add(moreLabel)
-            moreLabelEventBox.set_visible_window(False)
             moreLabelAlign = gtk.Alignment()
             moreLabelAlign.set(1.0, 0.5, 0.0, 0.0)
             moreLabelAlign.set_padding(0, 0, 0, moreLabelPaddingRight)
@@ -564,13 +547,6 @@ class RecommendView:
                 "button-press-event", 
                 lambda w, e: self.selectCategoryCallback(itemName, categoryIndex))
             
-            # Make it click-able.
-            utils.setClickableLabel(
-                moreLabelEventBox,
-                moreLabel,
-                "<span foreground='#000000' size='%s'>更多 >></span>" % (LABEL_FONT_MEDIUM_SIZE),
-                "<span foreground='#0084FF' size='%s'>更多 >></span>" % (LABEL_FONT_MEDIUM_SIZE))
-        
         # Content box.
         contentBox = gtk.HBox()
         box.pack_start(contentBox, False, False)

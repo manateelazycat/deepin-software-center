@@ -44,7 +44,7 @@ class CategoryBar:
         
         # Create category icon.
         for (index, (categoryName, categoryIcon)) in enumerate(categoryList):
-            icon = self.createCategoryIcon(categoryName, "./theme/default/category/" + categoryIcon, index)
+            icon = self.createCategoryIcon(categoryName, "../theme/default/category/" + categoryIcon, index)
             self.box.pack_start(icon)
         
         # Show.
@@ -58,9 +58,9 @@ class CategoryBar:
         sideButtonSetBackground(
             eventButton,
             categoryName, iconPath,
-            "./theme/default/category/sidebar_normal.png",
-            "./theme/default/category/sidebar_hover.png",
-            "./theme/default/category/sidebar_press.png",
+            "../theme/default/category/sidebar_normal.png",
+            "../theme/default/category/sidebar_hover.png",
+            "../theme/default/category/sidebar_press.png",
             categoryId,
             self.getCategoryId
             )

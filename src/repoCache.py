@@ -21,6 +21,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from constant import *
+from utils import *
 import apt_pkg
 import categorybar
 import gtk
@@ -117,18 +118,19 @@ class RepoCache:
         self.upgradablePkgs = []
         self.uninstallablePkgs = []
         self.categoryDict = sortedDict.SortedDict(CLASSIFY_LIST)
+        self.ignoreList = evalFile("./ignoreList")
 
         # Scan category dict.
         whiteList = []
         lang = utils.getDefaultLanguage()
         if lang == "zh_CN":
-            sortRecommendDir = "./updateData/pkgClassify/sortByDefault/zh_CN/"
+            sortRecommendDir = "../updateData/pkgClassify/sortByDefault/zh_CN/"
         elif lang == "zh_TW":
-            sortRecommendDir = "./updateData/pkgClassify/sortByDefault/zh_TW/"
+            sortRecommendDir = "../updateData/pkgClassify/sortByDefault/zh_TW/"
         else:
-            sortRecommendDir = "./updateData/pkgClassify/sortByDefault/default/"
-        sortDownloadDir =  "./updateData/pkgClassify/sortByDownload/"
-        sortVoteDir =  "./updateData/pkgClassify/sortByVote/"
+            sortRecommendDir = "../updateData/pkgClassify/sortByDefault/default/"
+        sortDownloadDir =  "../updateData/pkgClassify/sortByDownload/"
+        sortVoteDir =  "../updateData/pkgClassify/sortByVote/"
         
         for (categoryType, categoryFile) in CLASSIFY_FILES:
             sortRecommendList = []

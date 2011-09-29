@@ -53,22 +53,22 @@ class NavigateBar:
         self.navAlign.add(self.navBox)
         self.box.pack_start(self.navAlign, True, True)
         
-        self.recommendIcon      = self.createNavIcon("精选推荐", "./theme/default/navigate/nav_recommend.png", PAGE_RECOMMEND)
+        self.recommendIcon      = self.createNavIcon("精选推荐", "../theme/default/navigate/nav_recommend.png", PAGE_RECOMMEND)
         self.navBox.pack_start(self.recommendIcon, False, False, self.iconPadding)
         
-        self.repositoryIcon     = self.createNavIcon("软件仓库", "./theme/default/navigate/nav_repo.png", PAGE_REPO)
+        self.repositoryIcon     = self.createNavIcon("软件仓库", "../theme/default/navigate/nav_repo.png", PAGE_REPO)
         self.navBox.pack_start(self.repositoryIcon, False, False, self.iconPadding)
         
-        self.updateIcon         = self.createUpdateIcon("软件更新", "./theme/default/navigate/nav_update.png", PAGE_UPGRADE)
+        self.updateIcon         = self.createUpdateIcon("软件更新", "../theme/default/navigate/nav_update.png", PAGE_UPGRADE)
         self.navBox.pack_start(self.updateIcon, False, False, self.iconPadding)
         
-        self.uninstallIcon      = self.createNavIcon("软件卸载", "./theme/default/navigate/nav_uninstall.png", PAGE_UNINSTALL)
+        self.uninstallIcon      = self.createNavIcon("软件卸载", "../theme/default/navigate/nav_uninstall.png", PAGE_UNINSTALL)
         self.navBox.pack_start(self.uninstallIcon, False, False, self.iconPadding)
 
-        self.runningIcon      = self.createNavIcon("正在运行", "./theme/default/navigate/nav_running.png", PAGE_RUNNING)
+        self.runningIcon      = self.createNavIcon("正在运行", "../theme/default/navigate/nav_running.png", PAGE_RUNNING)
         self.navBox.pack_start(self.runningIcon, False, False, self.iconPadding)
         
-        self.moreIcon      = self.createNavIcon("更多功能", "./theme/default/navigate/nav_more.png", PAGE_MORE)
+        self.moreIcon      = self.createNavIcon("更多功能", "../theme/default/navigate/nav_more.png", PAGE_MORE)
         self.navBox.pack_start(self.moreIcon, False, False, self.iconPadding)
 
         self.box.show_all()
@@ -78,7 +78,7 @@ class NavigateBar:
         eventBox = gtk.EventBox()
         eventBox.set_visible_window(False)
         navBox = gtk.VBox()
-        navImage = gtk.image_new_from_pixbuf(gtk.gdk.pixbuf_new_from_file("./theme/default/navigate/logo.png"))
+        navImage = gtk.image_new_from_pixbuf(gtk.gdk.pixbuf_new_from_file("../theme/default/navigate/logo.png"))
         navBox.pack_start(navImage, False)
         eventBox.add(navBox)
         eventBox.show_all()
@@ -91,8 +91,8 @@ class NavigateBar:
         updateButtonSetBackground(
             eventButton,
             iconName, iconPath,
-            "./theme/default/navigate/menu_hover.png",
-            "./theme/default/navigate/menu_press.png",
+            "../theme/default/navigate/menu_hover.png",
+            "../theme/default/navigate/menu_press.png",
             pageId,
             self.getPageId,
             self.getUpgradableNum
@@ -106,8 +106,8 @@ class NavigateBar:
         navButtonSetBackground(
             eventButton,
             iconName, iconPath,
-            "./theme/default/navigate/menu_hover.png",
-            "./theme/default/navigate/menu_press.png",
+            "../theme/default/navigate/menu_hover.png",
+            "../theme/default/navigate/menu_press.png",
             pageId,
             self.getPageId
             )

@@ -71,9 +71,9 @@ class DeepinSoftwareCenter():
         gtk.gdk.threads_init()
         
         # Shape.
-        self.topbarPixbuf = gtk.gdk.pixbuf_new_from_file("./theme/default/navigate/background.png")
+        self.topbarPixbuf = gtk.gdk.pixbuf_new_from_file("../theme/default/navigate/background.png")
 
-        self.bottombarPixbuf = gtk.gdk.pixbuf_new_from_file("./theme/default/statusbar/background.png")
+        self.bottombarPixbuf = gtk.gdk.pixbuf_new_from_file("../theme/default/statusbar/background.png")
         self.bottomHeight = self.bottombarPixbuf.get_height()
 
         # Init apt cache.
@@ -127,7 +127,7 @@ class DeepinSoftwareCenter():
         eventBoxSetBackground(
             self.topbar,
             True, False,
-            "./theme/default/navigate/background.png")
+            "../theme/default/navigate/background.png")
         # make window movable or re-sizable even window is decorated.
         self.topbar.connect('button-press-event',
                             lambda w, e: utils.moveWindow(w, e, self.window))
@@ -649,7 +649,7 @@ class DeepinSoftwareCenter():
         window.set_default_size(self.DEFAULT_WIDTH, -1)
 
         # Set icon.
-        gtk.window_set_default_icon_from_file("./theme/default/icon/icon.ico")
+        gtk.window_set_default_icon_from_file("../theme/default/icon/icon.ico")
 
         return window
 
@@ -730,8 +730,8 @@ class DeepinSoftwareCenter():
         self.mainBox.pack_start(self.statusbar.eventbox, False, False)
 
         # Adjust body box height.
-        topbarHeight = gtk.gdk.pixbuf_new_from_file("./theme/default/topbar/background.png").get_height()
-        subCategoryHeight = gtk.gdk.pixbuf_new_from_file("./theme/default/category/sidebar_normal.png").get_height()
+        topbarHeight = gtk.gdk.pixbuf_new_from_file("../theme/default/topbar/background.png").get_height()
+        subCategoryHeight = gtk.gdk.pixbuf_new_from_file("../theme/default/category/sidebar_normal.png").get_height()
         subCategoryNum = len(self.repoCache.getCategorys())
         self.bodyBox.set_size_request(-1, topbarHeight + subCategoryHeight * subCategoryNum)
 

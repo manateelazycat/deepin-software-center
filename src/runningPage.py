@@ -71,66 +71,21 @@ class Topbar:
         self.statusBoxAlign.add(self.statusBox)
         self.box.pack_start(self.statusBoxAlign)
         
-        self.installingLabel = gtk.Label()
-        self.installingEventBox = gtk.EventBox()
-        utils.setToggleLabel(
-            self.installingEventBox,
-            self.installingLabel,
-            "<span foreground='%s' size='%s' underline='single'>%s</span>" % (self.selectColor, LABEL_FONT_SIZE, "正在安装"),
-            "<span foreground='%s' size='%s' >%s</span>" % (self.normalColor, LABEL_FONT_SIZE, "正在安装"),
-            "<span foreground='%s' size='%s' >%s</span>" % (self.hoverColor, LABEL_FONT_SIZE, "正在安装"),
-            "<span foreground='%s' size='%s' underline='single'>%s</span>" % (self.selectColor, LABEL_FONT_SIZE, "正在安装"),
-            self.statusInstalling,
-            self.setStatus,
-            self.getStatus
-            )
+        (self.installingLabel, self.installingEventBox) = utils.setDefaultToggleLabel(
+            "正在安装", self.statusInstalling, self.setStatus, self.getStatus, True)
         self.statusBox.pack_start(self.installingEventBox, False, False, self.statusPaddingX)
 
-        self.updatingLabel = gtk.Label()
-        self.updatingEventBox = gtk.EventBox()
-        utils.setToggleLabel(
-            self.updatingEventBox,
-            self.updatingLabel,
-            "<span foreground='%s' size='%s' >%s</span>" % (self.normalColor, LABEL_FONT_SIZE, "正在升级"),
-            "<span foreground='%s' size='%s' >%s</span>" % (self.normalColor, LABEL_FONT_SIZE, "正在升级"),
-            "<span foreground='%s' size='%s' >%s</span>" % (self.hoverColor, LABEL_FONT_SIZE, "正在升级"),
-            "<span foreground='%s' size='%s' underline='single'>%s</span>" % (self.selectColor, LABEL_FONT_SIZE, "正在升级"),
-            self.statusUpdating,
-            self.setStatus,
-            self.getStatus
-            )
+        (self.updatingLabel, self.updatingEventBox) = utils.setDefaultToggleLabel(
+            "正在升级", self.statusUpdating, self.setStatus, self.getStatus, False)
         self.statusBox.pack_start(self.updatingEventBox, False, False, self.statusPaddingX)
 
-        self.uninstallingLabel = gtk.Label()
-        self.uninstallingEventBox = gtk.EventBox()
-        utils.setToggleLabel(
-            self.uninstallingEventBox,
-            self.uninstallingLabel,
-            "<span foreground='%s' size='%s' >%s</span>" % (self.normalColor, LABEL_FONT_SIZE, "正在卸载"),
-            "<span foreground='%s' size='%s' >%s</span>" % (self.normalColor, LABEL_FONT_SIZE, "正在卸载"),
-            "<span foreground='%s' size='%s' >%s</span>" % (self.hoverColor, LABEL_FONT_SIZE, "正在卸载"),
-            "<span foreground='%s' size='%s' underline='single'>%s</span>" % (self.selectColor, LABEL_FONT_SIZE, "正在卸载"),
-            self.statusUninstalling,
-            self.setStatus,
-            self.getStatus
-            )
+        (self.uninstallingLabel, self.uninstallingEventBox) = utils.setDefaultToggleLabel(
+            "正在卸载", self.statusUninstalling, self.setStatus, self.getStatus, False)
         self.statusBox.pack_start(self.uninstallingEventBox, False, False, self.statusPaddingX)
         
         # Add download directory button.
-        self.openDirectoryLabel = gtk.Label()
-        self.openDirectoryLabel.set_markup(
-            "<span foreground='%s' size='%s'>%s</span>" % (self.normalColor, LABEL_FONT_SIZE, "打开下载目录"))
-        self.openDirectoryEventBox = gtk.EventBox()
-        self.openDirectoryEventBox.set_visible_window(False)
-        self.openDirectoryEventBox.add(self.openDirectoryLabel)
+        (self.openDirectoryLabel, self.openDirectoryEventBox) = utils.setDefaultClickableLabel("打开下载目录")
         self.openDirectoryEventBox.connect("button-press-event", lambda w, e: utils.runCommand("xdg-open /var/cache/apt/archives"))
-        utils.setClickableLabel(
-            self.openDirectoryEventBox,
-            self.openDirectoryLabel,
-            "<span foreground='%s' size='%s'>%s</span>" % (self.normalColor, LABEL_FONT_SIZE, "打开下载目录"),
-            "<span foreground='%s' size='%s'>%s</span>" % (self.hoverColor, LABEL_FONT_SIZE, "打开下载目录"),
-            True
-            )
         self.box.pack_start(self.openDirectoryEventBox, False, False)
 
     def setStatus(self, status):

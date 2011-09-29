@@ -169,7 +169,7 @@ class SlideItem(DownloadItem):
         else:
             appInstalledLabel = gtk.Label()
             appInstalledLabel.set_markup("<span foreground='#FFFFFF' size='%s'>%s</span>" % (LABEL_FONT_LARGE_SIZE, "已安装"))
-            buttonImage = gtk.gdk.pixbuf_new_from_file("./theme/default/cell/update_hover.png")
+            buttonImage = gtk.gdk.pixbuf_new_from_file("../theme/default/cell/update_hover.png")
             appInstalledLabel.set_size_request(buttonImage.get_width(), buttonImage.get_height())
             actionButtonBox.pack_start(appInstalledLabel)
 
@@ -191,12 +191,12 @@ class SlideBar:
         self.repoCache = repoCache
         lang = getDefaultLanguage()
         if lang == "zh_CN":
-            self.slideDir = "./updateData/slide/zh_CN"
+            self.slideDir = "../updateData/slide/zh_CN"
         elif lang == "zh_TW":
-            self.slideDir = "./updateData/slide/zh_TW"
+            self.slideDir = "../updateData/slide/zh_TW"
         else:
-            self.slideDir = "./updateData/slide/default"
-        self.infoList = (evalFile("%s/index.txt" % (self.slideDir)))
+            self.slideDir = "../updateData/slide/default"
+        self.infoList = evalFile("%s/index.txt" % (self.slideDir))
         self.itemDict = sortedDict.SortedDict(map(lambda (pkgName, _): (pkgName, None), self.infoList))
         self.initItems(switchStatus, downloadQueue)
         self.sourceIndex = 1
@@ -204,7 +204,7 @@ class SlideBar:
         
         self.sourceImage = self.createSlideImage(self.sourceIndex)
         self.targetImage = self.createSlideImage(self.targetIndex)
-        self.maskPixbuf = gtk.gdk.pixbuf_new_from_file("./updateData/slide/mask.png")
+        self.maskPixbuf = gtk.gdk.pixbuf_new_from_file("../updateData/slide/mask.png")
         
         self.stop = True
         self.ticker = self.times

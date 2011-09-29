@@ -91,37 +91,15 @@ class Topbar:
         self.unselectAllId = "unselectAll"
         self.labelId = self.selectAllId
         
-        self.selectAllLabel = gtk.Label()
-        self.selectAllEventBox = gtk.EventBox()
+        (self.selectAllLabel, self.selectAllEventBox) = utils.setDefaultToggleLabel(
+            "全选", self.selectAllId, self.setLabelId, self.getLabelId, True)
         self.selectAllEventBox.connect("button-press-event", lambda w, e: selectAllPkgCallback())
         upgradeBox.pack_start(self.selectAllEventBox, False, False, self.paddingX)
-        utils.setToggleLabel(
-            self.selectAllEventBox,
-            self.selectAllLabel,
-            "<span foreground='%s' size='%s' underline='single'>%s</span>" % (self.selectColor, LABEL_FONT_SIZE, "全选"),
-            "<span foreground='%s' size='%s'>%s</span>" % (self.normalColor, LABEL_FONT_SIZE, "全选"),
-            "<span foreground='%s' size='%s'>%s</span>" % (self.hoverColor, LABEL_FONT_SIZE, "全选"),
-            "<span foreground='%s' size='%s' underline='single'>%s</span>" % (self.selectColor, LABEL_FONT_SIZE, "全选"),
-            self.selectAllId,
-            self.setLabelId,
-            self.getLabelId
-            )
         
-        self.unselectAllLabel = gtk.Label()
-        self.unselectAllEventBox = gtk.EventBox()
+        (self.unselectAllLabel, self.unselectAllEventBox) = utils.setDefaultToggleLabel(
+            "全不选", self.unselectAllId, self.setLabelId, self.getLabelId, False)
         self.unselectAllEventBox.connect("button-press-event", lambda w, e: unselectAllPkgCallback())
         upgradeBox.pack_start(self.unselectAllEventBox, False, False, self.paddingX)
-        utils.setToggleLabel(
-            self.unselectAllEventBox,
-            self.unselectAllLabel,
-            "<span foreground='%s' size='%s'>%s</span>" % (self.normalColor, LABEL_FONT_SIZE, "全不选"),
-            "<span foreground='%s' size='%s'>%s</span>" % (self.normalColor, LABEL_FONT_SIZE, "全不选"),
-            "<span foreground='%s' size='%s'>%s</span>" % (self.hoverColor, LABEL_FONT_SIZE, "全不选"),
-            "<span foreground='%s' size='%s' underline='single'>%s</span>" % (self.selectColor, LABEL_FONT_SIZE, "全不选"),
-            self.unselectAllId,
-            self.setLabelId,
-            self.getLabelId
-            )
         
         (self.upgradeButton, upgradeButtonAlign) = newActionButton(
              "update_selected", 0.0, 0.5, "cell", True, "升级选中的软件", BUTTON_FONT_SIZE_MEDIUM, "#FFFFFF")

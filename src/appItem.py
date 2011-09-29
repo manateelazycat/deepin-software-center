@@ -406,7 +406,7 @@ class DownloadItem:
                 
                 self.itemFrame.show_all()
                 
-def createItemBasicBox(appInfo, maxWidth, parent, entryDetailCallback, showVersion=True):
+def createItemBasicBox(appInfo, maxWidth, parent, entryDetailCallback, showUpgradeVersion=False):
     '''Create item information.'''
     # Init.
     appBasicAlign = gtk.Alignment()
@@ -449,27 +449,24 @@ def createItemBasicBox(appInfo, maxWidth, parent, entryDetailCallback, showVersi
     
     utils.setHelpTooltip(appNameEventBox, "点击查看详细信息")
     
-    pkgVersion = utils.getPkgVersion(pkg)
+    # pkgVersion = utils.getPkgVersion(pkg)
+    if showUpgradeVersion:
+        pkgVersion = utils.getPkgNewestVersion(pkg)
+    else:
+        pkgVersion = utils.getPkgVersion(pkg)
+    
     nameMarkup = "<span foreground='#1A3E88' size='%s'>%s</span>" % (LABEL_FONT_SIZE, pkgName)
     nameActiveMarkup = "<span foreground='#0084FF' size='%s'>%s</span>" % (LABEL_FONT_SIZE, pkgName)
     versionMarkup = "<span foreground='#7d8087' size='%s'> (%s)</span>" % (LABEL_FONT_SIZE, pkgVersion)
     versionActiveMarkup = "<span foreground='#555555' size='%s'> (%s)</span>" % (LABEL_FONT_SIZE, pkgVersion)
-    if showVersion:
-        appName.set_markup(nameMarkup + versionMarkup)
-        utils.setClickableLabel(
-            appNameEventBox,
-            appName,
-            nameMarkup + versionMarkup,
-            nameActiveMarkup + versionActiveMarkup,
-            )
-    else:
-        appName.set_markup(nameMarkup)
-        utils.setClickableLabel(
-            appNameEventBox,
-            appName,
-            nameMarkup,
-            nameActiveMarkup,
-            )
+    
+    appName.set_markup(nameMarkup + versionMarkup)
+    utils.setClickableLabel(
+        appNameEventBox,
+        appName,
+        nameMarkup + versionMarkup,
+        nameActiveMarkup + versionActiveMarkup,
+        )
     
     # Add application summary.
     summary = utils.getPkgShortDesc(pkg)
@@ -600,46 +597,21 @@ class VoteView:
         
         self.starBox.pack_start(starBox)
         
-        self.voteLabel = gtk.Label()
-        self.voteLabel.set_markup("<span foreground='#1A3E88' size='%s'>评分</span>" % (LABEL_FONT_SIZE))
-        self.voteEventBox = gtk.EventBox()
-        self.voteEventBox.set_visible_window(False)
-        self.voteEventBox.add(self.voteLabel)
+        (self.voteLabel, self.voteEventBox) = utils.setDefaultClickableLabel("评分")
         self.voteEventBox.connect("button-press-event", lambda w, e: self.switchFocusStatus(self.FOCUS_STAR))
         self.voteBox.pack_start(self.voteEventBox)
-        utils.setClickableLabel(
-            self.voteEventBox,
-            self.voteLabel,
-            "<span foreground='#1A3E88' size='%s'>评分</span>" % (LABEL_FONT_SIZE),
-            "<span foreground='#0084FF' size='%s'>评分</span>" % (LABEL_FONT_SIZE))
         
-        self.rate = gtk.Label()
-        self.rateEventBox = gtk.EventBox()
-        self.rateEventBox.set_visible_window(False)
-        self.rateEventBox.add(self.rate)
+        if self.voteNum == 0:
+            (self.rate, self.rateEventBox) = utils.setDefaultClickableLabel("抢沙发!")
+        else:
+            (self.rate, self.rateEventBox) = utils.setDefaultClickableLabel("%s 评论" % (self.voteNum))
+        
         self.rateEventBox.connect("button-press-event", 
-                             lambda w, e: self.entryDetailCallback(self.pageId, self.appInfo))
+                                  lambda w, e: self.entryDetailCallback(self.pageId, self.appInfo))
         rateAlign = gtk.Alignment()
         rateAlign.set(1.0, 0.5, 0.0, 0.0)
         rateAlign.add(self.rateEventBox)
         self.voteBox.pack_start(rateAlign)
-        
-        if self.voteNum == 0:
-            self.rate.set_markup("<span foreground='#1A3E88' size='%s'>抢沙发!</span>" % (LABEL_FONT_SIZE))
-            
-            utils.setClickableLabel(
-                self.rateEventBox,
-                self.rate,
-                "<span foreground='#1A3E88' size='%s'>抢沙发!</span>" % (LABEL_FONT_SIZE),
-                "<span foreground='#0084FF' size='%s'>抢沙发!</span>" % (LABEL_FONT_SIZE))
-        else:
-            self.rate.set_markup("<span foreground='#1A3E88' size='%s'>%s 评论</span>" % (LABEL_FONT_SIZE, self.voteNum))
-            
-            utils.setClickableLabel(
-                self.rateEventBox,
-                self.rate,
-                "<span foreground='#1A3E88' size='%s'>%s 评论</span>" % (LABEL_FONT_SIZE, self.voteNum),
-                "<span foreground='#0084FF' size='%s'>%s 评论</span>" % (LABEL_FONT_SIZE, self.voteNum))
 
     def drawFocusInit(self):
         '''Draw focus out.'''

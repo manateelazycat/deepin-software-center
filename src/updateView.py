@@ -83,8 +83,8 @@ class UpdateItem(DownloadItem):
         checkButtonSetBackground(
             self.checkButton,
             False, False, 
-            "./theme/default/cell/select.png",
-            "./theme/default/cell/selected.png",
+            "../theme/default/cell/select.png",
+            "../theme/default/cell/selected.png",
             )
         self.checkAlign = gtk.Alignment()
         self.checkAlign.set(0.5, 0.5, 0.0, 0.0)
@@ -92,7 +92,7 @@ class UpdateItem(DownloadItem):
         self.checkAlign.add(self.checkButton)
         self.itemBox.pack_start(self.checkAlign, False, False)
         
-        self.appBasicBox = createItemBasicBox(self.appInfo, 560, self.itemBox, self.entryDetailView, False) 
+        self.appBasicBox = createItemBasicBox(self.appInfo, 300, self.itemBox, self.entryDetailView, True) 
         self.itemBox.pack_start(self.appBasicBox, True, True)
         
         self.appAdditionBox = gtk.HBox()
@@ -147,47 +147,6 @@ class UpdateItem(DownloadItem):
         # Clean right box first.
         utils.containerRemoveAll(self.appAdditionBox)
         
-        # Add application version.
-        currentVersion = pkg.installed.version
-        if len(pkg.versions) == 0:
-            upgradeVersion = "错误的版本, 请报告错误！"
-        else:
-            upgradeVersion = pkg.versions[0].version
-            
-        versionBox = gtk.VBox()
-        versionAlign = gtk.Alignment()        
-        versionAlign.set(0.0, 0.5, 0.0, 0.0)
-        versionAlign.add(versionBox)
-        self.appAdditionBox.pack_start(versionAlign, True, True, self.APP_RIGHT_PADDING_X)
-        
-        currentVersionBox = gtk.HBox()
-        versionBox.pack_start(currentVersionBox, False, False)
-        
-        currentVersionName = gtk.Label()
-        currentVersionName.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, "当前版本: "))
-        currentVersionBox.pack_start(currentVersionName, False, False)
-        
-        currentVersionNum = gtk.Label()
-        currentVersionNum.set_ellipsize(pango.ELLIPSIZE_MIDDLE)
-        currentVersionNum.set_markup("<span foreground='#7d8087' size='%s'>%s</span>" % (LABEL_FONT_SIZE, currentVersion))
-        currentVersionNum.set_size_request(self.VERSION_LABEL_WIDTH, -1)
-        currentVersionNum.set_alignment(0.0, 0.5)
-        currentVersionBox.pack_start(currentVersionNum, False, False)
-        
-        upgradeVersionBox = gtk.HBox()
-        versionBox.pack_start(upgradeVersionBox, False, False)
-        
-        upgradeVersionName = gtk.Label()
-        upgradeVersionName.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, "升级版本: "))
-        upgradeVersionBox.pack_start(upgradeVersionName, False, False)
-        
-        upgradeVersionNum = gtk.Label()
-        upgradeVersionNum.set_ellipsize(pango.ELLIPSIZE_MIDDLE)
-        upgradeVersionNum.set_markup("<span foreground='#006efe' size='%s'>%s</span>" % (LABEL_FONT_SIZE, upgradeVersion))
-        upgradeVersionNum.set_size_request(self.VERSION_LABEL_WIDTH, -1)
-        upgradeVersionNum.set_alignment(0.0, 0.5)
-        upgradeVersionBox.pack_start(upgradeVersionNum, False, False)
-            
         # Add application size.
         size = utils.getPkgSize(pkg)
         appSize = gtk.Label()
@@ -202,6 +161,11 @@ class UpdateItem(DownloadItem):
             self.entryDetailCallback,
             self.sendVoteCallback)
         self.appAdditionBox.pack_start(self.appVoteView.eventbox, False, False)
+        
+        # Add ignore button.
+        (ignoreLabel, ignoreEventBox) = utils.setDefaultClickableLabel(
+            "不再提醒")
+        self.appAdditionBox.pack_start(ignoreEventBox, False, False)
         
         # Add action button.
         (actionButtonBox, actionButtonAlign) = createActionButton()
@@ -302,7 +266,7 @@ class UpdateView(appView.AppView):
             self.box.pack_start(notifyAlign)
             
             notifyIconAlignX = 5
-            notifyIcon = gtk.image_new_from_file("./theme/default/update/smile.gif")
+            notifyIcon = gtk.image_new_from_file("../theme/default/update/smile.gif")
             notifyIconAlign = gtk.Alignment()
             notifyIconAlign.set(0.5, 1.0, 0.0, 0.0)
             notifyIconAlign.set_padding(0, 0, notifyIconAlignX, notifyIconAlignX)

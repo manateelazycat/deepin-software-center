@@ -143,49 +143,16 @@ class Topbar:
         self.hoverColor = '#0084FF'
         self.selectColor = '#000000'
         
-        self.sortRecommendLabel = gtk.Label()
-        self.sortRecommendEventBox = gtk.EventBox()
-        utils.setToggleLabel(
-            self.sortRecommendEventBox,
-            self.sortRecommendLabel,
-            "<span foreground='%s' size='%s' underline='single'>%s</span>" % (self.selectColor, LABEL_FONT_SIZE, "按推荐排序"),
-            "<span foreground='%s' size='%s' >%s</span>" % (self.normalColor, LABEL_FONT_SIZE, "按推荐排序"),
-            "<span foreground='%s' size='%s' >%s</span>" % (self.hoverColor, LABEL_FONT_SIZE, "按推荐排序"),
-            "<span foreground='%s' size='%s' underline='single'>%s</span>" % (self.selectColor, LABEL_FONT_SIZE, "按推荐排序"),
-            self.sortRecommendId,
-            self.setSortType,
-            self.getSortType
-            )
+        (self.sortRecommendLabel, self.sortRecommendEventBox) = utils.setDefaultToggleLabel(
+            "按推荐排序", self.sortRecommendId, self.setSortType, self.getSortType, True)
         self.sortRecommendEventBox.connect("button-press-event", lambda w, e: self.updateCategoryCallback())
         
-        self.sortDownloadLabel = gtk.Label()
-        self.sortDownloadEventBox = gtk.EventBox()
-        utils.setToggleLabel(
-            self.sortDownloadEventBox,
-            self.sortDownloadLabel,
-            "<span foreground='%s' size='%s' >%s</span>" % (self.normalColor, LABEL_FONT_SIZE, "按下载排序"),
-            "<span foreground='%s' size='%s' >%s</span>" % (self.normalColor, LABEL_FONT_SIZE, "按下载排序"),
-            "<span foreground='%s' size='%s' >%s</span>" % (self.hoverColor, LABEL_FONT_SIZE, "按下载排序"),
-            "<span foreground='%s' size='%s' underline='single'>%s</span>" % (self.selectColor, LABEL_FONT_SIZE, "按下载排序"),
-            self.sortDownloadId,
-            self.setSortType,
-            self.getSortType
-            )
+        (self.sortDownloadLabel, self.sortDownloadEventBox) = utils.setDefaultToggleLabel(
+            "按下载排序", self.sortDownloadId, self.setSortType, self.getSortType, False)
         self.sortDownloadEventBox.connect("button-press-event", lambda w, e: self.updateCategoryCallback())
 
-        self.sortVoteLabel = gtk.Label()
-        self.sortVoteEventBox = gtk.EventBox()
-        utils.setToggleLabel(
-            self.sortVoteEventBox,
-            self.sortVoteLabel,
-            "<span foreground='%s' size='%s' >%s</span>" % (self.normalColor, LABEL_FONT_SIZE, "按评分排序"),
-            "<span foreground='%s' size='%s' >%s</span>" % (self.normalColor, LABEL_FONT_SIZE, "按评分排序"),
-            "<span foreground='%s' size='%s' >%s</span>" % (self.hoverColor, LABEL_FONT_SIZE, "按评分排序"),
-            "<span foreground='%s' size='%s' underline='single'>%s</span>" % (self.selectColor, LABEL_FONT_SIZE, "按评分排序"),
-            self.sortVoteId,
-            self.setSortType,
-            self.getSortType
-            )
+        (self.sortVoteLabel, self.sortVoteEventBox) = utils.setDefaultToggleLabel(
+            "按评分排序", self.sortVoteId, self.setSortType, self.getSortType, False)
         self.sortVoteEventBox.connect("button-press-event", lambda w, e: self.updateCategoryCallback())
         
         self.sortButtonPaddingX = 5

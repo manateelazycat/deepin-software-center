@@ -308,9 +308,9 @@ def updateButtonSetBackground(
     hoverPixbuf = gtk.gdk.pixbuf_new_from_file(hoverImg)
     pressPixbuf = gtk.gdk.pixbuf_new_from_file(pressImg)
     
-    numBgLeftPixbuf = gtk.gdk.pixbuf_new_from_file("./theme/default/navigate/notify_bg_left.png")
-    numBgMiddlePixbuf = gtk.gdk.pixbuf_new_from_file("./theme/default/navigate/notify_bg_middle.png")
-    numBgRightPixbuf = gtk.gdk.pixbuf_new_from_file("./theme/default/navigate/notify_bg_right.png")
+    numBgLeftPixbuf = gtk.gdk.pixbuf_new_from_file("../theme/default/navigate/notify_bg_left.png")
+    numBgMiddlePixbuf = gtk.gdk.pixbuf_new_from_file("../theme/default/navigate/notify_bg_middle.png")
+    numBgRightPixbuf = gtk.gdk.pixbuf_new_from_file("../theme/default/navigate/notify_bg_right.png")
     
     requestWidth = hoverPixbuf.get_width()
     requestHeight = hoverPixbuf.get_height()
@@ -366,7 +366,7 @@ def updateButtonOnExpose(
     # Draw upgradable number.
     if upgradableNum > 0 and upgradableNum < 100000:
         # Init.
-        numPixbuf = gtk.gdk.pixbuf_new_from_file("./theme/default/navigate/0.png")
+        numPixbuf = gtk.gdk.pixbuf_new_from_file("../theme/default/navigate/0.png")
         numBgLeftWidth = numBgLeftPixbuf.get_width()      
         numBgLeftHeight = numBgLeftPixbuf.get_height()    
         numWidth = numPixbuf.get_width()                  
@@ -384,7 +384,7 @@ def updateButtonOnExpose(
         
         # Draw number.
         for (i, c) in enumerate(str(upgradableNum)):
-            numPixbuf = gtk.gdk.pixbuf_new_from_file("./theme/default/navigate/%s.png" % c)
+            numPixbuf = gtk.gdk.pixbuf_new_from_file("../theme/default/navigate/%s.png" % c)
             drawPixbuf(cr, numPixbuf,
                        numX + numBgLeftWidth + i * numWidth,
                        numY + (numBgLeftHeight - numHeight) / 2)
@@ -572,9 +572,9 @@ def drawBackground(widget, event, color, borderColor=None, borderWidth=3):
 
 def drawDetailItemBackground(widget):
     '''Draw detail item background.'''
-    leftPixbuf = gtk.gdk.pixbuf_new_from_file("./theme/default/detail/left.png")
-    middlePixbuf = gtk.gdk.pixbuf_new_from_file("./theme/default/detail/middle.png")
-    rightPixbuf = gtk.gdk.pixbuf_new_from_file("./theme/default/detail/right.png")
+    leftPixbuf = gtk.gdk.pixbuf_new_from_file("../theme/default/detail/left.png")
+    middlePixbuf = gtk.gdk.pixbuf_new_from_file("../theme/default/detail/middle.png")
+    rightPixbuf = gtk.gdk.pixbuf_new_from_file("../theme/default/detail/right.png")
     
     widget.connect(
         "expose-event", 
@@ -814,7 +814,7 @@ def drawTopbar(widget):
     eventBoxSetBackground(
         widget,
         True, False,
-        "./theme/default/topbar/background.png")
+        "../theme/default/topbar/background.png")
 
 def drawButton(widget, iconPrefix, subDir="cell", scaleX=False, 
                buttonLabel=None, fontSize=None, labelColor=None):
@@ -822,9 +822,9 @@ def drawButton(widget, iconPrefix, subDir="cell", scaleX=False,
     buttonSetBackground(
         widget,
         scaleX, False,
-        "./theme/default/%s/%s_normal.png" % (subDir, iconPrefix),
-        "./theme/default/%s/%s_hover.png" % (subDir, iconPrefix),
-        "./theme/default/%s/%s_press.png" % (subDir, iconPrefix),
+        "../theme/default/%s/%s_normal.png" % (subDir, iconPrefix),
+        "../theme/default/%s/%s_hover.png" % (subDir, iconPrefix),
+        "../theme/default/%s/%s_press.png" % (subDir, iconPrefix),
         buttonLabel, fontSize, labelColor
         )
     
@@ -833,19 +833,19 @@ def drawSimpleButton(widget, img):
     simpleButtonSetBackground(
         widget,
         False, False,
-        "./theme/default/cell/%s.png" % (img)
+        "../theme/default/cell/%s.png" % (img)
         )
     
 def drawListItem(widget, index, getSelectIndex, selectable=True):
     '''Draw list item.'''
     if selectable:
-        selectImg = "./theme/default/cell/list_item_select.png"
+        selectImg = "../theme/default/cell/list_item_select.png"
     else:
-        selectImg = "./theme/default/cell/list_item.png"
+        selectImg = "../theme/default/cell/list_item.png"
     try:
         listItemSetBackground(
             widget,
-            "./theme/default/cell/list_item.png",
+            "../theme/default/cell/list_item.png",
             selectImg,
             index, getSelectIndex
             )
@@ -856,9 +856,9 @@ def drawTitlebar(widget):
     '''Draw title bar.'''
     titlebarSetBackground(
         widget,
-        "./theme/default/recommend/title_left.png",
-        "./theme/default/recommend/title_middle.png",
-        "./theme/default/recommend/title_right.png",
+        "../theme/default/recommend/title_left.png",
+        "../theme/default/recommend/title_middle.png",
+        "../theme/default/recommend/title_right.png",
         )
     
 def drawFont(cr, content, fontSize, fontColor, x, y):
@@ -882,24 +882,24 @@ def drawProgressbar(width):
     '''Draw progressbar.'''
     return pb.Progressbar(
         width,
-        "./theme/default/cell/download_bg_left.png",
-        "./theme/default/cell/download_bg_middle.png",
-        "./theme/default/cell/download_bg_right.png",
-        "./theme/default/cell/download_fg_left.png",
-        "./theme/default/cell/download_fg_middle.png",
-        "./theme/default/cell/download_fg_right.png",
+        "../theme/default/cell/download_bg_left.png",
+        "../theme/default/cell/download_bg_middle.png",
+        "../theme/default/cell/download_bg_right.png",
+        "../theme/default/cell/download_fg_left.png",
+        "../theme/default/cell/download_fg_middle.png",
+        "../theme/default/cell/download_fg_right.png",
         )
     
 def drawProgressbarWithoutBorder(width):
     '''Draw progressbar without border.'''
     return pb.Progressbar(
         width,
-        "./theme/default/cell/progress_bg_left.png",
-        "./theme/default/cell/progress_bg_middle.png",
-        "./theme/default/cell/progress_bg_right.png",
-        "./theme/default/cell/progress_fg_left.png",
-        "./theme/default/cell/progress_fg_middle.png",
-        "./theme/default/cell/progress_fg_right.png",
+        "../theme/default/cell/progress_bg_left.png",
+        "../theme/default/cell/progress_bg_middle.png",
+        "../theme/default/cell/progress_bg_right.png",
+        "../theme/default/cell/progress_fg_left.png",
+        "../theme/default/cell/progress_fg_middle.png",
+        "../theme/default/cell/progress_fg_right.png",
         True
         )
     

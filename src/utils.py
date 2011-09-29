@@ -84,7 +84,7 @@ def getStarPath(starIndex, starLevel):
         else:
             imgPath = "star_gray.png"
             
-    imgDir = "./theme/default/cell/"
+    imgDir = "../theme/default/cell/"
     return imgDir + imgPath
 
 def getFontFamilies():
@@ -101,11 +101,11 @@ def getScreenSize(widget):
 
 def getPkgIcon(pkg, iconWidth=32, iconHeight=32):
     '''Get package icon.'''
-    iconPath = "./pkgData/AppIcon/" + pkg.name + ".png"
+    iconPath = "../pkgData/AppIcon/" + pkg.name + ".png"
     if os.path.exists (iconPath):
         return gtk.image_new_from_pixbuf(gtk.gdk.pixbuf_new_from_file_at_size(iconPath, iconWidth, iconHeight))
     else:
-        return gtk.image_new_from_pixbuf(gtk.gdk.pixbuf_new_from_file_at_size("./theme/default/icon/appIcon.ico", 
+        return gtk.image_new_from_pixbuf(gtk.gdk.pixbuf_new_from_file_at_size("../theme/default/icon/appIcon.ico", 
                                                                               iconWidth, iconHeight))
 def getPkgName(pkg):
     '''Get package name.'''
@@ -121,7 +121,7 @@ def evalFile(filepath):
 
 def getPkgShortDesc(pkg):
     '''Get package's short description.'''
-    pkgPath = "./pkgData/pkgInfo/" + pkg.name
+    pkgPath = "../pkgData/pkgInfo/" + pkg.name
     if os.path.exists(pkgPath):
         lang = getDefaultLanguage()
         if lang == "zh_CN":
@@ -137,7 +137,7 @@ def getPkgShortDesc(pkg):
 
 def getPkgLongDesc(pkg):
     '''Get package's long description.'''
-    pkgPath = "./pkgData/pkgInfo/" + pkg.name
+    pkgPath = "../pkgData/pkgInfo/" + pkg.name
     if os.path.exists(pkgPath):
         lang = getDefaultLanguage()
         if lang == "zh_CN":
@@ -156,13 +156,17 @@ def getPkgVersion(pkg):
     # Return current version if package has installed. 
     if pkg.is_installed:
         return pkg.installed.version    
-    # Otherwise return newest version.
+    # Otherwise return candidate version.
     else:
         return pkg.candidate.version
 
 def getPkgNewestVersion(pkg):
     '''Get package's newest version.'''
-    return pkg.candidate.version
+    if len(pkg.versions) == 0:
+        print "%s: length of pkg.versions equal 0." % (getPkgName(pkg))
+        return pkg.candidate.version
+    else:
+        return pkg.versions[0].version
 
 def getPkgSection(pkg):
     '''Get package's section.'''
@@ -408,6 +412,32 @@ def setMarkup(label, markup):
     
     return False
 
+def setDefaultToggleLabel(content, status, setStatus, getStatus, selectDefault=True):
+    '''Set default toggle label, return label and eventbox.'''
+    normalColor = '#1A3E88'
+    hoverColor = '#0084FF'
+    selectColor = '#000000'
+    
+    label = gtk.Label()
+    eventbox = gtk.EventBox()
+    if selectDefault:
+        initMarkup = "<span foreground='%s' size='%s' underline='single'>%s</span>" % (selectColor, LABEL_FONT_SIZE, content)
+    else:
+        initMarkup = "<span foreground='%s' size='%s'>%s</span>" % (normalColor, LABEL_FONT_SIZE, content)
+    setToggleLabel(
+        eventbox,
+        label,
+        initMarkup,
+        "<span foreground='%s' size='%s' >%s</span>" % (normalColor, LABEL_FONT_SIZE, content),
+        "<span foreground='%s' size='%s' >%s</span>" % (hoverColor, LABEL_FONT_SIZE, content),
+        "<span foreground='%s' size='%s' underline='single'>%s</span>" % (selectColor, LABEL_FONT_SIZE, content),
+        status,
+        setStatus,
+        getStatus
+        )
+    
+    return (label, eventbox)
+
 def setToggleLabel(widget, label, initMarkup, normalMarkup, hoverMarkup, selectMarkup, labelId, setLabelId, getCurrentId):
     '''Set toggle label.'''
     # Init.
@@ -442,6 +472,25 @@ def setLabelLeaveMarkup(label, normalMarkup, selectMarkup, labelId, getCurrentId
     else:
         setMarkup(label, normalMarkup)    
 
+def setDefaultClickableLabel(content, normalColor="#1A3E88", hoverColor="#0084FF", size=LABEL_FONT_SIZE, resetAfterClick=True):
+    '''Create clickable label and return label and eventbox.'''
+    # Init.
+    label = gtk.Label()
+    label.set_markup(
+        "<span foreground='%s' size='%s'>%s</span>" % (normalColor, size, content))
+    eventbox = gtk.EventBox()
+    eventbox.set_visible_window(False)
+    eventbox.add(label)
+    setClickableLabel(
+        eventbox,
+        label,
+        "<span foreground='%s' size='%s'>%s</span>" % (normalColor, size, content),
+        "<span foreground='%s' size='%s'>%s</span>" % (hoverColor, size, content),
+        resetAfterClick
+        )
+    
+    return (label, eventbox)
+        
 def setClickableLabel(widget, label, normalMarkup, activeMarkup, resetAfterClick=True):
     '''Set click-able label.'''
     # Set label markup.

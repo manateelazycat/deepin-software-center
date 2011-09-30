@@ -30,9 +30,13 @@ import pygtk
 import utils
 pygtk.require('2.0')
 
-class UpdateItem(DownloadItem):
+class IgnoreItem():
     '''Application item.'''
     
+    PROGRESS_WIDTH = 170
+    APP_RIGHT_PADDING_X = 20
+    PROGRESS_LABEL_WIDTH_CHARS = 25
+    BUTTON_PADDING_X = 4
     MAX_CHARS = 50
     VERSION_MAX_CHARS = 30
     APP_LEFT_PADDING_X = 5
@@ -43,29 +47,23 @@ class UpdateItem(DownloadItem):
     VERSION_LABEL_WIDTH = 120
     SIZE_LABEL_WIDTH = 60
 	
-    def __init__(self, appInfo, switchStatus, downloadQueue, 
+    def __init__(self, appInfo, 
                  entryDetailCallback, sendVoteCallback,
                  index, getSelectIndex, setSelectIndex,
                  selectPkgCallback, unselectPkgCallback, 
-                 getSelectStatusCallback, addIgnorePkgCallback):
+                 getSelectStatusCallback, removeIgnorePkgCallback):
         '''Init for application item.'''
-        DownloadItem.__init__(self, appInfo, switchStatus, downloadQueue)
-        
         self.appInfo = appInfo
         self.entryDetailCallback = entryDetailCallback
         self.sendVoteCallback = sendVoteCallback
         self.selectPkgCallback = selectPkgCallback
         self.unselectPkgCallback = unselectPkgCallback
         self.getSelectStatusCallback = getSelectStatusCallback
-        self.addIgnorePkgCallback = addIgnorePkgCallback
+        self.removeIgnorePkgCallback = removeIgnorePkgCallback
         self.checkButton = None
         self.index = index
         self.setSelectIndex = setSelectIndex
         
-        # Widget that status will change.
-        self.upgradingProgressbar = None
-        self.upgradingFeedbackLabel = None
-
         # Init.
         self.itemBox = gtk.HBox()
         self.itemEventBox = gtk.EventBox()
@@ -129,16 +127,7 @@ class UpdateItem(DownloadItem):
         
     def initAdditionStatus(self):
         '''Add addition status.'''
-        status = self.appInfo.status
-        
-        if status == APP_STATE_UPGRADE:
-            self.initNormalStatus()
-        elif status == APP_STATE_DOWNLOADING:
-            self.initDownloadingStatus(self.appAdditionBox)
-        elif status == APP_STATE_DOWNLOAD_PAUSE:
-            self.initDownloadPauseStatus(self.appAdditionBox)
-        elif status == APP_STATE_UPGRADING:
-            self.initUpgradingStatus()
+        self.initNormalStatus()
             
         self.itemFrame.show_all()
         
@@ -166,47 +155,42 @@ class UpdateItem(DownloadItem):
         
         # Add ignore button.
         (ignoreLabel, ignoreEventBox) = utils.setDefaultClickableLabel(
-            "不再提醒")
-        self.appAdditionBox.pack_start(ignoreEventBox, False, False)
+            "重新提醒")
         ignoreEventBox.connect("button-press-event", 
-                               lambda w, e: self.addIgnorePkgCallback(utils.getPkgName(pkg)))
+                               lambda w, e: self.removeIgnorePkgCallback([utils.getPkgName(pkg)]))
         
-        # Add action button.
-        (actionButtonBox, actionButtonAlign) = createActionButton()
-        self.appAdditionBox.pack_start(actionButtonAlign, False, False)
-        
-        (appButton, appButtonAlign) = newActionButton(
-            "update", 0.5, 0.5, "cell", False, "升级", BUTTON_FONT_SIZE_SMALL)
-        appButton.connect("button-release-event", lambda widget, event: self.switchToDownloading())
-        actionButtonBox.pack_start(appButtonAlign)
+        ignoreLabelPaddingX = 30
+        ignoreAlign = gtk.Alignment()
+        ignoreAlign.set(0.0, 0.5, 0.0, 0.0)
+        ignoreAlign.set_padding(0, 0, ignoreLabelPaddingX, ignoreLabelPaddingX)
+        ignoreAlign.add(ignoreEventBox)
+        self.appAdditionBox.pack_start(ignoreAlign, False, False)
         
     def updateVoteView(self, starLevel, voteNum):
         '''Update vote view.'''
         if self.appInfo.status == APP_STATE_UPGRADE and self.appVoteView != None:
             self.appVoteView.updateVote(starLevel, voteNum)
                 
-class UpdateView(appView.AppView):
+class IgnoreView(appView.AppView):
     '''Application view.'''
 	
-    def __init__(self, repoCache, appNum, getListFunc, switchStatus, downloadQueue, 
-                 entryDetailCallback, sendVoteCallback, fetchVoteCallback, addIgnorePkgCallback):
+    def __init__(self, repoCache, appNum, getListFunc, 
+                 entryDetailCallback, sendVoteCallback, fetchVoteCallback, removeIgnorePkgCallback):
         '''Init for application view.'''
         appView.AppView.__init__(self, appNum, PAGE_UPGRADE)
         
         # Init.
         self.repoCache = repoCache
         self.getListFunc = getListFunc
-        self.switchStatus = switchStatus
-        self.downloadQueue = downloadQueue
         self.entryDetailCallback = entryDetailCallback
         self.sendVoteCallback = sendVoteCallback
         self.fetchVoteCallback = fetchVoteCallback
-        self.addIgnorePkgCallback = addIgnorePkgCallback
+        self.removeIgnorePkgCallback = removeIgnorePkgCallback
         self.itemDict = {}
         
         # Init select list.
         self.selectList = []
-        for pkgName in self.repoCache.upgradablePkgs:
+        for pkgName in self.repoCache.ignorePkgs:
             self.selectList.append(pkgName)
         
         self.show()
@@ -227,14 +211,14 @@ class UpdateView(appView.AppView):
     
     def selectAllPkg(self):
         '''Select all packages.'''
-        for pkgName in self.repoCache.upgradablePkgs:
+        for pkgName in self.repoCache.ignorePkgs:
             self.selectPkg(pkgName)
             if self.itemDict.has_key(pkgName):
                 self.itemDict[pkgName].checkButton.set_active(True)
                 
     def unselectAllPkg(self):
         '''Unselect all packages.'''
-        for pkgName in self.repoCache.upgradablePkgs:
+        for pkgName in self.repoCache.ignorePkgs:
             self.unselectPkg(pkgName)
             if self.itemDict.has_key(pkgName):
                 self.itemDict[pkgName].checkButton.set_active(False)
@@ -281,7 +265,7 @@ class UpdateView(appView.AppView):
             notifyLabel = gtk.Label()
             notifyLabel.set_markup(
                 "<span foreground='#1A38EE' size='%s'>%s</span>"
-                % (LABEL_FONT_XXX_LARGE_SIZE, "你的系统已经是最新的. :)"))
+                % (LABEL_FONT_XXX_LARGE_SIZE, "没有软件需要重新提醒."))
             notifyBox.pack_start(notifyLabel, False, False)
             
             self.box.show_all()
@@ -318,12 +302,12 @@ class UpdateView(appView.AppView):
         
         box = gtk.VBox()
         for (index, appInfo) in enumerate(appList):
-            appItem = UpdateItem(appInfo, self.switchStatus, self.downloadQueue, 
+            appItem = IgnoreItem(appInfo, 
                                  self.entryDetailCallback, 
                                  self.sendVoteCallback,
                                  index, self.getSelectItemIndex, self.setSelectItemIndex,
                                  self.selectPkg, self.unselectPkg, self.getSelectStatus,
-                                 self.addIgnorePkgCallback)
+                                 self.removeIgnorePkgCallback)
             box.pack_start(appItem.itemFrame, False, False)
             self.itemDict[utils.getPkgName(appItem.appInfo.pkg)] = appItem
             

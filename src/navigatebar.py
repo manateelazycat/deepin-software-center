@@ -42,7 +42,7 @@ class NavigateBar:
         
         self.logoIcon = self.createLogoIcon()
         self.logoAlign = gtk.Alignment()
-        self.logoAlign.set_padding(0, 0, 30, 10)
+        self.logoAlign.set_padding(0, 0, 60, 10)
         self.logoAlign.add(self.logoIcon)
         self.box.pack_start(self.logoAlign, False, False)
 
@@ -65,9 +65,6 @@ class NavigateBar:
         self.uninstallIcon      = self.createNavIcon("软件卸载", "../theme/default/navigate/nav_uninstall.png", PAGE_UNINSTALL)
         self.navBox.pack_start(self.uninstallIcon, False, False, self.iconPadding)
 
-        self.runningIcon      = self.createNavIcon("正在运行", "../theme/default/navigate/nav_running.png", PAGE_RUNNING)
-        self.navBox.pack_start(self.runningIcon, False, False, self.iconPadding)
-        
         self.moreIcon      = self.createNavIcon("更多功能", "../theme/default/navigate/nav_more.png", PAGE_MORE)
         self.navBox.pack_start(self.moreIcon, False, False, self.iconPadding)
 

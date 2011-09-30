@@ -21,6 +21,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from constant import *
+from copy import deepcopy
 from draw import *
 from tooltips import *
 from utils import postGUI
@@ -28,7 +29,6 @@ import checkUpdate
 import action
 import apt
 import apt_pkg
-import runningPage
 import morePage
 import detailView
 import download
@@ -54,6 +54,7 @@ import titlebar
 import uninstallPage
 import updateList
 import updatePage
+import ignorePage
 import urllib2
 import utils
 pygtk.require('2.0')
@@ -88,6 +89,7 @@ class DeepinSoftwareCenter():
         self.detailViewDict = {}
         self.searchViewDict = {}
         self.noscreenshotList = []
+        self.entryIgnorePage = False
 
         # Download queue.
         self.downloadQueue = download.DownloadQueue(
@@ -161,7 +163,10 @@ class DeepinSoftwareCenter():
             self.sendVote,
             self.fetchVote,
             self.upgradeSelectedPkgs,
+            self.addIgnorePkg,
+            self.showIgnorePage
             )
+        self.ignorePage = None
         self.uninstallPage = uninstallPage.UninstallPage(
             self.repoCache,
             self.searchQuery,
@@ -171,8 +176,6 @@ class DeepinSoftwareCenter():
             self.sendVote,
             self.fetchVote,
             )
-        
-        self.runningPage = runningPage.RunningPage()
         
         self.morePage = morePage.MorePage()
         
@@ -635,6 +638,76 @@ class DeepinSoftwareCenter():
 
         uninstallView = self.uninstallPage.uninstallView
         uninstallView.update(pkgNum)
+        
+    def addIgnorePkg(self, pkgName):
+        '''Add package in ignore list.'''
+        # Add package in ignore list.
+        self.repoCache.addPkgInIgnoreList([pkgName])
+        
+        # Get number of upgradable packages.
+        pkgNum = len(self.repoCache.upgradablePkgs)
+        ignoreNum = len(self.repoCache.ignorePkgs)
+        
+        # Update topbar.
+        self.updatePage.topbar.updateNum(pkgNum)
+        self.updatePage.topbar.updateIgnoreNum(ignoreNum)
+        
+        # Update view.
+        updateView = self.updatePage.updateView
+        updateView.unselectPkg(pkgName) # remove from select list
+        updateView.update(pkgNum)
+        
+        # Update notify number.
+        self.navigatebar.updateIcon.queue_draw()
+        
+    def removeIgnorePkgs(self, pkgNames):
+        '''Remove package from ignore list.'''
+        # Remove package from ignore list.
+        self.repoCache.removePkgFromIgnoreList(pkgNames)
+        
+        # Get number of upgradable packages.
+        ignoreNum = len(self.repoCache.ignorePkgs)
+        
+        # Update topbar.
+        self.ignorePage.topbar.updateNum(ignoreNum)
+        
+        # Update view.
+        ignoreView = self.ignorePage.ignoreView
+        updateView = self.updatePage.updateView
+        for pkgName in deepcopy(pkgNames):
+            ignoreView.unselectPkg(pkgName)
+            updateView.selectPkg(pkgName)
+        ignoreView.update(ignoreNum)
+        
+        # Update notify number.
+        self.navigatebar.updateIcon.queue_draw()
+        
+    def showIgnorePage(self):
+        '''Show ignore page.'''
+        # Enable tag.
+        self.entryIgnorePage = True
+        
+        # Show ignore page.
+        self.selectPage(PAGE_UPGRADE)
+
+    def exitIgnorePage(self):
+        '''Exit ignore page.'''
+        # Disable tag.
+        self.entryIgnorePage = False
+        
+        # Get number of upgradable packages.
+        pkgNum = len(self.repoCache.upgradablePkgs)
+        ignoreNum = len(self.repoCache.ignorePkgs)
+        
+        # Update topbar.
+        self.updatePage.topbar.updateNum(pkgNum)
+        self.updatePage.topbar.updateIgnoreNum(ignoreNum)
+        
+        # Update view.
+        self.updatePage.updateView.update(pkgNum)
+        
+        # Show update page.
+        self.selectPage(PAGE_UPGRADE)
 
     def initMainWindow(self):
         '''Init main window.'''
@@ -716,9 +789,6 @@ class DeepinSoftwareCenter():
         self.navigatebar.uninstallIcon.connect(
             "button-press-event",
             lambda widget, event: self.selectPage(PAGE_UNINSTALL))
-        self.navigatebar.runningIcon.connect(
-            "button-press-event",
-            lambda widget, event: self.selectPage(PAGE_RUNNING))
         self.navigatebar.moreIcon.connect(
             "button-press-event",
             lambda widget, event: self.selectPage(PAGE_MORE))
@@ -778,11 +848,19 @@ class DeepinSoftwareCenter():
             elif pageId == PAGE_REPO:
                 child = self.repoPage.box
             elif pageId == PAGE_UPGRADE:
-                child = self.updatePage.box
+                if self.entryIgnorePage:
+                    self.ignorePage = ignorePage.IgnorePage(
+                        self.repoCache,
+                        self.entryDetailView,
+                        self.sendVote,
+                        self.fetchVote,
+                        self.removeIgnorePkgs,
+                        self.exitIgnorePage)
+                    child = self.ignorePage.box
+                else:
+                    child = self.updatePage.box
             elif pageId == PAGE_UNINSTALL:
                 child = self.uninstallPage.box
-            elif pageId == PAGE_RUNNING:
-                child = self.runningPage.box
             elif pageId == PAGE_MORE:
                 child = self.morePage.box
 
@@ -887,7 +965,10 @@ class DeepinSoftwareCenter():
                 view = self.repoPage.repoView
 
         elif pageId == PAGE_UPGRADE:
-            view = self.updatePage.updateView
+            if self.entryIgnorePage:
+                view = self.ignorePage.ignoreView
+            else:
+                view = self.updatePage.updateView
         elif pageId == PAGE_UNINSTALL:
             if isSearchPage:
                 if self.searchViewDict.has_key(pageId):

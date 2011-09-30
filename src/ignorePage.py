@@ -21,54 +21,54 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from appItem import *
+from constant import *
 from draw import *
 import gtk
 import pygtk
-import updateView
 import utils
+import ignoreView
 pygtk.require('2.0')
 
-class UpdatePage:
-    '''Interface for update page.'''
+class IgnorePage:
+    '''Ignore page.'''
 	
-    def __init__(self, repoCache, switchStatus, downloadQueue, entryDetailCallback, 
-                 sendVoteCallback, fetchVoteCallback, upgradeSelectedPkgsCallback,
-                 addIgnorePkgCallback, showIgnorePageCallback):
-        '''Init for update page.'''
+    def __init__(self, repoCache, 
+                 entryDetailCallback, sendVoteCallback, fetchVoteCallback,
+                 removeIgnorePkgsCallback, exitIgnorePageCallback):
+        '''Init for ignore page.'''
         # Init.
         self.repoCache = repoCache
         self.box = gtk.VBox()
-        self.updateView = updateView.UpdateView(
+        
+        self.ignoreView = ignoreView.IgnoreView(
             repoCache,
-            len(self.repoCache.upgradablePkgs), 
-            self.repoCache.getUpgradableAppList,
-            switchStatus, 
-            downloadQueue,
+            len(self.repoCache.ignorePkgs),
+            self.repoCache.getIgnoreAppList,
             entryDetailCallback,
             sendVoteCallback,
             fetchVoteCallback,
-            addIgnorePkgCallback,
-            )
-        self.topbar = Topbar(self.repoCache,
-                             self.updateView.selectAllPkg,
-                             self.updateView.unselectAllPkg,
-                             self.updateView.getSelectList,
-                             upgradeSelectedPkgsCallback,
-                             showIgnorePageCallback)
+            removeIgnorePkgsCallback,
+            )        
+        self.topbar = Topbar(repoCache,
+                             self.ignoreView.selectAllPkg,
+                             self.ignoreView.unselectAllPkg,
+                             self.ignoreView.getSelectList,
+                             removeIgnorePkgsCallback,
+                             exitIgnorePageCallback)
         
         # Connect components.
         self.box.pack_start(self.topbar.eventbox, False, False)
-        self.box.pack_start(self.updateView.scrolledwindow)
-        
+        self.box.pack_start(self.ignoreView.scrolledwindow)
         self.box.show_all()
-        
+
 class Topbar:
     '''Top bar.'''
 	
     def __init__(self, repoCache, 
                  selectAllPkgCallback, unselectAllPkgCallback, 
-                 getSelectListCallback, upgradeSelectedPkgsCallback,
-                 showIgnorePageCallback):
+                 getSelectListCallback,
+                 removeIgnorePkgsCallback,
+                 exitIgnorePageCallback):
         '''Init for top bar.'''
         # Init.
         self.repoCache = repoCache
@@ -77,8 +77,6 @@ class Topbar:
         self.normalColor = '#1A3E88'
         self.hoverColor = '#0084FF'
         self.selectColor = '#000000'
-        self.showIgnorePageCallback = showIgnorePageCallback
-        
         self.box = gtk.HBox()
         self.boxAlign = gtk.Alignment()
         self.boxAlign.set(0.0, 0.5, 1.0, 1.0)
@@ -93,11 +91,6 @@ class Topbar:
         upgradeAlign.add(upgradeBox)
         
         self.numLabel = gtk.Label()
-        
-        self.ignoreNumBox = gtk.HBox()
-        self.ignoreNumAlign = gtk.Alignment()
-        self.ignoreNumAlign.set(0.0, 0.5, 0.0, 0.0)
-        self.ignoreNumAlign.add(self.ignoreNumBox)
         
         self.selectAllId = "selectAll"
         self.unselectAllId = "unselectAll"
@@ -114,19 +107,22 @@ class Topbar:
         upgradeBox.pack_start(self.unselectAllEventBox, False, False, self.paddingX)
         
         (self.upgradeButton, upgradeButtonAlign) = newActionButton(
-             "update_selected", 0.0, 0.5, "cell", True, "升级选中的软件", BUTTON_FONT_SIZE_MEDIUM, "#FFFFFF")
+             "update_selected", 0.0, 0.5, "cell", True, "提示选中的软件", BUTTON_FONT_SIZE_MEDIUM, "#FFFFFF")
         upgradeBox.pack_start(upgradeButtonAlign, False, False, self.paddingX)
-        self.upgradeButton.connect("button-press-event", lambda w, e: upgradeSelectedPkgsCallback(getSelectListCallback()))
+        self.upgradeButton.connect("button-press-event", lambda w, e: removeIgnorePkgsCallback(getSelectListCallback()))
         
-        # Connect.
-        self.updateNum(len(self.repoCache.upgradablePkgs))
+        # Add return button.
+        (returnButton, returnButtonAlign) = newActionButton(
+            "search", 1.0, 0.5, "cell", False, "返回", BUTTON_FONT_SIZE_MEDIUM, "#FFFFFF",
+            0, 10)
+        returnButton.connect("button-release-event", lambda w, e: exitIgnorePageCallback())
+        
+        self.updateNum(len(self.repoCache.ignorePkgs))
         self.numLabel.set_alignment(0.0, 0.5)
-        self.box.pack_start(self.numLabel, False, False, self.paddingX)
-        self.box.pack_start(self.ignoreNumAlign, True, True, self.paddingX)
-        self.box.pack_start(upgradeAlign, True, True, self.paddingX)
+        self.box.pack_start(self.numLabel, False, False)
+        self.box.pack_start(upgradeAlign, True, True)
+        self.box.pack_start(returnButtonAlign, False, False)
         self.eventbox.add(self.boxAlign)
-        
-        self.updateIgnoreNum(len(self.repoCache.ignorePkgs))
         
     def setLabelId(self, lId):
         '''Set label id.'''
@@ -147,21 +143,10 @@ class Topbar:
         '''Get label id.'''
         return self.labelId
     
-    def updateIgnoreNum(self, ignoreNum):
-        '''Update ignore number label.'''
-        utils.containerRemoveAll(self.ignoreNumBox)
-        
-        if ignoreNum > 0:
-            (ignoreLabel, ignoreEventBox) = utils.setDefaultClickableLabel("(不再提醒升级%s款)" % (ignoreNum))
-            ignoreEventBox.connect("button-press-event", lambda w, e: self.showIgnorePageCallback())
-            self.ignoreNumBox.add(ignoreEventBox)
-            self.ignoreNumBox.show_all()
-
     def updateNum(self, upgradeNum):
         '''Update number.'''
         self.numLabel.set_markup(
             ("<span size='%s'>有 </span>" % (LABEL_FONT_SIZE))
             + ("<span foreground='%s' size='%s'>%s</span>" % (self.numColor, LABEL_FONT_SIZE, str(upgradeNum)))
-            + ("<span size='%s'> 个更新包可以升级</span>" % (LABEL_FONT_SIZE)))
+            + ("<span size='%s'> 款软件不再提醒升级</span>" % (LABEL_FONT_SIZE)))
 
-#  LocalWords:  efe

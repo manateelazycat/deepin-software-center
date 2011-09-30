@@ -49,18 +49,18 @@ class AppInfo:
         
     def initStatus(self):
         '''Init status.'''
-        self.downloadingFeedback = 'Á≠âÂæÖ‰∏ãËΩΩ'
+        self.downloadingFeedback = 'ëµ»ë¥˝ëœ¬ë‘ÿ'
         self.downloadingProgress = 0
         
         self.downloadPauseFeedback = ''
         
-        self.installingFeedback = 'Á≠âÂæÖÂÆâË£Ö'
+        self.installingFeedback = 'ëµ»ë¥˝ë∞≤ë◊∞'
         self.installingProgress = 0
         
-        self.upgradingFeedback = 'Á≠âÂæÖÂçáÁ∫ß'
+        self.upgradingFeedback = 'ëµ»ë¥˝ë…˝ëº∂'
         self.upgradingProgress = 0
         
-        self.uninstallingFeedback = 'Á≠âÂæÖÂç∏ËΩΩ'
+        self.uninstallingFeedback = 'ëµ»ë¥˝ë–∂ë‘ÿ'
         self.uninstallingProgress = 0
         
     def switchStatus(self, appStatus):
@@ -71,18 +71,18 @@ class AppInfo:
             self.initStatus()
         elif appStatus == APP_STATE_DOWNLOADING:
             self.downloadingProgress = 0
-            self.downloadingFeedback = "Á≠âÂæÖ‰∏ãËΩΩ"
+            self.downloadingFeedback = "ëµ»ë¥˝ëœ¬ë‘ÿ"
         elif appStatus == APP_STATE_DOWNLOAD_PAUSE:
-            self.downloadPauseFeedback = "ÊöÇÂÅú"
+            self.downloadPauseFeedback = "ë‘›ëÕ£"
         elif appStatus == APP_STATE_INSTALLING:
             self.installingProgress = 0
-            self.installingFeedback = "Á≠âÂæÖÂÆâË£Ö"
+            self.installingFeedback = "ëµ»ë¥˝ë∞≤ë◊∞"
         elif appStatus == APP_STATE_UPGRADING:
             self.upgradingProgress = 0
-            self.upgradingFeedback = "Á≠âÂæÖÂçáÁ∫ß"
+            self.upgradingFeedback = "ëµ»ë¥˝ë…˝ëº∂"
         elif appStatus == APP_STATE_UNINSTALLING:
             self.uninstallingProgress = 0
-            self.uninstallingFeedback = "Á≠âÂæÖÂç∏ËΩΩ"
+            self.uninstallingFeedback = "ëµ»ë¥˝ë–∂ë‘ÿ"
         
     def updateDownloadStatus(self, progress, feedback, status):
         '''Update download status'''
@@ -116,7 +116,7 @@ class RepoCache:
         # Init.
         self.cache = {}
         self.upgradablePkgs = []
-        self.ignorePkgs = evalFile("./ignorePkgs")
+        self.ignoreUpgradePkgs = evalFile("./ignoreList")
         self.uninstallablePkgs = []
         self.categoryDict = sortedDict.SortedDict(CLASSIFY_LIST)
 
@@ -189,7 +189,7 @@ class RepoCache:
                 self.cache[pkg.name] = AppInfo(pkg)
                 
                 # Add upgradable packages.
-                if pkg.is_upgradable and pkg.name not in self.ignorePkgs:
+                if pkg.is_upgradable:
                     self.upgradablePkgs.append(pkg.name)
                     
                 # Add uninstall packages.
@@ -238,14 +238,6 @@ class RepoCache:
             appList.append(self.cache[pkgName])
         return appList
     
-    def getIgnoreAppList(self, startIndex, endIndex):
-        '''Get Ignore application list.'''
-        appList = []
-        for index in range(startIndex, endIndex):
-            pkgName = self.ignorePkgs[index]
-            appList.append(self.cache[pkgName])
-        return appList
-    
     def getUninstallableAppList(self, startIndex, endIndex):
         '''Get un-installable application list.'''
         appList = []
@@ -278,41 +270,7 @@ class RepoCache:
             return pkg.is_installed and self.whiteListDict.has_key(pkg.name)
         else:
             return self.whiteListDict.has_key(pkg.name)
-
-    def addPkgInIgnoreList(self, pkgNames):
-        '''Add package in ignore list.'''
-        for pkgName in pkgNames:
-            # Add package in ignore list.
-            if pkgName not in self.ignorePkgs:
-                self.ignorePkgs.append(pkgName)
-                
-            # Remove package from upgradable list.
-            self.removePkgFromUpgradableList(pkgName)
-        
-        # Record.
-        self.ignorePkgs = sorted(self.ignorePkgs, key=lambda p: p)
-        self.upgradablePkgs = sorted(self.upgradablePkgs, key=lambda p: p)
-                
-        # Update file content.
-        writeFile("./ignorePkgs", str(self.ignorePkgs))
-
-    def removePkgFromIgnoreList(self, pkgNames):
-        '''Remove package in ignore list.'''
-        for pkgName in pkgNames:
-            # Remove package from ignore list.
-            if pkgName in self.ignorePkgs:
-                self.ignorePkgs.remove(pkgName)
-                
-            # Add package to upgradable list if package upgradable.
-            if self.cache.has_key(pkgName) and self.cache[pkgName].pkg.is_upgradable:
-                self.upgradablePkgs.append(pkgName)
-            
-        # Record.
-        self.ignorePkgs = sorted(self.ignorePkgs, key=lambda p: p)
-        self.upgradablePkgs = sorted(self.upgradablePkgs, key=lambda p: p)
-                
-        # Update file content.
-        writeFile("./ignorePkgs", str(self.ignorePkgs))
+    
 
 #  LocalWords:  pkgClassify AppInfo appList startIndex endIndex pkgName
 #  LocalWords:  uninstallablePkgs removePkgFromUpgradableList upgradablePkgs

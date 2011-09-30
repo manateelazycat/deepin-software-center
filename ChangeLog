@@ -1,5 +1,8 @@
 * News in 2.0
 
+2011-09-30 Wang Yong <lazycat.manatee@gmail.com>
+	* Add ignore feature, now you can ignore some software to keep don't upgrade.
+
 2011-09-29 Wang Yong <lazycat.manatee@gmail.com>
 	* Refactory code.
 

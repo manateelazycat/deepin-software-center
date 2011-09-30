@@ -119,6 +119,12 @@ def evalFile(filepath):
     
     return content
 
+def writeFile(filepath, content):
+    '''Write file.'''
+    f = open(filepath, "w")
+    f.write(content)
+    f.close()
+
 def getPkgShortDesc(pkg):
     '''Get package's short description.'''
     pkgPath = "../pkgData/pkgInfo/" + pkg.name

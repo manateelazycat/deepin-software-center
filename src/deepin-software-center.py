@@ -30,6 +30,7 @@ import action
 import apt
 import apt_pkg
 import morePage
+import downloadPage
 import detailView
 import download
 import glib
@@ -135,7 +136,7 @@ class DeepinSoftwareCenter():
                             lambda w, e: utils.moveWindow(w, e, self.window))
         self.topbar.connect("button-press-event", self.doubleClickWindow)
         self.titlebar = titlebar.Titlebar(self.minWindow, self.toggleWindow, self.closeWindow)
-        self.navigatebar = navigatebar.NavigateBar(self.repoCache)
+        self.navigatebar = navigatebar.NavigateBar(self.repoCache, self.selectPage)
         self.bodyBox = gtk.HBox()
         self.contentBox = gtk.VBox()
         self.recommendPage = recommendPage.RecommendPage(
@@ -176,6 +177,8 @@ class DeepinSoftwareCenter():
             self.sendVote,
             self.fetchVote,
             )
+        
+        self.downloadPage = downloadPage.DownloadPage()
         
         self.morePage = morePage.MorePage()
         
@@ -776,23 +779,6 @@ class DeepinSoftwareCenter():
         self.bodyBox.pack_start(self.contentBox)
         self.bodyBox.pack_start(self.rightLine, False, False)
 
-        # Register navigate click event.
-        self.navigatebar.recommendIcon.connect(
-            "button-press-event",
-            lambda widget, event: self.selectPage(PAGE_RECOMMEND))
-        self.navigatebar.repositoryIcon.connect(
-            "button-press-event",
-            lambda widget, event: self.selectPage(PAGE_REPO))
-        self.navigatebar.updateIcon.connect(
-            "button-press-event",
-            lambda widget, event: self.selectPage(PAGE_UPGRADE))
-        self.navigatebar.uninstallIcon.connect(
-            "button-press-event",
-            lambda widget, event: self.selectPage(PAGE_UNINSTALL))
-        self.navigatebar.moreIcon.connect(
-            "button-press-event",
-            lambda widget, event: self.selectPage(PAGE_MORE))
-
         # Default select recommend page.
         self.selectPage(PAGE_RECOMMEND)
 
@@ -861,6 +847,8 @@ class DeepinSoftwareCenter():
                     child = self.updatePage.box
             elif pageId == PAGE_UNINSTALL:
                 child = self.uninstallPage.box
+            elif pageId == PAGE_DOWNLOAD:
+                child = self.downloadPage.box
             elif pageId == PAGE_MORE:
                 child = self.morePage.box
 

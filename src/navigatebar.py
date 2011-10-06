@@ -30,10 +30,11 @@ pygtk.require('2.0')
 class NavigateBar:
     '''Interface for navigate bar.'''
 	
-    def __init__(self, repoCache):
+    def __init__(self, repoCache, selectPageCallback):
         '''Init for navigate bar.'''
         # Init.
         self.repoCache = repoCache
+        self.selectPageCallback = selectPageCallback
         self.iconPadding = 8
         
         self.pageId = PAGE_RECOMMEND
@@ -42,7 +43,7 @@ class NavigateBar:
         
         self.logoIcon = self.createLogoIcon()
         self.logoAlign = gtk.Alignment()
-        self.logoAlign.set_padding(0, 0, 60, 10)
+        self.logoAlign.set_padding(0, 0, 30, 10)
         self.logoAlign.add(self.logoIcon)
         self.box.pack_start(self.logoAlign, False, False)
 
@@ -65,6 +66,9 @@ class NavigateBar:
         self.uninstallIcon      = self.createNavIcon("软件卸载", "../theme/default/navigate/nav_uninstall.png", PAGE_UNINSTALL)
         self.navBox.pack_start(self.uninstallIcon, False, False, self.iconPadding)
 
+        self.downloadIcon      = self.createNavIcon("下载管理", "../theme/default/navigate/nav_more.png", PAGE_DOWNLOAD)
+        self.navBox.pack_start(self.downloadIcon, False, False, self.iconPadding)
+        
         self.moreIcon      = self.createNavIcon("更多功能", "../theme/default/navigate/nav_more.png", PAGE_MORE)
         self.navBox.pack_start(self.moreIcon, False, False, self.iconPadding)
 
@@ -85,6 +89,9 @@ class NavigateBar:
     def createUpdateIcon(self, iconName, iconPath, pageId):
         '''Create navigate icon.'''
         eventButton = gtk.Button()
+        eventButton.connect(
+            "button-press-event", 
+            lambda w, e: self.selectPageCallback(pageId))
         updateButtonSetBackground(
             eventButton,
             iconName, iconPath,
@@ -100,6 +107,9 @@ class NavigateBar:
     def createNavIcon(self, iconName, iconPath, pageId):
         '''Create navigate icon.'''
         eventButton = gtk.Button()
+        eventButton.connect(
+            "button-press-event", 
+            lambda w, e: self.selectPageCallback(pageId))
         navButtonSetBackground(
             eventButton,
             iconName, iconPath,

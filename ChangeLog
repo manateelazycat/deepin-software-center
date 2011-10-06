@@ -1,21 +1,24 @@
 * News in 2.0
 
-2011-09-30 Wang Yong <lazycat.manatee@gmail.com>
+2011-10-06 Yong Wang <lazycat.manatee@gmail.com>
+	* Add page for download manage.
+
+2011-09-30 Yong Wang <lazycat.manatee@gmail.com>
 	* Add ignore feature, now you can ignore some software to keep don't upgrade.
 
-2011-09-29 Wang Yong <lazycat.manatee@gmail.com>
+2011-09-29 Yong Wang <lazycat.manatee@gmail.com>
 	* Refactory code.
 
-2011-09-27 Wang Yong <lazycat.manatee@gmail.com>
+2011-09-27 Yong Wang <lazycat.manatee@gmail.com>
 	* Add running page and more page.
 
-2011-09-22 Wang Yong <lazycat.manatee@gmail.com>
+2011-09-22 Yong Wang <lazycat.manatee@gmail.com>
 	* Adjust icons directory.
 
 	* deepin-software-center.py/main/deepin-software-center:
 	  Use socket algorthim avoid user startup software center twice.
 
-2011-09-21 Wang Yong <lazycat.manatee@gmail.com>
+2011-09-21 Yong Wang <lazycat.manatee@gmail.com>
 	* updateList.py: Add new update package list module to instead update manager.
 
 	* Refresh update view after package list update complete.
@@ -27,12 +30,12 @@
 
 	* utils.py: Add new functions 'AnonymityThread' for build temp thread code.
 
-2011-09-20 Wang Yong <lazycat.manatee@gmail.com>
+2011-09-20 Yong Wang <lazycat.manatee@gmail.com>
 	* Add recommend list length to protected software center won't crash if some package not exist in local cache.
 
 	* Adjust package classify directory and algorthim make it update from server side.
 
-2011-09-19 Wang Yong <lazycat.manatee@gmail.com>
+2011-09-19 Yong Wang <lazycat.manatee@gmail.com>
 	* Move pkgClassify directory.
 
 	* Add sort button at software repository page.

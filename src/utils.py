@@ -296,6 +296,11 @@ def postGUI(func):
         return ret
     return wrap
 
+def printEnv():
+    '''Print environment variable.'''
+    for param in os.environ.keys():
+        print "*** %20s %s" % (param,os.environ[param])                
+
 def setProgress(progressbar, progress):
     '''Set progress.'''
     progressbar.set_fraction(progress / 100.0)

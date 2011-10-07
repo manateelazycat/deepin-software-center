@@ -2,6 +2,7 @@
 
 2011-10-07 Yong Wang <lazycat.manatee@gmail.com>
 	* repoCache.py: refactory functions `getIgnoreNum' and `getUpgradableNum'.
+	* utils.py: add new function `printEnv'.
 
 2011-10-06 Yong Wang <lazycat.manatee@gmail.com>
 	* Add page for download manage.

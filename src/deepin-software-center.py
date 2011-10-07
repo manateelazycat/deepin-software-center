@@ -30,7 +30,7 @@ import action
 import apt
 import apt_pkg
 import morePage
-import downloadPage
+import downloadManagePage
 import detailView
 import download
 import glib
@@ -816,8 +816,8 @@ class DeepinSoftwareCenter():
                     child = self.updatePage.box
             elif pageId == PAGE_UNINSTALL:
                 child = self.uninstallPage.box
-            elif pageId == PAGE_DOWNLOAD:
-                child = self.downloadPage.box
+            elif pageId == PAGE_DOWNLOAD_MANAGE:
+                child = self.downloadManagePage.box
             elif pageId == PAGE_MORE:
                 child = self.morePage.box
 
@@ -975,6 +975,37 @@ class DeepinSoftwareCenter():
                 # Add in download queue.
                 self.downloadQueue.addDownload(pkgName)
                 print "Upgrade %s" % (pkgName)
+    
+    def getRunningNum(self):
+        '''Get running package number.'''
+        runningList = self.getRunningPkgs()
+        return len(runningList)
+                
+    def getRunningPkgs(self):
+        '''Get running packages.'''
+        # Get install or upgrade list.
+        actionList = []
+        for (pkgName, actionType) in self.actionQueue.queue:
+            if actionType != ACTION_UNINSTALL:
+                actionList.append(pkgName)
+                
+        # Get download list.
+        downloadList = deepcopy(self.downloadQueue.queue)
+
+        return actionList + downloadList
+                
+    def getRunningList(self, startIndex, endIndex):
+        '''Get running (download, install or upgrade) action list.'''
+        # Get running packages.
+        pkgNames = self.getRunningPkgs()
+        
+        # Return application list.
+        appList = []
+        for index in rang(startIndex, endIndex):
+            pkgName = pkgNames[index]
+            appList.append(self.repoCache.cache[pkgName])
+            
+        return appList 
 
 class InitThread(td.Thread):
     '''Add long time calculate in init thread to make startup faster.'''
@@ -1005,6 +1036,22 @@ class InitThread(td.Thread):
         # Init search query.
         center.searchQuery = search.Search(center.message, center.statusbar)
         
+        # Download queue.
+        center.downloadQueue = download.DownloadQueue(
+            center.downloadUpdateCallback,
+            center.downloadFinishCallback,
+            center.downloadFailedCallback,
+            center.message
+            )
+
+        # Action queue.
+        center.actionQueue = action.ActionQueue(
+            center.actionUpdateCallback,
+            center.actionFinishCallback,
+            center.actionFailedCallback,
+            center.message
+            )
+
         # Init pages.
         center.recommendPage = recommendPage.RecommendPage(
             center.repoCache,
@@ -1045,31 +1092,25 @@ class InitThread(td.Thread):
             center.fetchVote,
             )
         
-        center.downloadPage = downloadPage.DownloadPage()
+        center.downloadManagePage = downloadManagePage.DownloadManagePage(
+            center.getRunningPkgs,
+            center.getRunningList,
+            center.switchStatus,
+            center.downloadQueue,
+            center.entryDetailView,
+            center.sendVote,
+            center.fetchVote,
+            )
         
         center.morePage = morePage.MorePage()
         
-        # Download queue.
-        center.downloadQueue = download.DownloadQueue(
-            center.downloadUpdateCallback,
-            center.downloadFinishCallback,
-            center.downloadFailedCallback,
-            center.message
-            )
-
-        # Action queue.
-        center.actionQueue = action.ActionQueue(
-            center.actionUpdateCallback,
-            center.actionFinishCallback,
-            center.actionFailedCallback,
-            center.message
-            )
-
         # Set callback for navigatebar.
         center.navigatebar.setUpgradableNumCallback(
             center.repoCache.getUpgradableNum)
         center.navigatebar.setSelectPageCallback(
             center.selectPage)
+        center.navigatebar.setRunningNumCallback(
+            center.getRunningNum)
         
         # Update update icon.
         center.navigatebar.updateIcon.queue_draw()

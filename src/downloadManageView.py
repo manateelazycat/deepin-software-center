@@ -32,7 +32,7 @@ pygtk.require('2.0')
 
 import urllib2
 
-class RepoItem(DownloadItem):
+class DownloadManageItem(DownloadItem):
     '''Application item.'''
     
     MAX_CHARS = 50
@@ -90,7 +90,7 @@ class RepoItem(DownloadItem):
         
     def entryDetailView(self):
         '''Entry detail view.'''
-        self.entryDetailCallback(PAGE_REPO, self.appInfo)
+        self.entryDetailCallback(PAGE_DOWNLOAD_MANAGE, self.appInfo)
         
     def clickItem(self, widget, event):
         '''Click item.'''
@@ -131,7 +131,7 @@ class RepoItem(DownloadItem):
         
         # Add application vote information.
         self.appVoteView = VoteView(
-            self.appInfo, PAGE_REPO, 
+            self.appInfo, PAGE_DOWNLOAD_MANAGE, 
             self.entryDetailCallback,
             self.sendVoteCallback)
         self.appAdditionBox.pack_start(self.appVoteView.eventbox, False, False)
@@ -165,18 +165,16 @@ class RepoItem(DownloadItem):
         if self.appInfo.status in [APP_STATE_NORMAL, APP_STATE_UPGRADE, APP_STATE_INSTALLED] and self.appVoteView != None:
             self.appVoteView.updateVote(starLevel, voteNum)
                 
-class RepoView(appView.AppView):
+class DownloadManageView(appView.AppView):
     '''Application view.'''
 	
-    def __init__(self, category, appNum, getListFunc, getSortTypeFunc, switchStatus, downloadQueue, 
+    def __init__(self, appNum, getListFunc, switchStatus, downloadQueue, 
                  entryDetailCallback, sendVoteCallback, fetchVoteCallback):
         '''Init for application view.'''
-        appView.AppView.__init__(self, appNum, PAGE_REPO)
+        appView.AppView.__init__(self, appNum, PAGE_DOWNLOAD_MANAGE)
         
         # Init.
-        self.category = category
         self.getListFunc = getListFunc
-        self.getSortTypeFunc = getSortTypeFunc
         self.switchStatus = switchStatus
         self.downloadQueue = downloadQueue
         self.itemDict = {}
@@ -186,9 +184,8 @@ class RepoView(appView.AppView):
         
         self.show()
         
-    def update(self, category, appNum):
+    def update(self, appNum):
         '''Update view.'''
-        self.category = category
         self.appNum = appNum
         self.pageIndex = 1
         self.calculateMaxPageIndex()
@@ -201,14 +198,34 @@ class RepoView(appView.AppView):
         utils.containerRemoveAll(self.box)
         self.itemDict.clear()
         
-        if self.appNum != 0:
+        if self.appNum == 0:
+            notifyBox = gtk.HBox()
+            notifyAlign = gtk.Alignment()
+            notifyAlign.set(0.5, 0.5, 0.0, 0.0)
+            notifyAlign.add(notifyBox)
+            self.box.pack_start(notifyAlign)
+            
+            notifyIconAlignX = 5
+            notifyIcon = gtk.image_new_from_file("../theme/default/update/smile.gif")
+            notifyIconAlign = gtk.Alignment()
+            notifyIconAlign.set(0.5, 1.0, 0.0, 0.0)
+            notifyIconAlign.set_padding(0, 0, notifyIconAlignX, notifyIconAlignX)
+            notifyIconAlign.add(notifyIcon)
+            notifyBox.pack_start(notifyIconAlign)
+            
+            notifyLabel = gtk.Label()
+            notifyLabel.set_markup(
+                "<span foreground='#1A38EE' size='%s'>%s</span>"
+                % (LABEL_FONT_XXX_LARGE_SIZE, "没有下载任务. :)"))
+            notifyBox.pack_start(notifyLabel, False, False)
+            
+            self.box.show_all()
+        else:
             # Get application list.
-            sortType = self.getSortTypeFunc()
-            appList = self.getListFunc(self.category, 
-                                       sortType,
-                                       (self.pageIndex - 1) * self.defaultRows,
-                                       min(self.pageIndex * self.defaultRows, self.appNum)
-                                       )
+            appList = self.getListFunc(
+                (self.pageIndex - 1) * self.defaultRows,
+                min(self.pageIndex * self.defaultRows, self.appNum)
+                )
             
             # Create application view.
             self.box.pack_start(self.createAppList(appList))
@@ -223,7 +240,7 @@ class RepoView(appView.AppView):
             
             # Request vote data.
             self.fetchVoteCallback(
-                PAGE_REPO, 
+                PAGE_DOWNLOAD_MANAGE, 
                 map (lambda appInfo: utils.getPkgName(appInfo.pkg), appList))
             
         # Scroll ScrolledWindow to top after render.
@@ -236,10 +253,10 @@ class RepoView(appView.AppView):
         
         box = gtk.VBox()
         for (index, appInfo) in enumerate(appList):
-            appItem = RepoItem(appInfo, self.switchStatus, self.downloadQueue, 
-                               self.entryDetailCallback,
-                               self.sendVoteCallback,
-                               index, self.getSelectItemIndex, self.setSelectItemIndex)
+            appItem = DownloadManageItem(appInfo, self.switchStatus, self.downloadQueue, 
+                                         self.entryDetailCallback,
+                                         self.sendVoteCallback,
+                                         index, self.getSelectItemIndex, self.setSelectItemIndex)
             box.pack_start(appItem.itemFrame, False, False)
             self.itemDict[utils.getPkgName(appItem.appInfo.pkg)] = appItem
             

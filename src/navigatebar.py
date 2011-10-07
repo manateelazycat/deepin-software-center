@@ -35,6 +35,7 @@ class NavigateBar:
         # Init.
         self.getUpgradableNumCallback = None
         self.selectPageCallback = None
+        self.getRunningNumCallback = None
         self.iconPadding = 8
         
         self.pageId = PAGE_RECOMMEND
@@ -60,13 +61,15 @@ class NavigateBar:
         self.repositoryIcon     = self.createNavIcon("软件仓库", "../theme/default/navigate/nav_repo.png", PAGE_REPO)
         self.navBox.pack_start(self.repositoryIcon, False, False, self.iconPadding)
         
-        self.updateIcon         = self.createUpdateIcon("软件更新", "../theme/default/navigate/nav_update.png", PAGE_UPGRADE)
+        self.updateIcon         = self.createUpdateIcon("软件更新", "../theme/default/navigate/nav_update.png", PAGE_UPGRADE,
+                                                        self.getUpgradableNum)
         self.navBox.pack_start(self.updateIcon, False, False, self.iconPadding)
         
         self.uninstallIcon      = self.createNavIcon("软件卸载", "../theme/default/navigate/nav_uninstall.png", PAGE_UNINSTALL)
         self.navBox.pack_start(self.uninstallIcon, False, False, self.iconPadding)
 
-        self.downloadIcon      = self.createNavIcon("下载管理", "../theme/default/navigate/nav_more.png", PAGE_DOWNLOAD)
+        self.downloadIcon      = self.createUpdateIcon("下载管理", "../theme/default/navigate/nav_more.png", PAGE_DOWNLOAD_MANAGE,
+                                                       self.getRunningNum)
         self.navBox.pack_start(self.downloadIcon, False, False, self.iconPadding)
         
         self.moreIcon      = self.createNavIcon("更多功能", "../theme/default/navigate/nav_more.png", PAGE_MORE)
@@ -86,7 +89,7 @@ class NavigateBar:
         
         return eventBox
     
-    def createUpdateIcon(self, iconName, iconPath, pageId):
+    def createUpdateIcon(self, iconName, iconPath, pageId, callback):
         '''Create navigate icon.'''
         eventButton = gtk.Button()
         eventButton.connect(
@@ -99,7 +102,7 @@ class NavigateBar:
             "../theme/default/navigate/menu_press.png",
             pageId,
             self.getPageId,
-            self.getUpgradableNum
+            callback
             )
         
         return eventButton
@@ -137,6 +140,13 @@ class NavigateBar:
         else:
             return self.getUpgradableNumCallback()
         
+    def getRunningNum(self):
+        '''Get running number.'''
+        if self.getRunningNumCallback == None:
+            return 0
+        else:
+            return self.getRunningNumCallback()
+        
     def setSelectPageCallback(self, callback):
         '''Set select page callback.'''
         self.selectPageCallback = callback    
@@ -144,5 +154,10 @@ class NavigateBar:
     def setUpgradableNumCallback(self, callback):
         '''Set upgradable number callback.'''
         self.getUpgradableNumCallback = callback
+        
+    def setRunningNumCallback(self, callback):
+        '''Set running number callback.'''
+        self.getRunningNumCallback = callback
+    
     
 #  LocalWords:  moreIcon createNavIcon iconPadding

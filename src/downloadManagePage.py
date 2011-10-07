@@ -23,29 +23,39 @@
 from appItem import *
 import gtk
 import pygtk
+import downloadManageView
 pygtk.require('2.0')
 
-class DownloadPage:
+class DownloadManagePage:
     '''Interface for download page.'''
 	
-    def __init__(self):
+    def __init__(self, getRunningPkgs, getRunningList, switchStatus, downloadQueue,
+                 entryDetailCallback, sendVoteCallback, fetchVoteCallback):
         '''Init for download page.'''
         # Init.
         self.box = gtk.VBox()
-        self.view = gtk.TextView()
-        self.view.get_buffer().set_text('下载管理')
         
-        self.topbar = Topbar()
+        self.topbar = Topbar(len(getRunningPkgs()))
+        
+        self.downloadManageView = downloadManageView.DownloadManageView(
+            len(getRunningPkgs()),
+            getRunningList,
+            switchStatus,
+            downloadQueue,
+            entryDetailCallback,
+            sendVoteCallback,
+            fetchVoteCallback,
+            )
         
         # Connect components.
         self.box.pack_start(self.topbar.eventbox, False, False)
-        self.box.pack_start(self.view)
+        self.box.pack_start(self.downloadManageView.scrolledwindow)
         self.box.show_all()
 
 class Topbar:
     '''Top bar.'''
 	
-    def __init__(self):
+    def __init__(self, itemNum):
         '''Init for top bar.'''
         # Init.
         self.paddingX = 5
@@ -65,12 +75,16 @@ class Topbar:
         self.numLabel = gtk.Label()
         
         (self.openDirLabel, self.openDirEventBox) = utils.setDefaultClickableLabel("打开下载目录")
+        self.openDirAlign = gtk.Alignment()
+        self.openDirAlign.set(1.0, 0.5, 0.0, 0.0)
+        self.openDirAlign.add(self.openDirEventBox)
         self.openDirEventBox.connect("button-press-event", lambda w, e: utils.runCommand("xdg-open /var/cache/apt/archives/"))
         
         # Connect.
+        self.updateNum(itemNum)
         self.numLabel.set_alignment(0.0, 0.5)
         self.box.pack_start(self.numLabel, False, False, self.paddingX)
-        self.box.pack_start(self.openDirEventBox, False, False, self.paddingX)
+        self.box.pack_start(self.openDirAlign, True, True, self.paddingX)
         self.eventbox.add(self.boxAlign)
         
     def updateNum(self, upgradeNum):

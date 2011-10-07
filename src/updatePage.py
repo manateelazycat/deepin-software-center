@@ -40,8 +40,6 @@ class UpdatePage:
         self.box = gtk.VBox()
         self.updateView = updateView.UpdateView(
             repoCache,
-            len(self.repoCache.upgradablePkgs), 
-            self.repoCache.getUpgradableAppList,
             switchStatus, 
             downloadQueue,
             entryDetailCallback,
@@ -119,14 +117,14 @@ class Topbar:
         self.upgradeButton.connect("button-press-event", lambda w, e: upgradeSelectedPkgsCallback(getSelectListCallback()))
         
         # Connect.
-        self.updateNum(len(self.repoCache.upgradablePkgs))
+        self.updateNum(self.repoCache.getUpgradableNum())
         self.numLabel.set_alignment(0.0, 0.5)
         self.box.pack_start(self.numLabel, False, False, self.paddingX)
         self.box.pack_start(self.ignoreNumAlign, True, True, self.paddingX)
         self.box.pack_start(upgradeAlign, True, True, self.paddingX)
         self.eventbox.add(self.boxAlign)
         
-        self.updateIgnoreNum(len(self.repoCache.ignorePkgs))
+        self.updateIgnoreNum(self.repoCache.getIgnoreNum())
         
     def setLabelId(self, lId):
         '''Set label id.'''

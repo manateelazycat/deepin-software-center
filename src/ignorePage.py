@@ -42,8 +42,6 @@ class IgnorePage:
         
         self.ignoreView = ignoreView.IgnoreView(
             repoCache,
-            len(self.repoCache.ignorePkgs),
-            self.repoCache.getIgnoreAppList,
             entryDetailCallback,
             sendVoteCallback,
             fetchVoteCallback,
@@ -117,7 +115,7 @@ class Topbar:
             0, 10)
         returnButton.connect("button-release-event", lambda w, e: exitIgnorePageCallback())
         
-        self.updateNum(len(self.repoCache.ignorePkgs))
+        self.updateNum(self.repoCache.getIgnoreNum())
         self.numLabel.set_alignment(0.0, 0.5)
         self.box.pack_start(self.numLabel, False, False)
         self.box.pack_start(upgradeAlign, True, True)

@@ -99,7 +99,7 @@ class NavigateBar:
             "../theme/default/navigate/menu_press.png",
             pageId,
             self.getPageId,
-            self.getUpgradableNum
+            self.repoCache.getUpgradableNum
             )
         
         return eventButton
@@ -125,8 +125,4 @@ class NavigateBar:
         '''Get page id.'''
         return self.pageId
     
-    def getUpgradableNum(self):
-        '''Get upgradable packages number.'''
-        return len(self.repoCache.upgradablePkgs)
-
 #  LocalWords:  moreIcon createNavIcon iconPadding

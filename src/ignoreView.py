@@ -174,14 +174,15 @@ class IgnoreItem():
 class IgnoreView(appView.AppView):
     '''Application view.'''
 	
-    def __init__(self, repoCache, appNum, getListFunc, 
+    def __init__(self, repoCache,
                  entryDetailCallback, sendVoteCallback, fetchVoteCallback, removeIgnorePkgCallback):
         '''Init for application view.'''
+        appNum = repoCache.getIgnoreNum()
         appView.AppView.__init__(self, appNum, PAGE_UPGRADE)
         
         # Init.
         self.repoCache = repoCache
-        self.getListFunc = getListFunc
+        self.getListFunc = self.repoCache.getIgnoreAppList
         self.entryDetailCallback = entryDetailCallback
         self.sendVoteCallback = sendVoteCallback
         self.fetchVoteCallback = fetchVoteCallback

@@ -188,14 +188,15 @@ class UpdateItem(DownloadItem):
 class UpdateView(appView.AppView):
     '''Application view.'''
 	
-    def __init__(self, repoCache, appNum, getListFunc, switchStatus, downloadQueue, 
+    def __init__(self, repoCache, switchStatus, downloadQueue, 
                  entryDetailCallback, sendVoteCallback, fetchVoteCallback, addIgnorePkgCallback):
         '''Init for application view.'''
+        appNum = repoCache.getUpgradableNum()
         appView.AppView.__init__(self, appNum, PAGE_UPGRADE)
         
         # Init.
         self.repoCache = repoCache
-        self.getListFunc = getListFunc
+        self.getListFunc = self.repoCache.getUpgradableAppList
         self.switchStatus = switchStatus
         self.downloadQueue = downloadQueue
         self.entryDetailCallback = entryDetailCallback

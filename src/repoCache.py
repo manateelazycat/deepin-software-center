@@ -230,6 +230,14 @@ class RepoCache:
         return map (lambda (categoryName, (categoryIcon, _)): categoryName,
                     self.categoryDict.items())
 
+    def getUpgradableNum(self):
+        '''Get upgradable packages number.'''
+        return len(self.upgradablePkgs)
+    
+    def getIgnoreNum(self):
+        '''Get ignore package number.'''
+        return len(self.ignorePkgs)    
+    
     def getUpgradableAppList(self, startIndex, endIndex):
         '''Get upgradable application list.'''
         appList = []

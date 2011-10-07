@@ -481,7 +481,7 @@ class DeepinSoftwareCenter():
                         self.repoCache.removePkgFromUpgradableList(pkgName)
 
                         # Update topbar.
-                        pkgNum = len(self.repoCache.upgradablePkgs)
+                        pkgNum = self.repoCache.getUpgradableNum()
                         self.updatePage.topbar.updateNum(pkgNum)
 
                         # Update update view.
@@ -648,8 +648,8 @@ class DeepinSoftwareCenter():
         self.repoCache.addPkgInIgnoreList([pkgName])
         
         # Get number of upgradable packages.
-        pkgNum = len(self.repoCache.upgradablePkgs)
-        ignoreNum = len(self.repoCache.ignorePkgs)
+        pkgNum = self.repoCache.getUpgradableNum()
+        ignoreNum = self.repoCache.getIgnoreNum()
         
         # Update topbar.
         self.updatePage.topbar.updateNum(pkgNum)
@@ -669,7 +669,7 @@ class DeepinSoftwareCenter():
         self.repoCache.removePkgFromIgnoreList(pkgNames)
         
         # Get number of upgradable packages.
-        ignoreNum = len(self.repoCache.ignorePkgs)
+        ignoreNum = self.repoCache.getIgnoreNum()
         
         # Update topbar.
         self.ignorePage.topbar.updateNum(ignoreNum)
@@ -699,8 +699,8 @@ class DeepinSoftwareCenter():
         self.entryIgnorePage = False
         
         # Get number of upgradable packages.
-        pkgNum = len(self.repoCache.upgradablePkgs)
-        ignoreNum = len(self.repoCache.ignorePkgs)
+        pkgNum = self.repoCache.getUpgradableNum()
+        ignoreNum = self.repoCache.getIgnoreNum()
         
         # Update topbar.
         self.updatePage.topbar.updateNum(pkgNum)

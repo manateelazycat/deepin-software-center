@@ -296,6 +296,15 @@ def postGUI(func):
         return ret
     return wrap
 
+def printExecTime(func):
+    '''Print execute time.'''
+    def wrap(*a, **kw):
+        startTime = time.time()
+        ret = func(*a, **kw)
+        print "%s time: %s" % (str(func), time.time() - startTime)
+        return ret
+    return wrap
+
 def printEnv():
     '''Print environment variable.'''
     for param in os.environ.keys():

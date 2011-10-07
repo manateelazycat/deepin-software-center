@@ -67,6 +67,7 @@ class DeepinSoftwareCenter():
     '''Interface for software center.'''
     DEFAULT_WIDTH = 890
 
+    @printExecTime
     def __init__(self):
         '''Init.'''
         # Init gdk threads.

@@ -6,6 +6,7 @@
 	* utils.py: add new function `printExecTime'.
 	* deepin-software-center.py:
 	  Move long time calculate to init thread to make startup faster.
+	* README: Add "Quick Start" and "For Ubuntu or other Debian system".
 
 2011-10-06 Yong Wang <lazycat.manatee@gmail.com>
 	* Add page for download manage.

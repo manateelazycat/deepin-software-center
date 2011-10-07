@@ -771,7 +771,6 @@ def newSearchUI(helpString, getCandidatesCallback, clickCandidateCallback, searc
     searchAlign.set(1.0, 0.0, 0.0, 1.0)
     searchAlign.add(searchBox)
     
-    # searchEntry = gtk.Entry()
     searchEntry = SearchEntry(helpString)
     searchEntry.modify_text(gtk.STATE_NORMAL, gtk.gdk.color_parse("#999999"))
     searchEntry.set_size_request(SEARCH_ENTRY_WIDTH, -1)
@@ -781,15 +780,9 @@ def newSearchUI(helpString, getCandidatesCallback, clickCandidateCallback, searc
     searchCompletion = sc.SearchCompletion(
         searchEntry,
         getCandidatesCallback,
+        searchCallback,
         clickCandidateCallback,
         )
-    
-    (searchButton, searchButtonAlign) = newActionButton(
-        "search", 0.0, 0.5,
-        "cell", False, "全文搜索", BUTTON_FONT_SIZE_MEDIUM, "#FFFFFF"
-        )
-    searchButton.connect("button-release-event", lambda w, e: searchCallback(searchEntry))
-    searchBox.pack_start(searchButtonAlign)
     
     return (searchEntry, searchAlign, searchCompletion)
     

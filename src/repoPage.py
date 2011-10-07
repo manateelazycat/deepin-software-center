@@ -23,6 +23,7 @@
 from appItem import *
 from constant import *
 from draw import *
+from utils import *
 import apt_pkg
 import categorybar
 import gobject

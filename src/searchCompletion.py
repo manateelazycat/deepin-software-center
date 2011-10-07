@@ -44,10 +44,12 @@ class SearchCompletion:
 	
     def __init__(self, entry,
                  getCandidatesCallback,
+                 searchCallback,
                  clickCandidateCallback):
         '''Init for search completion.'''
         self.entry = entry
         self.getCandidatesCallback = getCandidatesCallback
+        self.searchCallback = searchCallback
         self.clickCandidateCallback = clickCandidateCallback
         self.showCompletion = True
         self.propagateLock = False
@@ -96,6 +98,7 @@ class SearchCompletion:
         if self.showCompletion:
             # Search time bound: 80ms ~ 500ms, most time under INPUT_DELAY.
             # So user won't feeling *delay* if input delay more than INPUT_DELAY.
+            # Input delay bound: 50ms ~ 200ms
             currentTime = time.time()
             delay = (currentTime - self.lastChangeTimestamp) * 1000
             
@@ -123,15 +126,20 @@ class SearchCompletion:
         
         text = self.entry.get_chars(0, -1)
         candidates = self.getCandidatesCallback(text)
-        if len(candidates) != 0:
+        # if len(candidates) != 0:
+        if True:
             self.listStore.clear()
+            
+            content = self.entry.get_chars(0, -1)
+            self.listStore.append(["全文搜索 <span foreground='#1A3E88'><b> %s </b></span>" % content, content])
+            
             for candidate in candidates:
                 self.listStore.append(candidate)
                 
             # Scroll to top first.
             utils.scrollToTop(self.scrolledwindow)
             
-            w, h = rect.width, (min (len(candidates), self.MAX_CELL_NUMBER)) * self.CELL_HEIGHT + self.CELL_HEIGHT / 2
+            w, h = rect.width, (min (len(candidates) + 1, self.MAX_CELL_NUMBER)) * self.CELL_HEIGHT + self.CELL_HEIGHT / 2
             # FIXME, i don't know why entry'height is bigger than i need, so i decrease 8 pixel here.
             self.window.move(wx, wy + rect.height - 8)
             self.window.set_size_request(w, h)
@@ -187,7 +195,10 @@ class SearchCompletion:
         self.showCompletion = False
         self.entry.set_text(candidate)
         self.showCompletion = True
-        self.clickCandidateCallback(candidate)
         
+        if path == 0:
+            self.searchCallback(self.entry)
+        else:
+            self.clickCandidateCallback(candidate)
 
 #  LocalWords:  entry'height

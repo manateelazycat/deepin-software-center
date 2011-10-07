@@ -30,11 +30,11 @@ pygtk.require('2.0')
 class NavigateBar:
     '''Interface for navigate bar.'''
 	
-    def __init__(self, repoCache, selectPageCallback):
+    def __init__(self):
         '''Init for navigate bar.'''
         # Init.
-        self.repoCache = repoCache
-        self.selectPageCallback = selectPageCallback
+        self.getUpgradableNumCallback = None
+        self.selectPageCallback = None
         self.iconPadding = 8
         
         self.pageId = PAGE_RECOMMEND
@@ -91,7 +91,7 @@ class NavigateBar:
         eventButton = gtk.Button()
         eventButton.connect(
             "button-press-event", 
-            lambda w, e: self.selectPageCallback(pageId))
+            lambda w, e: self.selectPage(pageId))
         updateButtonSetBackground(
             eventButton,
             iconName, iconPath,
@@ -99,7 +99,7 @@ class NavigateBar:
             "../theme/default/navigate/menu_press.png",
             pageId,
             self.getPageId,
-            self.repoCache.getUpgradableNum
+            self.getUpgradableNum
             )
         
         return eventButton
@@ -109,7 +109,7 @@ class NavigateBar:
         eventButton = gtk.Button()
         eventButton.connect(
             "button-press-event", 
-            lambda w, e: self.selectPageCallback(pageId))
+            lambda w, e: self.selectPage(pageId))
         navButtonSetBackground(
             eventButton,
             iconName, iconPath,
@@ -124,5 +124,25 @@ class NavigateBar:
     def getPageId(self):
         '''Get page id.'''
         return self.pageId
+    
+    def selectPage(self, pageId):
+        '''Select page.'''
+        if self.selectPageCallback != None:
+            self.selectPageCallback(pageId)
+    
+    def getUpgradableNum(self):
+        '''Get upgradable number.'''
+        if self.getUpgradableNumCallback == None:
+            return 0
+        else:
+            return self.getUpgradableNumCallback()
+        
+    def setSelectPageCallback(self, callback):
+        '''Set select page callback.'''
+        self.selectPageCallback = callback    
+    
+    def setUpgradableNumCallback(self, callback):
+        '''Set upgradable number callback.'''
+        self.getUpgradableNumCallback = callback
     
 #  LocalWords:  moreIcon createNavIcon iconPadding

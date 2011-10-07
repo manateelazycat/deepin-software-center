@@ -67,7 +67,6 @@ class DeepinSoftwareCenter():
     '''Interface for software center.'''
     DEFAULT_WIDTH = 890
 
-    @printExecTime
     def __init__(self):
         '''Init.'''
         # Init gdk threads.
@@ -80,39 +79,21 @@ class DeepinSoftwareCenter():
         self.bottomHeight = self.bottombarPixbuf.get_height()
 
         # Init apt cache.
-        apt_pkg.init()
-        self.aptCache = apt.Cache()
-        self.repoCache = repoCache.RepoCache(self.aptCache)
         self.statusbar = statusbar.Statusbar()
         self.statusbar.eventbox.connect("button-press-event", lambda w, e: utils.resizeWindow(w, e, self.window))
         self.statusbar.eventbox.connect("button-press-event", lambda w, e: utils.moveWindow(w, e, self.window))
-        self.searchQuery = search.Search(self.message, self.statusbar)
-        self.updateList = updateList.UpdateList(self.aptCache, self.statusbar)        
+        
         self.detailViewDict = {}
         self.searchViewDict = {}
         self.noscreenshotList = []
         self.entryIgnorePage = False
-
-        # Download queue.
-        self.downloadQueue = download.DownloadQueue(
-            self.downloadUpdateCallback,
-            self.downloadFinishCallback,
-            self.downloadFailedCallback,
-            self.message
-            )
+        self.downloadQueue = None
+        self.actionQueue = None
 
         # dpkg will failed if not set TERM and PATH environment variable.  
         os.environ["TERM"] = "xterm"
         os.environ["PATH"] = "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/X11R6/bin"
         
-        # Action queue.
-        self.actionQueue = action.ActionQueue(
-            self.actionUpdateCallback,
-            self.actionFinishCallback,
-            self.actionFailedCallback,
-            self.message
-            )
-
         # Init widgets.
         self.window = self.initMainWindow()
         self.window.connect("size-allocate", lambda w, a: self.updateShape(w, a))
@@ -134,51 +115,9 @@ class DeepinSoftwareCenter():
                             lambda w, e: utils.moveWindow(w, e, self.window))
         self.topbar.connect("button-press-event", self.doubleClickWindow)
         self.titlebar = titlebar.Titlebar(self.minWindow, self.toggleWindow, self.closeWindow)
-        self.navigatebar = navigatebar.NavigateBar(self.repoCache, self.selectPage)
+        self.navigatebar = navigatebar.NavigateBar()
         self.bodyBox = gtk.HBox()
         self.contentBox = gtk.VBox()
-        self.recommendPage = recommendPage.RecommendPage(
-            self.repoCache,
-            self.switchStatus,
-            self.downloadQueue,
-            self.entryDetailView,
-            self.selectCategory,
-            )
-        self.repoPage = repoPage.RepoPage(
-            self.repoCache,
-            self.searchQuery,
-            self.switchStatus,
-            self.downloadQueue,
-            self.entryDetailView,
-            self.entrySearchView,
-            self.sendVote,
-            self.fetchVote,
-            )
-        self.updatePage = updatePage.UpdatePage(
-            self.repoCache,
-            self.switchStatus,
-            self.downloadQueue,
-            self.entryDetailView,
-            self.sendVote,
-            self.fetchVote,
-            self.upgradeSelectedPkgs,
-            self.addIgnorePkg,
-            self.showIgnorePage
-            )
-        self.ignorePage = None
-        self.uninstallPage = uninstallPage.UninstallPage(
-            self.repoCache,
-            self.searchQuery,
-            self.actionQueue,
-            self.entryDetailView,
-            self.entrySearchView,
-            self.sendVote,
-            self.fetchVote,
-            )
-        
-        self.downloadPage = downloadPage.DownloadPage()
-        
-        self.morePage = morePage.MorePage()
         
         self.window.connect_after("show", lambda w: self.createTooltips())
 
@@ -777,16 +716,13 @@ class DeepinSoftwareCenter():
         self.bodyBox.pack_start(self.contentBox)
         self.bodyBox.pack_start(self.rightLine, False, False)
 
-        # Default select recommend page.
-        self.selectPage(PAGE_RECOMMEND)
-
         # Add statusbar.
         self.mainBox.pack_start(self.statusbar.eventbox, False, False)
 
         # Adjust body box height.
         topbarHeight = gtk.gdk.pixbuf_new_from_file("../theme/default/topbar/background.png").get_height()
         subCategoryHeight = gtk.gdk.pixbuf_new_from_file("../theme/default/category/sidebar_normal.png").get_height()
-        subCategoryNum = len(self.repoCache.getCategorys())
+        subCategoryNum = len(CLASSIFY_LIST)
         self.bodyBox.set_size_request(-1, topbarHeight + subCategoryHeight * subCategoryNum)
 
         # Set main window.
@@ -797,15 +733,50 @@ class DeepinSoftwareCenter():
         if len(sys.argv) == 2 and sys.argv[1] == "show-update":
             self.selectPage(PAGE_UPGRADE)
             
-        # Update List.
-        self.updateList.start()
-
         # Listen socket message for select upgrade page.
         self.socketThread = SocketThread(self.showUpgrade, self.raiseToTop)
         self.socketThread.start()
         
+        # Init thread for long time calculate.
+        # To make startup faster.
+        initThread = InitThread(self)
+        initThread.start()
+        
         # Run.
         gtk.main()
+        
+    @postGUI
+    def prevInitThread(self):
+        '''Execute before init thread start.'''
+        backgroundBox = gtk.EventBox()
+        backgroundBox.connect("expose-event", lambda w, e: drawBackground(w, e, "#FFFFFF"))
+        
+        waitBox = gtk.HBox()
+        waitAlign = gtk.Alignment()
+        waitAlign.set(0.5, 0.5, 0.0, 0.0)
+        waitAlign.add(waitBox)
+        backgroundBox.add(waitAlign)
+        
+        waitSpinner = gtk.Spinner()
+        waitBox.pack_start(waitSpinner, False, False)
+        waitSpinner.start()
+        
+        waitLabel = gtk.Label()
+        waitLabel.set_markup("<span foreground='#1A3E88' size='%s'>%s</span>"
+                             % (LABEL_FONT_LARGE_SIZE, "  加载中， 请稍候..."))
+        waitBox.pack_start(waitLabel, False, False)
+        
+        self.contentBox.pack_start(backgroundBox)
+        self.contentBox.show_all()
+        
+    @postGUI
+    def postInitThread(self):
+        '''Execute after init thread finish.'''
+        # Default select recommend page.
+        self.selectPage(PAGE_RECOMMEND)
+
+        # Update List.
+        self.updateList.start()
         
     @postGUI
     def raiseToTop(self):
@@ -1005,6 +976,107 @@ class DeepinSoftwareCenter():
                 self.downloadQueue.addDownload(pkgName)
                 print "Upgrade %s" % (pkgName)
 
+class InitThread(td.Thread):
+    '''Add long time calculate in init thread to make startup faster.'''
+
+    def __init__(self, softwareCenter):
+        '''Init anonymity thread.'''
+        td.Thread.__init__(self)
+        self.setDaemon(True) # make thread exit when main program exit
+        
+        self.softwareCenter = softwareCenter
+
+    def run(self):
+        '''Run.'''
+        # Execute operation before init start.
+        center = self.softwareCenter
+        center.prevInitThread()
+        
+        # Init apt operation.
+        apt_pkg.init()
+        center.aptCache = apt.Cache()
+        
+        # Init repo cache.
+        center.repoCache = repoCache.RepoCache(center.aptCache)
+        
+        # Init update list.
+        center.updateList = updateList.UpdateList(center.aptCache, center.statusbar)       
+        
+        # Init search query.
+        center.searchQuery = search.Search(center.message, center.statusbar)
+        
+        # Init pages.
+        center.recommendPage = recommendPage.RecommendPage(
+            center.repoCache,
+            center.switchStatus,
+            center.downloadQueue,
+            center.entryDetailView,
+            center.selectCategory,
+            )
+        center.repoPage = repoPage.RepoPage(
+            center.repoCache,
+            center.searchQuery,
+            center.switchStatus,
+            center.downloadQueue,
+            center.entryDetailView,
+            center.entrySearchView,
+            center.sendVote,
+            center.fetchVote,
+            )
+        center.updatePage = updatePage.UpdatePage(
+            center.repoCache,
+            center.switchStatus,
+            center.downloadQueue,
+            center.entryDetailView,
+            center.sendVote,
+            center.fetchVote,
+            center.upgradeSelectedPkgs,
+            center.addIgnorePkg,
+            center.showIgnorePage
+            )
+        center.ignorePage = None
+        center.uninstallPage = uninstallPage.UninstallPage(
+            center.repoCache,
+            center.searchQuery,
+            center.actionQueue,
+            center.entryDetailView,
+            center.entrySearchView,
+            center.sendVote,
+            center.fetchVote,
+            )
+        
+        center.downloadPage = downloadPage.DownloadPage()
+        
+        center.morePage = morePage.MorePage()
+        
+        # Download queue.
+        center.downloadQueue = download.DownloadQueue(
+            center.downloadUpdateCallback,
+            center.downloadFinishCallback,
+            center.downloadFailedCallback,
+            center.message
+            )
+
+        # Action queue.
+        center.actionQueue = action.ActionQueue(
+            center.actionUpdateCallback,
+            center.actionFinishCallback,
+            center.actionFailedCallback,
+            center.message
+            )
+
+        # Set callback for navigatebar.
+        center.navigatebar.setUpgradableNumCallback(
+            center.repoCache.getUpgradableNum)
+        center.navigatebar.setSelectPageCallback(
+            center.selectPage)
+        
+        # Update update icon.
+        center.navigatebar.updateIcon.queue_draw()
+        
+        # Execute operation when finish init.
+        center.postInitThread()
+                
 class FetchVote(td.Thread):
     '''Fetch vote.'''
 

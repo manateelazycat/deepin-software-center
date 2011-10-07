@@ -4,6 +4,8 @@
 	* repoCache.py: refactory functions `getIgnoreNum' and `getUpgradableNum'.
 	* utils.py: add new function `printEnv'.
 	* utils.py: add new function `printExecTime'.
+	* deepin-software-center.py:
+	  Move long time calculate to init thread to make startup faster.
 
 2011-10-06 Yong Wang <lazycat.manatee@gmail.com>
 	* Add page for download manage.

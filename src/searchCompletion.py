@@ -20,12 +20,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from utils import *
 from draw import *
 import appView
 import gtk
+import glib
 import pango
 import pygtk
 import utils
+import time
 pygtk.require('2.0')
 
 class SearchCompletion:
@@ -36,6 +39,8 @@ class SearchCompletion:
     CELL_HEIGHT = 20
     FONT_SIZE = 10
     MAX_CELL_NUMBER = 10
+    INPUT_DELAY = 200           # in millisecond 
+    WAIT_SEARCH_DELAY = 500     # in millisecond
 	
     def __init__(self, entry,
                  getCandidatesCallback,
@@ -46,6 +51,8 @@ class SearchCompletion:
         self.clickCandidateCallback = clickCandidateCallback
         self.showCompletion = True
         self.propagateLock = False
+        self.lastChangeTimestamp = 0
+        self.searchEventId = None
         
         self.window = gtk.Window()
         self.window.set_type_hint(gtk.gdk.WINDOW_TYPE_HINT_DIALOG)
@@ -72,42 +79,68 @@ class SearchCompletion:
         self.treeView.connect("button-press-event", self.clickCandiate)
         self.entry.connect("focus-out-event", lambda w, e: self.hide())
         self.entry.connect("size-allocate", lambda widget, allocation: self.hide())
-        self.entry.connect("changed", self.show)
+        self.entry.connect("changed", lambda w: self.show())
         self.entry.connect("key-press-event", lambda w, e: self.handleKeyPress(w, e))
         
         self.scrolledwindow.add(self.treeView)
         self.frame.add(self.scrolledwindow)
         self.window.add(self.frame)
         
-    def show(self, editable):
+    def show(self):
         '''Show search completion.'''
+        # Remove search delay event if searchEventId not None.
+        if self.searchEventId != None:
+            glib.source_remove(self.searchEventId)
+            self.searchEventId = None
+        
         if self.showCompletion:
-            # Move window to match entry's position.
-            (wx, wy) = editable.window.get_origin()
-            rect = editable.get_allocation()
+            # Search time bound: 80ms ~ 500ms, most time under INPUT_DELAY.
+            # So user won't feeling *delay* if input delay more than INPUT_DELAY.
+            currentTime = time.time()
+            delay = (currentTime - self.lastChangeTimestamp) * 1000
             
-            text = editable.get_chars(0, -1)
-            candidates = self.getCandidatesCallback(text)
-            if len(candidates) != 0:
-                self.listStore.clear()
-                for candidate in candidates:
-                    self.listStore.append(candidate)
-                    
-                # Scroll to top first.
-                utils.scrollToTop(self.scrolledwindow)
+            if delay > self.INPUT_DELAY:
+                # Record last change time stamp.
+                self.lastChangeTimestamp = currentTime
                 
-                w, h = rect.width, (min (len(candidates), self.MAX_CELL_NUMBER)) * self.CELL_HEIGHT + self.CELL_HEIGHT / 2
-                # FIXME, i don't know why entry'height is bigger than i need, so i decrease 8 pixel here.
-                self.window.move(wx, wy + rect.height - 8)
-                self.window.set_size_request(w, h)
-                self.window.resize(w, h)
-                self.window.show_all()    
-
-                # Focus first candidate.
-                self.treeView.set_cursor((0))
-                gtk.Widget.grab_focus(self.treeView)
+                # Show completion.
+                self.showCompletionWindow()
             else:
+                # Add delay search if input delay less than INPUT_DELAY.
+                # This step to avoid last input character input too fast that can't show completion correctly.
+                if self.searchEventId == None:
+                    self.searchEventId = glib.timeout_add(self.WAIT_SEARCH_DELAY, self.showCompletionWindow)
+                
                 self.window.hide_all()
+        else:
+            self.window.hide_all()
+            
+    def showCompletionWindow(self):
+        '''Show completion.'''
+        # Move window to match entry's position.
+        (wx, wy) = self.entry.window.get_origin()
+        rect = self.entry.get_allocation()
+        
+        text = self.entry.get_chars(0, -1)
+        candidates = self.getCandidatesCallback(text)
+        if len(candidates) != 0:
+            self.listStore.clear()
+            for candidate in candidates:
+                self.listStore.append(candidate)
+                
+            # Scroll to top first.
+            utils.scrollToTop(self.scrolledwindow)
+            
+            w, h = rect.width, (min (len(candidates), self.MAX_CELL_NUMBER)) * self.CELL_HEIGHT + self.CELL_HEIGHT / 2
+            # FIXME, i don't know why entry'height is bigger than i need, so i decrease 8 pixel here.
+            self.window.move(wx, wy + rect.height - 8)
+            self.window.set_size_request(w, h)
+            self.window.resize(w, h)
+            self.window.show_all()    
+        
+            # Focus first candidate.
+            self.treeView.set_cursor((0))
+            gtk.Widget.grab_focus(self.treeView)
                 
     def handleKeyPress(self, entry, keyPressEvent):
         '''Handle key press.'''

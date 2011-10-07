@@ -380,7 +380,7 @@ def getCandidates(pkgs, text):
                 
         return map(lambda (preStr, matchStr, restStr, pkg): 
                    # Highlight keyword.
-                   [preStr + "<span foreground='#00BBBB'><b>" + matchStr + "</b></span>" + restStr, pkg],
+                   [preStr + "<span foreground='#1A3E88'><b>" + matchStr + "</b></span>" + restStr, pkg],
                    # Sorted candidates.
                    sorted(candidates, cmp=compareCandidates))
     

@@ -786,7 +786,7 @@ def newSearchUI(helpString, getCandidatesCallback, clickCandidateCallback, searc
     
     (searchButton, searchButtonAlign) = newActionButton(
         "search", 0.0, 0.5,
-        "cell", False, "搜索", BUTTON_FONT_SIZE_MEDIUM, "#FFFFFF"
+        "cell", False, "全文搜索", BUTTON_FONT_SIZE_MEDIUM, "#FFFFFF"
         )
     searchButton.connect("button-release-event", lambda w, e: searchCallback(searchEntry))
     searchBox.pack_start(searchButtonAlign)

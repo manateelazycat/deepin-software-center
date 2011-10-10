@@ -44,6 +44,7 @@ class RepoItem(DownloadItem):
     VOTE_PADDING_Y = 1
     LIKE_PADDING_X = 10
     RATE_PADDING_X = 3
+    SIZE_LABEL_WIDTH = 60
         
     def __init__(self, appInfo, switchStatus, downloadQueue, 
                  entryDetailCallback, sendVoteCallback, index, getSelectIndex, setSelectIndex):
@@ -122,19 +123,20 @@ class RepoItem(DownloadItem):
         # Clean right box first.
         utils.containerRemoveAll(self.appAdditionBox)
         
-        # Add application size.
-        size = utils.getPkgSize(pkg)
-        appSize = gtk.Label()
-        appSize.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, utils.formatFileSize(size)))
-        appSize.set_alignment(1.0, 0.5)
-        self.appAdditionBox.pack_start(appSize, False, False, self.LIKE_PADDING_X)
-        
         # Add application vote information.
         self.appVoteView = VoteView(
             self.appInfo, PAGE_REPO, 
             self.entryDetailCallback,
             self.sendVoteCallback)
         self.appAdditionBox.pack_start(self.appVoteView.eventbox, False, False)
+        
+        # Add application size.
+        size = utils.getPkgSize(pkg)
+        appSize = gtk.Label()
+        appSize.set_size_request(self.SIZE_LABEL_WIDTH, -1)
+        appSize.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, utils.formatFileSize(size)))
+        appSize.set_alignment(1.0, 0.5)
+        self.appAdditionBox.pack_start(appSize, False, False, self.LIKE_PADDING_X)
         
         # Add action button.
         (actionButtonBox, actionButtonAlign) = createActionButton()

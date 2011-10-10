@@ -5,6 +5,7 @@
 	* utils.py: add new utils functions: `addInList', 'removeFromList'.
 	* updatePage.py/downloadManagePage.py:
 	  Set label's markup with blank if nothing to notify.
+	* Improve UI of "read vote data", make it more clean when no network connection.
 
 2011-10-07 Yong Wang <lazycat.manatee@gmail.com>
 	* repoCache.py: refactory functions `getIgnoreNum' and `getUpgradableNum'.

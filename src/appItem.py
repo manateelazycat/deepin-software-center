@@ -120,6 +120,13 @@ class UninstallItem:
         # Clean right box first.
         utils.containerRemoveAll(self.appAdditionBox)
         
+        # Add application vote information.
+        self.appVoteView = VoteView(
+            self.appInfo, PAGE_UNINSTALL, 
+            self.entryDetailCallback, 
+            self.sendVoteCallback)
+        self.appAdditionBox.pack_start(self.appVoteView.eventbox, False, False)
+        
         # Add application installed size.
         size = utils.getPkgInstalledSize(pkg)
         appSize = gtk.Label()
@@ -127,13 +134,6 @@ class UninstallItem:
         appSize.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, utils.formatFileSize(size)))
         appSize.set_alignment(1.0, 0.5)
         self.appAdditionBox.pack_start(appSize, False, False, self.APP_RIGHT_PADDING_X)
-        
-        # Add application vote information.
-        self.appVoteView = VoteView(
-            self.appInfo, PAGE_UNINSTALL, 
-            self.entryDetailCallback, 
-            self.sendVoteCallback)
-        self.appAdditionBox.pack_start(self.appVoteView.eventbox, False, False)
         
         # Add action button.
         (actionButtonBox, actionButtonAlign) = createActionButton()
@@ -621,7 +621,7 @@ class VoteView:
         
         # Add waiting label.
         waitingVoteLabel = gtk.Label()
-        waitingVoteLabel.set_markup("<span foreground='#1A3E88' size='%s'>读取评论数据...</span>" % (LABEL_FONT_SIZE))
+        waitingVoteLabel.set_markup("")
         self.starBox.pack_start(waitingVoteLabel)
         
     def updateVote(self, starLevel, voteNum):

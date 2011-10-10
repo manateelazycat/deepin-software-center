@@ -1284,6 +1284,7 @@ class SocketThread(td.Thread):
     def run(self):
         '''Run.'''
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) # make sure socket port always work
         self.socket.bind(SOCKET_SOFTWARECENTER_ADDRESS)
 
         while True:

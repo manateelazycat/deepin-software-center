@@ -659,6 +659,10 @@ def removeFromList(eList, element):
     if element in eList:
         eList.remove(element)
         
+def sortAlpha(eList):
+    '''Get alpha list.'''
+    return sorted(eList, key=lambda e: e)
+        
 #  LocalWords:  halfstar AppIcon pkgInfo shortDesc zh TW longDesc downloadSize
 #  LocalWords:  getPkgInstalledSize getPkgDependSize useSize uname libdevel ZB
 #  LocalWords:  oldlibs resize moveWindow addInScrolledWindow scrolledWindow

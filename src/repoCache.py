@@ -197,6 +197,10 @@ class RepoCache:
                 if self.isPkgUninstallable(pkg):
                     self.uninstallablePkgs.append(pkg.name)
                     
+        # Resort.
+        self.upgradablePkgs = self.sortPackages(self.upgradablePkgs)
+        self.ignorePkgs = self.sortPackages(self.ignorePkgs)
+                    
     def getAppList(self, category, sortType, startIndex, endIndex):
         '''Get application list in given range.'''
         (_, (sortRecommendList, sortDownloadList, sortVoteList)) = self.categoryDict[category]
@@ -295,8 +299,7 @@ class RepoCache:
             self.removePkgFromUpgradableList(pkgName)
         
         # Record.
-        self.ignorePkgs = sorted(self.ignorePkgs, key=lambda p: p)
-        self.upgradablePkgs = sorted(self.upgradablePkgs, key=lambda p: p)
+        self.ignorePkgs = self.sortPackages(self.ignorePkgs)
                 
         # Update file content.
         writeFile("./ignorePkgs", str(self.ignorePkgs))
@@ -312,11 +315,25 @@ class RepoCache:
                 self.upgradablePkgs.append(pkgName)
             
         # Record.
-        self.ignorePkgs = sorted(self.ignorePkgs, key=lambda p: p)
-        self.upgradablePkgs = sorted(self.upgradablePkgs, key=lambda p: p)
+        self.upgradablePkgs = self.sortPackages(self.upgradablePkgs)
                 
         # Update file content.
         writeFile("./ignorePkgs", str(self.ignorePkgs))
+        
+    def sortPackages(self, pkgs):
+        '''Sort packages, first sort packages in white list, then other packages.'''
+        # Init.
+        whiteList = []
+        otherlist = []
+        
+        # Split packages.
+        for pkgName in pkgs:
+            if self.whiteListDict.has_key(pkgName):
+                whiteList.append(pkgName)
+            else:
+                otherlist.append(pkgName)
+    
+        return utils.sortAlpha(whiteList) + utils.sortAlpha(otherlist)
 
 #  LocalWords:  pkgClassify AppInfo appList startIndex endIndex pkgName
 #  LocalWords:  uninstallablePkgs removePkgFromUpgradableList upgradablePkgs

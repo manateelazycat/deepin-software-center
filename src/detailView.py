@@ -1171,8 +1171,7 @@ class FetchScreenshot(td.Thread):
             else:
                 # Add in black list if haven't found screenshot.
                 # Avoid send fetch request again. 
-                if not pkgName in self.noscreenshotList: 
-                    self.noscreenshotList.append(pkgName)
+                utils.addInList(self.noscreenshotList, pkgName)
                     
                 # Set upload image.
                 self.image.set_from_pixbuf(gtk.gdk.pixbuf_new_from_file("../theme/default/screenshot/upload.png"))

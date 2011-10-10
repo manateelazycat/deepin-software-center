@@ -2,6 +2,7 @@
 
 2011-10-10 Yong Wang <lazycat.manatee@gmail.com>
 	* Finish download manage page.
+	* utils.py: add new utils functions: `addInList', 'removeFromList'.
 
 2011-10-07 Yong Wang <lazycat.manatee@gmail.com>
 	* repoCache.py: refactory functions `getIgnoreNum' and `getUpgradableNum'.

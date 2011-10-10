@@ -264,13 +264,11 @@ class RepoCache:
     
     def removePkgFromUpgradableList(self, pkgName):
         '''Remove package from upgradable list.'''
-        if pkgName in self.upgradablePkgs:
-            self.upgradablePkgs.remove(pkgName)
+        utils.removeFromList(self.upgradablePkgs, pkgName)
     
     def removePkgFromUninstallableList(self, pkgName):
         '''Remove package from uninstallable list.'''
-        if pkgName in self.uninstallablePkgs:
-            self.uninstallablePkgs.remove(pkgName)
+        utils.removeFromList(self.uninstallablePkgs, pkgName)
     
     def addPkgInUninstallableList(self, pkgName):
         '''Add package in uninstallable list.'''
@@ -291,8 +289,7 @@ class RepoCache:
         '''Add package in ignore list.'''
         for pkgName in pkgNames:
             # Add package in ignore list.
-            if pkgName not in self.ignorePkgs:
-                self.ignorePkgs.append(pkgName)
+            utils.addInList(self.ignorePkgs, pkgName)
                 
             # Remove package from upgradable list.
             self.removePkgFromUpgradableList(pkgName)
@@ -308,8 +305,7 @@ class RepoCache:
         '''Remove package in ignore list.'''
         for pkgName in pkgNames:
             # Remove package from ignore list.
-            if pkgName in self.ignorePkgs:
-                self.ignorePkgs.remove(pkgName)
+            utils.removeFromList(self.ignorePkgs, pkgName)
                 
             # Add package to upgradable list if package upgradable.
             if self.cache.has_key(pkgName) and self.cache[pkgName].pkg.is_upgradable:

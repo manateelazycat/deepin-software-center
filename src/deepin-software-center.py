@@ -1058,13 +1058,11 @@ class DeepinSoftwareCenter():
 
     def addInPauseList(self, pkgName):
         '''Add pause package in list.'''
-        if not pkgName in self.pauseList:
-            self.pauseList.append(pkgName)
+        utils.addInList(self.pauseList, pkgName)
             
     def removeFromPauseList(self, pkgName):
         '''Remove pause package from list.'''
-        if pkgName in self.pauseList:
-            self.pauseList.remove(pkgName)
+        utils.removeFromList(self.pauseList, pkgName)
             
     def getRunningPkgs(self):
         '''Get running packages.'''

@@ -409,8 +409,7 @@ class DownloadQueue:
     def finishDownload(self, pkgName, downloadStatus):
         '''Finish download, start new download if have download in queue.'''
         # Remove finish download from queue.
-        if pkgName in self.queue:
-            self.queue.remove(pkgName)
+        utils.removeFromList(self.queue, pkgName)
             
         # Call back if download success.
         if downloadStatus in [DOWNLOAD_STATUS_COMPLETE, DOWNLOAD_STATUS_DONT_NEED]:

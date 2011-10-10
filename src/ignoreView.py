@@ -198,13 +198,11 @@ class IgnoreView(appView.AppView):
         
     def selectPkg(self, pkgName):
         '''Select package.'''
-        if not pkgName in self.selectList:
-            self.selectList.append(pkgName)
+        utils.addInList(self.selectList, pkgName)
             
     def unselectPkg(self, pkgName):
         '''Un-select package.'''
-        if pkgName in self.selectList:
-            self.selectList.remove(pkgName)
+        utils.removeFromList(self.selectList, pkgName)
             
     def getSelectStatus(self, pkgName):
         '''Get select status of package.'''

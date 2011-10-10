@@ -201,8 +201,7 @@ class ActionQueue:
     def finishAction(self, pkgName, actionType):
         '''Finish action, start new action if have action in queue.'''
         # Remove finish action.
-        if (pkgName, actionType) in self.queue:
-            self.queue.remove((pkgName, actionType))
+        utils.removeFromList(self.queue, (pkgName, actionType))
 
         # Start new action if queue has other request.
         if len(self.queue) > 0:

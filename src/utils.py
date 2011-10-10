@@ -649,6 +649,16 @@ class AnonymityThread(td.Thread):
         '''Run.'''
         self.callback()    
         
+def addInList(eList, element):
+    '''Add element in list.'''
+    if not element in eList:
+        eList.append(element)
+        
+def removeFromList(eList, element):
+    '''Remove element from list.'''
+    if element in eList:
+        eList.remove(element)
+        
 #  LocalWords:  halfstar AppIcon pkgInfo shortDesc zh TW longDesc downloadSize
 #  LocalWords:  getPkgInstalledSize getPkgDependSize useSize uname libdevel ZB
 #  LocalWords:  oldlibs resize moveWindow addInScrolledWindow scrolledWindow

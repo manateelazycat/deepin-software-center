@@ -66,7 +66,7 @@ class Download(td.Thread):
         self.metalinkServers = 5         # the number of servers to connect to simultaneously
         self.maxConnectionPerServer = 10 # the maximum number of connections to one server for each download
         self.minSplitSize = "1M"         # minimum split size (1M - 1024M)
-        self.maxOverallDownloadLimit = "200K" # max overall download speed in bytes/sec
+        # self.maxOverallDownloadLimit = "200K" # max overall download speed in bytes/sec
         self.autoSaveInterval = 10       # time to auto save progress, in seconds
         if not self.archiveDir:
             raise Exception(('No archive dir is set.'
@@ -87,7 +87,7 @@ class Download(td.Thread):
                    '--enable-xml-rpc=true',
                    '--max-concurrent-downloads=%s' % (self.maxConcurrentDownloads),
                    '--metalink-servers=%s' % (self.metalinkServers),
-                   '--max-overall-download-limit=%s' % (self.maxOverallDownloadLimit)
+                   # '--max-overall-download-limit=%s' % (self.maxOverallDownloadLimit)
                    ]
         
         # Add `max-connection-per-server` and `min-split-size` options if aria2c >= 1.10.x.

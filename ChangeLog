@@ -7,6 +7,7 @@
 	  Set label's markup with blank if nothing to notify.
 	* Improve UI of "read vote data", make it more clean when no network connection.
 	* repoCache.py: improve sort algorthim of upgrade view, make it clearer to user.
+	* ignorePage.py: Set label's markup with blank if nothing to ignore.
 
 2011-10-07 Yong Wang <lazycat.manatee@gmail.com>
 	* repoCache.py: refactory functions `getIgnoreNum' and `getUpgradableNum'.

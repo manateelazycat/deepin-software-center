@@ -66,6 +66,7 @@ class Download(td.Thread):
         self.metalinkServers = 5         # the number of servers to connect to simultaneously
         self.maxConnectionPerServer = 10 # the maximum number of connections to one server for each download
         self.minSplitSize = "1M"         # minimum split size (1M - 1024M)
+        self.maxOverallDownloadLimit = "200K" # max overall download speed in bytes/sec
         self.autoSaveInterval = 10       # time to auto save progress, in seconds
         if not self.archiveDir:
             raise Exception(('No archive dir is set.'
@@ -86,6 +87,7 @@ class Download(td.Thread):
                    '--enable-xml-rpc=true',
                    '--max-concurrent-downloads=%s' % (self.maxConcurrentDownloads),
                    '--metalink-servers=%s' % (self.metalinkServers),
+                   '--max-overall-download-limit=%s' % (self.maxOverallDownloadLimit)
                    ]
         
         # Add `max-connection-per-server` and `min-split-size` options if aria2c >= 1.10.x.
@@ -395,7 +397,11 @@ class DownloadQueue:
         '''Stop download.'''
         # Send pause signal if match current download one.
         if self.pkgName == pkgName and self.downloadQueue != None:
+            # Pause download.
             self.downloadQueue.put('PAUSE')
+            
+            # Re-init current pkgName to None if remove current download.
+            self.pkgName = None
         # Otherwise just simple remove from download queue.
         elif pkgName in self.queue:
             self.queue.remove(pkgName)
@@ -433,6 +439,5 @@ class DownloadQueue:
             return self.queue
         else:
             return self.queue + [self.pkgName]
-     
-
+        
 #  LocalWords:  completedLength

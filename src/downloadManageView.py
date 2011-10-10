@@ -168,12 +168,15 @@ class DownloadManageItem(DownloadItem):
 class DownloadManageView(appView.AppView):
     '''Application view.'''
 	
-    def __init__(self, appNum, getListFunc, switchStatus, downloadQueue, 
+    def __init__(self, repoCache, getRunningNum, getListFunc, switchStatus, downloadQueue, 
                  entryDetailCallback, sendVoteCallback, fetchVoteCallback):
         '''Init for application view.'''
+        appNum = getRunningNum()
         appView.AppView.__init__(self, appNum, PAGE_DOWNLOAD_MANAGE)
         
         # Init.
+        self.repoCache = repoCache
+        self.getRunningNum = getRunningNum
         self.getListFunc = getListFunc
         self.switchStatus = switchStatus
         self.downloadQueue = downloadQueue
@@ -248,7 +251,6 @@ class DownloadManageView(appView.AppView):
 
     def createAppList(self, appList):
         '''Create application list.'''
-        # Init.
         itemPaddingY = 5
         
         box = gtk.VBox()
@@ -257,10 +259,9 @@ class DownloadManageView(appView.AppView):
                                          self.entryDetailCallback,
                                          self.sendVoteCallback,
                                          index, self.getSelectItemIndex, self.setSelectItemIndex)
-            box.pack_start(appItem.itemFrame, False, False)
+            self.box.pack_start(appItem.itemFrame, False, False)
             self.itemDict[utils.getPkgName(appItem.appInfo.pkg)] = appItem
-            
+        
         return box
-
-
+    
 #  LocalWords:  ScrolledWindow

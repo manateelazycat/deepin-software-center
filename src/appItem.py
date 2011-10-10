@@ -355,23 +355,23 @@ class DownloadItem:
     def switchToDownloading(self):
         '''Switch to downloading.'''
         pkgName = utils.getPkgName(self.appInfo.pkg)
-        self.switchStatus(pkgName, APP_STATE_DOWNLOADING)
         self.downloadQueue.addDownload(pkgName)
+        self.switchStatus(pkgName, APP_STATE_DOWNLOADING)
         
     def switchToDownloadPause(self):
         '''Switch to pause.'''
         pkgName = utils.getPkgName(self.appInfo.pkg)
-        self.switchStatus(pkgName, APP_STATE_DOWNLOAD_PAUSE)
         self.downloadQueue.stopDownload(pkgName)
+        self.switchStatus(pkgName, APP_STATE_DOWNLOAD_PAUSE)
         
     def switchToNormal(self):
         '''Switch to normal.'''
         pkgName = utils.getPkgName(self.appInfo.pkg)
+        self.downloadQueue.stopDownload(pkgName)
         if self.appInfo.pkg.is_upgradable:
             self.switchStatus(pkgName, APP_STATE_UPGRADE)
         else:
             self.switchStatus(pkgName, APP_STATE_NORMAL)
-        self.downloadQueue.stopDownload(pkgName)
 
     def updateDownloadingStatus(self, progress, feedback, color="#000000"):
         '''Update downloading status.'''

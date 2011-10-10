@@ -29,16 +29,18 @@ pygtk.require('2.0')
 class DownloadManagePage:
     '''Interface for download page.'''
 	
-    def __init__(self, getRunningPkgs, getRunningList, switchStatus, downloadQueue,
+    def __init__(self, repoCache, getRunningNum, getRunningList, switchStatus, downloadQueue,
                  entryDetailCallback, sendVoteCallback, fetchVoteCallback):
         '''Init for download page.'''
         # Init.
         self.box = gtk.VBox()
         
-        self.topbar = Topbar(len(getRunningPkgs()))
+        appNum = getRunningNum()
+        self.topbar = Topbar(appNum)
         
         self.downloadManageView = downloadManageView.DownloadManageView(
-            len(getRunningPkgs()),
+            repoCache,
+            getRunningNum,
             getRunningList,
             switchStatus,
             downloadQueue,
@@ -92,4 +94,4 @@ class Topbar:
         self.numLabel.set_markup(
             ("<span size='%s'>有 </span>" % (LABEL_FONT_SIZE))
             + ("<span foreground='%s' size='%s'>%s</span>" % (self.numColor, LABEL_FONT_SIZE, str(upgradeNum)))
-            + ("<span size='%s'> 个更新包正在下载</span>" % (LABEL_FONT_SIZE)))
+            + ("<span size='%s'> 个包正在下载</span>" % (LABEL_FONT_SIZE)))

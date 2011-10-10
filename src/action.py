@@ -165,6 +165,7 @@ class ActionQueue:
         self.lock = False
         self.queue = []
         self.pkgName = None
+        self.actionType = None
         self.updateCallback = updateCallback
         self.finishCallback = finishCallback
         self.failedCallback = failedCallback
@@ -177,6 +178,7 @@ class ActionQueue:
         
         # Init.
         self.pkgName = pkgName
+        self.actionType = actionType
 
         # Start action.
         action = Action(pkgName, actionType,
@@ -211,6 +213,7 @@ class ActionQueue:
         else:
             self.lock = False
             self.pkgName = None
+            self.actionType = None
 
     def getActionPkgs(self):
         '''Get action packages.'''
@@ -218,4 +221,10 @@ class ActionQueue:
             return map (lambda (pn, _): pn, self.queue)
         else:
             return (map (lambda (pn, _): pn, self.queue)) + [self.pkgName]
-     
+
+    def getActionQueue(self):
+        '''Get action queue.'''
+        if self.pkgName == None:
+            return map (lambda action: action, self.queue)
+        else:
+            return (map (lambda action: action, self.queue)) + [(self.pkgName, self.actionType)]

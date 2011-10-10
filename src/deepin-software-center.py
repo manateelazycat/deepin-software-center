@@ -89,6 +89,7 @@ class DeepinSoftwareCenter():
         self.entryIgnorePage = False
         self.downloadQueue = None
         self.actionQueue = None
+        self.pauseList = []
 
         # dpkg will failed if not set TERM and PATH environment variable.  
         os.environ["TERM"] = "xterm"
@@ -166,6 +167,9 @@ class DeepinSoftwareCenter():
         # Update application view.
         updateView = self.updatePage.updateView
         updateView.switchToStatus(pkgName, appStatus)
+        
+        # Update download manage view.
+        self.updateDownloadManageView(pkgName, appStatus)
 
         # Update detail view.
         for pageId in [PAGE_RECOMMEND, PAGE_REPO, PAGE_UPGRADE, PAGE_UNINSTALL]:
@@ -175,7 +179,7 @@ class DeepinSoftwareCenter():
             elif pageId == PAGE_REPO and self.searchViewDict.has_key(pageId):
                 searchView = self.searchViewDict[pageId].searchView
                 searchView.switchToStatus(pkgName, appStatus)
-
+                
     @postGUI
     def downloadUpdateCallback(self, pkgName, progress, feedback, status=APP_STATE_DOWNLOADING):
         '''Update downloading callback.'''
@@ -199,6 +203,10 @@ class DeepinSoftwareCenter():
             updateView = self.updatePage.updateView
             updateView.updateDownloadingStatus(pkgName, progress, feedback)
 
+            # Update download manage view.
+            downloadManageView = self.downloadManagePage.downloadManageView
+            downloadManageView.updateDownloadingStatus(pkgName, progress, feedback)
+            
             # Update detail view.
             for pageId in [PAGE_RECOMMEND, PAGE_REPO, PAGE_UPGRADE, PAGE_UNINSTALL]:
                 if self.detailViewDict.has_key(pageId):
@@ -236,6 +244,9 @@ class DeepinSoftwareCenter():
             # Update update view.
             updateView = self.updatePage.updateView
             updateView.switchToStatus(pkgName, appStatus)
+
+            # Update download manage view.
+            self.updateDownloadManageView(pkgName, appStatus)
 
             # Update detail view.
             for pageId in [PAGE_RECOMMEND, PAGE_REPO, PAGE_UPGRADE, PAGE_UNINSTALL]:
@@ -280,6 +291,9 @@ class DeepinSoftwareCenter():
             updateView = self.updatePage.updateView
             updateView.switchToStatus(pkgName, appStatus, True)
 
+            # Update download manage view.
+            self.updateDownloadManageView(pkgName, appStatus)
+
             # Update detail view.
             for pageId in [PAGE_RECOMMEND, PAGE_REPO, PAGE_UPGRADE, PAGE_UNINSTALL]:
                 if self.detailViewDict.has_key(pageId):
@@ -310,6 +324,10 @@ class DeepinSoftwareCenter():
                 # Update repository view.
                 repoView = self.repoPage.repoView
                 repoView.updateInstallingStatus(pkgName, progress, feedback)
+                
+                # Update download manage view.
+                downloadManageView = self.downloadManagePage.downloadManageView
+                downloadManageView.updateInstallingStatus(pkgName, progress, feedback)
 
                 # Update detail view.
                 for pageId in [PAGE_RECOMMEND, PAGE_REPO, PAGE_UPGRADE, PAGE_UNINSTALL]:
@@ -338,6 +356,10 @@ class DeepinSoftwareCenter():
                 # Update update view.
                 updateView = self.updatePage.updateView
                 updateView.updateUpgradingStatus(pkgName, progress, feedback)
+
+                # Update download manage view.
+                downloadManageView = self.downloadManagePage.downloadManageView
+                downloadManageView.updateUpgradingStatus(pkgName, progress, feedback)
 
                 # Update detail view.
                 for pageId in [PAGE_RECOMMEND, PAGE_REPO, PAGE_UPGRADE, PAGE_UNINSTALL]:
@@ -376,9 +398,11 @@ class DeepinSoftwareCenter():
                     # Update application information.
                     appInfo = self.repoCache.cache[pkgName]
                     if isMarkDeleted:
-                        appInfo.switchStatus(APP_STATE_NORMAL)
+                        appStatus = APP_STATE_NORMAL
+                        appInfo.switchStatus(appStatus)
                     else:
-                        appInfo.switchStatus(APP_STATE_INSTALLED)
+                        appStatus = APP_STATE_INSTALLED
+                        appInfo.switchStatus(appStatus)
 
                     # Update slide bar.
                     self.recommendPage.slidebar.initNormalStatus(pkgName, isMarkDeleted)
@@ -390,6 +414,9 @@ class DeepinSoftwareCenter():
                     # Update repository view.
                     repoView = self.repoPage.repoView
                     repoView.initNormalStatus(pkgName, isMarkDeleted, True)
+
+                    # Update download manage view.
+                    self.updateDownloadManageView(pkgName, appStatus)
 
                     # Update detail view.
                     for pageId in [PAGE_RECOMMEND, PAGE_REPO, PAGE_UPGRADE, PAGE_UNINSTALL]:
@@ -410,9 +437,11 @@ class DeepinSoftwareCenter():
                     # Update application information.
                     appInfo = self.repoCache.cache[pkgName]
                     if isMarkDeleted:
-                        appInfo.switchStatus(APP_STATE_NORMAL)
+                        appStatus = APP_STATE_NORMAL
+                        appInfo.switchStatus(appStatus)
                     else:
-                        appInfo.switchStatus(APP_STATE_INSTALLED)
+                        appStatus = APP_STATE_INSTALLED
+                        appInfo.switchStatus(appStatus)
 
                         # Remove upgradabled packages.
                         self.repoCache.removePkgFromUpgradableList(pkgName)
@@ -439,6 +468,9 @@ class DeepinSoftwareCenter():
                     # Update repository view.
                     repoView = self.repoPage.repoView
                     repoView.initNormalStatus(pkgName, isMarkDeleted, True)
+
+                    # Update download manage view.
+                    self.updateDownloadManageView(pkgName, appStatus)
 
                     # Update detail view.
                     for pageId in [PAGE_RECOMMEND, PAGE_REPO, PAGE_UPGRADE, PAGE_UNINSTALL]:
@@ -491,7 +523,8 @@ class DeepinSoftwareCenter():
             if self.repoCache.cache.has_key(pkgName):
                 # Update application information.
                 appInfo = self.repoCache.cache[pkgName]
-                appInfo.switchStatus(APP_STATE_NORMAL)
+                appStatus = APP_STATE_NORMAL
+                appInfo.switchStatus(appStatus)
 
                 # Update slide bar.
                 self.recommendPage.slidebar.initNormalStatus(pkgName, True)
@@ -503,6 +536,9 @@ class DeepinSoftwareCenter():
                 # Update repository view.
                 repoView = self.repoPage.repoView
                 repoView.initNormalStatus(pkgName, True, True)
+
+                # Update download manage view.
+                self.updateDownloadManageView(pkgName, appStatus)
 
                 # Update detail view.
                 for pageId in [PAGE_RECOMMEND, PAGE_REPO, PAGE_UPGRADE, PAGE_UNINSTALL]:
@@ -518,7 +554,8 @@ class DeepinSoftwareCenter():
             if self.repoCache.cache.has_key(pkgName):
                 # Update application information.
                 appInfo = self.repoCache.cache[pkgName]
-                appInfo.switchStatus(APP_STATE_UPGRADE)
+                appStatus = APP_STATE_UPGRADE
+                appInfo.switchStatus(appStatus)
 
                 # Update slide bar.
                 self.recommendPage.slidebar.initNormalStatus(pkgName, APP_STATE_UPGRADE)
@@ -534,6 +571,9 @@ class DeepinSoftwareCenter():
                 # Update update view.
                 updateView = self.updatePage.updateView
                 updateView.switchToStatus(pkgName, APP_STATE_UPGRADE, True)
+
+                # Update download manage view.
+                self.updateDownloadManageView(pkgName, appStatus)
 
                 # Update detail view.
                 for pageId in [PAGE_RECOMMEND, PAGE_REPO, PAGE_UPGRADE, PAGE_UNINSTALL]:
@@ -565,6 +605,47 @@ class DeepinSoftwareCenter():
                         searchView.initUninstallStatus(pkgName, True)
             else:
                 print "Impossible: %s not in RepoCache" % (pkgName)
+
+    def updateDownloadManageView(self, pkgName, appStatus, updateVote=False):
+        '''Update download manage view.'''
+        downloadManageView = self.downloadManagePage.downloadManageView
+        if appStatus in [APP_STATE_DOWNLOADING, 
+                         APP_STATE_INSTALLING,
+                         APP_STATE_UPGRADING]:
+            # Switch status if exist in list.
+            if downloadManageView.itemDict.has_key(pkgName):
+                downloadManageView.switchToStatus(pkgName, appStatus, updateVote)
+            # Else refresh download manage view.
+            else:
+                self.refreshDownloadManageView(pkgName)
+        elif appStatus == APP_STATE_DOWNLOAD_PAUSE:
+            # Switch status.
+            downloadManageView.switchToStatus(pkgName, appStatus, updateVote)
+            
+            # Add package in pause list.
+            self.addInPauseList(pkgName)
+        elif appStatus in [APP_STATE_NORMAL, APP_STATE_UPGRADE, APP_STATE_INSTALLED]:
+            # Refresh download manage view.
+            self.refreshDownloadManageView(pkgName)
+        else:
+            print "Impossible status: %s (%s)" % (pkgNum, appStatus)
+            
+    def refreshDownloadManageView(self, pkgName):
+        '''Refresh download manage view.'''
+        # Remove from pause list.
+        self.removeFromPauseList(pkgName)
+        
+        # Get running number.
+        pkgNum = self.getRunningNum()
+        
+        # Update topbar status.
+        self.downloadManagePage.topbar.updateNum(pkgNum)
+        
+        # Update download manage view status.
+        self.downloadManagePage.downloadManageView.update(pkgNum)
+        
+        # Update download icon number.
+        self.navigatebar.downloadIcon.queue_draw()
 
     def updateUninstallView(self, pkgName, isAdd):
         '''Update uninstall view.'''
@@ -935,7 +1016,6 @@ class DeepinSoftwareCenter():
 
         if view != None:
             for vote in voteJson.items():
-                # print vote
                 (pkgName, [starLevel, voteNum]) = vote
                 view.updateVoteView(pkgName, starLevel, voteNum)
     @postGUI
@@ -968,31 +1048,38 @@ class DeepinSoftwareCenter():
         # Upgrade package if it not in wait queue.
         for pkgName in selectList:
             if not pkgName in downloadPkgs + actionPkgs:
-                # Switch status.
-                self.repoCache.cache[pkgName].switchStatus(APP_STATE_DOWNLOADING)
-                self.switchStatus(pkgName, APP_STATE_DOWNLOADING)
-
                 # Add in download queue.
                 self.downloadQueue.addDownload(pkgName)
                 print "Upgrade %s" % (pkgName)
     
-    def getRunningNum(self):
-        '''Get running package number.'''
-        runningList = self.getRunningPkgs()
-        return len(runningList)
-                
+                # Switch status.
+                self.repoCache.cache[pkgName].switchStatus(APP_STATE_DOWNLOADING)
+                self.switchStatus(pkgName, APP_STATE_DOWNLOADING)
+
+    def addInPauseList(self, pkgName):
+        '''Add pause package in list.'''
+        if not pkgName in self.pauseList:
+            self.pauseList.append(pkgName)
+            
+    def removeFromPauseList(self, pkgName):
+        '''Remove pause package from list.'''
+        if pkgName in self.pauseList:
+            self.pauseList.remove(pkgName)
+            
     def getRunningPkgs(self):
         '''Get running packages.'''
         # Get install or upgrade list.
         actionList = []
-        for (pkgName, actionType) in self.actionQueue.queue:
+        for (pkgName, actionType) in self.actionQueue.getActionQueue():
             if actionType != ACTION_UNINSTALL:
                 actionList.append(pkgName)
                 
-        # Get download list.
-        downloadList = deepcopy(self.downloadQueue.queue)
-
-        return actionList + downloadList
+        return actionList + self.downloadQueue.getDownloadPkgs() + self.pauseList
+                
+    def getRunningNum(self):
+        '''Get running package number.'''
+        runningList = self.getRunningPkgs()
+        return len(runningList)
                 
     def getRunningList(self, startIndex, endIndex):
         '''Get running (download, install or upgrade) action list.'''
@@ -1001,7 +1088,7 @@ class DeepinSoftwareCenter():
         
         # Return application list.
         appList = []
-        for index in rang(startIndex, endIndex):
+        for index in range(startIndex, endIndex):
             pkgName = pkgNames[index]
             appList.append(self.repoCache.cache[pkgName])
             
@@ -1093,7 +1180,8 @@ class InitThread(td.Thread):
             )
         
         center.downloadManagePage = downloadManagePage.DownloadManagePage(
-            center.getRunningPkgs,
+            center.repoCache,
+            center.getRunningNum,
             center.getRunningList,
             center.switchStatus,
             center.downloadQueue,

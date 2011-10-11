@@ -1,3 +1,4 @@
 *.pyc
 ignorePkgs
 firstLock
+voteInfo

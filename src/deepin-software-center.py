@@ -30,6 +30,7 @@ import action
 import apt
 import apt_pkg
 import morePage
+import datetime
 import downloadManagePage
 import detailView
 import download
@@ -90,6 +91,16 @@ class DeepinSoftwareCenter():
         self.downloadQueue = None
         self.actionQueue = None
         self.pauseList = []
+        
+        # Read vote information.
+        (voteDate, voteList) = utils.evalFile("./voteInfo")
+        self.today = datetime.date.today()
+        
+        # Clean vote black list if change date.
+        if voteDate != self.today:        
+            self.voteBlacklist = []
+        else:
+            self.voteBlacklist = voteList
 
         # dpkg will failed if not set TERM and PATH environment variable.  
         os.environ["TERM"] = "xterm"
@@ -781,6 +792,9 @@ class DeepinSoftwareCenter():
 
         # Close socket.
         self.socketThread.socket.close()
+        
+        # Save vote black list.
+        utils.writeFile("./voteInfo", (self.today, self.voteBlacklist))
 
         gtk.main_quit()
         
@@ -948,7 +962,7 @@ class DeepinSoftwareCenter():
 
     def sendVote(self, name, vote):
         '''Send vote.'''
-        sendVoteThread = SendVote("%s/vote.php?n=%s&m=%s" % (SERVER_ADDRESS, name, vote), name, self.message)
+        sendVoteThread = SendVote("%s/vote.php?n=%s&m=%s" % (SERVER_ADDRESS, name, vote), name, self.message, self.voteBlacklist)
         sendVoteThread.start()
 
     def exitDetailView(self, pageId):
@@ -1233,7 +1247,7 @@ class FetchVote(td.Thread):
 class SendVote(td.Thread):
     '''Vote'''
 
-    def __init__(self, url, name, messageCallback):
+    def __init__(self, url, name, messageCallback, voteList):
         '''Init for vote.'''
         td.Thread.__init__(self)
         self.setDaemon(True) # make thread exit when main program exit
@@ -1244,8 +1258,12 @@ class SendVote(td.Thread):
     def run(self):
         '''Run'''
         try:
-            post = urllib2.urlopen(self.url, timeout=POST_TIMEOUT)
-            self.messageCallback("%s è¯„åˆ†æˆåŠŸ, æ„Ÿè°¢å‚ä¸Ž!" % (self.name))
+            if name in voteList:
+                self.messageCallback("ä¸ºä¿è¯å…¬æ­£, æ¯å¤©åªèƒ½å¯¹%sè¯„åˆ†ä¸€æ¬¡" % (self.name))
+            else:
+                post = urllib2.urlopen(self.url, timeout=POST_TIMEOUT)
+                self.messageCallback("%s è¯„åˆ†æˆåŠŸ, æ„Ÿè°¢å‚ä¸Ž!" % (self.name))
+                voteList.append(self.name)
         except Exception, e:
             self.messageCallback("%s è¯„åˆ†å¤±è´¥, ô¸¾ô¨µôš†ô´œô»ô‘¿ô±¤ô¯“ô©º." % (self.name))
             print "Error: ", e

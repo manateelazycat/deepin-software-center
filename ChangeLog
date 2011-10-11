@@ -2,6 +2,7 @@
 
 2011-10-11 Yong Wang <lazycat.manatee@gmail.com>
 	* Pick server address for test.
+	* Avoid user send vote more than one time.
 
 2011-10-10 Yong Wang <lazycat.manatee@gmail.com>
 	* Finish download manage page.

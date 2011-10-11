@@ -662,6 +662,11 @@ def removeFromList(eList, element):
 def sortAlpha(eList):
     '''Get alpha list.'''
     return sorted(eList, key=lambda e: e)
+
+def todayStr():
+    '''Get string of today.'''
+    structTime = time.localtime()
+    return "%s-%s-%s" % (structTime.tm_year, structTime.tm_mon, structTime.tm_mday)
         
 #  LocalWords:  halfstar AppIcon pkgInfo shortDesc zh TW longDesc downloadSize
 #  LocalWords:  getPkgInstalledSize getPkgDependSize useSize uname libdevel ZB

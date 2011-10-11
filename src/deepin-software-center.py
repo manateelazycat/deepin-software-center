@@ -30,7 +30,6 @@ import action
 import apt
 import apt_pkg
 import morePage
-import datetime
 import downloadManagePage
 import detailView
 import download
@@ -94,11 +93,11 @@ class DeepinSoftwareCenter():
         
         # Read vote information.
         self.voteFile = "./voteInfo"
+        self.today = utils.todayStr()
         if not os.path.exists(self.voteFile):
             self.voteBlacklist = []
         else:
             (voteDate, voteList) = utils.evalFile(self.voteFile)
-            self.today = datetime.date.today()
             
             # Clean vote black list if change date.
             if voteDate != self.today:        
@@ -798,7 +797,7 @@ class DeepinSoftwareCenter():
         self.socketThread.socket.close()
         
         # Save vote black list.
-        utils.writeFile(self.voteFile, (self.today, self.voteBlacklist))
+        utils.writeFile(self.voteFile, str((self.today, self.voteBlacklist)))
 
         gtk.main_quit()
         

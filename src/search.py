@@ -244,8 +244,9 @@ class DB(object):
 class Search:
     '''Search.'''
 	
-    def __init__(self, messageCallback, statusbar):
+    def __init__(self, repoCache, messageCallback, statusbar):
         '''Init search.'''
+        self.repoCache = repoCache
         self.lockFile = "./firstLock"    
         self.messageCallback = messageCallback
         self.statusbar = statusbar
@@ -294,7 +295,7 @@ class Search:
             if results == []:
                 self.messageCallback("没有搜索到和 %s 相关的包" % (" ".join(args)))
             
-            return results
+            return self.repoCache.sortPackages(results)
     
 class RebuildSearchIndex(td.Thread):
     '''Rebuild search index.'''

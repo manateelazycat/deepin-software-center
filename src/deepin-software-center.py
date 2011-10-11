@@ -1136,7 +1136,7 @@ class InitThread(td.Thread):
         center.updateList = updateList.UpdateList(center.aptCache, center.statusbar)       
         
         # Init search query.
-        center.searchQuery = search.Search(center.message, center.statusbar)
+        center.searchQuery = search.Search(center.repoCache, center.message, center.statusbar)
         
         # Download queue.
         center.downloadQueue = download.DownloadQueue(

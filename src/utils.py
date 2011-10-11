@@ -218,15 +218,21 @@ def getPkgDependSize(cache, pkg, action):
         print "Calculate `%s` dependent used size failed, instead package's used size." % (getPkgName(pkg))
         return (pkg.candidate.size, pkg.candidate.installed_size)
 
-def getCommandOutput(commands):
+def getCommandOutputFirstLine(commands):
     '''Run command and return result.'''
     process = subprocess.Popen(commands, stdout=subprocess.PIPE)
     process.wait()
     return process.stdout.readline()
+
+def getCommandOutput(commands):
+    '''Run command and return result.'''
+    process = subprocess.Popen(commands, stdout=subprocess.PIPE)
+    process.wait()
+    return process.stdout.readlines()
     
 def getKernelPackages():
     '''Get running kernel packages.'''
-    kernelVersion = (getCommandOutput(["uname", "-r"]).split("-generic"))
+    kernelVersion = (getCommandOutputFirstLine(["uname", "-r"]).split("-generic"))
     
     return ["linux-image-generic", 
             "linux-image-%s-generic" % (kernelVersion),
@@ -362,7 +368,7 @@ def getFontYCoordinate(y, height, fontSize):
 # So i pick version information from output of command "aria2c --version".
 def getAria2Version():
     '''Get aria2 version.'''
-    versionList = getCommandOutput(["aria2c", "--version"]).split().pop().split('.')
+    versionList = getCommandOutputFirstLine(["aria2c", "--version"]).split().pop().split('.')
     
     return (int(versionList[0]), int(versionList[1]), int(versionList[2]))
 
@@ -667,13 +673,24 @@ def todayStr():
     '''Get string of today.'''
     structTime = time.localtime()
     return "%s-%s-%s" % (structTime.tm_year, structTime.tm_mon, structTime.tm_mday)
-        
+
+def aptsearch(keywords):
+    '''Search keywords.'''
+    lines = getCommandOutput(["apt-cache", "search"] + keywords)
+    pkgs = []
+    for line in lines:
+        splitList = line.split()
+        if len(splitList) > 0:
+            pkgs.append(splitList[0])        
+            
+    return pkgs
+
 #  LocalWords:  halfstar AppIcon pkgInfo shortDesc zh TW longDesc downloadSize
 #  LocalWords:  getPkgInstalledSize getPkgDependSize useSize uname libdevel ZB
 #  LocalWords:  oldlibs resize moveWindow addInScrolledWindow scrolledWindow
 #  LocalWords:  shadowType viewport newButtonWithoutPadding getFontYCoordinate
 #  LocalWords:  fontSize xmlrpclib ServerProxy getVersion getAria versionList
-#  LocalWords:  getCommandOutput getCandidates pkgs len preStr matchStr restStr
+#  LocalWords:  getCommandOutputFirstLine getCandidates pkgs len preStr matchStr restStr
 #  LocalWords:  BBBB setMarkup activeMarkup normalMarkup setCursor eventbox
 #  LocalWords:  setDefaultCursor resetAfterClick setCustomizeClickableCursor
 #  LocalWords:  cursorPath setCustomizeCursor runCommand subprocess touchFile

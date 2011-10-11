@@ -4,6 +4,7 @@
 	* Pick server address for test.
 	* Avoid user send vote more than one time.
 	* Fix bug.
+	* search.py: improve sort algorthim of search view, make it clearer to user.
 
 2011-10-10 Yong Wang <lazycat.manatee@gmail.com>
 	* Finish download manage page.

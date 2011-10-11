@@ -93,14 +93,18 @@ class DeepinSoftwareCenter():
         self.pauseList = []
         
         # Read vote information.
-        (voteDate, voteList) = utils.evalFile("./voteInfo")
-        self.today = datetime.date.today()
-        
-        # Clean vote black list if change date.
-        if voteDate != self.today:        
+        self.voteFile = "./voteInfo"
+        if not os.path.exists(self.voteFile):
             self.voteBlacklist = []
         else:
-            self.voteBlacklist = voteList
+            (voteDate, voteList) = utils.evalFile(self.voteFile)
+            self.today = datetime.date.today()
+            
+            # Clean vote black list if change date.
+            if voteDate != self.today:        
+                self.voteBlacklist = []
+            else:
+                self.voteBlacklist = voteList
 
         # dpkg will failed if not set TERM and PATH environment variable.  
         os.environ["TERM"] = "xterm"
@@ -794,7 +798,7 @@ class DeepinSoftwareCenter():
         self.socketThread.socket.close()
         
         # Save vote black list.
-        utils.writeFile("./voteInfo", (self.today, self.voteBlacklist))
+        utils.writeFile(self.voteFile, (self.today, self.voteBlacklist))
 
         gtk.main_quit()
         

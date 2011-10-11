@@ -1,5 +1,8 @@
 * News in 2.0
 
+2011-10-11 Yong Wang <lazycat.manatee@gmail.com>
+	* Pick server address for test.
+
 2011-10-10 Yong Wang <lazycat.manatee@gmail.com>
 	* Finish download manage page.
 	* utils.py: add new utils functions: `addInList', 'removeFromList'.

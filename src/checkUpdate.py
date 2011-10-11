@@ -43,7 +43,7 @@ def sendStatistics():
     # Send Mac address to server for statistics.
     try:
         userId = getUserID()
-        connection = urllib2.urlopen("http://test-linux.gteasy.com/record.php?i=" + str(userId), timeout=POST_TIMEOUT)
+        connection = urllib2.urlopen(("%s/record.php?i=" % (SERVER_ADDRESS)) + str(userId), timeout=POST_TIMEOUT)
         print "Send mac address %s success." % (userId)
     except Exception, e:
         print "Send mac address %s failed" % (userId)

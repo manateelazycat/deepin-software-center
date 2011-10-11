@@ -322,7 +322,7 @@ class SendDownloadCount(td.Thread):
     def run(self):
         '''Run'''
         try:
-            urllib2.urlopen("http://test-linux.gteasy.com/down.php?n=" + self.pkgName, timeout=POST_TIMEOUT)
+            urllib2.urlopen(("%s/down.php?n=" % (SERVER_ADDRESS)) + self.pkgName, timeout=POST_TIMEOUT)
             print "Send download count (%s) successful." % (self.pkgName)
         except Exception, e:
             print "Send download count (%s) failed." % (self.pkgName)

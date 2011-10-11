@@ -948,7 +948,7 @@ class DeepinSoftwareCenter():
 
     def sendVote(self, name, vote):
         '''Send vote.'''
-        sendVoteThread = SendVote("http://test-linux.gteasy.com/vote.php?n=%s&m=%s" % (name, vote), name, self.message)
+        sendVoteThread = SendVote("%s/vote.php?n=%s&m=%s" % (SERVER_ADDRESS, name, vote), name, self.message)
         sendVoteThread.start()
 
     def exitDetailView(self, pageId):
@@ -1224,7 +1224,7 @@ class FetchVote(td.Thread):
     def run(self):
         '''Run.'''
         try:
-            connection = urllib2.urlopen("http://test-linux.gteasy.com/getMark.php?n=" + self.pkgArguments, timeout=GET_TIMEOUT)
+            connection = urllib2.urlopen(("%s/getMark.php?n=" % (SERVER_ADDRESS)) + self.pkgArguments, timeout=GET_TIMEOUT)
             voteJson = json.loads(connection.read())
             self.updateVoteCallback(voteJson, self.pageId, self.isSearchPage)
         except Exception, e:
@@ -1264,7 +1264,7 @@ class FetchDetail(td.Thread):
     def run(self):
         '''Run'''
         try:
-            connection = urllib2.urlopen("http://test-linux.gteasy.com/getComment.php?n=" + self.pkgName, timeout=GET_TIMEOUT)
+            connection = urllib2.urlopen(("%s/getComment.php?n=" % (SERVER_ADDRESS)) + self.pkgName, timeout=GET_TIMEOUT)
             voteJson = json.loads(connection.read())
             self.updateDetailViewCallback(self.pageId, self.pkgName, voteJson)
         except Exception, e:

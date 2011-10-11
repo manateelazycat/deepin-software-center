@@ -837,7 +837,7 @@ class SendComment(td.Thread):
             args = {'n':self.pkgName, 'c':self.comment, 'u':self.userName}
             
             connection = urllib2.urlopen(
-                "http://test-linux.gteasy.com/comment.php?",
+                ("%s/comment.php?" % (SERVER_ADDRESS)),
                 data=urllib.urlencode(args),
                 timeout=POST_TIMEOUT)
             self.successCallback(self.pkgName, self.comment, self.userName)
@@ -860,7 +860,7 @@ class FetchMoreComment(td.Thread):
         '''Run'''
         try:
             connection = urllib2.urlopen(
-                "http://test-linux.gteasy.com/getComment.php?n=%s&cid=%s" % (self.pkgName, self.lastCommentId), 
+                "%s/getComment.php?n=%s&cid=%s" % (SERVER_ADDRESS, self.pkgName, self.lastCommentId), 
                 timeout=GET_TIMEOUT)
             voteJson = json.loads(connection.read())        
             self.updateMoreCommentCallback(self.pageId, self.pkgName, voteJson)

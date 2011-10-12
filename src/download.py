@@ -50,14 +50,13 @@ class Download(td.Thread):
         self.updateCallback = updateCallback
         self.finishCallback = finishCallback
         self.messageCallback = messageCallback
-        self.hashCheck = True
         self.server = xmlrpclib.ServerProxy('http://localhost:6800/rpc')
         self.downloadStatus = {}
         self.totalLength = 0
         self.cacheLength = 0
         self.progress = 0
         self.archiveDir = apt_pkg.config.find_dir('Dir::Cache::Archives')
-        self.partialDir = os.path.join(self.archiveDir, 'partial')
+        self.partialDir = os.path.join(self.archiveDir, "deepin_software_center_cache", pkgName)
         self.retryTicker = 0    # retry ticker
         self.updateInterval = 1 # in seconds
         self.queue = Q.Queue()
@@ -87,17 +86,14 @@ class Download(td.Thread):
                    '--enable-xml-rpc=true',
                    '--max-concurrent-downloads=%s' % (self.maxConcurrentDownloads),
                    '--metalink-servers=%s' % (self.metalinkServers),
-                   # '--max-overall-download-limit=%s' % (self.maxOverallDownloadLimit)
+                   # '--max-overall-download-limit=%s' % (self.maxOverallDownloadLimit),
+                   '--check-integrity=true',
                    ]
         
         # Add `max-connection-per-server` and `min-split-size` options if aria2c >= 1.10.x.
         if ARIA2_MAJOR_VERSION >= 1 and ARIA2_MINOR_VERSION >= 10:
             cmdline.append('--max-connection-per-server=%s' % (self.maxConnectionPerServer))
             cmdline.append('--min-split-size=%s' % (self.minSplitSize))
-        
-        # Whether check hash value?
-        if self.hashCheck:
-            cmdline.append('--check-integrity=true')
 
         # Append proxy configuration.
         http_proxy = apt_pkg.config.find('Acquire::http::Proxy')
@@ -154,7 +150,7 @@ class Download(td.Thread):
             self.totalLength = self.cache.required_download
             
             # Get packages to download.
-            pkgs = [pkg for pkg in pkgs if not pkg.marked_delete and not self._file_downloaded(pkg, self.hashCheck)]
+            pkgs = [pkg for pkg in pkgs if not pkg.marked_delete and not self._file_downloaded(pkg)]
             
             # Return DOWNLOAD_STATUS_DONT_NEED haven't packages need download,  
             if len(pkgs) == 0:
@@ -259,7 +255,7 @@ class Download(td.Thread):
                 downloadCompleted = all(completedStatus)
             
         link_success = True
-        # Link archives/partial/*.deb to archives/
+        # Link archives/pkgName/*.deb to archives/
         for pkg in pkgs:
             filename = get_filename(pkg.candidate)
             dst = os.path.join(self.archiveDir, filename)
@@ -292,23 +288,22 @@ class Download(td.Thread):
         else:
             return DOWNLOAD_STATUS_FAILED
 
-    def _file_downloaded(self, pkg, hashCheck=False):
+    def _file_downloaded(self, pkg):
         # Check whether file has downloaded.
         candidate = pkg.candidate
         path = os.path.join(self.archiveDir, get_filename(candidate))
         if not os.path.exists(path) or os.stat(path).st_size != candidate.size:
             return False
-        if hashCheck:
-            hash_type, hash_value = get_hash(pkg.candidate)
-            try:
-                return check_hash(path, hash_type, hash_value)
-            except IOError, e:
-                if e.errno != errno.ENOENT:
-                    print "Failed to check hash", e
-                    self.messageCallback("%s: 校验失败." % self.pkgName)
-                return False
-        else:
-            return True
+        
+        # Hash check.
+        hash_type, hash_value = get_hash(pkg.candidate)
+        try:
+            return check_hash(path, hash_type, hash_value)
+        except IOError, e:
+            if e.errno != errno.ENOENT:
+                print "Failed to check hash", e
+                self.messageCallback("%s: 校验失败." % self.pkgName)
+            return False
         
 class SendDownloadCount(td.Thread):
     '''Send download count.'''

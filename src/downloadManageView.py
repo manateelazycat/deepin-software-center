@@ -23,8 +23,10 @@
 from appItem import *
 from constant import *
 from draw import *
+from utils import *
 import appView
 import gtk
+import glib
 import pango
 import pygtk
 import utils
@@ -192,7 +194,6 @@ class DownloadManageView(appView.AppView):
         self.appNum = appNum
         self.pageIndex = 1
         self.calculateMaxPageIndex()
-        
         self.show()
 
     def show(self):

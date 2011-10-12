@@ -25,6 +25,7 @@ from constant import *
 from draw import *
 import appView
 import gtk
+import glib
 import pango
 import pygtk
 import utils
@@ -212,36 +213,6 @@ class UpdateView(appView.AppView):
         
         self.show()
         
-    def selectPkg(self, pkgName):
-        '''Select package.'''
-        utils.addInList(self.selectList, pkgName)
-            
-    def unselectPkg(self, pkgName):
-        '''Un-select package.'''
-        utils.removeFromList(self.selectList, pkgName)
-            
-    def getSelectStatus(self, pkgName):
-        '''Get select status of package.'''
-        return pkgName in self.selectList    
-    
-    def selectAllPkg(self):
-        '''Select all packages.'''
-        for pkgName in self.repoCache.upgradablePkgs:
-            self.selectPkg(pkgName)
-            if self.itemDict.has_key(pkgName):
-                self.itemDict[pkgName].checkButton.set_active(True)
-                
-    def unselectAllPkg(self):
-        '''Unselect all packages.'''
-        for pkgName in self.repoCache.upgradablePkgs:
-            self.unselectPkg(pkgName)
-            if self.itemDict.has_key(pkgName):
-                self.itemDict[pkgName].checkButton.set_active(False)
-                
-    def getSelectList(self):
-        '''Get select package list.'''
-        return self.selectList
-        
     def update(self, appNum):
         '''Update view'''
         self.appNum = appNum
@@ -327,6 +298,36 @@ class UpdateView(appView.AppView):
             self.itemDict[utils.getPkgName(appItem.appInfo.pkg)] = appItem
             
         return box
+        
+    def selectPkg(self, pkgName):
+        '''Select package.'''
+        utils.addInList(self.selectList, pkgName)
+            
+    def unselectPkg(self, pkgName):
+        '''Un-select package.'''
+        utils.removeFromList(self.selectList, pkgName)
+            
+    def getSelectStatus(self, pkgName):
+        '''Get select status of package.'''
+        return pkgName in self.selectList    
+    
+    def selectAllPkg(self):
+        '''Select all packages.'''
+        for pkgName in self.repoCache.upgradablePkgs:
+            self.selectPkg(pkgName)
+            if self.itemDict.has_key(pkgName):
+                self.itemDict[pkgName].checkButton.set_active(True)
+                
+    def unselectAllPkg(self):
+        '''Unselect all packages.'''
+        for pkgName in self.repoCache.upgradablePkgs:
+            self.unselectPkg(pkgName)
+            if self.itemDict.has_key(pkgName):
+                self.itemDict[pkgName].checkButton.set_active(False)
+                
+    def getSelectList(self):
+        '''Get select package list.'''
+        return self.selectList
         
 
 #  LocalWords:  efe pkgName selectList getSelectStatus selectAllPkg selectPkg

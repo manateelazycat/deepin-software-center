@@ -59,7 +59,7 @@ class Download(td.Thread):
         self.partialDir = os.path.join(self.archiveDir, "deepin_software_center_cache", pkgName)
         self.retryTicker = 0    # retry ticker
         self.updateInterval = 1 # in seconds
-        self.queue = Q.Queue()
+        self.signalChannel = Q.Queue()
         self.maxConcurrentDownloads = 50 # maximum number of parallel downloads for every static (HTTP/FTP) URI,
                                          # torrent and metalink.
         self.metalinkServers = 5         # the number of servers to connect to simultaneously
@@ -210,8 +210,8 @@ class Download(td.Thread):
                 print "Retry (%s/%s)" % (self.retryTicker, DOWNLOAD_TIMEOUT)
             
             # Stop download if received signal.
-            if not self.queue.empty():
-                signal = self.queue.get_nowait()
+            if not self.signalChannel.empty():
+                signal = self.signalChannel.get_nowait()
                 if signal == "STOP":
                     return DOWNLOAD_STATUS_STOP
                 elif signal == "PAUSE":
@@ -232,7 +232,12 @@ class Download(td.Thread):
                 currentLength = sum(self.downloadStatus.values())
                 
                 # Get download speed.
-                downloadSpeed = currentLength - self.cacheLength / self.updateInterval
+                if self.cacheLength == 0:
+                    downloadSpeed = 0
+                else:
+                    downloadSpeed = currentLength - self.cacheLength / self.updateInterval
+                    
+                # Store cache length.
                 self.cacheLength = currentLength
                 
                 # Increases retry ticker if download speed is zero.
@@ -358,11 +363,13 @@ class DownloadQueue:
         self.lock = False
         self.queue = []
         self.pkgName = None
-        self.downloadQueue = None
+        self.signalChannel = None
         self.updateCallback = updateCallback
         self.finishCallback = finishCallback
         self.failedCallback = failedCallback
         self.messageCallback = messageCallback
+        
+        self.maxConcurrentDownloads = 5 # max concurrent download
         
     def startDownloadThread(self, pkgName):
         '''Start download thread.'''
@@ -377,7 +384,7 @@ class DownloadQueue:
         download.start()
         
         # Get download queue.
-        self.downloadQueue = download.queue
+        self.signalChannel = download.signalChannel
         
     def addDownload(self, pkgName):
         '''Add new download'''
@@ -391,9 +398,9 @@ class DownloadQueue:
     def stopDownload(self, pkgName):
         '''Stop download.'''
         # Send pause signal if match current download one.
-        if self.pkgName == pkgName and self.downloadQueue != None:
+        if self.pkgName == pkgName and self.signalChannel != None:
             # Pause download.
-            self.downloadQueue.put('PAUSE')
+            self.signalChannel.put('PAUSE')
             
             # Re-init current pkgName to None if remove current download.
             self.pkgName = None

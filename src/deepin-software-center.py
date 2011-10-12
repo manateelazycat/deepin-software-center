@@ -790,8 +790,8 @@ class DeepinSoftwareCenter():
     def destroy(self, widget, data=None):
         '''Destroy main window.'''
         # Stop download thread.
-        if self.downloadQueue != None and self.downloadQueue.downloadQueue != None:
-            self.downloadQueue.downloadQueue.put("STOP")
+        if self.downloadQueue != None and self.downloadQueue.signalChannel != None:
+            self.downloadQueue.signalChannel.put("STOP")
 
         # Close socket.
         self.socketThread.socket.close()

@@ -395,7 +395,7 @@ class DownloadQueue:
     def stopDownload(self, pkgName):
         '''Stop download.'''
         # Send pause signal if package at download list.
-        if self.pkgName in self.downloadingQueue:
+        if pkgName in self.downloadingQueue:
             if self.downloadingSignalChannel.has_key(pkgName):
                 # Pause download.
                 self.downloadingSignalChannel[pkgName].put('PAUSE')

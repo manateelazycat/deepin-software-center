@@ -1257,18 +1257,19 @@ class SendVote(td.Thread):
         self.url = url
         self.name = name
         self.messageCallback = messageCallback
+        self.voteList = voteList
 
     def run(self):
         '''Run'''
         try:
-            if name in voteList:
-                self.messageCallback("为保证公正, 每天只能对%s评分一次" % (self.name))
+            if self.name in self.voteList:
+                self.messageCallback("为保证公正, 每天只能对%s评分一次." % (self.name))
             else:
                 post = urllib2.urlopen(self.url, timeout=POST_TIMEOUT)
                 self.messageCallback("%s 评分成功, 感谢参与!" % (self.name))
-                voteList.append(self.name)
+                self.voteList.append(self.name)
         except Exception, e:
-            self.messageCallback("%s 评分失败, ������������������������������������." % (self.name))
+            self.messageCallback("%s 评分失败, 请检查你的网络链接." % (self.name))
             print "Error: ", e
 
 class FetchDetail(td.Thread):

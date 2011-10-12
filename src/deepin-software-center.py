@@ -109,6 +109,10 @@ class DeepinSoftwareCenter():
         os.environ["TERM"] = "xterm"
         os.environ["PATH"] = "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/X11R6/bin"
         
+        # Remove lock file if it exist.
+        if os.path.exists("/var/lib/apt/lists/lock"):
+            os.remove("/var/lib/apt/lists/lock")
+        
         # Init widgets.
         self.window = self.initMainWindow()
         self.window.connect("size-allocate", lambda w, a: self.updateShape(w, a))
@@ -1069,7 +1073,6 @@ class DeepinSoftwareCenter():
             if not pkgName in downloadPkgs + actionPkgs:
                 # Add in download queue.
                 self.downloadQueue.addDownload(pkgName)
-                print "Upgrade %s" % (pkgName)
     
                 # Switch status.
                 self.repoCache.cache[pkgName].switchStatus(APP_STATE_DOWNLOADING)

@@ -42,15 +42,16 @@ import xmlrpclib
 (ARIA2_MAJOR_VERSION, ARIA2_MINOR_VERSION, _) = utils.getAria2Version()
 
 class Download(td.Thread):
-    def __init__(self, pkgName, updateCallback, finishCallback, messageCallback):
+    def __init__(self, pkgName, rpcListenPort, updateCallback, finishCallback, messageCallback):
         # Init.
         td.Thread.__init__(self)
         self.cache = apt.Cache()
         self.pkgName = pkgName
+        self.rpcListenPort = rpcListenPort
         self.updateCallback = updateCallback
         self.finishCallback = finishCallback
         self.messageCallback = messageCallback
-        self.server = xmlrpclib.ServerProxy('http://localhost:6800/rpc')
+        self.server = xmlrpclib.ServerProxy('http://localhost:%s/rpc' % (self.rpcListenPort))
         self.downloadStatus = {}
         self.totalLength = 0
         self.cacheLength = 0
@@ -84,6 +85,7 @@ class Download(td.Thread):
                    '--auto-save-interval=%s' % (self.autoSaveInterval),
                    '--continue=true',
                    '--enable-xml-rpc=true',
+                   '--xml-rpc-listen-port=%s' % (self.rpcListenPort),
                    '--max-concurrent-downloads=%s' % (self.maxConcurrentDownloads),
                    '--metalink-servers=%s' % (self.metalinkServers),
                    # '--max-overall-download-limit=%s' % (self.maxOverallDownloadLimit),
@@ -360,59 +362,55 @@ class DownloadQueue:
     def __init__(self, updateCallback, finishCallback, failedCallback, messageCallback):
         '''Init for download queue.'''
         # Init.
-        self.lock = False
-        self.queue = []
-        self.pkgName = None
-        self.signalChannel = None
+        self.maxConcurrentDownloads = 5 # max concurrent download
+        self.downloadingQueue = []
+        self.downloadingSignalChannel = {}
+        self.portTicker = 7000
+        self.waitQueue = []
         self.updateCallback = updateCallback
         self.finishCallback = finishCallback
         self.failedCallback = failedCallback
         self.messageCallback = messageCallback
         
-        self.maxConcurrentDownloads = 5 # max concurrent download
-        
     def startDownloadThread(self, pkgName):
         '''Start download thread.'''
-        # Lock first.
-        self.lock = True
-        
-        # Init.
-        self.pkgName = pkgName
+        # Add in download list.
+        utils.addInList(self.downloadingQueue, pkgName)
         
         # Start download thread.
-        download = Download(pkgName, self.updateCallback, self.finishDownload, self.messageCallback)
+        self.portTicker += 1 # generate new rpc listen port
+        download = Download(pkgName, self.portTicker, self.updateCallback, self.finishDownloadCallback, self.messageCallback)
         download.start()
         
-        # Get download queue.
-        self.signalChannel = download.signalChannel
+        # Add signal channel.
+        self.downloadingSignalChannel[pkgName] = download.signalChannel
         
     def addDownload(self, pkgName):
         '''Add new download'''
-        # Add in queue if download is lock.
-        if self.lock:
-            self.queue.append(pkgName)
-        # Otherwise start new download thread.
+        if len(self.downloadingQueue) >= self.maxConcurrentDownloads:
+            utils.addInList(self.waitQueue, pkgName)
         else:
             self.startDownloadThread(pkgName)
-
+        
     def stopDownload(self, pkgName):
         '''Stop download.'''
-        # Send pause signal if match current download one.
-        if self.pkgName == pkgName and self.signalChannel != None:
-            # Pause download.
-            self.signalChannel.put('PAUSE')
-            
-            # Re-init current pkgName to None if remove current download.
-            self.pkgName = None
+        # Send pause signal if package at download list.
+        if self.pkgName in self.downloadingQueue:
+            if self.downloadingSignalChannel.has_key(pkgName):
+                # Pause download.
+                self.downloadingSignalChannel[pkgName].put('PAUSE')
+            else:
+                print "Impossible: downloadingSignalChannel not key '%s'" % (pkgName)
         # Otherwise just simple remove from download queue.
-        elif pkgName in self.queue:
-            self.queue.remove(pkgName)
+        else:
+            utils.removeFromList(self.waitQueue, pkgName)
             
-    def finishDownload(self, pkgName, downloadStatus):
+    def finishDownloadCallback(self, pkgName, downloadStatus):
         '''Finish download, start new download if have download in queue.'''
-        # Remove finish download from queue.
-        utils.removeFromList(self.queue, pkgName)
-            
+        # Remove pkgName from download list.
+        utils.removeFromList(self.downloadingQueue, pkgName)
+        self.downloadingSignalChannel.pop(pkgName)
+                
         # Call back if download success.
         if downloadStatus in [DOWNLOAD_STATUS_COMPLETE, DOWNLOAD_STATUS_DONT_NEED]:
             self.finishCallback(pkgName)
@@ -426,19 +424,17 @@ class DownloadQueue:
         elif downloadStatus == DOWNLOAD_STATUS_PAUSE:
             print "Download %s pause." % (pkgName)
         
-        # Start new download thread if queue is not empty.
-        if len(self.queue) > 0:
-            self.startDownloadThread(self.queue.pop(0))
-        # Otherwise release download lock.
-        else:
-            self.lock = False
-            self.pkgName = None
+        # Start new download thread if download list's length is not reach max limit.
+        if len(self.downloadingQueue) < self.maxConcurrentDownloads and len(self.waitQueue) > 0:
+            self.startDownloadThread(self.waitQueue.pop(0))
 
     def getDownloadPkgs(self):
         '''Get download packages.'''
-        if self.pkgName == None:
-            return self.queue
-        else:
-            return self.queue + [self.pkgName]
+        return self.waitQueue + self.downloadingQueue
+    
+    def stopAllDownloads(self):
+        '''Stop all download task.'''
+        for signalChannel in self.downloadingSignalChannel.values():
+            signalChannel.put('STOP')
         
 #  LocalWords:  completedLength

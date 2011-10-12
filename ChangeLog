@@ -2,6 +2,7 @@
 
 2011-10-12 Yong Wang <lazycat.manatee@gmail.com>
 	* Refactory code: ready for multi-package concurrent download.
+	* Add new features that software center can download package concurrently.
 
 2011-10-11 Yong Wang <lazycat.manatee@gmail.com>
 	* Pick server address for test.

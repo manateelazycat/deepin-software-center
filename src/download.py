@@ -430,7 +430,7 @@ class DownloadQueue:
 
     def getDownloadPkgs(self):
         '''Get download packages.'''
-        return self.waitQueue + self.downloadingQueue
+        return self.downloadingQueue + self.waitQueue
     
     def stopAllDownloads(self):
         '''Stop all download task.'''

@@ -108,7 +108,7 @@ class Action(td.Thread):
             # Call finish callback if action commit successfully.
             self.finish()
         except Exception, e:
-            print "Got error `%s` when commit apt action." % (e)
+            print "Got error `%s` when commit apt action." % (str(e))
             
             self.messageCallback("%s: 安装失败" % self.pkgName)
             
@@ -209,11 +209,11 @@ class ActionQueue:
         if self.pkgName == None:
             return map (lambda (pn, _): pn, self.queue)
         else:
-            return (map (lambda (pn, _): pn, self.queue)) + [self.pkgName]
+            return [self.pkgName] + (map (lambda (pn, _): pn, self.queue))
 
     def getActionQueue(self):
         '''Get action queue.'''
         if self.pkgName == None:
             return map (lambda action: action, self.queue)
         else:
-            return (map (lambda action: action, self.queue)) + [(self.pkgName, self.actionType)]
+            return [(self.pkgName, self.actionType)] + (map (lambda action: action, self.queue))

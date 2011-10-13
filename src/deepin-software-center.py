@@ -29,7 +29,6 @@ import checkUpdate
 import action
 import apt
 import apt_pkg
-import morePage
 import downloadManagePage
 import detailView
 import download
@@ -922,8 +921,6 @@ class DeepinSoftwareCenter():
                 child = self.uninstallPage.box
             elif pageId == PAGE_DOWNLOAD_MANAGE:
                 child = self.downloadManagePage.box
-            elif pageId == PAGE_MORE:
-                child = self.morePage.box
 
         self.contentBox.pack_start(child)
         self.contentBox.show_all()
@@ -1210,8 +1207,6 @@ class InitThread(td.Thread):
             center.fetchVote,
             )
         
-        center.morePage = morePage.MorePage()
-        
         # Set callback for navigatebar.
         center.navigatebar.setUpgradableNumCallback(
             center.repoCache.getUpgradableNum)
@@ -1327,5 +1322,5 @@ class SocketThread(td.Thread):
 if __name__ == "__main__":
     DeepinSoftwareCenter().main()
 
-#  LocalWords:  param os morePage MorePage RepoCache upgradabled topbar REPO
+#  LocalWords:  param os RepoCache upgradabled topbar REPO
 #  LocalWords:  selectPage statusbar detailViewDict searchViewDict setDaemon

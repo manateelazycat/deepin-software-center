@@ -44,7 +44,7 @@ class NavigateBar:
         
         self.logoIcon = self.createLogoIcon()
         self.logoAlign = gtk.Alignment()
-        self.logoAlign.set_padding(0, 0, 30, 10)
+        self.logoAlign.set_padding(0, 0, 60, 10)
         self.logoAlign.add(self.logoIcon)
         self.box.pack_start(self.logoAlign, False, False)
 
@@ -55,26 +55,38 @@ class NavigateBar:
         self.navAlign.add(self.navBox)
         self.box.pack_start(self.navAlign, True, True)
         
-        self.recommendIcon      = self.createNavIcon("精选推荐", "../theme/default/navigate/nav_recommend.png", PAGE_RECOMMEND)
+        self.recommendIcon = self.createNavIcon(
+            "精选推荐", 
+            "../theme/default/navigate/nav_recommend.png", 
+            PAGE_RECOMMEND)
         self.navBox.pack_start(self.recommendIcon, False, False, self.iconPadding)
         
-        self.repositoryIcon     = self.createNavIcon("软件仓库", "../theme/default/navigate/nav_repo.png", PAGE_REPO)
+        self.repositoryIcon = self.createNavIcon(
+            "软件仓库", 
+            "../theme/default/navigate/nav_repo.png", 
+            PAGE_REPO)
         self.navBox.pack_start(self.repositoryIcon, False, False, self.iconPadding)
         
-        self.updateIcon         = self.createUpdateIcon("软件更新", "../theme/default/navigate/nav_update.png", PAGE_UPGRADE,
-                                                        self.getUpgradableNum)
+        self.updateIcon = self.createUpdateIcon(
+            "软件更新", 
+            "../theme/default/navigate/nav_update.png", 
+            PAGE_UPGRADE,
+            self.getUpgradableNum)
         self.navBox.pack_start(self.updateIcon, False, False, self.iconPadding)
         
-        self.uninstallIcon      = self.createNavIcon("软件卸载", "../theme/default/navigate/nav_uninstall.png", PAGE_UNINSTALL)
+        self.uninstallIcon = self.createNavIcon(
+            "软件卸载",
+            "../theme/default/navigate/nav_uninstall.png", 
+            PAGE_UNINSTALL)
         self.navBox.pack_start(self.uninstallIcon, False, False, self.iconPadding)
 
-        self.downloadIcon      = self.createUpdateIcon("下载管理", "../theme/default/navigate/nav_more.png", PAGE_DOWNLOAD_MANAGE,
-                                                       self.getRunningNum)
+        self.downloadIcon = self.createUpdateIcon(
+            "下载管理", 
+            "../theme/default/navigate/nav_download.png", 
+            PAGE_DOWNLOAD_MANAGE, 
+            self.getRunningNum)
         self.navBox.pack_start(self.downloadIcon, False, False, self.iconPadding)
         
-        self.moreIcon      = self.createNavIcon("更多功能", "../theme/default/navigate/nav_more.png", PAGE_MORE)
-        self.navBox.pack_start(self.moreIcon, False, False, self.iconPadding)
-
         self.box.show_all()
 
     def createLogoIcon(self):
@@ -160,4 +172,4 @@ class NavigateBar:
         self.getRunningNumCallback = callback
     
     
-#  LocalWords:  moreIcon createNavIcon iconPadding
+#  LocalWords: createNavIcon iconPadding

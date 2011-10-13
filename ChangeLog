@@ -1,5 +1,8 @@
 * News in 2.0
 
+2011-10-13 Yong Wang <lazycat.manatee@gmail.com>
+	* updateList.py: enable time check tag.
+
 2011-10-12 Yong Wang <lazycat.manatee@gmail.com>
 	* Refactory code: ready for multi-package concurrent download.
 	* Add new features that software center can download package concurrently.

@@ -51,8 +51,8 @@ class UpdateList(td.Thread):
         agoHours = getLastUpdateHours("/var/lib/apt/periodic/update-success-stamp")
 
         # Just update one day after.
-        # if agoHours != None and agoHours >= UPDATE_INTERVAL:
-        if True:
+        if agoHours != None and agoHours >= UPDATE_INTERVAL:
+        # if True:
             self.cache.update(self.progress)
         else:
             print "Just update system %s hours ago" % (agoHours)

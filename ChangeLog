@@ -4,6 +4,7 @@
 	* updateList.py: enable time check tag.
 	* download.py/action.py: adjust the order of return list.
 	* Remove more page (more features add in 3.0).
+	* detailView.py: add help translate link.
 
 2011-10-12 Yong Wang <lazycat.manatee@gmail.com>
 	* Refactory code: ready for multi-package concurrent download.

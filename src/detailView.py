@@ -254,6 +254,20 @@ class DetailView:
             
             # Show home page when hover link.
             utils.setHelpTooltip(homepageEventBox, homepage)
+            
+        # Add help translation.
+        lang = utils.getDefaultLanguage()
+        if lang == "zh_CN":
+            translationAlignY = 20
+            (translationLabel, translationEventBox) = utils.setDefaultClickableLabel("协助翻译")
+            translationLabel.set_alignment(0.0, 0.5)
+            translationEventBox.connect(
+                "button-press-event", 
+                lambda w, e: utils.runCommand("xdg-open http://pootle.linuxdeepin.com/zh_CN/ddtp-done/%s.po/translate/" % (pkgName)))
+            detailBox.pack_start(translationEventBox, False, False)
+            
+            # Show translation  when hover link.
+            utils.setHelpTooltip(translationEventBox, "协助翻译")
         
         # Add screenshot.
         screenshotBox = gtk.VBox()

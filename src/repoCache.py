@@ -37,6 +37,7 @@ class AppInfo:
         '''Init for application information.'''
         # Init.
         self.pkg = pkg
+        self.execPath = getPkgExecPath(self.pkg)
         
         if pkg.is_upgradable:
             self.status = APP_STATE_UPGRADE
@@ -200,7 +201,16 @@ class RepoCache:
         # Resort.
         self.upgradablePkgs = self.sortPackages(self.upgradablePkgs)
         self.ignorePkgs = self.sortPackages(self.ignorePkgs)
-                    
+        
+        # Find package in white list haven't execute path, just for develop usage.
+        # self.testExecPath(whiteList)
+
+    # def testExecPath(self, whiteList):
+    #     '''Find package in white list haven't execute path.'''
+    #     for pkgName in whiteList:
+    #         if self.cache[pkgName].execPath == None:
+    #             print pkgName
+        
     def getAppList(self, category, sortType, startIndex, endIndex):
         '''Get application list in given range.'''
         (_, (sortRecommendList, sortDownloadList, sortVoteList)) = self.categoryDict[category]

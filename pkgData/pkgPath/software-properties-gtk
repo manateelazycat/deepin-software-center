@@ -1,0 +1,1 @@
+gksu --desktop /usr/share/applications/software-properties-gtk.desktop /usr/bin/software-properties-gtk

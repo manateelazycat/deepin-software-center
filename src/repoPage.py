@@ -40,7 +40,8 @@ class RepoPage:
     '''Interface for repository page.'''
     
     def __init__(self, repoCache, searchQuery, switchStatus, downloadQueue, entryDetailCallback, 
-                 entrySearchCallback, sendVoteCallback, fetchVoteCallback):
+                 entrySearchCallback, sendVoteCallback, fetchVoteCallback, 
+                 launchApplicationCallback):
         '''Init for repository page.'''
         # Init.
         self.repoCache = repoCache
@@ -63,7 +64,8 @@ class RepoPage:
             downloadQueue,
             entryDetailCallback,
             sendVoteCallback,
-            fetchVoteCallback
+            fetchVoteCallback,
+            launchApplicationCallback
             )
 
         # Connect components.

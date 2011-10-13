@@ -37,7 +37,8 @@ class SearchPage:
 	
     def __init__(self, searchQuery, pageId, repoCache, keyword, pkgList, 
                  switchStatus, downloadQueue, 
-                 entryDetailCallback, sendVoteCallback, fetchVoteCallback, exitSearchPageCallback):
+                 entryDetailCallback, sendVoteCallback, fetchVoteCallback, exitSearchPageCallback,
+                 launchApplicationCallback):
         '''Init for search page.'''
         # Init.
         self.searchQuery = searchQuery
@@ -59,7 +60,8 @@ class SearchPage:
             downloadQueue,
             entryDetailCallback,
             sendVoteCallback,
-            fetchVoteCallback
+            fetchVoteCallback,
+            launchApplicationCallback
             )
         
         self.box.pack_start(self.topbar.eventbox, False, False)

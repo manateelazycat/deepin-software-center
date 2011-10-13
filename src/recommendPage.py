@@ -34,7 +34,8 @@ import sortedDict
 class RecommendPage:
     '''Interface for recommend page.'''
 	
-    def __init__(self, repoCache, switchStatus, downloadQueue, entryDetailCallback, selectCategoryCallback):
+    def __init__(self, repoCache, switchStatus, downloadQueue, entryDetailCallback, selectCategoryCallback,
+                 launchApplicationCallback):
         '''Init for recommend page.'''
         # Init.
         self.box = gtk.VBox()
@@ -48,7 +49,8 @@ class RecommendPage:
             switchStatus, 
             downloadQueue, 
             entryDetailCallback,
-            selectCategoryCallback)
+            selectCategoryCallback,
+            launchApplicationCallback)
         self.appBox = gtk.VBox()
         self.appBox.pack_start(self.recommendView.box, False, False)
 

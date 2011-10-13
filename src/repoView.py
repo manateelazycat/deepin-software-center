@@ -47,7 +47,8 @@ class RepoItem(DownloadItem):
     SIZE_LABEL_WIDTH = 60
         
     def __init__(self, appInfo, switchStatus, downloadQueue, 
-                 entryDetailCallback, sendVoteCallback, index, getSelectIndex, setSelectIndex):
+                 entryDetailCallback, sendVoteCallback, index, getSelectIndex, setSelectIndex,
+                 launchApplicationCallback):
         '''Init for application item.'''
         DownloadItem.__init__(self, appInfo, switchStatus, downloadQueue)
         
@@ -56,6 +57,7 @@ class RepoItem(DownloadItem):
         self.sendVoteCallback = sendVoteCallback
         self.index = index
         self.setSelectIndex = setSelectIndex
+        self.launchApplicationCallback = launchApplicationCallback
         
         # Init.
         self.itemBox = gtk.HBox()
@@ -156,11 +158,20 @@ class RepoItem(DownloadItem):
             appButton.connect("button-release-event", lambda widget, event: self.switchToDownloading())
             actionButtonBox.pack_start(appButtonAlign)
         else:
-            appInstalledLabel = gtk.Label()
-            appInstalledLabel.set_markup("<span foreground='#1A3E88' size='%s'>%s</span>" % (LABEL_FONT_SIZE, "已安装"))
-            buttonImage = gtk.gdk.pixbuf_new_from_file("../theme/default/cell/update_hover.png")
-            appInstalledLabel.set_size_request(buttonImage.get_width(), buttonImage.get_height())
-            actionButtonBox.pack_start(appInstalledLabel)
+            execPath = self.appInfo.execPath
+            if execPath:
+                (appButton, appButtonAlign) = newActionButton(
+                    "update", 0.5, 0.5, 
+                    "cell", False, "启动", BUTTON_FONT_SIZE_SMALL
+                    )
+                appButton.connect("button-release-event", lambda widget, event: self.launchApplicationCallback(execPath))
+                actionButtonBox.pack_start(appButtonAlign)
+            else:
+                appInstalledLabel = gtk.Label()
+                appInstalledLabel.set_markup("<span foreground='#1A3E88' size='%s'>%s</span>" % (LABEL_FONT_SIZE, "已安装"))
+                buttonImage = gtk.gdk.pixbuf_new_from_file("../theme/default/cell/update_hover.png")
+                appInstalledLabel.set_size_request(buttonImage.get_width(), buttonImage.get_height())
+                actionButtonBox.pack_start(appInstalledLabel)
     
     def updateVoteView(self, starLevel, voteNum):
         '''Update vote view.'''
@@ -171,7 +182,7 @@ class RepoView(appView.AppView):
     '''Application view.'''
 	
     def __init__(self, category, appNum, getListFunc, getSortTypeFunc, switchStatus, downloadQueue, 
-                 entryDetailCallback, sendVoteCallback, fetchVoteCallback):
+                 entryDetailCallback, sendVoteCallback, fetchVoteCallback, launchApplicationCallback):
         '''Init for application view.'''
         appView.AppView.__init__(self, appNum, PAGE_REPO)
         
@@ -185,6 +196,7 @@ class RepoView(appView.AppView):
         self.entryDetailCallback = entryDetailCallback
         self.sendVoteCallback = sendVoteCallback
         self.fetchVoteCallback = fetchVoteCallback
+        self.launchApplicationCallback = launchApplicationCallback
         
         self.show()
         
@@ -241,7 +253,8 @@ class RepoView(appView.AppView):
             appItem = RepoItem(appInfo, self.switchStatus, self.downloadQueue, 
                                self.entryDetailCallback,
                                self.sendVoteCallback,
-                               index, self.getSelectItemIndex, self.setSelectItemIndex)
+                               index, self.getSelectItemIndex, self.setSelectItemIndex,
+                               self.launchApplicationCallback)
             box.pack_start(appItem.itemFrame, False, False)
             self.itemDict[utils.getPkgName(appItem.appInfo.pkg)] = appItem
             

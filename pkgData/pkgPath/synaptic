@@ -1,0 +1,1 @@
+gksu --description /usr/share/applications/synaptic.desktop /usr/sbin/synaptic

@@ -1,0 +1,1 @@
+gksudo --description /usr/share/applications/gatos-conf.desktop /usr/bin/gatos-conf

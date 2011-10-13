@@ -1,0 +1,1 @@
+/usr/bin/meterbridge -t vu alsa_pcm:playback_1 alsa_pcm:playback_2

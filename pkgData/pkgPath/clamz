@@ -1,0 +1,1 @@
+clamz "--default-output-dir=\\${XDG_MUSIC_DIR:-\\$HOME/Music}/\\${album_artist}/\\${album}"

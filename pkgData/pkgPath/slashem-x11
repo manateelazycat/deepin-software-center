@@ -1,0 +1,1 @@
+sh -c 'SLASHEMOPTIONS=/etc/slashemrc.x11 /usr/games/slashem-11'

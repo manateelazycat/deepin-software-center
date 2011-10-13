@@ -47,7 +47,8 @@ class RecommendItem(DownloadItem):
     ACTION_WIDTH = 70
     PROGRESS_WIDTH = 200
         
-    def __init__(self, appInfo, switchStatus, downloadQueue, entryDetailCallback, index, getSelectIndex, setSelectIndex):
+    def __init__(self, appInfo, switchStatus, downloadQueue, entryDetailCallback, index, getSelectIndex, setSelectIndex,
+                 launchApplicationCallback):
         '''Init for application item.'''
         DownloadItem.__init__(self, appInfo, switchStatus, downloadQueue)
         
@@ -55,6 +56,7 @@ class RecommendItem(DownloadItem):
         self.entryDetailCallback = entryDetailCallback
         self.index = index
         self.setSelectIndex = setSelectIndex
+        self.launchApplicationCallback = launchApplicationCallback
         
         # Widget that status will change.
         self.installingProgressbar = None
@@ -169,11 +171,20 @@ class RecommendItem(DownloadItem):
             appButton.connect("button-release-event", lambda widget, event: self.switchToDownloading())
             appButtonBox.pack_start(appButtonAlign)
         else:
-            appInstalledLabel = gtk.Label()
-            appInstalledLabel.set_markup("<span foreground='#1A3E88' size='%s'>%s</span>" % (LABEL_FONT_SIZE, "已安装"))
-            buttonImage = gtk.gdk.pixbuf_new_from_file("../theme/default/cell/update_hover.png")
-            appInstalledLabel.set_size_request(buttonImage.get_width(), buttonImage.get_height())
-            appButtonBox.pack_start(appInstalledLabel)
+            execPath = self.appInfo.execPath
+            if execPath:
+                (appButton, appButtonAlign) = newActionButton(
+                    "update", 0.5, 0.5, 
+                    "cell", False, "启动", BUTTON_FONT_SIZE_SMALL
+                    )
+                appButton.connect("button-release-event", lambda widget, event: self.launchApplicationCallback(execPath))
+                appButtonBox.pack_start(appButtonAlign)
+            else:
+                appInstalledLabel = gtk.Label()
+                appInstalledLabel.set_markup("<span foreground='#1A3E88' size='%s'>%s</span>" % (LABEL_FONT_SIZE, "已安装"))
+                buttonImage = gtk.gdk.pixbuf_new_from_file("../theme/default/cell/update_hover.png")
+                appInstalledLabel.set_size_request(buttonImage.get_width(), buttonImage.get_height())
+                appButtonBox.pack_start(appInstalledLabel)
             
     def initDownloadingStatus(self):
         '''Init downloading status.'''
@@ -443,7 +454,8 @@ def clickItem(widget, event, entryDetailCallback, appInfo):
 class RecommendView:
     '''Recommend view.'''
 	
-    def __init__(self, repoCache, switchStatus, downloadQueue, entryDetailCallback, selectCategoryCallback):
+    def __init__(self, repoCache, switchStatus, downloadQueue, entryDetailCallback, selectCategoryCallback,
+                 launchApplicationCallback):
         '''Init for recommend view.'''
         # Init.
         self.repoCache = repoCache
@@ -451,6 +463,7 @@ class RecommendView:
         self.downloadQueue = downloadQueue
         self.entryDetailCallback = entryDetailCallback
         self.selectCategoryCallback = selectCategoryCallback
+        self.launchApplicationCallback = launchApplicationCallback
         
         self.box = gtk.VBox()
         self.itemDict = {}
@@ -570,7 +583,8 @@ class RecommendView:
                   appInfo = self.repoCache.cache[appName]
                   recommendItem = RecommendItem(
                       appInfo, self.switchStatus, self.downloadQueue, self.entryDetailCallback,
-                      self.ticker, self.getSelectIndex, self.setSelectIndex)
+                      self.ticker, self.getSelectIndex, self.setSelectIndex,
+                      self.launchApplicationCallback)
                   self.ticker = self.ticker + 1
                   middleBox.pack_start(recommendItem.itemFrame)
                   self.itemDict[appName] = recommendItem

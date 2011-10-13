@@ -1,0 +1,1 @@
+sh -c "exec /usr/games/battleball \\$DISPLAY comp"

@@ -1,0 +1,1 @@
+su-to-root -X --preserve-env --description /usr/share/applications/rootstock.desktop -c rootstock-gtk

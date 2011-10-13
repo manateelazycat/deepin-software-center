@@ -111,6 +111,18 @@ def getPkgName(pkg):
     '''Get package name.'''
     return pkg.name
 
+def getPkgExecPath(pkg):
+    '''Get path of execute file.'''
+    execPath = "../pkgData/pkgPath/%s" % (pkg.name)
+    if os.path.exists(execPath):
+        execFile = open(execPath, "r")
+        content = execFile.read()
+        execFile.close()
+        
+        return content
+    else:
+        return None
+
 def evalFile(filepath):
     '''Eval file content.'''
     readFile = open(filepath, "r")

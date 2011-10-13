@@ -1,0 +1,1 @@
+perl -e 'if (@ARGV && @ARGV[0]=~/^(.*\/)//) { chdir($1) }; exec("fluid", @ARGV);' %F

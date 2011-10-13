@@ -987,7 +987,8 @@ class DeepinSoftwareCenter():
                 self.searchQuery,
                 pageId, self.repoCache, keyword, pkgList,
                 self.switchStatus, self.downloadQueue,
-                self.entryDetailView, self.sendVote, self.fetchVote, self.exitSearchView)
+                self.entryDetailView, self.sendVote, self.fetchVote, self.exitSearchView,
+                self.launchApplication)
         elif pageId == PAGE_UNINSTALL:
             page = sp.SearchUninstallPage(
                 self.searchQuery,
@@ -1110,6 +1111,11 @@ class DeepinSoftwareCenter():
             appList.append(self.repoCache.cache[pkgName])
             
         return appList 
+    
+    def launchApplication(self, command):
+        '''Launch application.'''
+        print "Launch %s" % (command)
+        utils.runCommand(command)
 
 class InitThread(td.Thread):
     '''Add long time calculate in init thread to make startup faster.'''
@@ -1163,6 +1169,7 @@ class InitThread(td.Thread):
             center.downloadQueue,
             center.entryDetailView,
             center.selectCategory,
+            center.launchApplication,
             )
         center.repoPage = repoPage.RepoPage(
             center.repoCache,
@@ -1173,6 +1180,7 @@ class InitThread(td.Thread):
             center.entrySearchView,
             center.sendVote,
             center.fetchVote,
+            center.launchApplication,
             )
         center.updatePage = updatePage.UpdatePage(
             center.repoCache,

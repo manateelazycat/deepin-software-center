@@ -1,0 +1,1 @@
+/usr/bin/kdrill -edictfile /usr/share/edict/kata.edic.gz -kdictfile none

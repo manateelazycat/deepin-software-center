@@ -41,7 +41,7 @@ class RecommendPage:
         self.box = gtk.VBox()
         
         # Add slide bar.
-        self.slidebar = SlideBar(repoCache, switchStatus, downloadQueue, entryDetailCallback)
+        self.slidebar = SlideBar(repoCache, switchStatus, downloadQueue, entryDetailCallback, launchApplicationCallback)
         
         # Add recommend view.
         self.recommendView = recommendView.RecommendView(
@@ -78,9 +78,12 @@ class RecommendPage:
 class SlideItem(DownloadItem):
     '''Slide item.'''
 	
-    def __init__(self, appInfo, name, slideDir, index, height, switchStatus, downloadQueue):
+    def __init__(self, appInfo, name, slideDir, index, height, switchStatus, downloadQueue,
+                 launchApplicationCallback):
         '''Init for slide item.'''
         DownloadItem.__init__(self, appInfo, switchStatus, downloadQueue)
+        
+        self.launchApplicationCallback = launchApplicationCallback
         
         self.appInfo = appInfo
         self.name = name
@@ -169,19 +172,29 @@ class SlideItem(DownloadItem):
             appButton.connect("button-release-event", lambda widget, event: self.switchToDownloading())
             actionButtonBox.pack_start(appButtonAlign)
         else:
-            appInstalledLabel = gtk.Label()
-            appInstalledLabel.set_markup("<span foreground='#FFFFFF' size='%s'>%s</span>" % (LABEL_FONT_LARGE_SIZE, "已安装"))
-            buttonImage = gtk.gdk.pixbuf_new_from_file("../theme/default/cell/update_hover.png")
-            appInstalledLabel.set_size_request(buttonImage.get_width(), buttonImage.get_height())
-            actionButtonBox.pack_start(appInstalledLabel)
+            execPath = self.appInfo.execPath
+            if execPath:
+                (appButton, appButtonAlign) = newActionButton(
+                    "search", 0.5, 0.5, 
+                    "cell", False, "启动", BUTTON_FONT_SIZE_LARGE, "#FFFFFF"
+                    )
+                appButton.connect("button-release-event", lambda widget, event: self.launchApplicationCallback(execPath))
+                actionButtonBox.pack_start(appButtonAlign)
+            else:
+                appInstalledLabel = gtk.Label()
+                appInstalledLabel.set_markup("<span foreground='#FFFFFF' size='%s'>%s</span>" % (LABEL_FONT_LARGE_SIZE, "已安装"))
+                buttonImage = gtk.gdk.pixbuf_new_from_file("../theme/default/cell/update_hover.png")
+                appInstalledLabel.set_size_request(buttonImage.get_width(), buttonImage.get_height())
+                actionButtonBox.pack_start(appInstalledLabel)
 
 class SlideBar:
     '''Slide bar'''
 	
-    def __init__(self, repoCache, switchStatus, downloadQueue, entryDetailCallback):
+    def __init__(self, repoCache, switchStatus, downloadQueue, entryDetailCallback, launchApplicationCallback):
         '''Init for slide bar.'''
         # Init.
         self.entryDetailCallback = entryDetailCallback
+        self.launchApplicationCallback = launchApplicationCallback
         self.padding = 10
         self.imageWidth = 600
         self.imageHeight = 300
@@ -259,7 +272,8 @@ class SlideBar:
             appInfo = self.repoCache.cache[pkgName]
             slideItem = SlideItem(
                 appInfo, name, self.slideDir, index + 1,
-                self.maskHeight, switchStatus, downloadQueue)
+                self.maskHeight, switchStatus, downloadQueue,
+                self.launchApplicationCallback)
             self.itemDict[pkgName] = slideItem
             
     def switchToStatus(self, pkgName, appStatus):

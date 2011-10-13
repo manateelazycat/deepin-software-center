@@ -6,6 +6,7 @@
 	* Remove more page (more features add in 3.0).
 	* detailView.py: add help translate link.
 	* Make application can launch directly after install complete.
+        * Make application at slide bar can launch directly after install complete.
 
 2011-10-12 Yong Wang <lazycat.manatee@gmail.com>
 	* Refactory code: ready for multi-package concurrent download.

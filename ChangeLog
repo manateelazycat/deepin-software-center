@@ -1,5 +1,8 @@
 * News in 2.0
 
+2011-10-14 Yong Wang <lazycat.manatee@gmail.com>
+	* Customize progressbar.
+
 2011-10-13 Yong Wang <lazycat.manatee@gmail.com>
 	* updateList.py: enable time check tag.
 	* download.py/action.py: adjust the order of return list.

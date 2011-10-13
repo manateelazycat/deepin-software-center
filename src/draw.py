@@ -903,6 +903,73 @@ def drawProgressbarWithoutBorder(width):
         True
         )
     
+def drawVScrollbar(scrolledWindow):
+    '''Draw vertical scrollbar.'''
+    vScrollbar = scrolledWindow.get_vscrollbar()
+    vAdjust = scrolledWindow.get_vadjustment()
+    progressBgTopPixbuf = gtk.gdk.pixbuf_new_from_file("../theme/default/progress/progress_bg_top.png")
+    progressBgBottomPixbuf = gtk.gdk.pixbuf_new_from_file("../theme/default/progress/progress_bg_bottom.png")
+    progressBgMiddlePixbuf = gtk.gdk.pixbuf_new_from_file("../theme/default/progress/progress_bg_middle.png")
+    progressFgTopPixbuf = gtk.gdk.pixbuf_new_from_file("../theme/default/progress/progress_fg_top.png")
+    progressFgMiddlePixbuf = gtk.gdk.pixbuf_new_from_file("../theme/default/progress/progress_fg_middle.png")
+    progressFgBottomPixbuf = gtk.gdk.pixbuf_new_from_file("../theme/default/progress/progress_fg_bottom.png")
+    vScrollbar.set_size_request(progressBgMiddlePixbuf.get_width(), -1)
+    vScrollbar.connect(
+        "expose-event", 
+        lambda w, e: drawVScrollbarOnExpose(
+            w, e, vAdjust,
+            progressBgTopPixbuf,
+            progressBgMiddlePixbuf,
+            progressBgBottomPixbuf,
+            progressFgTopPixbuf,
+            progressFgMiddlePixbuf,
+            progressFgBottomPixbuf,
+            ))
+    
+def drawVScrollbarOnExpose(
+    widget, event, adjust,
+    bgTopPixbuf,
+    bgMiddlePixbuf,
+    bgBottomPixbuf,
+    fgTopPixbuf,
+    fgMiddlePixbuf,
+    fgBottomPixbuf):
+    '''Draw vertical scrollbar.'''
+    # Init.
+    rect = widget.allocation
+    lower = adjust.get_lower()
+    upper = adjust.get_upper()
+    value = adjust.get_value()
+    pageSize = adjust.get_page_size()
+    progressHeight = int((rect.height) / (upper - lower) * rect.height)
+    
+    # Get cairo.
+    cr = widget.window.cairo_create()
+    
+    # Draw background.
+    btHeight = bgTopPixbuf.get_height()
+    
+    drawPixbuf(cr, bgTopPixbuf, rect.x, rect.y)
+    
+    bmPixbuf = bgMiddlePixbuf.scale_simple(rect.width, rect.height - btHeight * 2, gtk.gdk.INTERP_BILINEAR)
+    drawPixbuf(cr, bmPixbuf, rect.x, rect.y + btHeight)
+    
+    drawPixbuf(cr, bgBottomPixbuf, rect.x, rect.y + rect.height - btHeight)
+    
+    # Draw foreground.
+    ftHeight = fgTopPixbuf.get_height()
+    
+    offsetY = rect.y + value * (rect.height - progressHeight) / (upper - lower - pageSize)
+    drawPixbuf(cr, fgTopPixbuf, rect.x, offsetY)
+    
+    fmPixbuf = fgMiddlePixbuf.scale_simple(rect.width, progressHeight - ftHeight * 2, gtk.gdk.INTERP_BILINEAR)
+    drawPixbuf(cr, fmPixbuf, rect.x, offsetY + ftHeight)
+    
+    drawPixbuf(cr, fgBottomPixbuf, rect.x, offsetY + progressHeight - ftHeight)
+    
+    cr.fill()
+    
+    return True
 
 #  LocalWords:  scaleX imageWidth scaleY imageHeight pixbuf cr drawPixbuf
 #  LocalWords:  buttonSetBackground normalImg hoverImg pressImg buttonLabel

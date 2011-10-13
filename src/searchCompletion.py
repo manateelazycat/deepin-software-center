@@ -75,6 +75,7 @@ class SearchCompletion:
         self.scrolledwindow = gtk.ScrolledWindow()
         self.scrolledwindow.set_property("shadow-type", gtk.SHADOW_NONE)
         self.scrolledwindow.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
+        drawVScrollbar(self.scrolledwindow)
         self.frame = gtk.Frame()
         
         self.treeView.connect("row-activated", self.click)

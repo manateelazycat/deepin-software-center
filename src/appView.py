@@ -52,6 +52,7 @@ class AppView:
         self.eventbox.connect("expose-event", lambda w, e: drawBackground(w, e, "#FFFFFF"))
         self.scrolledwindow = gtk.ScrolledWindow()
         self.scrolledwindow.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+        drawVScrollbar(self.scrolledwindow)
         utils.addInScrolledWindow(self.scrolledwindow, self.eventbox)
         
     def calculateMaxPageIndex(self):

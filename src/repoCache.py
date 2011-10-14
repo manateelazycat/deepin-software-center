@@ -156,9 +156,6 @@ class RepoCache:
                 if cache.has_key(pkgName) and cache[pkgName].candidate != None:
                     # Append in download sort list.
                     sortDownloadList.append(pkgName)
-                    
-                    # Add in white list.
-                    whiteList.append(pkgName)
                 else:
                     print "Haven't found package '%s' in cache (%s)." % (pkgName, sortDownloadDir + categoryFile)
                     
@@ -168,9 +165,6 @@ class RepoCache:
                 if cache.has_key(pkgName) and cache[pkgName].candidate != None:
                     # Append in vote sort list.
                     sortVoteList.append(pkgName)
-                    
-                    # Add in white list.
-                    whiteList.append(pkgName)
                 else:
                     print "Haven't found package '%s' in cache (%s)." % (pkgName, sortVoteDir + categoryFile)
                     
@@ -205,11 +199,11 @@ class RepoCache:
         # Find package in white list haven't execute path, just for develop usage.
         # self.testExecPath(whiteList)
 
-    # def testExecPath(self, whiteList):
-    #     '''Find package in white list haven't execute path.'''
-    #     for pkgName in whiteList:
-    #         if self.cache[pkgName].execPath == None:
-    #             print pkgName
+    def testExecPath(self, whiteList):
+        '''Find package in white list haven't execute path.'''
+        for pkgName in whiteList:
+            if self.cache[pkgName].execPath == None:
+                print pkgName
         
     def getAppList(self, category, sortType, startIndex, endIndex):
         '''Get application list in given range.'''

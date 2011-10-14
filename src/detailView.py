@@ -89,7 +89,7 @@ class DetailView:
        
         self.scrolledWindow = gtk.ScrolledWindow()
         self.scrolledWindow.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-        drawVScrollbar(self.scrolledwindow)
+        drawVScrollbar(self.scrolledWindow)
         utils.addInScrolledWindow(self.scrolledWindow, self.align)
         
         # Add title bar.

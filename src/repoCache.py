@@ -197,7 +197,7 @@ class RepoCache:
         self.ignorePkgs = self.sortPackages(self.ignorePkgs)
         
         # Find package in white list haven't execute path, just for develop usage.
-        # self.testExecPath(whiteList)
+        self.testExecPath(whiteList)
 
     def testExecPath(self, whiteList):
         '''Find package in white list haven't execute path.'''

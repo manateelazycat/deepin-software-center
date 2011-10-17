@@ -65,6 +65,7 @@ class SearchCompletion:
         self.window.set_opacity(0.9)
         self.listStore = gtk.ListStore(str, str)
         self.treeView = gtk.TreeView(self.listStore)
+        self.treeView.modify_base(gtk.STATE_ACTIVE, gtk.gdk.color_parse("#16A5ED"))        
         self.treeView.set_headers_visible(False)
         self.cell = gtk.CellRendererText()
         self.cell.set_property("size-points", self.FONT_SIZE)

@@ -37,18 +37,18 @@ class Progressbar():
         self.box = gtk.HBox()
         self.withoutBorder = withoutBorder
         
-        self.bgLeftPixbuf = gtk.gdk.pixbuf_new_from_file(bgLeftImg)
-        self.bgMiddlePixbuf = gtk.gdk.pixbuf_new_from_file(bgMiddleImg)
-        self.bgRightPixbuf = gtk.gdk.pixbuf_new_from_file(bgRightImg)
-        self.fgLeftPixbuf = gtk.gdk.pixbuf_new_from_file(fgLeftImg)
-        self.fgMiddlePixbuf = gtk.gdk.pixbuf_new_from_file(fgMiddleImg)
-        self.fgRightPixbuf = gtk.gdk.pixbuf_new_from_file(fgRightImg)
+        self.bgLeftPixbuf = appTheme.getDynamicPixbuf(bgLeftImg)
+        self.bgMiddlePixbuf = appTheme.getDynamicPixbuf(bgMiddleImg)
+        self.bgRightPixbuf = appTheme.getDynamicPixbuf(bgRightImg)
+        self.fgLeftPixbuf = appTheme.getDynamicPixbuf(fgLeftImg)
+        self.fgMiddlePixbuf = appTheme.getDynamicPixbuf(fgMiddleImg)
+        self.fgRightPixbuf = appTheme.getDynamicPixbuf(fgRightImg)
         
         self.width = width
-        self.fgBorderWidth = self.fgLeftPixbuf.get_width()
-        self.bgBorderWidth = self.bgLeftPixbuf.get_width()
-        self.fgHeight = self.fgLeftPixbuf.get_height()
-        self.bgHeight = self.bgLeftPixbuf.get_height()
+        self.fgBorderWidth = self.fgLeftPixbuf.getPixbuf().get_width()
+        self.bgBorderWidth = self.bgLeftPixbuf.getPixbuf().get_width()
+        self.fgHeight = self.fgLeftPixbuf.getPixbuf().get_height()
+        self.bgHeight = self.bgLeftPixbuf.getPixbuf().get_height()
         self.progressWidth = self.width - self.bgBorderWidth * 2
         
         self.leftImage = gtk.Image()
@@ -69,13 +69,13 @@ class Progressbar():
     def setLeftImage(self, progress):
         '''Get left image.'''
         if progress == 0:
-            self.leftImage.set_from_pixbuf(self.bgLeftPixbuf)
+            self.leftImage.set_from_pixbuf(self.bgLeftPixbuf.getPixbuf())
         else:
             if self.withoutBorder:
-                self.leftImage.set_from_pixbuf(self.fgLeftPixbuf)
+                self.leftImage.set_from_pixbuf(self.fgLeftPixbuf.getPixbuf())
             else:
-                bgLeftPixbuf = self.bgLeftPixbuf.copy()
-                self.fgLeftPixbuf.copy_area(
+                bgLeftPixbuf = self.bgLeftPixbuf.getPixbuf().copy()
+                self.fgLeftPixbuf.getPixbuf().copy_area(
                     0, 0, self.fgBorderWidth, self.fgHeight,
                     bgLeftPixbuf, 
                     (self.bgBorderWidth - self.fgBorderWidth),
@@ -87,10 +87,10 @@ class Progressbar():
         '''Get right image.'''
         if progress == 100:
             if self.withoutBorder:
-                self.rightImage.set_from_pixbuf(self.fgRightPixbuf)
+                self.rightImage.set_from_pixbuf(self.fgRightPixbuf.getPixbuf())
             else:
-                bgRightPixbuf = self.bgRightPixbuf.copy()
-                self.fgRightPixbuf.copy_area(
+                bgRightPixbuf = self.bgRightPixbuf.getPixbuf().copy()
+                self.fgRightPixbuf.getPixbuf().copy_area(
                     0, 0, self.fgBorderWidth, self.fgHeight,
                     bgRightPixbuf, 
                     0,
@@ -98,7 +98,7 @@ class Progressbar():
                 
                 self.rightImage.set_from_pixbuf(bgRightPixbuf)
         else:
-            self.rightImage.set_from_pixbuf(self.bgRightPixbuf)
+            self.rightImage.set_from_pixbuf(self.bgRightPixbuf.getPixbuf())
         
     def setProgress(self, progress):
         '''Set progress.'''
@@ -107,13 +107,13 @@ class Progressbar():
         self.setRightImage(progress)
         
         fgWidth = int(self.progressWidth * progress / 100)        
-        middlePixbuf = self.bgMiddlePixbuf.scale_simple(self.progressWidth, self.bgHeight, gtk.gdk.INTERP_BILINEAR)
+        middlePixbuf = self.bgMiddlePixbuf.getPixbuf().scale_simple(self.progressWidth, self.bgHeight, gtk.gdk.INTERP_BILINEAR)
         
         if fgWidth != 0:
-            fgMiddlePixbuf = self.fgMiddlePixbuf.scale_simple(fgWidth, self.fgHeight, gtk.gdk.INTERP_BILINEAR)
+            fgMiddlePixbuf = self.fgMiddlePixbuf.getPixbuf().scale_simple(fgWidth, self.fgHeight, gtk.gdk.INTERP_BILINEAR)
             fgMiddlePixbuf.copy_area(0, 0, fgWidth, self.fgHeight, middlePixbuf, 0, (self.bgHeight - self.fgHeight) / 2)
             
-            fgRightPixbuf = self.fgRightPixbuf.scale_simple(self.fgBorderWidth, self.fgHeight, gtk.gdk.INTERP_BILINEAR)
+            fgRightPixbuf = self.fgRightPixbuf.getPixbuf().scale_simple(self.fgBorderWidth, self.fgHeight, gtk.gdk.INTERP_BILINEAR)
             if fgWidth + self.fgBorderWidth <= self.progressWidth:
                 fgRightPixbuf.copy_area(0, 0, self.fgBorderWidth, self.fgHeight, 
                                         middlePixbuf, fgWidth, (self.bgHeight - self.fgHeight) / 2)

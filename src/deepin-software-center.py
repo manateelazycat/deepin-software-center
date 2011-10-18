@@ -20,6 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from theme import *
 from constant import *
 from copy import deepcopy
 from draw import *
@@ -71,12 +72,9 @@ class DeepinSoftwareCenter():
         # Init gdk threads.
         gtk.gdk.threads_init()
         
-        # Shape.
-        self.topbarPixbuf = gtk.gdk.pixbuf_new_from_file("../theme/default/navigate/background.png")
-
-        self.bottombarPixbuf = gtk.gdk.pixbuf_new_from_file("../theme/default/statusbar/background.png")
-        self.bottomHeight = self.bottombarPixbuf.get_height()
-
+        self.topbarPixbuf = appTheme.getDynamicPixbuf("navigate/background.png")
+        self.bottombarPixbuf = appTheme.getDynamicPixbuf("statusbar/background.png")
+            
         # Init apt cache.
         self.statusbar = statusbar.Statusbar()
         self.statusbar.eventbox.connect("button-press-event", lambda w, e: utils.resizeWindow(w, e, self.window))
@@ -127,17 +125,25 @@ class DeepinSoftwareCenter():
         eventBoxSetBackground(
             self.topbar,
             True, False,
-            "../theme/default/navigate/background.png")
+            appTheme.getDynamicPixbuf("navigate/background.png"))
         # make window movable or re-sizable even window is decorated.
         self.topbar.connect('button-press-event',
                             lambda w, e: utils.moveWindow(w, e, self.window))
         self.topbar.connect("button-press-event", self.doubleClickWindow)
-        self.titlebar = titlebar.Titlebar(self.minWindow, self.toggleWindow, self.closeWindow)
+        self.titlebar = titlebar.Titlebar(self.selectTheme, self.minWindow, self.toggleWindow, self.closeWindow)
         self.navigatebar = navigatebar.NavigateBar()
         self.bodyBox = gtk.HBox()
         self.contentBox = gtk.VBox()
         
         self.window.connect_after("show", lambda w: self.createTooltips())
+        
+    def selectTheme(self):
+        '''Select theme.'''
+        # Change theme.
+        appTheme.changeTheme("test")            
+        
+        # Redraw.
+        self.window.queue_draw()
 
     def createTooltips(self):
         '''Create tooltips.'''
@@ -150,19 +156,20 @@ class DeepinSoftwareCenter():
     def updateShape(self, widget, allocation):
         '''Update shape.'''
         if allocation.width > 0 and allocation.height > 0:
-            topHeight = self.topbarPixbuf.get_height()
+            bottomHeight = self.bottombarPixbuf.getPixbuf().get_height()
+            topHeight = self.topbarPixbuf.getPixbuf().get_height()
             width, height = allocation.width, allocation.height
-            middleHeight = height - topHeight - self.bottomHeight
+            middleHeight = height - topHeight - bottomHeight
 
-            topPixbuf = self.topbarPixbuf.scale_simple(width, topHeight, gtk.gdk.INTERP_BILINEAR)
+            topPixbuf = self.topbarPixbuf.getPixbuf().scale_simple(width, topHeight, gtk.gdk.INTERP_BILINEAR)
             middlePixbuf = gtk.gdk.Pixbuf(gtk.gdk.COLORSPACE_RGB, False, 8, width, middleHeight)
-            bottomPixbuf = self.bottombarPixbuf.scale_simple(width, self.bottomHeight, gtk.gdk.INTERP_BILINEAR)
+            bottomPixbuf = self.bottombarPixbuf.getPixbuf().scale_simple(width, bottomHeight, gtk.gdk.INTERP_BILINEAR)
 
             pixbuf = gtk.gdk.Pixbuf(gtk.gdk.COLORSPACE_RGB, True, 8, width, height)
 
             topPixbuf.copy_area(0, 0, width, topHeight, pixbuf, 0, 0)
             middlePixbuf.copy_area(0, 0, width, middleHeight, pixbuf, 0, topHeight)
-            bottomPixbuf.copy_area(0, 0, width, self.bottomHeight, pixbuf, 0, topHeight + middleHeight)
+            bottomPixbuf.copy_area(0, 0, width, bottomHeight, pixbuf, 0, topHeight + middleHeight)
 
             (_, mask) = pixbuf.render_pixmap_and_mask(255)
             if mask != None:
@@ -823,8 +830,8 @@ class DeepinSoftwareCenter():
         self.mainBox.pack_start(self.statusbar.eventbox, False, False)
 
         # Adjust body box height.
-        topbarHeight = gtk.gdk.pixbuf_new_from_file("../theme/default/topbar/background.png").get_height()
-        subCategoryHeight = gtk.gdk.pixbuf_new_from_file("../theme/default/category/sidebar_normal.png").get_height()
+        topbarHeight = appTheme.getDynamicPixbuf("topbar/background.png").getPixbuf().get_height()
+        subCategoryHeight = appTheme.getDynamicPixbuf("category/sidebar_normal.png").getPixbuf().get_height()
         subCategoryNum = len(CLASSIFY_LIST)
         self.bodyBox.set_size_request(-1, topbarHeight + subCategoryHeight * subCategoryNum)
 

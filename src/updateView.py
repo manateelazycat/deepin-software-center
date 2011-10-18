@@ -86,8 +86,8 @@ class UpdateItem(DownloadItem):
         checkButtonSetBackground(
             self.checkButton,
             False, False, 
-            "../theme/default/cell/select.png",
-            "../theme/default/cell/selected.png",
+            "cell/select.png",
+            "cell/selected.png",
             )
         self.checkAlign = gtk.Alignment()
         self.checkAlign.set(0.5, 0.5, 0.0, 0.0)

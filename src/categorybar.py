@@ -44,7 +44,7 @@ class CategoryBar:
         
         # Create category icon.
         for (index, (categoryName, categoryIcon)) in enumerate(categoryList):
-            icon = self.createCategoryIcon(categoryName, "../theme/default/category/" + categoryIcon, index)
+            icon = self.createCategoryIcon(categoryName, "category/" + categoryIcon, index)
             self.box.pack_start(icon)
         
         # Show.
@@ -57,10 +57,11 @@ class CategoryBar:
         eventButton.connect("button-press-event", lambda widget, event: self.callback(categoryName, categoryId))
         sideButtonSetBackground(
             eventButton,
-            categoryName, iconPath,
-            "../theme/default/category/sidebar_normal.png",
-            "../theme/default/category/sidebar_hover.png",
-            "../theme/default/category/sidebar_press.png",
+            categoryName, 
+            iconPath,
+            "category/sidebar_normal.png",
+            "category/sidebar_hover.png",
+            "category/sidebar_press.png",
             categoryId,
             self.getCategoryId
             )

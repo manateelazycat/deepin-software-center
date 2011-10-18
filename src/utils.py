@@ -20,6 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from theme import *
 from constant import *
 from math import pi
 import cairo
@@ -42,20 +43,6 @@ def isDoubleClick(event):
     '''Whether an event is double click?'''
     return event.button == 1 and event.type == gtk.gdk._2BUTTON_PRESS
 
-def getStarImg(starIndex, starLevel, starSize):
-    '''Get start pixbuf.'''
-    pixbuf = getStarPixbuf(starIndex, starLevel, starSize)
-    return gtk.image_new_from_pixbuf(pixbuf)        
-    
-def getStarPixbuf(starIndex, starLevel, starSize):
-    '''Get star pixbuf.'''
-    imgPath = getStarPath(starIndex, starLevel)
-    
-    if starSize == None:
-        return gtk.gdk.pixbuf_new_from_file(imgPath)        
-    else:
-        return gtk.gdk.pixbuf_new_from_file_at_size(imgPath, starSize, starSize)        
-    
 def getStarPath(starIndex, starLevel):
     '''Get star path.'''
     if starIndex == 1:
@@ -84,8 +71,7 @@ def getStarPath(starIndex, starLevel):
         else:
             imgPath = "star_gray.png"
             
-    imgDir = "../theme/default/cell/"
-    return imgDir + imgPath
+    return "cell/%s" % (imgPath)
 
 def getFontFamilies():
     '''Get all font families in system.'''
@@ -545,13 +531,14 @@ def setClickableLabel(widget, label, normalMarkup, activeMarkup, resetAfterClick
 
 def setCustomizeClickableCursor(eventbox, widget, cursorPath):
     '''Set click-able cursor.'''
-    eventbox.connect("enter-notify-event", lambda w, e: setCustomizeCursor(widget, cursorPath))
+    cursorDPixbuf = appTheme.getDynamicPixbuf(cursorPath)
+    eventbox.connect("enter-notify-event", lambda w, e: setCustomizeCursor(widget, cursorDPixbuf))
     eventbox.connect("leave-notify-event", lambda w, e: setDefaultCursor(widget))
         
-def setCustomizeCursor(widget, cursorPath):
+def setCustomizeCursor(widget, cursorDPixbuf):
     '''Set cursor.'''
     widget.window.set_cursor(gtk.gdk.Cursor(gtk.gdk.display_get_default(),
-                                            gtk.gdk.pixbuf_new_from_file_at_size(cursorPath, 32, 32),
+                                            cursorDPixbuf.getPixbuf(),
                                             0, 0))
     return False
     

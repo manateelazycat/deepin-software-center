@@ -20,6 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from theme import *
 from constant import *
 from draw import *
 import appView
@@ -655,7 +656,8 @@ class StarView:
         cr = widget.window.cairo_create()
         for i in range(0, 5):
             starPath = getStarPath(i + 1, self.starLevel)
-            starPixbuf = gtk.gdk.pixbuf_new_from_file_at_size(starPath, self.starSize, self.starSize)
+            starPixbuf = appTheme.getDynamicPixbuf(starPath).getPixbuf().scale_simple(
+                self.starSize, self.starSize, gtk.gdk.INTERP_BILINEAR)
             drawPixbuf(cr, starPixbuf, 
                        widget.allocation.x + i * self.starSize,
                        widget.allocation.y)
@@ -681,12 +683,28 @@ def createStarBox(starLevel=5.0, starSize=16, paddingX=0):
     '''Create star box.'''
     starLevel = int(round(starLevel)) # round star level
     
-    appStarBox = gtk.HBox()
+    eventbox = gtk.EventBox()
+    eventbox.set_size_request(starSize * 5, starSize)
+    eventbox.set_visible_window(False)
+    eventbox.connect("expose-event", lambda w, e: drawStar(w, e, starLevel, starSize, paddingX))
+    
+    return eventbox
+
+def drawStar(widget, event, starLevel, starSize, paddingX):
+    '''Draw star.'''
+    cr = widget.window.cairo_create()
     for i in range(0, 5):
-        starIcon = utils.getStarImg(i + 1, starLevel, starSize)
-        appStarBox.pack_start(starIcon, False, False, paddingX)
+        starPath = utils.getStarPath(i + 1, starLevel)
+        starPixbuf = appTheme.getDynamicPixbuf(starPath).getPixbuf().scale_simple(
+            starSize, starSize, gtk.gdk.INTERP_BILINEAR)
+        drawPixbuf(cr, starPixbuf, 
+                   widget.allocation.x + i * starSize,
+                   widget.allocation.y)
         
-    return appStarBox
+    if widget.get_child() != None:
+        widget.propagate_expose(widget.get_child(), event)
+    
+    return True
 
 def initActionStatus(appAdditionBox, progress, feedback, withoutBorder=False):
     '''Init action status.'''

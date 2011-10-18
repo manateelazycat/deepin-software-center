@@ -20,6 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from theme import *
 from constant import *
 from math import pi
 from utils import *
@@ -33,9 +34,9 @@ import progressbar as pb
 import pygtk
 pygtk.require('2.0')
 
-def eventBoxSetBackground(widget, scaleX, scaleY, normalImg):
+def eventBoxSetBackground(widget, scaleX, scaleY, dPixbuf):
     '''Set event box's background.'''
-    image = gtk.gdk.pixbuf_new_from_file(normalImg)
+    image = dPixbuf.getPixbuf()
     
     if scaleX:
         requestWidth = -1
@@ -54,10 +55,12 @@ def eventBoxSetBackground(widget, scaleX, scaleY, normalImg):
         lambda w, e: eventBoxOnExpose(
             w, e,
             scaleX, scaleY,
-            image))
+            dPixbuf))
         
-def eventBoxOnExpose(widget, event, scaleX, scaleY, image):
+def eventBoxOnExpose(widget, event, scaleX, scaleY, dPixbuf):
     '''Expose function to replace event box's image.'''
+    image = dPixbuf.getPixbuf()
+    
     if scaleX:
         imageWidth = widget.allocation.width
     else:
@@ -78,22 +81,18 @@ def eventBoxOnExpose(widget, event, scaleX, scaleY, image):
 
     return True
 
-def buttonSetBackground(widget, scaleX, scaleY, normalImg, hoverImg, pressImg, 
+def buttonSetBackground(widget, scaleX, scaleY, normalDPixbuf, hoverDPixbuf, pressDPixbuf,
                         buttonLabel=None, fontSize=None, labelColor=None):
     '''Set event box's background.'''
-    normalPixbuf = gtk.gdk.pixbuf_new_from_file(normalImg)
-    hoverPixbuf = gtk.gdk.pixbuf_new_from_file(hoverImg)
-    pressPixbuf = gtk.gdk.pixbuf_new_from_file(pressImg)
-    
     if scaleX:
         requestWidth = -1
     else:
-        requestWidth = normalPixbuf.get_width()
+        requestWidth = normalDPixbuf.getPixbuf().get_width()
         
     if scaleY:
         requestHeight = -1
     else:
-        requestHeight = normalPixbuf.get_height()
+        requestHeight = normalDPixbuf.getPixbuf().get_height()
     
     widget.set_size_request(requestWidth, requestHeight)
     
@@ -116,18 +115,18 @@ def buttonSetBackground(widget, scaleX, scaleY, normalImg, hoverImg, pressImg,
     widget.connect("expose-event", lambda w, e: buttonOnExpose(
             w, e,
             scaleX, scaleY,
-            normalPixbuf, hoverPixbuf, pressPixbuf))
+            normalDPixbuf, hoverDPixbuf, pressDPixbuf))
         
 def buttonOnExpose(widget, event, 
                    scaleX, scaleY,
-                   normalPixbuf, hoverPixbuf, pressPixbuf):
+                   normalDPixbuf, hoverDPixbuf, pressDPixbuf):
     '''Expose function to replace event box's image.'''
     if widget.state == gtk.STATE_NORMAL:
-        image = normalPixbuf
+        image = normalDPixbuf.getPixbuf()
     elif widget.state == gtk.STATE_PRELIGHT:
-        image = hoverPixbuf
+        image = hoverDPixbuf.getPixbuf()
     elif widget.state == gtk.STATE_ACTIVE:
-        image = pressPixbuf
+        image = pressDPixbuf.getPixbuf()
     
     if scaleX:
         imageWidth = widget.allocation.width
@@ -149,31 +148,30 @@ def buttonOnExpose(widget, event,
 
     return True
 
-def simpleButtonSetBackground(widget, scaleX, scaleY, normalImg):
+def simpleButtonSetBackground(widget, scaleX, scaleY, dPixbuf):
     '''Set event box's background.'''
-    image = gtk.gdk.pixbuf_new_from_file(normalImg)
-    
     if scaleX:
         requestWidth = -1
     else:
-        requestWidth = image.get_width()
+        requestWidth = dPixbuf.getPixbuf().get_width()
         
     if scaleY:
         requestHeight = -1
     else:
-        requestHeight = image.get_height()
+        requestHeight = dPixbuf.getPixbuf().get_height()
     
     widget.set_size_request(requestWidth, requestHeight)
     
     widget.connect("expose-event", lambda w, e: simpleButtonOnExpose(
             w, e,
             scaleX, scaleY,
-            image))
+            dPixbuf))
         
 def simpleButtonOnExpose(widget, event, 
                          scaleX, scaleY,
-                         image):
+                         dPixbuf):
     '''Expose function to replace event box's image.'''
+    image = dPixbuf.getPixbuf()
     if scaleX:
         imageWidth = widget.allocation.width
     else:
@@ -235,26 +233,29 @@ def navButtonSetBackground(widget,
                            hoverImg, pressImg,
                            pageId, getPageId):
     '''Set event box's background.'''
-    navPixbuf = gtk.gdk.pixbuf_new_from_file(navImg)
-    hoverPixbuf = gtk.gdk.pixbuf_new_from_file(hoverImg)
-    pressPixbuf = gtk.gdk.pixbuf_new_from_file(pressImg)
+    hoverDPixbuf = appTheme.getDynamicPixbuf(hoverImg)
     
-    requestWidth = hoverPixbuf.get_width()
-    requestHeight = hoverPixbuf.get_height()
+    requestWidth = hoverDPixbuf.getPixbuf().get_width()
+    requestHeight = hoverDPixbuf.getPixbuf().get_height()
     widget.set_size_request(requestWidth, requestHeight)
     
     widget.connect("expose-event", lambda w, e: navButtonOnExpose(
             w, e,
             navName, 
-            navPixbuf, hoverPixbuf, pressPixbuf,
+            appTheme.getDynamicPixbuf(navImg),
+            appTheme.getDynamicPixbuf(hoverImg),
+            appTheme.getDynamicPixbuf(pressImg),
             pageId, getPageId))
         
 def navButtonOnExpose(widget, event, 
                       navName, 
-                      navPixbuf, hoverPixbuf, pressPixbuf,
+                      navDPixbuf, hoverDPixbuf, pressDPixbuf,
                       pageId, getPageId):
     '''Expose function to replace event box's image.'''
     # Init.
+    navPixbuf = navDPixbuf.getPixbuf()
+    hoverPixbuf = hoverDPixbuf.getPixbuf()
+    pressPixbuf = pressDPixbuf.getPixbuf()
     selectPageId = getPageId()
     
     # Draw background.
@@ -304,33 +305,35 @@ def updateButtonSetBackground(
     hoverImg, pressImg,
     pageId, getPageId, getUpradableNum):
     '''Set event box's background.'''
-    navPixbuf = gtk.gdk.pixbuf_new_from_file(navImg)
-    hoverPixbuf = gtk.gdk.pixbuf_new_from_file(hoverImg)
-    pressPixbuf = gtk.gdk.pixbuf_new_from_file(pressImg)
-    
-    numBgLeftPixbuf = gtk.gdk.pixbuf_new_from_file("../theme/default/navigate/notify_bg_left.png")
-    numBgMiddlePixbuf = gtk.gdk.pixbuf_new_from_file("../theme/default/navigate/notify_bg_middle.png")
-    numBgRightPixbuf = gtk.gdk.pixbuf_new_from_file("../theme/default/navigate/notify_bg_right.png")
-    
-    requestWidth = hoverPixbuf.get_width()
-    requestHeight = hoverPixbuf.get_height()
+    requestWidth = appTheme.getDynamicPixbuf(hoverImg).getPixbuf().get_width()
+    requestHeight = appTheme.getDynamicPixbuf(hoverImg).getPixbuf().get_height()
     widget.set_size_request(requestWidth, requestHeight)
     
     widget.connect("expose-event", lambda w, e: updateButtonOnExpose(
             w, e,
             navName, 
-            navPixbuf, hoverPixbuf, pressPixbuf,
-            numBgLeftPixbuf, numBgMiddlePixbuf, numBgRightPixbuf,
+            appTheme.getDynamicPixbuf(navImg),
+            appTheme.getDynamicPixbuf(hoverImg),
+            appTheme.getDynamicPixbuf(pressImg),
+            appTheme.getDynamicPixbuf("navigate/notify_bg_left.png"),
+            appTheme.getDynamicPixbuf("navigate/notify_bg_middle.png"),
+            appTheme.getDynamicPixbuf("navigate/notify_bg_right.png"),
             pageId, getPageId, getUpradableNum))
         
 def updateButtonOnExpose(
     widget, event, 
     navName,
-    navPixbuf, hoverPixbuf, pressPixbuf,
-    numBgLeftPixbuf, numBgMiddlePixbuf, numBgRightPixbuf,
+    navDPixbuf, hoverDPixbuf, pressDPixbuf,
+    numBgLeftDPixbuf, numBgMiddleDPixbuf, numBgRightDPixbuf,
     pageId, getPageId, getUpradableNum):
     '''Expose function to replace event box's image.'''
     # Init.
+    navPixbuf = navDPixbuf.getPixbuf()
+    hoverPixbuf = hoverDPixbuf.getPixbuf()
+    pressPixbuf = pressDPixbuf.getPixbuf()
+    numBgLeftPixbuf = numBgLeftDPixbuf.getPixbuf()
+    numBgMiddlePixbuf = numBgMiddleDPixbuf.getPixbuf()
+    numBgRightPixbuf = numBgRightDPixbuf.getPixbuf()
     selectPageId = getPageId()
     upgradableNum = getUpradableNum()
     
@@ -366,7 +369,7 @@ def updateButtonOnExpose(
     # Draw upgradable number.
     if upgradableNum > 0 and upgradableNum < 100000:
         # Init.
-        numPixbuf = gtk.gdk.pixbuf_new_from_file("../theme/default/navigate/0.png")
+        numPixbuf = appTheme.getDynamicPixbuf("navigate/0.png").getPixbuf()
         numBgLeftWidth = numBgLeftPixbuf.get_width()      
         numBgLeftHeight = numBgLeftPixbuf.get_height()    
         numWidth = numPixbuf.get_width()                  
@@ -384,7 +387,7 @@ def updateButtonOnExpose(
         
         # Draw number.
         for (i, c) in enumerate(str(upgradableNum)):
-            numPixbuf = gtk.gdk.pixbuf_new_from_file("../theme/default/navigate/%s.png" % c)
+            numPixbuf = appTheme.getDynamicPixbuf("navigate/%s.png" % c).getPixbuf()
             drawPixbuf(cr, numPixbuf,
                        numX + numBgLeftWidth + i * numWidth,
                        numY + (numBgLeftHeight - numHeight) / 2)
@@ -408,24 +411,29 @@ def sideButtonSetBackground(widget,
                             normalImg, hoverImg, pressImg,
                             pageId, getPageId):
     '''Set event box's background.'''
-    navPixbuf = gtk.gdk.pixbuf_new_from_file(navImg)
-    normalPixbuf = gtk.gdk.pixbuf_new_from_file(normalImg)
-    hoverPixbuf = gtk.gdk.pixbuf_new_from_file(hoverImg)
-    pressPixbuf = gtk.gdk.pixbuf_new_from_file(pressImg)
-    
-    widget.set_size_request(hoverPixbuf.get_width(), hoverPixbuf.get_height())
+    widget.set_size_request(
+        appTheme.getDynamicPixbuf(hoverImg).getPixbuf().get_width(),
+        appTheme.getDynamicPixbuf(hoverImg).getPixbuf().get_height())
     
     widget.connect("expose-event", lambda w, e: sideButtonOnExpose(
             w, e,
             navName, 
-            navPixbuf, normalPixbuf, hoverPixbuf, pressPixbuf,
+            appTheme.getDynamicPixbuf(navImg),
+            appTheme.getDynamicPixbuf(normalImg),
+            appTheme.getDynamicPixbuf(hoverImg),
+            appTheme.getDynamicPixbuf(pressImg),
             pageId, getPageId))
         
 def sideButtonOnExpose(widget, event, 
                        navName, 
-                       navPixbuf, normalPixbuf, hoverPixbuf, pressPixbuf,
+                       navDPixbuf, normalDPixbuf, hoverDPixbuf, pressDPixbuf,
                        pageId, getPageId):
     '''Expose function to replace event box's image.'''
+    navPixbuf = navDPixbuf.getPixbuf()
+    normalPixbuf = normalDPixbuf.getPixbuf()
+    hoverPixbuf = hoverDPixbuf.getPixbuf()
+    pressPixbuf = pressDPixbuf.getPixbuf()
+    
     selectPageId = getPageId()
     
     backgroundWidth = pressPixbuf.get_width()
@@ -513,23 +521,24 @@ def drawLineExpose(widget, event, color, lineWidth, vertical, lineType):
 def listItemSetBackground(widget, normalImg, selectImg,
                           itemId, getSelectId):
     '''Set event box's background.'''
-    normalPixbuf = gtk.gdk.pixbuf_new_from_file(normalImg)
-    selectPixbuf = gtk.gdk.pixbuf_new_from_file(selectImg)
-    
     requestWidth = -1
-    requestHeight = normalPixbuf.get_height()
+    requestHeight = appTheme.getDynamicPixbuf(normalImg).getPixbuf().get_height()
     
     widget.set_size_request(requestWidth, requestHeight)
     
     widget.connect("expose-event", lambda w, e: listItemOnExpose(
             w, e,
-            normalPixbuf, selectPixbuf,
+            appTheme.getDynamicPixbuf(normalImg),
+            appTheme.getDynamicPixbuf(selectImg),
             itemId, getSelectId))
         
 def listItemOnExpose(widget, event, 
-                     normalPixbuf, selectPixbuf,
+                     normalDPixbuf, selectDPixbuf,
                      itemId, getSelectId):
     '''Expose function to replace event box's image.'''
+    normalPixbuf = normalDPixbuf.getPixbuf()
+    selectPixbuf = selectDPixbuf.getPixbuf()
+    
     currentId = getSelectId()
     if currentId == itemId:
         image = selectPixbuf
@@ -572,20 +581,24 @@ def drawBackground(widget, event, color, borderColor=None, borderWidth=3):
 
 def drawDetailItemBackground(widget):
     '''Draw detail item background.'''
-    leftPixbuf = gtk.gdk.pixbuf_new_from_file("../theme/default/detail/left.png")
-    middlePixbuf = gtk.gdk.pixbuf_new_from_file("../theme/default/detail/middle.png")
-    rightPixbuf = gtk.gdk.pixbuf_new_from_file("../theme/default/detail/right.png")
-    
     widget.connect(
         "expose-event", 
         lambda w, e: drawDetailItemBackgroundOnExpose(
             w, e,
-            leftPixbuf, middlePixbuf, rightPixbuf))
+            appTheme.getDynamicPixbuf("detail/left.png"),
+            appTheme.getDynamicPixbuf("detail/middle.png"),
+            appTheme.getDynamicPixbuf("detail/right.png"),
+            ))
 
 def drawDetailItemBackgroundOnExpose(
     widget, event,
-    leftPixbuf, middlePixbuf, rightPixbuf):
+    leftDPixbuf, middleDPixbuf, rightDPixbuf
+    ):
     '''Draw detail item background.'''
+    leftPixbuf = leftDPixbuf.getPixbuf()
+    middlePixbuf = middleDPixbuf.getPixbuf()
+    rightPixbuf = rightDPixbuf.getPixbuf()
+    
     rect = widget.allocation
     x, y = rect.x, rect.y
     borderWidth, borderHeight = leftPixbuf.get_width(), leftPixbuf.get_height()
@@ -622,34 +635,32 @@ def drawRoundRectangle(cr, x, y, width, height, r):
     
 def checkButtonSetBackground(widget, scaleX, scaleY, normalImg, selectImg):
     '''Set event box's background.'''
-    normalPixbuf = gtk.gdk.pixbuf_new_from_file(normalImg)
-    selectPixbuf = gtk.gdk.pixbuf_new_from_file(selectImg)
-    
     if scaleX:
         requestWidth = -1
     else:
-        requestWidth = normalPixbuf.get_width()
+        requestWidth = appTheme.getDynamicPixbuf(normalImg).getPixbuf().get_width()
         
     if scaleY:
         requestHeight = -1
     else:
-        requestHeight = normalPixbuf.get_height()
+        requestHeight = appTheme.getDynamicPixbuf(normalImg).getPixbuf().get_height()
     
     widget.set_size_request(requestWidth, requestHeight)
     
     widget.connect("expose-event", lambda w, e: checkButtonOnExpose(
             w, e,
             scaleX, scaleY,
-            normalPixbuf, selectPixbuf))
+            appTheme.getDynamicPixbuf(normalImg),
+            appTheme.getDynamicPixbuf(selectImg)))
         
 def checkButtonOnExpose(widget, event, 
                         scaleX, scaleY,
-                        normalPixbuf, selectPixbuf):
+                        normalDPixbuf, selectDPixbuf):
     '''Expose function to replace event box's image.'''
     if widget.get_active():
-        image = selectPixbuf
+        image = selectDPixbuf.getPixbuf()
     else:
-        image = normalPixbuf
+        image = normalDPixbuf.getPixbuf()
     
     if scaleX:
         imageWidth = widget.allocation.width
@@ -673,22 +684,24 @@ def checkButtonOnExpose(widget, event,
 
 def titlebarSetBackground(widget, leftImg, middleImg, rightImg):
     '''Set event box's background.'''
-    leftPixbuf = gtk.gdk.pixbuf_new_from_file(leftImg)
-    middlePixbuf = gtk.gdk.pixbuf_new_from_file(middleImg)
-    rightPixbuf = gtk.gdk.pixbuf_new_from_file(rightImg)
-    
-    requestHeight = leftPixbuf.get_height()
-    
-    widget.set_size_request(-1, requestHeight)
+    widget.set_size_request(
+        -1, 
+         appTheme.getDynamicPixbuf(leftImg).getPixbuf().get_height())
     
     widget.connect("expose-event", lambda w, e: titlebarOnExpose(
             w, e,
-            leftPixbuf, middlePixbuf, rightPixbuf
+            appTheme.getDynamicPixbuf(leftImg),
+            appTheme.getDynamicPixbuf(middleImg),
+            appTheme.getDynamicPixbuf(rightImg),
             ))
         
 def titlebarOnExpose(widget, event,
-                     leftPixbuf, middlePixbuf, rightPixbuf):
+                     leftDPixbuf, middleDPixbuf, rightDPixbuf):
     '''Expose function to replace event box's image.'''
+    leftPixbuf = leftDPixbuf.getPixbuf()
+    middlePixbuf = middleDPixbuf.getPixbuf()
+    rightPixbuf = rightDPixbuf.getPixbuf()
+    
     x, y, width, height = widget.allocation.x, widget.allocation.y, widget.allocation.width, widget.allocation.height
 
     leftWidth = leftPixbuf.get_width()
@@ -718,32 +731,33 @@ def toggleTabSetBackground(widget, scaleX, scaleY,
                            activeContent, inactiveContent
                            ):
     '''Set event box's background.'''
-    activePixbuf = gtk.gdk.pixbuf_new_from_file(activeImg)
-    inactivePixbuf = gtk.gdk.pixbuf_new_from_file(inactiveImg)
-    
     if scaleX:
         requestWidth = -1
     else:
-        requestWidth = activePixbuf.get_width()
+        requestWidth = appTheme.getDynamicPixbuf(activeImg).getPixbuf().get_width()
         
     if scaleY:
         requestHeight = -1
     else:
-        requestHeight = activePixbuf.get_height()
+        requestHeight = appTheme.getDynamicPixbuf(activeImg).getPixbuf().get_height()
     
     widget.set_size_request(requestWidth, requestHeight)
     
     widget.connect("expose-event", lambda w, e: toggleTabOnExpose(
             w, e,
             scaleX, scaleY,
-            activePixbuf, inactivePixbuf,
+            appTheme.getDynamicPixbuf(activeImg),
+            appTheme.getDynamicPixbuf(inactiveImg),
             activeContent, inactiveContent))
         
 def toggleTabOnExpose(widget, event, 
                       scaleX, scaleY,
-                      activePixbuf, inactivePixbuf,
+                      activeDPixbuf, inactiveDPixbuf,
                       activeContent, inactiveContent):
     '''Expose function to replace event box's image.'''
+    activePixbuf = activeDPixbuf.getPixbuf()
+    inactivePixbuf = inactiveDPixbuf.getPixbuf()
+    
     if widget.get_active():
         image = activePixbuf
         leftTabFontColor = "#FFFFFF"
@@ -814,7 +828,7 @@ def drawTopbar(widget):
     eventBoxSetBackground(
         widget,
         True, False,
-        "../theme/default/topbar/background.png")
+        appTheme.getDynamicPixbuf("topbar/background.png"))
 
 def drawButton(widget, iconPrefix, subDir="cell", scaleX=False, 
                buttonLabel=None, fontSize=None, labelColor=None):
@@ -822,9 +836,9 @@ def drawButton(widget, iconPrefix, subDir="cell", scaleX=False,
     buttonSetBackground(
         widget,
         scaleX, False,
-        "../theme/default/%s/%s_normal.png" % (subDir, iconPrefix),
-        "../theme/default/%s/%s_hover.png" % (subDir, iconPrefix),
-        "../theme/default/%s/%s_press.png" % (subDir, iconPrefix),
+        appTheme.getDynamicPixbuf("%s/%s_normal.png" % (subDir, iconPrefix)),
+        appTheme.getDynamicPixbuf("%s/%s_hover.png" % (subDir, iconPrefix)),
+        appTheme.getDynamicPixbuf("%s/%s_press.png" % (subDir, iconPrefix)),
         buttonLabel, fontSize, labelColor
         )
     
@@ -833,19 +847,19 @@ def drawSimpleButton(widget, img):
     simpleButtonSetBackground(
         widget,
         False, False,
-        "../theme/default/cell/%s.png" % (img)
+        appTheme.getDynamicPixbuf("cell/%s.png" % (img))
         )
     
 def drawListItem(widget, index, getSelectIndex, selectable=True):
     '''Draw list item.'''
     if selectable:
-        selectImg = "../theme/default/cell/list_item_select.png"
+        selectImg = "cell/list_item_select.png"
     else:
-        selectImg = "../theme/default/cell/list_item.png"
+        selectImg = "cell/list_item.png"
     try:
         listItemSetBackground(
             widget,
-            "../theme/default/cell/list_item.png",
+            "cell/list_item.png",
             selectImg,
             index, getSelectIndex
             )
@@ -856,9 +870,9 @@ def drawTitlebar(widget):
     '''Draw title bar.'''
     titlebarSetBackground(
         widget,
-        "../theme/default/recommend/title_left.png",
-        "../theme/default/recommend/title_middle.png",
-        "../theme/default/recommend/title_right.png",
+        "recommend/title_left.png",
+        "recommend/title_middle.png",
+        "recommend/title_right.png",
         )
     
 def drawFont(cr, content, fontSize, fontColor, x, y):
@@ -882,24 +896,24 @@ def drawProgressbar(width):
     '''Draw progressbar.'''
     return pb.Progressbar(
         width,
-        "../theme/default/cell/download_bg_left.png",
-        "../theme/default/cell/download_bg_middle.png",
-        "../theme/default/cell/download_bg_right.png",
-        "../theme/default/cell/download_fg_left.png",
-        "../theme/default/cell/download_fg_middle.png",
-        "../theme/default/cell/download_fg_right.png",
+        "cell/download_bg_left.png",
+        "cell/download_bg_middle.png",
+        "cell/download_bg_right.png",
+        "cell/download_fg_left.png",
+        "cell/download_fg_middle.png",
+        "cell/download_fg_right.png",
         )
     
 def drawProgressbarWithoutBorder(width):
     '''Draw progressbar without border.'''
     return pb.Progressbar(
         width,
-        "../theme/default/cell/progress_bg_left.png",
-        "../theme/default/cell/progress_bg_middle.png",
-        "../theme/default/cell/progress_bg_right.png",
-        "../theme/default/cell/progress_fg_left.png",
-        "../theme/default/cell/progress_fg_middle.png",
-        "../theme/default/cell/progress_fg_right.png",
+        "cell/progress_bg_left.png",
+        "cell/progress_bg_middle.png",
+        "cell/progress_bg_right.png",
+        "cell/progress_fg_left.png",
+        "cell/progress_fg_middle.png",
+        "cell/progress_fg_right.png",
         True
         )
     
@@ -907,35 +921,39 @@ def drawVScrollbar(scrolledWindow):
     '''Draw vertical scrollbar.'''
     vScrollbar = scrolledWindow.get_vscrollbar()
     vAdjust = scrolledWindow.get_vadjustment()
-    progressBgTopPixbuf = gtk.gdk.pixbuf_new_from_file("../theme/default/progress/progress_bg_top.png")
-    progressBgBottomPixbuf = gtk.gdk.pixbuf_new_from_file("../theme/default/progress/progress_bg_bottom.png")
-    progressBgMiddlePixbuf = gtk.gdk.pixbuf_new_from_file("../theme/default/progress/progress_bg_middle.png")
-    progressFgTopPixbuf = gtk.gdk.pixbuf_new_from_file("../theme/default/progress/progress_fg_top.png")
-    progressFgMiddlePixbuf = gtk.gdk.pixbuf_new_from_file("../theme/default/progress/progress_fg_middle.png")
-    progressFgBottomPixbuf = gtk.gdk.pixbuf_new_from_file("../theme/default/progress/progress_fg_bottom.png")
-    vScrollbar.set_size_request(progressBgMiddlePixbuf.get_width(), -1)
+    vScrollbar.set_size_request(
+        appTheme.getDynamicPixbuf("progress/progress_bg_middle.png").getPixbuf().get_width(), 
+        -1)
     vScrollbar.connect(
         "expose-event", 
         lambda w, e: drawVScrollbarOnExpose(
             w, e, vAdjust,
-            progressBgTopPixbuf,
-            progressBgMiddlePixbuf,
-            progressBgBottomPixbuf,
-            progressFgTopPixbuf,
-            progressFgMiddlePixbuf,
-            progressFgBottomPixbuf,
+            appTheme.getDynamicPixbuf("progress/progress_bg_top.png"),
+            appTheme.getDynamicPixbuf("progress/progress_bg_bottom.png"),
+            appTheme.getDynamicPixbuf("progress/progress_bg_middle.png"),
+            appTheme.getDynamicPixbuf("progress/progress_fg_top.png"),
+            appTheme.getDynamicPixbuf("progress/progress_fg_middle.png"),
+            appTheme.getDynamicPixbuf("progress/progress_fg_bottom.png"),
             ))
     
 def drawVScrollbarOnExpose(
     widget, event, adjust,
-    bgTopPixbuf,
-    bgMiddlePixbuf,
-    bgBottomPixbuf,
-    fgTopPixbuf,
-    fgMiddlePixbuf,
-    fgBottomPixbuf):
+    bgTopDPixbuf,
+    bgMiddleDPixbuf,
+    bgBottomDPixbuf,
+    fgTopDPixbuf,
+    fgMiddleDPixbuf,
+    fgBottomDPixbuf
+    ):
     '''Draw vertical scrollbar.'''
     # Init.
+    bgTopPixbuf = bgTopDPixbuf.getPixbuf()
+    bgMiddlePixbuf = bgMiddleDPixbuf.getPixbuf()
+    bgBottomPixbuf = bgBottomDPixbuf.getPixbuf()
+    fgTopPixbuf = fgTopDPixbuf.getPixbuf()
+    fgMiddlePixbuf = fgMiddleDPixbuf.getPixbuf()
+    fgBottomPixbuf = fgBottomDPixbuf.getPixbuf()
+    
     rect = widget.allocation
     lower = adjust.get_lower()
     upper = adjust.get_upper()

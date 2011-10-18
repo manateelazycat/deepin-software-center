@@ -57,32 +57,32 @@ class NavigateBar:
         
         self.recommendIcon = self.createNavIcon(
             "精选推荐", 
-            "../theme/default/navigate/nav_recommend.png", 
+            "navigate/nav_recommend.png", 
             PAGE_RECOMMEND)
         self.navBox.pack_start(self.recommendIcon, False, False, self.iconPadding)
         
         self.repositoryIcon = self.createNavIcon(
             "软件仓库", 
-            "../theme/default/navigate/nav_repo.png", 
+            "navigate/nav_repo.png", 
             PAGE_REPO)
         self.navBox.pack_start(self.repositoryIcon, False, False, self.iconPadding)
         
         self.updateIcon = self.createUpdateIcon(
             "软件更新", 
-            "../theme/default/navigate/nav_update.png", 
+            "navigate/nav_update.png", 
             PAGE_UPGRADE,
             self.getUpgradableNum)
         self.navBox.pack_start(self.updateIcon, False, False, self.iconPadding)
         
         self.uninstallIcon = self.createNavIcon(
             "软件卸载",
-            "../theme/default/navigate/nav_uninstall.png", 
+            "navigate/nav_uninstall.png", 
             PAGE_UNINSTALL)
         self.navBox.pack_start(self.uninstallIcon, False, False, self.iconPadding)
 
         self.downloadIcon = self.createUpdateIcon(
             "下载管理", 
-            "../theme/default/navigate/nav_download.png", 
+            "navigate/nav_download.png", 
             PAGE_DOWNLOAD_MANAGE, 
             self.getRunningNum)
         self.navBox.pack_start(self.downloadIcon, False, False, self.iconPadding)
@@ -110,8 +110,8 @@ class NavigateBar:
         updateButtonSetBackground(
             eventButton,
             iconName, iconPath,
-            "../theme/default/navigate/menu_hover.png",
-            "../theme/default/navigate/menu_press.png",
+            "navigate/menu_hover.png",
+            "navigate/menu_press.png",
             pageId,
             self.getPageId,
             callback
@@ -127,9 +127,10 @@ class NavigateBar:
             lambda w, e: self.selectPage(pageId))
         navButtonSetBackground(
             eventButton,
-            iconName, iconPath,
-            "../theme/default/navigate/menu_hover.png",
-            "../theme/default/navigate/menu_press.png",
+            iconName, 
+            iconPath,
+            "navigate/menu_hover.png",
+            "navigate/menu_press.png",
             pageId,
             self.getPageId
             )

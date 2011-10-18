@@ -30,7 +30,7 @@ pygtk.require('2.0')
 class Titlebar:
     '''Title bar.'''
 	
-    def __init__(self, minCallback, maxCallback, closeCallback):
+    def __init__(self, selectThemeCallback, minCallback, maxCallback, closeCallback):
         '''Init for title bar.'''
         self.box = gtk.VBox()
         
@@ -39,6 +39,11 @@ class Titlebar:
         self.controlAlign.set(1.0, 0.0, 0.0, 0.0)
         self.controlAlign.add(self.controlBox)
         self.box.add(self.controlAlign)
+        
+        self.themeButton = gtk.Button()
+        self.themeButton.connect("button-release-event", lambda w, e: selectThemeCallback())
+        drawButton(self.themeButton, "theme", "navigate")
+        self.controlBox.pack_start(self.themeButton, False, False)
         
         self.minButton = gtk.Button()
         self.minButton.connect("button-release-event", lambda w, e: minCallback())

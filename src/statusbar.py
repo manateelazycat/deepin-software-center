@@ -20,6 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from theme import *
 from constant import *
 from draw import *
 import cairo
@@ -41,7 +42,7 @@ class Statusbar:
         eventBoxSetBackground(
             self.eventbox,
             True, False,
-            "../theme/default/statusbar/background.png")
+            appTheme.getDynamicPixbuf("statusbar/background.png"))
         self.box = gtk.HBox()
         
         self.name = gtk.Label()

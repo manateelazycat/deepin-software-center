@@ -182,7 +182,7 @@ class RecommendItem(DownloadItem):
             else:
                 appInstalledLabel = gtk.Label()
                 appInstalledLabel.set_markup("<span foreground='#1A3E88' size='%s'>%s</span>" % (LABEL_FONT_SIZE, "已安装"))
-                buttonImage = gtk.gdk.pixbuf_new_from_file("../theme/default/cell/update_hover.png")
+                buttonImage = appTheme.getDynamicPixbuf("cell/update_hover.png").getPixbuf()
                 appInstalledLabel.set_size_request(buttonImage.get_width(), buttonImage.get_height())
                 appButtonBox.pack_start(appInstalledLabel)
             

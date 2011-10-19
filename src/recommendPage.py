@@ -184,7 +184,7 @@ class SlideItem(DownloadItem):
             else:
                 appInstalledLabel = gtk.Label()
                 appInstalledLabel.set_markup("<span foreground='#FFFFFF' size='%s'>%s</span>" % (LABEL_FONT_LARGE_SIZE, "已安装"))
-                buttonImage = gtk.gdk.pixbuf_new_from_file("../theme/default/cell/update_hover.png")
+                buttonImage = appTheme.getDynamicPixbuf("cell/update_hover.png").getPixbuf()
                 appInstalledLabel.set_size_request(buttonImage.get_width(), buttonImage.get_height())
                 actionButtonBox.pack_start(appInstalledLabel)
 

@@ -20,6 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from theme import *
 from appItem import *
 from constant import *
 from draw import *
@@ -158,7 +159,7 @@ class DownloadManageItem(DownloadItem):
         else:
             appInstalledLabel = gtk.Label()
             appInstalledLabel.set_markup("<span foreground='#1A3E88' size='%s'>%s</span>" % (LABEL_FONT_SIZE, "已安装"))
-            buttonImage = gtk.gdk.pixbuf_new_from_file("../theme/default/cell/update_hover.png")
+            buttonImage = appTheme.getDynamicPixbuf("cell/update_hover.png").getPixbuf()
             appInstalledLabel.set_size_request(buttonImage.get_width(), buttonImage.get_height())
             actionButtonBox.pack_start(appInstalledLabel)
     

@@ -20,7 +20,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from theme import *
 from constant import *
 from math import pi
 import cairo
@@ -529,9 +528,8 @@ def setClickableLabel(widget, label, normalMarkup, activeMarkup, resetAfterClick
     if resetAfterClick:
         widget.connect("button-press-event", lambda w, e: setMarkup(label, normalMarkup))
 
-def setCustomizeClickableCursor(eventbox, widget, cursorPath):
+def setCustomizeClickableCursor(eventbox, widget, cursorDPixbuf):
     '''Set click-able cursor.'''
-    cursorDPixbuf = appTheme.getDynamicPixbuf(cursorPath)
     eventbox.connect("enter-notify-event", lambda w, e: setCustomizeCursor(widget, cursorDPixbuf))
     eventbox.connect("leave-notify-event", lambda w, e: setDefaultCursor(widget))
         

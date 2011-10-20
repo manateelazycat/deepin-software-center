@@ -20,6 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from utils import *
 import gobject, gtk
 import os
 
@@ -47,12 +48,15 @@ class Theme:
         self.themeName = "default"
         self.pixbufDict = {}
         
-        # # Scan theme files.
+        # Scan theme files.
         themeDir = self.getThemeDir()
         for root, dirs, files in os.walk(themeDir):
             for filepath in files:
                 path = (os.path.join(root, filepath)).split(themeDir)[1]
                 self.pixbufDict[path] = DynamicPixbuf(self.getThemePath(path))
+                
+        # Scan color information.
+        # self.colorDict = evalFile(self.getThemeDir() + "color")
     
     def getThemeDir(self):
         '''Get theme directory.'''
@@ -66,6 +70,10 @@ class Theme:
         '''Get dynamic pixbuf.'''
         return self.pixbufDict[path]
     
+    # def getColor(self, colorName):
+    #     '''Get color.'''
+    #     return self.colorDict[colorName]    
+    
     def changeTheme(self, newThemeName):
         '''Change theme.'''
         # Change theme name.
@@ -74,6 +82,9 @@ class Theme:
         # Update dynmaic pixbuf.
         for (path, pixbuf) in self.pixbufDict.items():
             pixbuf.updatePath(self.getThemePath(path))
+            
+        # Scan color information.
+        # self.colorDict = evalFile(self.getThemeDir() + "color")
     
 # Init.
 appTheme = Theme()            

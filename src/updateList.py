@@ -21,7 +21,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from utils import *
-import apt
+from apt.progress.old import FetchProgress
 import sys
 import os
 import glib
@@ -52,7 +52,10 @@ class UpdateList(td.Thread):
         # Just update one day after.
         if agoHours != None and agoHours >= UPDATE_INTERVAL:
         # if True:
-            self.cache.update(self.progress)
+            try:
+                self.cache.update(self.progress)
+            except Exception, e:
+                print "UpdateList.run(): %s" % (e)
         else:
             print "Just update system %s hours ago" % (agoHours)
         
@@ -76,11 +79,12 @@ class UpdateList(td.Thread):
     
         return False
         
-class UpdateListProgress(apt.progress.FetchProgress):
+class UpdateListProgress(FetchProgress):
     """ Ready to use progress object for terminal windows """
 
     def __init__(self, updateCallback, finishCallback):
-        apt.progress.FetchProgress.__init__(self)
+        super(UpdateListProgress, self).__init__()
+        
         self.updateCallback = updateCallback
         self.finishCallback = finishCallback
 
@@ -89,9 +93,16 @@ class UpdateListProgress(apt.progress.FetchProgress):
 
         Return True to continue or False to cancel.
         """
-        apt.progress.FetchProgress.pulse(self)
-        
-        self.updateCallback("%2.f" % (self.percent))
+        try:
+            self.percent = (((self.currentBytes + self.currentItems) * 100.0) /
+                            float(self.totalBytes + self.totalItems))
+            if self.currentCPS > 0:
+                self.eta = ((self.totalBytes - self.currentBytes) /
+                            float(self.currentCPS))
+                
+            self.updateCallback("%2.f" % (self.percent))
+        except Exception, e:
+            print "UpdateListProgress.pulse(): %s" % (e)
         
         return True
 

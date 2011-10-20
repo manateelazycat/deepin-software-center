@@ -298,7 +298,10 @@ class DetailView:
         if os.path.exists (screenshotPath):
             self.screenshotImage.set_from_pixbuf(
                 gtk.gdk.pixbuf_new_from_file_at_size(screenshotPath, screenshotWidth, screenshotHeight))
-            utils.setCustomizeClickableCursor(self.imageBox, self.screenshotImage, "screenshot/zoom_in.png")
+            utils.setCustomizeClickableCursor(
+                self.imageBox, 
+                self.screenshotImage, 
+                appTheme.getDefaultLanguage("screenshot/zoom_in.png"))
             utils.setHelpTooltip(self.imageBox, "点击放大")
         # Otherwise just fetch screenshot when not in black list.
         elif not pkgName in noscreenshotList:
@@ -1174,7 +1177,10 @@ class FetchScreenshot(td.Thread):
         # Set screenshot.
         if self.returnCode == DOWNLOAD_SUCCESS:
             self.image.set_from_pixbuf(gtk.gdk.pixbuf_new_from_file_at_size(screenshotPath, self.width, self.height))
-            utils.setCustomizeClickableCursor(self.imageBox, self.image, "screenshot/zoom_in.png")
+            utils.setCustomizeClickableCursor(
+                self.imageBox, 
+                self.image, 
+                appTheme.getDynamicPixbuf("screenshot/zoom_in.png"))
             utils.setHelpTooltip(self.imageBox, "点击放大")
         else:
             if self.killed:
@@ -1249,7 +1255,10 @@ class BigScreenshot:
         self.window.connect("button-press-event", self.click)
         self.eventbox.connect("expose-event", self.show)
         self.eventbox.connect("button-press-event", lambda w, e: self.exit())
-        utils.setCustomizeClickableCursor(self.eventbox, self.eventbox, "screenshot/zoom_out.png")
+        utils.setCustomizeClickableCursor(
+            self.eventbox, 
+            self.eventbox, 
+            appTheme.getDynamicPixbuf("screenshot/zoom_out.png"))
         
         self.window.show_all()
 

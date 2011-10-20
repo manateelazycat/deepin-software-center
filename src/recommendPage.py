@@ -20,6 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from theme import *
 from appItem import *
 from constant import *
 from draw import *
@@ -220,7 +221,7 @@ class SlideBar:
         
         self.sourceImage = self.createSlideImage(self.sourceIndex)
         self.targetImage = self.createSlideImage(self.targetIndex)
-        self.maskPixbuf = gtk.gdk.pixbuf_new_from_file("../updateData/slide/mask.png")
+        self.maskPixbuf = appTheme.getDynamicPixbuf("recommend/mask.png")
         
         self.stop = True
         self.ticker = self.times
@@ -393,7 +394,7 @@ class SlideBar:
             cr.paint_with_alpha(self.ticker * self.alphaInterval)
 
         # Draw mask.
-        cr.set_source_pixbuf(self.maskPixbuf, x, y + height - self.maskHeight)
+        cr.set_source_pixbuf(self.maskPixbuf.getPixbuf(), x, y + height - self.maskHeight)
         cr.paint_with_alpha(0.5)
 
     def start(self, index):

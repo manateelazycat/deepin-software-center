@@ -20,6 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from utils import *
 from constant import *
 from draw import *
 import gtk
@@ -94,7 +95,8 @@ class NavigateBar:
         eventBox = gtk.EventBox()
         eventBox.set_visible_window(False)
         navBox = gtk.VBox()
-        navImage = gtk.image_new_from_pixbuf(gtk.gdk.pixbuf_new_from_file("../theme/default/navigate/logo.png"))
+        lang = getDefaultLanguage()
+        navImage = gtk.image_new_from_pixbuf(gtk.gdk.pixbuf_new_from_file("../theme/default/logo/%s/logo.png" % (lang)))
         navBox.pack_start(navImage, False)
         eventBox.add(navBox)
         eventBox.show_all()

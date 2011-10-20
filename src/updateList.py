@@ -21,7 +21,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from utils import *
-import apt.progress
+import apt
 import sys
 import os
 import glib

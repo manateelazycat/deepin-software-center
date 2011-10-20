@@ -20,6 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from theme import *
 from appItem import *
 from constant import *
 from draw import *
@@ -254,7 +255,9 @@ class IgnoreView(appView.AppView):
             self.box.pack_start(notifyAlign)
             
             notifyIconAlignX = 5
-            notifyIcon = gtk.image_new_from_file("../theme/default/update/smile.gif")
+            notifyIcon = gtk.EventBox()
+            notifyIcon.set_visible_window(False)
+            simpleButtonSetBackground(notifyIcon, False, False, appTheme.getDynamicPixbuf("update/smile.gif"))
             notifyIconAlign = gtk.Alignment()
             notifyIconAlign.set(0.5, 1.0, 0.0, 0.0)
             notifyIconAlign.set_padding(0, 0, notifyIconAlignX, notifyIconAlignX)

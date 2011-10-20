@@ -20,6 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from theme import *
 from constant import *
 from draw import *
 import gtk
@@ -148,13 +149,19 @@ class AppView:
             # Don't add first icon if at first *page*.
             if startIndex != 1:
                 # Add previous icon.
-                prev = gtk.image_new_from_pixbuf(gtk.gdk.pixbuf_new_from_file("../theme/default/index/backward.png"))
                 prevBox = gtk.EventBox()
-                prevBox.add(prev)
+                prevBox.set_visible_window(False)
+                prevBox.connect(
+                    "expose-event", 
+                    lambda w, e: simpleButtonSetBackground(
+                        w, False, False, 
+                        appTheme.getDynamicPixbuf("index/backward.png")))
                 prevBox.connect("button-press-event", 
                                 lambda widget, event: self.jumpPage(max(1, (self.pageIndex - 1) / self.pageSize * self.pageSize)))
-                prevBox.connect("expose-event", lambda w, e: drawBackground(w, e, "#FFFFFF"))
-                box.pack_start(prevBox, False, False, paddingX)
+                prevAlign = gtk.Alignment()
+                prevAlign.set(0.5, 0.5, 0.0, 0.0)
+                prevAlign.add(prevBox)
+                box.pack_start(prevAlign, False, False, paddingX)
                 utils.setClickableCursor(prevBox)
                 
                 first = gtk.Label()
@@ -182,13 +189,18 @@ class AppView:
                 utils.setClickableCursor(lastBox)
                 
                 # Add next icon.
-                next = gtk.image_new_from_pixbuf(gtk.gdk.pixbuf_new_from_file("../theme/default/index/forward.png"))
                 nextBox = gtk.EventBox()
-                nextBox.add(next)
+                nextBox.set_visible_window(False)
+                nextBox.connect(
+                    "expose-event", 
+                    lambda w, e: simpleButtonSetBackground(
+                        w, False, False, appTheme.getDynamicPixbuf("index/forward.png")))
                 nextBox.connect("button-press-event", 
                                 lambda widget, event: self.jumpPage(min(self.maxPageIndex, ((self.pageIndex - 1) / self.pageSize + 1) * self.pageSize + 1)))
-                nextBox.connect("expose-event", lambda w, e: drawBackground(w, e, "#FFFFFF"))
-                box.pack_start(nextBox, False, False, paddingX)
+                nextAlign = gtk.Alignment()
+                nextAlign.set(0.5, 0.5, 0.0, 0.0)
+                nextAlign.add(nextBox)
+                box.pack_start(nextAlign, False, False, paddingX)
                 utils.setClickableCursor(nextBox)
             
             # Add jump button.

@@ -62,7 +62,7 @@ class TrayIcon:
         self.times = 20
         self.ticker = 0
         self.interval = 100     # in milliseconds
-        self.tooltipPixbuf = gtk.gdk.pixbuf_new_from_file("../theme/default/tray/window.png")
+        self.tooltipPixbuf = gtk.gdk.pixbuf_new_from_file("../icon/window.png")
         
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  
         self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) # make sure socket port always work
@@ -193,7 +193,7 @@ class TrayIcon:
         menu = gtk.Menu()
         
         aboutIcon = gtk.Image()
-        aboutIcon.set_from_file("../theme/default/menu/about.png")
+        aboutIcon.set_from_file("../icon/about.png")
         aboutItem = gtk.ImageMenuItem()
         aboutItem.set_label("关于")
         aboutItem.set_image(aboutIcon)
@@ -201,7 +201,7 @@ class TrayIcon:
         menu.append(aboutItem)
         
         quitIcon = gtk.Image()
-        quitIcon.set_from_file("../theme/default/menu/quit.png")
+        quitIcon.set_from_file("../icon/quit.png")
         quitItem = gtk.ImageMenuItem()
         quitItem.set_label("退出")
         quitItem.set_image(quitIcon)
@@ -263,7 +263,7 @@ class TrayIcon:
                 gtk.gdk.threads_init()        
                 
                 self.trayIcon = gtk.StatusIcon()
-                self.trayIcon.set_from_file("../theme/default/tray/icon.png")
+                self.trayIcon.set_from_file("../icon/icon.png")
                 self.trayIcon.set_has_tooltip(True)
                 self.trayIcon.set_visible(True)
                 self.trayIcon.connect("activate", lambda w: self.showSoftwareCenter())

@@ -40,7 +40,7 @@ class DynamicPixbuf:
 
 class Theme:
     '''Theme.'''
-	
+    
     def __init__(self):
         '''Init theme.'''
         # Init.

@@ -767,7 +767,7 @@ class DeepinSoftwareCenter():
         window.set_default_size(self.DEFAULT_WIDTH, -1)
 
         # Set icon.
-        gtk.window_set_default_icon_from_file("../theme/default/icon/icon.ico")
+        gtk.window_set_default_icon_from_file("../icon/icon.ico")
 
         return window
 

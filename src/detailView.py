@@ -20,6 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from utils import *
 from theme import *
 from appItem import *
 from draw import *
@@ -301,7 +302,7 @@ class DetailView:
             utils.setCustomizeClickableCursor(
                 self.imageBox, 
                 self.screenshotImage, 
-                appTheme.getDefaultLanguage("screenshot/zoom_in.png"))
+                appTheme.getDynamicPixbuf("screenshot/zoom_in.png"))
             utils.setHelpTooltip(self.imageBox, "点击放大")
         # Otherwise just fetch screenshot when not in black list.
         elif not pkgName in noscreenshotList:

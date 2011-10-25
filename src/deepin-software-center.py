@@ -842,7 +842,7 @@ class DeepinSoftwareCenter():
     def prevInitThread(self):
         '''Execute before init thread start.'''
         backgroundBox = gtk.EventBox()
-        backgroundBox.connect("expose-event", lambda w, e: drawBackground(w, e, "#FFFFFF"))
+        backgroundBox.connect("expose-event", lambda w, e: drawBackground(w, e, appTheme.getDynamicColor("background")))
         
         waitBox = gtk.HBox()
         waitAlign = gtk.Alignment()
@@ -1259,7 +1259,7 @@ class SendVote(td.Thread):
     def run(self):
         '''Run'''
         try:
-            voteFile = "./voteBlacklist/%s" % (self.name)
+            voteFile = "../voteBlacklist/%s" % (self.name)
             if os.path.exists(voteFile) and getLastUpdateHours(voteFile) <= 24:
                 self.messageCallback("为保证公正, 每天只能对%s评分一次." % (self.name))
             else:

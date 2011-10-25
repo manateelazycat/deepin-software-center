@@ -82,7 +82,7 @@ class DetailView:
         self.box = gtk.VBox()
         self.eventbox = gtk.EventBox()
         self.eventbox.add(self.box)
-        self.eventbox.connect("expose-event", lambda w, e: drawBackground(w, e, "#FFFFFF"))
+        self.eventbox.connect("expose-event", lambda w, e: drawBackground(w, e, appTheme.getDynamicColor("background")))
         
         self.align = gtk.Alignment()
         self.align.set(0.0, 0.0, 1.0, 1.0)
@@ -282,7 +282,7 @@ class DetailView:
         
         self.imageBox = gtk.EventBox()
         self.imageBox.set_size_request(self.SCREENSHOT_WIDTH, self.SCREENSHOT_HEIGHT)
-        self.imageBox.connect("expose-event", lambda w, e: drawBackground(w, e, "#FFFFFF"))
+        self.imageBox.connect("expose-event", lambda w, e: drawBackground(w, e, appTheme.getDynamicColor("background")))
         screenshotBox.pack_start(self.imageBox, False, False)
         
         self.screenshotImage = gtk.Image()
@@ -322,7 +322,7 @@ class DetailView:
             print "No screenshot for %s, don't need fetch." % (pkgName)
             
             # Set upload image.
-            self.screenshotImage.set_from_pixbuf(gtk.gdk.pixbuf_new_from_file("../theme/default/screenshot/upload.png"))        
+            self.screenshotImage.set_from_pixbuf(gtk.gdk.pixbuf_new_from_file("../theme/default/image/screenshot/upload.png"))        
 
         # Add comment label.
         self.initCommentArea(detailBox)
@@ -667,7 +667,7 @@ class DetailView:
         # Add comment list.
         for comment in commentList:
             commentName = comment["cuid"]
-            commentIcon = "../theme/default/comment/me.png"
+            commentIcon = "../theme/default/image/comment/me.png"
             commentDate = comment["ctime"]
             commentContent = comment["content"]
             
@@ -768,7 +768,7 @@ class DetailView:
         self.messageCallback("发表 %s 评论成功" % (pkgName))
         
         # Add comment in comment list.
-        commentIcon = "../theme/default/comment/me.png"
+        commentIcon = "../theme/default/image/comment/me.png"
         commentDate = utils.getCurrentTime()
         commentName = "深度Linuxer %s" % (commentDate)
         commentBox = self.createComment((
@@ -1197,7 +1197,7 @@ class FetchScreenshot(td.Thread):
                 utils.addInList(self.noscreenshotList, pkgName)
                     
                 # Set upload image.
-                self.image.set_from_pixbuf(gtk.gdk.pixbuf_new_from_file("../theme/default/screenshot/upload.png"))
+                self.image.set_from_pixbuf(gtk.gdk.pixbuf_new_from_file("../theme/default/image/screenshot/upload.png"))
             
                 print "Haven't screenshot for %s !" % (pkgName)
 

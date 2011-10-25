@@ -425,7 +425,8 @@ class RecommendItem(DownloadItem):
             "button-press-event",
             lambda w, e: self.entryDetailView())
         
-        utils.setHelpTooltip(appNameEventBox, "点击查看详细信息")
+        pkgVersion = utils.getPkgVersion(pkg)
+        utils.setHelpTooltip(appNameEventBox, "版本: %s\n点击查看详细信息" % (pkgVersion))
         
         self.appNameBox.pack_start(appNameEventBox, False, False)
         

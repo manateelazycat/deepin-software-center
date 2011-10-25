@@ -96,7 +96,7 @@ class NavigateBar:
         eventBox.set_visible_window(False)
         navBox = gtk.VBox()
         lang = getDefaultLanguage()
-        navImage = gtk.image_new_from_pixbuf(gtk.gdk.pixbuf_new_from_file("../theme/default/logo/%s/logo.png" % (lang)))
+        navImage = gtk.image_new_from_pixbuf(gtk.gdk.pixbuf_new_from_file("../theme/default/image/logo/%s/logo.png" % (lang)))
         navBox.pack_start(navImage, False)
         eventBox.add(navBox)
         eventBox.show_all()

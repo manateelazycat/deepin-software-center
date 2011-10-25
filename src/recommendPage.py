@@ -68,7 +68,7 @@ class RecommendPage:
         
         self.eventbox = gtk.EventBox()
         self.eventbox.add(self.box)
-        self.eventbox.connect("expose-event", lambda w, e: drawBackground(w, e, "#FFFFFF"))
+        self.eventbox.connect("expose-event", lambda w, e: drawBackground(w, e, appTheme.getDynamicColor("background")))
         
         self.scrolledwindow = gtk.ScrolledWindow()
         self.scrolledwindow.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
@@ -339,7 +339,7 @@ class SlideBar:
         labelBox = gtk.EventBox()
         labelBox.add(imageAlign)
         labelBox.connect("enter-notify-event", lambda widget, event: self.start(index))
-        labelBox.connect("expose-event", lambda w, e: drawBackground(w, e, "#FFFFFF"))
+        labelBox.connect("expose-event", lambda w, e: drawBackground(w, e, appTheme.getDynamicColor("background")))
         self.labelBox.pack_start(labelBox, True, True)
         
     def exposeSmallArea(self, drawArea, event, index):

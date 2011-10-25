@@ -430,7 +430,13 @@ def createItemBasicBox(appInfo, maxWidth, parent, entryDetailCallback, showUpgra
     
     # Add application name.
     pkgName = utils.getPkgName(pkg)
-    appName = gtk.Label()
+    
+    appNameLabel = DynamicLabel(
+        pkgName,
+        appTheme.getDynamicLabelColor("appName"), 
+        LABEL_FONT_SIZE)
+    appName = appNameLabel.getLabel()
+    
     parent.connect("size-allocate", 
                    lambda w, e: adjustLabelWidth(parent, 
                                                  appName,
@@ -448,25 +454,16 @@ def createItemBasicBox(appInfo, maxWidth, parent, entryDetailCallback, showUpgra
         lambda w, e: entryDetailCallback())
     appBox.pack_start(appNameEventBox, False, False)
     
-    utils.setHelpTooltip(appNameEventBox, "点击查看详细信息")
-    
-    # pkgVersion = utils.getPkgVersion(pkg)
     if showUpgradeVersion:
         pkgVersion = utils.getPkgNewestVersion(pkg)
     else:
         pkgVersion = utils.getPkgVersion(pkg)
+        
+    utils.setHelpTooltip(appNameEventBox, "版本: %s\n点击查看详细信息" % (pkgVersion))
     
-    nameMarkup = "<span foreground='#1A3E88' size='%s'>%s</span>" % (LABEL_FONT_SIZE, pkgName)
-    nameActiveMarkup = "<span foreground='#0084FF' size='%s'>%s</span>" % (LABEL_FONT_SIZE, pkgName)
-    versionMarkup = "<span foreground='#7d8087' size='%s'> (%s)</span>" % (LABEL_FONT_SIZE, pkgVersion)
-    versionActiveMarkup = "<span foreground='#555555' size='%s'> (%s)</span>" % (LABEL_FONT_SIZE, pkgVersion)
-    
-    appName.set_markup(nameMarkup + versionMarkup)
-    utils.setClickableLabel(
+    utils.setClickableDynamicLabel(
         appNameEventBox,
-        appName,
-        nameMarkup + versionMarkup,
-        nameActiveMarkup + versionActiveMarkup,
+        appNameLabel,
         )
     
     # Add application summary.

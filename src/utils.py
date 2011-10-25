@@ -90,8 +90,9 @@ def getPkgIcon(pkg, iconWidth=32, iconHeight=32):
     if os.path.exists (iconPath):
         return gtk.image_new_from_pixbuf(gtk.gdk.pixbuf_new_from_file_at_size(iconPath, iconWidth, iconHeight))
     else:
-        return gtk.image_new_from_pixbuf(gtk.gdk.pixbuf_new_from_file_at_size("../theme/default/icon/appIcon.ico", 
-                                                                              iconWidth, iconHeight))
+        return gtk.image_new_from_pixbuf(gtk.gdk.pixbuf_new_from_file_at_size(
+                "../theme/default/image/icon/appIcon.ico", 
+                iconWidth, iconHeight))
 def getPkgName(pkg):
     '''Get package name.'''
     return pkg.name
@@ -514,6 +515,20 @@ def setDefaultClickableLabel(content, normalColor="#1A3E88", hoverColor="#0084FF
         )
     
     return (label, eventbox)
+        
+def setClickableDynamicLabel(widget, dLabel, resetAfterClick=True):
+    '''Set click-able label.'''
+    # Set label markup.
+    widget.connect("enter-notify-event", lambda w, e: dLabel.hoverLabel())
+    widget.connect("leave-notify-event", lambda w, e: dLabel.normalLabel())
+    
+    # Set label cursor.
+    widget.connect("enter-notify-event", lambda w, e: setCursor(w, gtk.gdk.HAND2))
+    widget.connect("leave-notify-event", lambda w, e: setDefaultCursor(w))
+    
+    # Reset color when click widget.
+    if resetAfterClick:
+        widget.connect("button-press-event", lambda w, e: dLabel.normalLabel())
         
 def setClickableLabel(widget, label, normalMarkup, activeMarkup, resetAfterClick=True):
     '''Set click-able label.'''

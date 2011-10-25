@@ -50,7 +50,7 @@ class AppView:
         self.box = gtk.VBox()
         self.eventbox = gtk.EventBox()
         self.eventbox.add(self.box)
-        self.eventbox.connect("expose-event", lambda w, e: drawBackground(w, e, "#FFFFFF"))
+        self.eventbox.connect("expose-event", lambda w, e: drawBackground(w, e, appTheme.getDynamicColor("background")))
         self.scrolledwindow = gtk.ScrolledWindow()
         self.scrolledwindow.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
         drawVScrollbar(self.scrolledwindow)
@@ -169,7 +169,7 @@ class AppView:
                 firstBox = gtk.EventBox()
                 firstBox.add(first)
                 firstBox.connect("button-press-event", lambda widget, event: self.jumpPage(1))
-                firstBox.connect("expose-event", lambda w, e: drawBackground(w, e, "#FFFFFF"))
+                firstBox.connect("expose-event", lambda w, e: drawBackground(w, e, appTheme.getDynamicColor("background")))
                 box.pack_start(firstBox, False, False, paddingX)
                 utils.setClickableCursor(firstBox)
             
@@ -184,7 +184,7 @@ class AppView:
                 lastBox = gtk.EventBox()
                 lastBox.add(last)
                 lastBox.connect("button-press-event", lambda widget, event: self.jumpPage(self.maxPageIndex))
-                lastBox.connect("expose-event", lambda w, e: drawBackground(w, e, "#FFFFFF"))
+                lastBox.connect("expose-event", lambda w, e: drawBackground(w, e, appTheme.getDynamicColor("background")))
                 box.pack_start(lastBox, False, False, paddingX)
                 utils.setClickableCursor(lastBox)
                 
@@ -254,7 +254,7 @@ class AppView:
         numLabel.set_markup(("<span foreground='%s' size='%s'>%s</span>" % (numColor, LABEL_FONT_LARGE_SIZE, str(index))))
         numBox.add(numLabel)
         numBox.connect("button-press-event", lambda widget, event: self.jumpPage(index))
-        numBox.connect("expose-event", lambda w, e: drawBackground(w, e, "#FFFFFF"))
+        numBox.connect("expose-event", lambda w, e: drawBackground(w, e, appTheme.getDynamicColor("background")))
         utils.setClickableCursor(numBox)
         
         return numBox

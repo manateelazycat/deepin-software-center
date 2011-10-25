@@ -559,8 +559,9 @@ def listItemOnExpose(widget, event,
 
     return True
 
-def drawBackground(widget, event, color, borderColor=None, borderWidth=3):
+def drawBackground(widget, event, dColor, borderColor=None, borderWidth=3):
     '''Draw background.'''
+    color = dColor.getColor()
     rect = widget.allocation
 
     cr = widget.window.cairo_create()

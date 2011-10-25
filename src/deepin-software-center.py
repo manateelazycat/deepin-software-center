@@ -88,20 +88,6 @@ class DeepinSoftwareCenter():
         self.actionQueue = None
         self.pauseList = []
         
-        # Read vote information.
-        self.voteFile = "./voteInfo"
-        self.today = utils.todayStr()
-        if not os.path.exists(self.voteFile):
-            self.voteBlacklist = []
-        else:
-            (voteDate, voteList) = utils.evalFile(self.voteFile)
-            
-            # Clean vote black list if change date.
-            if voteDate != self.today:        
-                self.voteBlacklist = []
-            else:
-                self.voteBlacklist = voteList
-
         # dpkg will failed if not set TERM and PATH environment variable.  
         os.environ["TERM"] = "xterm"
         os.environ["PATH"] = "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/X11R6/bin"
@@ -808,9 +794,6 @@ class DeepinSoftwareCenter():
         # Close socket.
         self.socketThread.socket.close()
         
-        # Save vote black list.
-        utils.writeFile(self.voteFile, str((self.today, self.voteBlacklist)))
-
         gtk.main_quit()
         
     def main(self):
@@ -975,7 +958,7 @@ class DeepinSoftwareCenter():
 
     def sendVote(self, name, vote):
         '''Send vote.'''
-        sendVoteThread = SendVote("%s/vote.php?n=%s&m=%s" % (SERVER_ADDRESS, name, vote), name, self.message, self.voteBlacklist)
+        sendVoteThread = SendVote("%s/vote.php?n=%s&m=%s" % (SERVER_ADDRESS, name, vote), name, self.message)
         sendVoteThread.start()
 
     def exitDetailView(self, pageId):
@@ -1265,24 +1248,24 @@ class FetchVote(td.Thread):
 class SendVote(td.Thread):
     '''Vote'''
 
-    def __init__(self, url, name, messageCallback, voteList):
+    def __init__(self, url, name, messageCallback):
         '''Init for vote.'''
         td.Thread.__init__(self)
         self.setDaemon(True) # make thread exit when main program exit
         self.url = url
         self.name = name
         self.messageCallback = messageCallback
-        self.voteList = voteList
 
     def run(self):
         '''Run'''
         try:
-            if self.name in self.voteList:
+            voteFile = "./voteBlacklist/%s" % (self.name)
+            if os.path.exists(voteFile) and getLastUpdateHours(voteFile) <= 24:
                 self.messageCallback("为保证公正, 每天只能对%s评分一次." % (self.name))
             else:
                 post = urllib2.urlopen(self.url, timeout=POST_TIMEOUT)
                 self.messageCallback("%s 评分成功, 感谢参与!" % (self.name))
-                self.voteList.append(self.name)
+                utils.touchFile(voteFile)
         except Exception, e:
             self.messageCallback("%s 评分失败, 请检查你的网络链接." % (self.name))
             print "Error: ", e

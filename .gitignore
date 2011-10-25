@@ -3,3 +3,4 @@ ignorePkgs
 firstLock
 voteInfo
 nohup.out
+voteBlacklist/

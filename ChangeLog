@@ -2,6 +2,7 @@
 
 2011-10-25 Yong Wang <lazycat.manatee@gmail.com>
 	* Adjust package's exec path.
+	* Re-implement vote black list module.
 
 2011-10-20 Yong Wang <lazycat.manatee@gmail.com>
 	* Add change theme code.

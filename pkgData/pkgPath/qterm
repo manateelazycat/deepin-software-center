@@ -1,1 +1,1 @@
-qterm -caption "%c" %i %m %u
+qterm

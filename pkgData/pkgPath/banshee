@@ -1,1 +1,1 @@
-banshee --redirect-log --play-enqueued %U
+banshee --redirect-log --play-enqueued

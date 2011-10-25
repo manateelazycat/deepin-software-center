@@ -104,7 +104,8 @@ def getPkgExecPath(pkg):
         content = execFile.read()
         execFile.close()
         
-        return content
+        # Just read first line, not include return char.
+        return content.split("\n")[0]
     else:
         return None
 

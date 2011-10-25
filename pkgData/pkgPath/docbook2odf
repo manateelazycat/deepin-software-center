@@ -1,1 +1,1 @@
-docbook2odf --force --input-file  %f
+docbook2odf --force --input-file 

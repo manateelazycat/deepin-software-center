@@ -1,1 +1,1 @@
-kcachegrind -caption "%c" %u
+kcachegrind

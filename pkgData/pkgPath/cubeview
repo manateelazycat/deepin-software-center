@@ -1,1 +1,1 @@
-yorick -i cubeview.i --stand-alone %F
+yorick -i cubeview.i --stand-alone

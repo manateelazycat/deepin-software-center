@@ -1,5 +1,8 @@
 * News in 2.0
 
+2011-10-25 Yong Wang <lazycat.manatee@gmail.com>
+	* Adjust package's exec path.
+
 2011-10-20 Yong Wang <lazycat.manatee@gmail.com>
 	* Add change theme code.
 

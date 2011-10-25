@@ -1121,7 +1121,7 @@ class DeepinSoftwareCenter():
     
     def launchApplication(self, command):
         '''Launch application.'''
-        print "Launch %s" % (command)
+        self.message("发送启动请求 (%s)" % (command))
         utils.runCommand(command)
 
 class InitThread(td.Thread):

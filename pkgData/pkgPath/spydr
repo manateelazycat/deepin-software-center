@@ -1,1 +1,1 @@
-yorick -i spydr.i -c --batch  %F
+yorick -i spydr.i -c --batch 

@@ -25,7 +25,7 @@ import pygtk
 import webkit
 pygtk.require('2.0')
 
-class CommunityPage:
+class CommunityPage(object):
     '''Interface for community page.'''
 	
     def __init__(self):

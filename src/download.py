@@ -356,7 +356,7 @@ def get_filename(version):
     '''Get file name.'''
     return os.path.basename(version.filename)
 
-class DownloadQueue:
+class DownloadQueue(object):
     '''Download queue'''
 	
     def __init__(self, updateCallback, finishCallback, failedCallback, messageCallback):

@@ -24,7 +24,7 @@ import gtk
 import pygtk
 pygtk.require('2.0')
 
-class MorePage:
+class MorePage(object):
     '''Interface for more page.'''
 	
     def __init__(self):

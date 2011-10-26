@@ -29,7 +29,7 @@ import utils
 import ignoreView
 pygtk.require('2.0')
 
-class IgnorePage:
+class IgnorePage(object):
     '''Ignore page.'''
 	
     def __init__(self, repoCache, 
@@ -59,7 +59,7 @@ class IgnorePage:
         self.box.pack_start(self.ignoreView.scrolledwindow)
         self.box.show_all()
 
-class Topbar:
+class Topbar(object):
     '''Top bar.'''
 	
     def __init__(self, repoCache, 

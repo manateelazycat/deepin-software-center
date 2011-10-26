@@ -28,7 +28,7 @@ import pygtk
 import utils
 pygtk.require('2.0')
 
-class NavigateBar:
+class NavigateBar(object):
     '''Interface for navigate bar.'''
 	
     def __init__(self):

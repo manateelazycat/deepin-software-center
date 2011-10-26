@@ -25,7 +25,7 @@ from draw import *
 import glib
 import gtk
 
-class Tooltips:
+class Tooltips(object):
     '''Tooltips.'''
     
     def __init__(self, window, widget):

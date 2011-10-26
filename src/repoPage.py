@@ -36,7 +36,7 @@ import sortedDict
 import utils
 pygtk.require('2.0')
 
-class RepoPage:
+class RepoPage(object):
     '''Interface for repository page.'''
     
     def __init__(self, repoCache, searchQuery, switchStatus, downloadQueue, entryDetailCallback, 
@@ -101,7 +101,7 @@ class RepoPage:
         # Reset repoView's index.
         self.repoView.setSelectItemIndex(0)
 
-class Topbar:
+class Topbar(object):
     '''Top bar.'''
 
     SORT_BOX_PADDING_X = 50

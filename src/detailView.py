@@ -43,7 +43,7 @@ import time
 import base64
 pygtk.require('2.0')
 
-class DetailView:
+class DetailView(object):
     '''Detail view.'''
 
     PADDING = 10
@@ -1201,7 +1201,7 @@ class FetchScreenshot(td.Thread):
             
                 print "Haven't screenshot for %s !" % (pkgName)
 
-class BigScreenshot:
+class BigScreenshot(object):
     '''Big screenshot.'''
 	
     def __init__(self, widget, screenshotPath, exitCallback):

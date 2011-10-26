@@ -31,7 +31,7 @@ import utils
 import time
 pygtk.require('2.0')
 
-class SearchCompletion:
+class SearchCompletion(object):
     '''Search completion.'''
     
     MARKUP_COLUMN = 0

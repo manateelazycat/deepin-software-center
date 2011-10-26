@@ -241,7 +241,7 @@ class DB(object):
             return
         self.cache.remove_option("last", key)
         
-class Search:
+class Search(object):
     '''Search.'''
 	
     def __init__(self, repoCache, messageCallback, statusbar):

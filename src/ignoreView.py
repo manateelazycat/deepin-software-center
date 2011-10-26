@@ -31,7 +31,7 @@ import pygtk
 import utils
 pygtk.require('2.0')
 
-class IgnoreItem():
+class IgnoreItem(object):
     '''Application item.'''
     
     PROGRESS_WIDTH = 170

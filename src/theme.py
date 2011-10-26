@@ -24,7 +24,7 @@ from utils import *
 import gobject, gtk
 import os
 
-class DynamicLabel:
+class DynamicLabel(object):
     '''Dynamic label.'''
     
     LABEL_NORMAL = 1
@@ -36,7 +36,7 @@ class DynamicLabel:
         self.status = self.LABEL_NORMAL
         self.text = text
         self.dColor = dColor
-        self.ticker = appTheme.ticker
+        self.ticker = 0
         
         if size == None:
             self.size = ""
@@ -49,8 +49,10 @@ class DynamicLabel:
             self.underline = "underline='%s'" % (underline)
             
         self.label = gtk.Label()
-        self.label.connect("expose-event", self.exposeCallback)
         self.draw()
+        self.label.connect("expose-event", self.exposeCallback)
+        
+        print "__init__:\n %s" % (dir(self))
         
     def getLabel(self):
         '''Get label.'''
@@ -84,13 +86,14 @@ class DynamicLabel:
         
     def exposeCallback(self, widget, event):
         '''Draw label.'''
+        print "exposeCallback:\n %s" % (dir(self))
         if self.ticker != appTheme.ticker:
             self.ticker = appTheme.ticker
             self.draw()
         
         return False
     
-class DynamicLabelColor:
+class DynamicLabelColor(object):
     '''Dynamic color.'''
     
     def __init__(self, (nColor, hColor, pColor)):
@@ -115,7 +118,7 @@ class DynamicLabelColor:
         '''Get press color.'''
         return self.pressColor
 
-class DynamicColor:
+class DynamicColor(object):
     '''Dynamic color.'''
     
     def __init__(self, color):
@@ -130,7 +133,7 @@ class DynamicColor:
         '''Get color.'''
         return self.color
     
-class DynamicPixbuf:
+class DynamicPixbuf(object):
     '''Dynamic pixbuf.'''
     
     def __init__(self, filepath):
@@ -145,7 +148,7 @@ class DynamicPixbuf:
         '''Get pixbuf.'''
         return self.pixbuf
 
-class Theme:
+class Theme(object):
     '''Theme.'''
     
     def __init__(self):

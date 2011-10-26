@@ -33,7 +33,7 @@ import searchCompletion as sc
 import utils
 pygtk.require('2.0')
 
-class UninstallItem:
+class UninstallItem(object):
     '''Application item.'''
     
     ITEM_PADDING = 5
@@ -222,7 +222,7 @@ def createActionButton(alignX=0.5, alignY=0.5):
     
     return (appButtonBox, appButtonAlign)
                 
-class DownloadItem:
+class DownloadItem(object):
     '''Application item.'''
     PROGRESS_WIDTH = 170
     APP_RIGHT_PADDING_X = 20
@@ -469,8 +469,12 @@ def createItemBasicBox(appInfo, maxWidth, parent, entryDetailCallback, showUpgra
     # Add application summary.
     summary = utils.getPkgShortDesc(pkg)
     appSummaryBox = gtk.HBox()
-    appSummary = gtk.Label()
-    appSummary.set_markup("<span foreground='#000000' size='%s'>%s</span>" % (LABEL_FONT_SIZE, summary))
+    appSummaryLabel = DynamicLabel(
+        summary,
+        appTheme.getDynamicLabelColor("appSummary"),
+        LABEL_FONT_SIZE
+        )
+    appSummary = appSummaryLabel.getLabel()
     parent.connect("size-allocate", 
                    lambda w, e: adjustLabelWidth(parent, 
                                                  appSummary,
@@ -500,7 +504,7 @@ def createAppIcon(pkg, size=32, alignLeft=5, alignRight=5, alignTop=5, alignBott
     
     return appIconAlign
 
-class VoteView:
+class VoteView(object):
     '''Vote view.'''
     
     VOTE_PADDING_X = 16
@@ -630,7 +634,7 @@ class VoteView:
         if not self.focusStatus == self.FOCUS_STAR:
             self.switchFocusStatus(self.FOCUS_NORMAL)
         
-class StarView:
+class StarView(object):
     '''Star view.'''
 	
     def __init__(self):

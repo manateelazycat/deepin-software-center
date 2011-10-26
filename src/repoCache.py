@@ -31,7 +31,7 @@ import subCategorybar
 import utils
 pygtk.require('2.0')
 
-class AppInfo:
+class AppInfo(object):
     '''Application information.'''
     def __init__(self, pkg):
         '''Init for application information.'''
@@ -109,7 +109,7 @@ class AppInfo:
         self.uninstallingProgress = progress
         self.uninstallingFeedback = feedback
 
-class RepoCache:
+class RepoCache(object):
     '''Repository cache.'''
 
     def __init__(self, cache):

@@ -27,7 +27,7 @@ import pygtk
 import utils
 pygtk.require('2.0')
 
-class Titlebar:
+class Titlebar(object):
     '''Title bar.'''
 	
     def __init__(self, selectThemeCallback, minCallback, maxCallback, closeCallback):

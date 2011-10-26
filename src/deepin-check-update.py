@@ -25,7 +25,7 @@ from dbus.mainloop.glib import DBusGMainLoop
 import dbus
 import glib
 
-class NetworkWatcher:
+class NetworkWatcher(object):
     '''Watch network status.'''
 	
     # Network state.

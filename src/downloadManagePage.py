@@ -26,7 +26,7 @@ import pygtk
 import downloadManageView
 pygtk.require('2.0')
 
-class DownloadManagePage:
+class DownloadManagePage(object):
     '''Interface for download page.'''
 	
     def __init__(self, repoCache, getRunningNum, getRunningList, switchStatus, downloadQueue,
@@ -54,7 +54,7 @@ class DownloadManagePage:
         self.box.pack_start(self.downloadManageView.scrolledwindow)
         self.box.show_all()
 
-class Topbar:
+class Topbar(object):
     '''Top bar.'''
 	
     def __init__(self, itemNum):

@@ -29,7 +29,7 @@ import pygtk
 import utils
 pygtk.require('2.0')
 
-class AppView:
+class AppView(object):
     '''Application view.'''
 	
     def __init__(self, appNum, pageId, isSearchPage=False):

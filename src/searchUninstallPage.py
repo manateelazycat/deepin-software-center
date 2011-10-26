@@ -33,7 +33,7 @@ import searchUninstallView as sv
 import utils
 pygtk.require('2.0')
 
-class SearchUninstallPage:
+class SearchUninstallPage(object):
     '''Search page.'''
 	
     def __init__(self, searchQuery, pageId, repoCache, keyword, pkgList, 
@@ -102,7 +102,7 @@ class SearchUninstallPage:
         self.topbar.updateTopbar(candidate, len(self.pkgList))
         self.searchView.updateSearch(len(self.pkgList))
     
-class Topbar:
+class Topbar(object):
     '''Top bar.'''
 	
     SEARCH_ENTRY_WIDTH = 300

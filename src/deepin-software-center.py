@@ -63,7 +63,7 @@ pygtk.require('2.0')
 import socket
 import os
 
-class DeepinSoftwareCenter():
+class DeepinSoftwareCenter(object):
     '''Interface for software center.'''
     DEFAULT_WIDTH = 890
 

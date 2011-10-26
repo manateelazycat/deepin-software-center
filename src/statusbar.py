@@ -29,7 +29,7 @@ import pygtk
 import utils
 pygtk.require('2.0')
 
-class Statusbar:
+class Statusbar(object):
     '''Status bar.'''
 	
     def __init__(self):

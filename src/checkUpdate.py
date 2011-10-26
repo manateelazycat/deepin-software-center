@@ -48,7 +48,7 @@ def sendStatistics():
     except Exception, e:
         print "Send mac address %s failed" % (userId)
         
-class TrayIcon:
+class TrayIcon(object):
     '''Tray icon.'''
     
     TOOLTIP_WIDTH = 150

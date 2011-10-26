@@ -28,7 +28,7 @@ import updateView
 import utils
 pygtk.require('2.0')
 
-class UpdatePage:
+class UpdatePage(object):
     '''Interface for update page.'''
 	
     def __init__(self, repoCache, switchStatus, downloadQueue, entryDetailCallback, 
@@ -60,7 +60,7 @@ class UpdatePage:
         
         self.box.show_all()
         
-class Topbar:
+class Topbar(object):
     '''Top bar.'''
 	
     def __init__(self, repoCache, 

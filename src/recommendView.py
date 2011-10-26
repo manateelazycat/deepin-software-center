@@ -21,6 +21,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from appItem import *
+from theme import *
 from constant import *
 from draw import *
 import appView
@@ -431,10 +432,21 @@ class RecommendItem(DownloadItem):
         self.appNameBox.pack_start(appNameEventBox, False, False)
         
         # Add application summary.
+        # print "*** %s" % (pkgName)
+        
         summary = utils.getPkgShortDesc(pkg)
         appSummaryBox = gtk.HBox()
-        appSummary = gtk.Label()
-        appSummary.set_markup("<span foreground='#000000' size='%s'>%s</span>" % (LABEL_FONT_SIZE, summary))
+        
+        appSummaryLabel = DynamicLabel(
+            summary,
+            appTheme.getDynamicLabelColor("appSummary"),
+            LABEL_FONT_SIZE
+            )
+        appSummary = appSummaryLabel.getLabel()
+        
+        # appSummary = gtk.Label()
+        # appSummary.set_markup("<span foreground='#000000' size='%s'>%s</span>" % (LABEL_FONT_SIZE, summary))
+        
         appSummary.set_size_request(self.SUMMARY_WIDTH, -1)
         appSummary.set_single_line_mode(True)
         appSummary.set_ellipsize(pango.ELLIPSIZE_END)
@@ -452,7 +464,7 @@ def clickItem(widget, event, entryDetailCallback, appInfo):
     if utils.isDoubleClick(event):
         entryDetailCallback(PAGE_RECOMMEND, appInfo)
         
-class RecommendView:
+class RecommendView(object):
     '''Recommend view.'''
 	
     def __init__(self, repoCache, switchStatus, downloadQueue, entryDetailCallback, selectCategoryCallback,

@@ -31,7 +31,7 @@ import uninstallView
 import utils
 pygtk.require('2.0')
 
-class UninstallPage:
+class UninstallPage(object):
     '''Interface for uninstall page.'''
 	
     def __init__(self, repoCache, searchQuery, actionQueue, entryDetailCallback, entrySearchCallback, 
@@ -59,7 +59,7 @@ class UninstallPage:
         self.box.pack_start(self.uninstallView.scrolledwindow)
         self.box.show_all()
 
-class Topbar:
+class Topbar(object):
     '''Top bar.'''
 	
     SEARCH_ENTRY_WIDTH = 300

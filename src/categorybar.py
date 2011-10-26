@@ -27,7 +27,7 @@ import pygtk
 import utils
 pygtk.require('2.0')
 
-class CategoryBar:
+class CategoryBar(object):
     '''Category bar to list software.'''
 	
     def __init__(self, categoryList, func):

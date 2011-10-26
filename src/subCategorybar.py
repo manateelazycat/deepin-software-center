@@ -27,7 +27,7 @@ import pygtk
 import utils
 pygtk.require('2.0')
 
-class SubCategorybar:
+class SubCategorybar(object):
     '''Sub category bar.'''
 	
     def __init__(self, category, categoryList, func):

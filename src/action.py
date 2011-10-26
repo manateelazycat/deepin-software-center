@@ -146,7 +146,7 @@ class Action(td.Thread):
         self.scanCallback(self.pkgName, self.actionType)
         self.failedCallback(self.actionType, self.pkgName)
         
-class ActionQueue:
+class ActionQueue(object):
     '''Action queue.'''
 
     def __init__(self, updateCallback, finishCallback, failedCallback, messageCallback):

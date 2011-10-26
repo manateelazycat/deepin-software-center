@@ -26,7 +26,7 @@ import gtk
 import pygtk
 pygtk.require('2.0')
 
-class Progressbar():
+class Progressbar(object):
     '''Progress bar.'''
 	
     def __init__(self, width,

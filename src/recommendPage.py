@@ -32,7 +32,7 @@ import utils
 pygtk.require('2.0')
 import sortedDict
 
-class RecommendPage:
+class RecommendPage(object):
     '''Interface for recommend page.'''
 	
     def __init__(self, repoCache, switchStatus, downloadQueue, entryDetailCallback, selectCategoryCallback,
@@ -189,7 +189,7 @@ class SlideItem(DownloadItem):
                 appInstalledLabel.set_size_request(buttonImage.get_width(), buttonImage.get_height())
                 actionButtonBox.pack_start(appInstalledLabel)
 
-class SlideBar:
+class SlideBar(object):
     '''Slide bar'''
 	
     def __init__(self, repoCache, switchStatus, downloadQueue, entryDetailCallback, launchApplicationCallback):

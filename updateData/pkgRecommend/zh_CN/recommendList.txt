@@ -1,3 +1,3 @@
 [["deepin-software-center", "iptux", "transmission", "vlc", "thunderbird"]
-,["amarok", "comix", "virtualbox-4.0", "stellarium", "bluefish"]
+,["amarok", "comix", "virtualbox-4.1", "stellarium", "bluefish"]
 ]

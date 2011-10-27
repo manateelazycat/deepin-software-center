@@ -437,15 +437,17 @@ class RecommendItem(DownloadItem):
         summary = utils.getPkgShortDesc(pkg)
         appSummaryBox = gtk.HBox()
         
-        appSummaryLabel = DynamicLabel(
-            summary,
-            appTheme.getDynamicLabelColor("appSummary"),
-            LABEL_FONT_SIZE
-            )
-        appSummary = appSummaryLabel.getLabel()
+        # print dir(appTheme)
         
-        # appSummary = gtk.Label()
-        # appSummary.set_markup("<span foreground='#000000' size='%s'>%s</span>" % (LABEL_FONT_SIZE, summary))
+        # appSummaryLabel = DynamicLabel(
+        #     summary,
+        #     appTheme.getDynamicLabelColor("appSummary"),
+        #     LABEL_FONT_SIZE
+        #     )
+        # appSummary = appSummaryLabel.getLabel()
+        
+        appSummary = gtk.Label()
+        appSummary.set_markup("<span foreground='#000000' size='%s'>%s</span>" % (LABEL_FONT_SIZE, summary))
         
         appSummary.set_size_request(self.SUMMARY_WIDTH, -1)
         appSummary.set_single_line_mode(True)

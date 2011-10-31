@@ -123,18 +123,30 @@ class DetailView(object):
         appMiddleBox.pack_start(self.appNameBox, False, False)
         
         pkgName = utils.getPkgName(pkg)
-        appName = gtk.Label()
-        appName.set_markup("<span foreground='#000000' size='%s'><b>%s</b></span>" % (LABEL_FONT_XXX_LARGE_SIZE, pkgName))
+        appNameLabel = DynamicSimpleLabel(
+            "<b>%s</b>" % (pkgName),
+            appTheme.getDynamicColor("detailName"),
+            LABEL_FONT_XXX_LARGE_SIZE,
+            )
+        appName = appNameLabel.getLabel()
+        
         appNameAlign = gtk.Alignment()
         appNameAlign.set(0.0, 0.5, 0.0, 0.0)
         appNameAlign.add(appName)
+        appNameAlign.connect("size-allocate", lambda w, e: appName.set_width_chars(-1))
+        
         self.appNameBox.pack_start(appNameAlign, False, False)
         
-        appIntro = gtk.Label()
-        appIntro.set_markup("<span foreground='#333333' size='%s'>%s</span>" % (LABEL_FONT_LARGE_SIZE, utils.getPkgShortDesc(pkg)))
+        appIntroLabel = DynamicSimpleLabel(
+            utils.getPkgShortDesc(pkg),
+            appTheme.getDynamicColor("detailSummary"),
+            LABEL_FONT_LARGE_SIZE,
+            )
+        appIntro = appIntroLabel.getLabel()
         appIntroAlign = gtk.Alignment()
         appIntroAlign.set(0.0, 0.0, 0.0, 0.0)
         appIntroAlign.add(appIntro)
+        appIntroAlign.connect("size-allocate", lambda w, e: appIntro.set_width_chars(-1))
         appMiddleBox.pack_start(appIntroAlign, False, False)
         
         # Add return button.
@@ -539,7 +551,7 @@ class DetailView(object):
         rightBox.pack_start(textView)
         
         line = gtk.Image()
-        drawLine(line, "#DDDDDD", 1, False, LINE_BOTTOM)
+        drawLine(line, appTheme.getDynamicColor("commentFrame"), 1, False, LINE_BOTTOM)
         commentBox.pack_start(line)
             
         return commentAlign
@@ -642,7 +654,7 @@ class DetailView(object):
             commentTitleBox.pack_start(commentNumLabelAlign)
             
         line = gtk.Image()
-        drawLine(line, "#DDDDDD", 1, False, LINE_BOTTOM)
+        drawLine(line, appTheme.getDynamicColor("commentFrame"), 1, False, LINE_BOTTOM)
         self.commentAreaBox.pack_start(line)
             
         if len(commentList) == 0:
@@ -962,27 +974,30 @@ class AppInfoItem(DownloadItem):
         utils.containerRemoveAll(self.appExtraBox)
 
         # Add application version.
-        appVersion = gtk.Label()
-        appVersion.set_markup(
-            "<span foreground='#000000' size='%s'>%s</span> <span foreground='#000000' size='%s'>%s</span>"
-            % (LABEL_FONT_MEDIUM_SIZE, "版本:",
-               LABEL_FONT_MEDIUM_SIZE, utils.getPkgVersion(pkg)))
+        appVersionLabel = DynamicSimpleLabel(
+            "版本: " + utils.getPkgVersion(pkg),
+            appTheme.getDynamicColor("detailAction"),
+            LABEL_FONT_MEDIUM_SIZE,
+            )
+        appVersion = appVersionLabel.getLabel()
         appVersion.set_alignment(0.0, 0.5)
+        self.appExtraBox.connect("size-allocate", lambda w, e: appVersion.set_width_chars(-1))
         self.appExtraBox.pack_start(appVersion, False, False, self.INFO_PADDING_Y)
 
         # Add size information.
         appSizeBox = gtk.HBox()
         self.appExtraBox.pack_start(appSizeBox, False, False, self.INFO_PADDING_Y)
         if self.appInfo.status == APP_STATE_INSTALLED:
-            (_, releaseSize) = utils.getPkgDependSize(self.aptCache, pkg, ACTION_UNINSTALL)
-            releaseSizeLabel = gtk.Label()
-            releaseSizeLabel.set_markup(
-                "<span foreground='#000000' size='%s'>%s</span> <span foreground='#000000' size='%s'>%s</span> <span foreground='#000000' size='%s'>%s</span>"
-                % (LABEL_FONT_MEDIUM_SIZE, "卸载后释放",
-                   LABEL_FONT_MEDIUM_SIZE, utils.formatFileSize(releaseSize),
-                   LABEL_FONT_MEDIUM_SIZE, "空间"))
-            releaseSizeLabel.set_alignment(0.0, 0.5)
-            appSizeBox.pack_start(releaseSizeLabel, False, False)
+            (_, rSize) = utils.getPkgDependSize(self.aptCache, pkg, ACTION_UNINSTALL)
+            uninstallSizeLabel = DynamicSimpleLabel(
+                "卸载后释放%s空间" % (utils.formatFileSize(rSize)),
+                appTheme.getDynamicColor("detailAction"),
+                LABEL_FONT_MEDIUM_SIZE,
+                )
+            uninstallSize = uninstallSizeLabel.getLabel()
+            uninstallSize.set_alignment(0.0, 0.5)
+            appSizeBox.pack_start(uninstallSize, False, False)
+            appSizeBox.connect("size-allocate", lambda w, e: uninstallSize.set_width_chars(-1))
         else:
             useSizeLabel = gtk.Label()
             useSizeLabel.set_alignment(0.0, 0.5)
@@ -993,21 +1008,16 @@ class AppInfoItem(DownloadItem):
             else:
                 actionLabel = "安装"
                 (downloadSize, useSize) = utils.getPkgDependSize(self.aptCache, pkg, ACTION_INSTALL)
-            useSizeLabel.set_markup(
-                "    <span foreground='#000000' size='%s'>%s</span> <span foreground='#000000' size='%s'>%s</span> <span foreground='#000000' size='%s'>%s</span>" 
-                % (LABEL_FONT_MEDIUM_SIZE, actionLabel + "后占用", 
-                   LABEL_FONT_MEDIUM_SIZE, utils.formatFileSize(useSize),
-                   LABEL_FONT_MEDIUM_SIZE, "空间"))
-                
-            downloadSizeLabel = gtk.Label()
-            downloadSizeLabel.set_markup(
-                "<span foreground='#000000' size='%s'>%s</span> <span foreground='#000000' size='%s'>%s</span>"
-                % (LABEL_FONT_MEDIUM_SIZE, "需要下载", 
-                   LABEL_FONT_MEDIUM_SIZE, utils.formatFileSize(downloadSize)))
-            downloadSizeLabel.set_alignment(0.0, 0.5)
-            appSizeBox.pack_start(downloadSizeLabel, False, False)
-                
-            appSizeBox.pack_start(useSizeLabel, False, False)
+
+            updateSizeLabel = DynamicSimpleLabel(
+                "%s后占用 %s 空间 需要下载 %s" % (actionLabel, utils.formatFileSize(useSize), utils.formatFileSize(downloadSize)),
+                appTheme.getDynamicColor("detailAction"),
+                LABEL_FONT_MEDIUM_SIZE,
+                )
+            updateSize = updateSizeLabel.getLabel()
+            updateSize.set_alignment(0.0, 0.5)
+            appSizeBox.pack_start(updateSize, False, False)
+            appSizeBox.connect("size-allocate", lambda w, e: updateSize.set_width_chars(-1))
             
     def initAdditionStatus(self):
         '''Add addition status.'''

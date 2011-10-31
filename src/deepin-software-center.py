@@ -101,9 +101,9 @@ class DeepinSoftwareCenter(object):
         self.window.connect("size-allocate", lambda w, a: self.updateShape(w, a))
         self.hasMax = False
         self.leftLine = gtk.Image()
-        drawLine(self.leftLine, "#0A3050", 1)
+        drawLine(self.leftLine, appTheme.getDynamicColor("frame"), 1)
         self.rightLine = gtk.Image()
-        drawLine(self.rightLine, "#0A3050", 1)
+        drawLine(self.rightLine, appTheme.getDynamicColor("frame"), 1)
         self.mainBox = gtk.VBox()
         self.topbox = gtk.VBox()
         self.topbar = gtk.EventBox()

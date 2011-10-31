@@ -545,12 +545,19 @@ class RecommendView(object):
         nameBox.add(nameLabelBox)
         
         nameLabelPaddingLeft = 20
-        nameLabel = gtk.Label()
-        nameLabel.set_markup("<span foreground='#000000' size='%s'>%s</span>" % (LABEL_FONT_LARGE_SIZE, itemName))
+        
+        nameDLabel = DynamicSimpleLabel(
+            itemName,
+            appTheme.getDynamicColor("recommendTitle"),
+            LABEL_FONT_LARGE_SIZE,
+            )
+        nameLabel = nameDLabel.getLabel()
+        
         nameLabelAlign = gtk.Alignment()
         nameLabelAlign.set(0.0, 0.5, 0.0, 0.0)
         nameLabelAlign.set_padding(0, 0, nameLabelPaddingLeft, 0)
         nameLabelAlign.add(nameLabel)
+        nameLabelAlign.connect("size-allocate", lambda w, e: nameLabel.set_width_chars(-1))
         nameLabelBox.pack_start(nameLabelAlign)
         
         # Show more label.
@@ -575,14 +582,14 @@ class RecommendView(object):
         box.pack_start(contentBox, False, False)
         
         leftLine = gtk.Image()
-        drawLine(leftLine, "#BBE0F6", 2, True, LINE_LEFT)
+        drawLine(leftLine, appTheme.getDynamicColor("recommendFrame"), 2, True, LINE_LEFT)
         contentBox.pack_start(leftLine, False, False)
         
         middleBox = gtk.VBox()
         contentBox.pack_start(middleBox, False, False)
         
         rightLine = gtk.Image()
-        drawLine(rightLine, "#BBE0F6", 2, True, LINE_RIGHT)
+        drawLine(rightLine, appTheme.getDynamicColor("recommendFrame"), 2, True, LINE_RIGHT)
         contentBox.pack_start(rightLine, False, False)
         
         # Add application information's.
@@ -605,7 +612,7 @@ class RecommendView(object):
                 
         # Bottom line.
         bottomLine = gtk.Image()
-        drawLine(bottomLine, "#BBE0F6", 2, False, LINE_BOTTOM)
+        drawLine(bottomLine, appTheme.getDynamicColor("recommendFrame"), 2, False, LINE_BOTTOM)
         box.pack_start(bottomLine, False, False)
     
         return boxAlign

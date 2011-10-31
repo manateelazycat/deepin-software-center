@@ -1,6 +1,15 @@
 {"background" : "#000000",
+ "appSize" : "#0000FF",
  "appSummary" : "#00FF00",
  "buttonFont" : "#FFFFFF",
  "bigButtonFont" : "#000000",
  "installed" : "#FFFF00",
- "sideButton" : "#00FFFF"}
+ "sideButton" : "#00FFFF",
+ "detailName" : "#FF0000",
+ "detailSummary" : "#FF0000",
+ "detailAction" : "#00FF00",
+ "frame" : "#431F09",
+ "recommendTitle" : "#FF0000",
+ "recommendFrame" : "#361804",
+ "commentFrame" : "#FF0000",
+}

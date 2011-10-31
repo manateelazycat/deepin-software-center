@@ -58,18 +58,21 @@ class NavigateBar(object):
         
         self.recommendIcon = self.createNavIcon(
             "精选推荐", 
+            # "Recommend",
             "navigate/nav_recommend.png", 
             PAGE_RECOMMEND)
         self.navBox.pack_start(self.recommendIcon, False, False, self.iconPadding)
         
         self.repositoryIcon = self.createNavIcon(
             "软件仓库", 
+            # "Repository",
             "navigate/nav_repo.png", 
             PAGE_REPO)
         self.navBox.pack_start(self.repositoryIcon, False, False, self.iconPadding)
         
         self.updateIcon = self.createUpdateIcon(
             "软件更新", 
+            # "Update",
             "navigate/nav_update.png", 
             PAGE_UPGRADE,
             self.getUpgradableNum)
@@ -77,12 +80,14 @@ class NavigateBar(object):
         
         self.uninstallIcon = self.createNavIcon(
             "软件卸载",
+            # "Uninstall",
             "navigate/nav_uninstall.png", 
             PAGE_UNINSTALL)
         self.navBox.pack_start(self.uninstallIcon, False, False, self.iconPadding)
 
         self.downloadIcon = self.createUpdateIcon(
             "下载管理", 
+            # "Download",
             "navigate/nav_download.png", 
             PAGE_DOWNLOAD_MANAGE, 
             self.getRunningNum)

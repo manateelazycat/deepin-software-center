@@ -246,6 +246,7 @@ def navButtonSetBackground(widget,
     requestWidth = hoverDPixbuf.getPixbuf().get_width()
     requestHeight = hoverDPixbuf.getPixbuf().get_height()
     widget.set_size_request(requestWidth, requestHeight)
+    # widget.set_size_request(100, requestHeight)
     
     widget.connect("expose-event", lambda w, e: navButtonOnExpose(
             w, e,
@@ -489,7 +490,7 @@ def sideButtonOnExpose(widget, event,
 
     return True
 
-def drawLine(widget, color,
+def drawLine(widget, dColor,
              lineWidth, vertical=True, lineType=None):
     '''Draw line.'''
     if vertical:
@@ -497,10 +498,11 @@ def drawLine(widget, color,
     else:
         widget.set_size_request(-1, lineWidth)
     widget.connect("expose-event", lambda w, e: drawLineExpose(
-            w, e, color, lineWidth, vertical, lineType))
+            w, e, dColor, lineWidth, vertical, lineType))
 
-def drawLineExpose(widget, event, color, lineWidth, vertical, lineType):
+def drawLineExpose(widget, event, dColor, lineWidth, vertical, lineType):
     '''Draw line.'''
+    color = dColor.getColor()
     rect = widget.allocation
     
     cr = widget.window.cairo_create()

@@ -130,9 +130,16 @@ class UninstallItem(object):
         
         # Add application installed size.
         size = utils.getPkgInstalledSize(pkg)
-        appSize = gtk.Label()
+        
+        appSizeLabel = DynamicSimpleLabel(
+            utils.formatFileSize(size),
+            appTheme.getDynamicColor("appSize"),
+            LABEL_FONT_SIZE,
+            )
+        appSize = appSizeLabel.getLabel()
+        self.appAdditionBox.connect("size-allocate", lambda w, e: appSize.set_width_chars(-1))
+        
         appSize.set_size_request(self.SIZE_LABEL_WIDTH, -1)
-        appSize.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, utils.formatFileSize(size)))
         appSize.set_alignment(1.0, 0.5)
         self.appAdditionBox.pack_start(appSize, False, False, self.APP_RIGHT_PADDING_X)
         

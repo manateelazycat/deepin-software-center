@@ -2,4 +2,5 @@
  "appSummary" : "#00FF00",
  "buttonFont" : "#FFFFFF",
  "bigButtonFont" : "#000000",
- "installed" : "#FFFF00"}
+ "installed" : "#FFFF00",
+ "sideButton" : "#00FFFF"}

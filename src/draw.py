@@ -426,6 +426,7 @@ def sideButtonSetBackground(widget,
     widget.connect("expose-event", lambda w, e: sideButtonOnExpose(
             w, e,
             navName, 
+            appTheme.getDynamicColor("sideButton"),
             appTheme.getDynamicPixbuf(navImg),
             appTheme.getDynamicPixbuf(normalImg),
             appTheme.getDynamicPixbuf(hoverImg),
@@ -433,7 +434,7 @@ def sideButtonSetBackground(widget,
             pageId, getPageId))
         
 def sideButtonOnExpose(widget, event, 
-                       navName, 
+                       navName, dColor,
                        navDPixbuf, normalDPixbuf, hoverDPixbuf, pressDPixbuf,
                        pageId, getPageId):
     '''Expose function to replace event box's image.'''
@@ -477,8 +478,9 @@ def sideButtonOnExpose(widget, event,
                navPixbuf, 
                x + (backgroundWidth - navWidth - fontSize * 2 - middlePadding) / 2 - offset,
                y + (backgroundHeight - navHeight) / 2)
-    
-    drawFont(cr, navName, fontSize, "#505050",
+
+    color = dColor.getColor()
+    drawFont(cr, navName, fontSize, color,
              x + (backgroundWidth - navWidth - fontSize * 2 - middlePadding) / 2 + navWidth + middlePadding - offset,
              getFontYCoordinate(y, backgroundHeight, fontSize))
 

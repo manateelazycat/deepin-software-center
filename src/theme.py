@@ -115,6 +115,40 @@ class DynamicLabelColor(object):
         '''Get press color.'''
         return self.pressColor
 
+class DynamicSimpleLabel(object):
+    '''Dynamic label.'''
+	
+    def __init__(self, text, dColor, size=None):
+        '''Init dynamic label.'''
+        self.text = text
+        self.dColor = dColor
+        self.ticker = 0
+        
+        if size == None:
+            self.size = ""
+        else:
+            self.size = "size='%s'" % (size)
+            
+        self.label = gtk.Label()
+        self.draw()
+        self.label.connect("expose-event", self.exposeCallback)
+        
+    def getLabel(self):
+        '''Get label.'''
+        return self.label
+    
+    def draw(self):
+        '''Draw.'''
+        self.label.set_markup("<span foreground='%s' %s>%s</span>" % (self.dColor.getColor(), self.size, self.text))
+        
+    def exposeCallback(self, widget, event):
+        '''Draw label.'''
+        if self.ticker != appTheme.ticker:
+            self.ticker = appTheme.ticker
+            self.draw()
+        
+        return False
+    
 class DynamicColor(object):
     '''Dynamic color.'''
     

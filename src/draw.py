@@ -831,7 +831,7 @@ def drawTopbar(widget):
         True, False,
         appTheme.getDynamicPixbuf("topbar/background.png"))
 
-def drawButton(widget, iconPrefix, subDir="cell", scaleX=False, 
+def drawButton(widget, iconPrefix, subDir="cell", scaleX=False,
                buttonLabel=None, fontSize=None, labelColor=None):
     '''Draw button.'''
     buttonSetBackground(

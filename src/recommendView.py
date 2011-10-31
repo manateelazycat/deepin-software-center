@@ -433,13 +433,13 @@ class RecommendItem(DownloadItem):
         
         # Add application summary.
         summary = utils.getPkgShortDesc(pkg)
-        appSummaryLabel = DynamicLabel(
+        appSummaryLabel = DynamicSimpleLabel(
             summary,
-            appTheme.getDynamicLabelColor("appSummary"),
+            appTheme.getDynamicColor("appSummary"),
             LABEL_FONT_SIZE
             )
         appSummary = appSummaryLabel.getLabel()
-        self.appSummaryBox.connect("size-allocate", lambda w, e: appSummary.set_width_chars(53))
+        self.appSummaryBox.connect("size-allocate", lambda w, e: appSummary.set_width_chars(-1))
         appSummary.set_size_request(self.SUMMARY_WIDTH, -1)
         appSummary.set_single_line_mode(True)
         appSummary.set_ellipsize(pango.ELLIPSIZE_END)

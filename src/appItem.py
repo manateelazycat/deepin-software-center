@@ -469,9 +469,9 @@ def createItemBasicBox(appInfo, maxWidth, parent, entryDetailCallback, showUpgra
     # Add application summary.
     summary = utils.getPkgShortDesc(pkg)
     appSummaryBox = gtk.HBox()
-    appSummaryLabel = DynamicLabel(
+    appSummaryLabel = DynamicSimpleLabel(
         summary,
-        appTheme.getDynamicLabelColor("appSummary"),
+        appTheme.getDynamicColor("appSummary"),
         LABEL_FONT_SIZE
         )
     appSummary = appSummaryLabel.getLabel()

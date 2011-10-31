@@ -1,3 +1,4 @@
 {"background" : "#000000",
+ "appSummary" : "#00FF00",
  "buttonFont" : "#FFFFFF",
  "bigButtonFont" : "#000000"}

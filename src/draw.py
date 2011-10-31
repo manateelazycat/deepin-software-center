@@ -82,7 +82,7 @@ def eventBoxOnExpose(widget, event, scaleX, scaleY, dPixbuf):
     return True
 
 def buttonSetBackground(widget, scaleX, scaleY, normalDPixbuf, hoverDPixbuf, pressDPixbuf,
-                        buttonLabel=None, fontSize=None, labelColor=None):
+                        buttonLabel=None, fontSize=None, labelDColor=None):
     '''Set event box's background.'''
     if scaleX:
         requestWidth = -1
@@ -97,19 +97,27 @@ def buttonSetBackground(widget, scaleX, scaleY, normalDPixbuf, hoverDPixbuf, pre
     widget.set_size_request(requestWidth, requestHeight)
     
     # Add button label if buttonLabel is not None.
-    if buttonLabel != None:
-        if labelColor == None:
-            color = "#000000"
-        else:
-            color = labelColor
+    if buttonLabel != None and labelDColor != None:
+        # if labelColor == None:
+        #     color = "#000000"
+        # else:
+        #     color = labelColor
             
         if fontSize == None:
             size = "medium"
         else:
             size = int (fontSize * 1000)
+            
+        dynamicSimpleLabel = DynamicSimpleLabel(
+            buttonLabel,
+            appTheme.getDynamicColor(labelDColor),
+            size,
+            )
+        label = dynamicSimpleLabel.getLabel()
+        widget.connect("size-allocate", lambda w, e: label.set_width_chars(-1))
 
-        label = gtk.Label()
-        label.set_markup("<span foreground='%s' size='%s'>%s</span>" % (color, size, buttonLabel))
+        # label = gtk.Label()
+        # label.set_markup("<span foreground='%s' size='%s'>%s</span>" % (color, size, buttonLabel))
         widget.add(label)
     
     widget.connect("expose-event", lambda w, e: buttonOnExpose(
@@ -832,7 +840,7 @@ def drawTopbar(widget):
         appTheme.getDynamicPixbuf("topbar/background.png"))
 
 def drawButton(widget, iconPrefix, subDir="cell", scaleX=False,
-               buttonLabel=None, fontSize=None, labelColor=None):
+               buttonLabel=None, fontSize=None, labelDColor=None):
     '''Draw button.'''
     buttonSetBackground(
         widget,
@@ -840,7 +848,7 @@ def drawButton(widget, iconPrefix, subDir="cell", scaleX=False,
         appTheme.getDynamicPixbuf("%s/%s_normal.png" % (subDir, iconPrefix)),
         appTheme.getDynamicPixbuf("%s/%s_hover.png" % (subDir, iconPrefix)),
         appTheme.getDynamicPixbuf("%s/%s_press.png" % (subDir, iconPrefix)),
-        buttonLabel, fontSize, labelColor
+        buttonLabel, fontSize, labelDColor
         )
     
 def drawSimpleButton(widget, img):

@@ -105,13 +105,13 @@ class Topbar(object):
         upgradeBox.pack_start(self.unselectAllEventBox, False, False, self.paddingX)
         
         (self.upgradeButton, upgradeButtonAlign) = newActionButton(
-             "update_selected", 0.0, 0.5, "cell", True, "提示选中的软件", BUTTON_FONT_SIZE_MEDIUM, "#FFFFFF")
+             "update_selected", 0.0, 0.5, "cell", True, "提示选中的软件", BUTTON_FONT_SIZE_MEDIUM, "bigButtonFont")
         upgradeBox.pack_start(upgradeButtonAlign, False, False, self.paddingX)
         self.upgradeButton.connect("button-press-event", lambda w, e: removeIgnorePkgsCallback(getSelectListCallback()))
         
         # Add return button.
         (returnButton, returnButtonAlign) = newActionButton(
-            "search", 1.0, 0.5, "cell", False, "返回", BUTTON_FONT_SIZE_MEDIUM, "#FFFFFF",
+            "search", 1.0, 0.5, "cell", False, "返回", BUTTON_FONT_SIZE_MEDIUM, "bigButtonFont",
             0, 10)
         returnButton.connect("button-release-event", lambda w, e: exitIgnorePageCallback())
         

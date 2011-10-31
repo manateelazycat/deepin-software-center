@@ -178,7 +178,7 @@ class UpdateItem(DownloadItem):
         self.appAdditionBox.pack_start(actionButtonAlign, False, False)
         
         (appButton, appButtonAlign) = newActionButton(
-            "update", 0.5, 0.5, "cell", False, "升级", BUTTON_FONT_SIZE_SMALL)
+            "update", 0.5, 0.5, "cell", False, "升级", BUTTON_FONT_SIZE_SMALL, "buttonFont")
         appButton.connect("button-release-event", lambda widget, event: self.switchToDownloading())
         actionButtonBox.pack_start(appButtonAlign)
         

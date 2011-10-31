@@ -218,7 +218,7 @@ class AppView(object):
             jumpAfterLabel.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_MEDIUM_SIZE, "页"))
             jumpButton = utils.newButtonWithoutPadding()
             jumpButton.connect("button-release-event", lambda widget, event: self.jumpPage(int(self.jumpButton.get_text())))
-            drawButton(jumpButton, "confirm", "index", False, "确定", BUTTON_FONT_SIZE_SMALL)
+            drawButton(jumpButton, "confirm", "index", False, "确定", BUTTON_FONT_SIZE_SMALL, "buttonFont")
             
             # Connect widget.
             box.pack_start(jumpBeforeLabel, False, False, paddingX)

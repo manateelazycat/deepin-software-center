@@ -137,7 +137,7 @@ class Topbar(object):
         
         # Add return button.
         (returnButton, returnButtonAlign) = newActionButton(
-            "search", 1.0, 0.5, "cell", False, "返回", BUTTON_FONT_SIZE_MEDIUM, "#FFFFFF",
+            "search", 1.0, 0.5, "cell", False, "返回", BUTTON_FONT_SIZE_MEDIUM, "bigButtonFont",
             0, 10
             )
         returnButton.connect("button-release-event", lambda widget, event: exitSearchPageCallback(pageId))

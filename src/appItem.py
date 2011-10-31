@@ -154,13 +154,13 @@ class UninstallItem(object):
             
             (appConfirmButton, appConfirmAlign) = newActionButton(
                 "uninstall_confirm", 0.0, 0.5, 
-                "cell", False, "卸载", BUTTON_FONT_SIZE_SMALL
+                "cell", False, "卸载", BUTTON_FONT_SIZE_SMALL, "buttonFont"
                 )
             appConfirmButton.connect("button-release-event", lambda widget, event: self.switchToUninstalling())
             
             (appCancelButton, appCancelAlign) = newActionButton(
                 "uninstall_confirm", 1.0, 0.5, 
-                "cell", False, "取消", BUTTON_FONT_SIZE_SMALL
+                "cell", False, "取消", BUTTON_FONT_SIZE_SMALL, "buttonFont"
                 )
             appCancelButton.connect("button-release-event", lambda widget, event: self.switchToNormal(False))
             
@@ -169,7 +169,7 @@ class UninstallItem(object):
         else:
             (appUninstallBox, appUninstallAlign) = newActionButton(
                 "uninstall", 0.5, 0.5,
-                "cell", False, "卸载", BUTTON_FONT_SIZE_SMALL
+                "cell", False, "卸载", BUTTON_FONT_SIZE_SMALL, "buttonFont"
                 )
             appUninstallBox.connect("button-release-event", lambda widget, event: self.switchToNormal(True))
             actionButtonBox.pack_start(appUninstallAlign)

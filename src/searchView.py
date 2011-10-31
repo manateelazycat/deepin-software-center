@@ -144,14 +144,14 @@ class SearchItem(DownloadItem):
         if self.appInfo.status == APP_STATE_NORMAL:
             (appButton, appButtonAlign) = newActionButton(
                 "install", 0.5, 0.5, 
-                "cell", False, "安装", BUTTON_FONT_SIZE_SMALL
+                "cell", False, "安装", BUTTON_FONT_SIZE_SMALL, "buttonFont"
                 )
             appButton.connect("button-release-event", lambda widget, event: self.switchToDownloading())
             actionButtonBox.pack_start(appButtonAlign)
         elif self.appInfo.status == APP_STATE_UPGRADE:
             (appButton, appButtonAlign) = newActionButton(
                 "update", 0.5, 0.5, 
-                "cell", False, "升级", BUTTON_FONT_SIZE_SMALL
+                "cell", False, "升级", BUTTON_FONT_SIZE_SMALL, "buttonFont"
                 )
             appButton.connect("button-release-event", lambda widget, event: self.switchToDownloading())
             actionButtonBox.pack_start(appButtonAlign)
@@ -160,13 +160,18 @@ class SearchItem(DownloadItem):
             if execPath:
                 (appButton, appButtonAlign) = newActionButton(
                     "update", 0.5, 0.5, 
-                    "cell", False, "启动", BUTTON_FONT_SIZE_SMALL
+                    "cell", False, "启动", BUTTON_FONT_SIZE_SMALL, "buttonFont"
                     )
                 appButton.connect("button-release-event", lambda widget, event: self.launchApplicationCallback(execPath))
                 actionButtonBox.pack_start(appButtonAlign)
             else:
-                appInstalledLabel = gtk.Label()
-                appInstalledLabel.set_markup("<span foreground='#1A3E88' size='%s'>%s</span>" % (LABEL_FONT_SIZE, "已安装"))
+                appInstalledDynamicLabel = DynamicSimpleLabel(
+                    "已安装",
+                    appTheme.getDynamicColor("installed"),
+                    LABEL_FONT_SIZE,
+                    )
+                appInstalledLabel = appInstalledDynamicLabel.getLabel()
+                actionButtonBox.connect("size-allocate", lambda w, e: appInstalledLabel.set_width_chars(-1))
                 buttonImage = appTheme.getDynamicPixbuf("cell/update_hover.png").getPixbuf()
                 appInstalledLabel.set_size_request(buttonImage.get_width(), buttonImage.get_height())
                 actionButtonBox.pack_start(appInstalledLabel)

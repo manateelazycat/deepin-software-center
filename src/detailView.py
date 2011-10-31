@@ -141,7 +141,7 @@ class DetailView(object):
         self.returnButton = utils.newButtonWithoutPadding()
         self.returnButton.connect("button-release-event", lambda widget, event: exitCallback(pageId))
         self.returnButton.connect("button-release-event", lambda widget, event: self.closeBigScreenshot(True))
-        drawButton(self.returnButton, "return", "cell", False, "返回", BUTTON_FONT_SIZE_MEDIUM, "#FFFFFF")
+        drawButton(self.returnButton, "return", "cell", False, "返回", BUTTON_FONT_SIZE_MEDIUM, "bigButtonFont")
         
         buttonPaddingTop = 20
         buttonPaddingRight = 20
@@ -684,7 +684,7 @@ class DetailView(object):
         if (firstTime and commentNum > 20) or commentNum >= 20:
             (readMoreButton, self.readMoreAlign) = newActionButton(
                 "update_selected", 1.0, 0.5, 
-                "cell", True, "查看更多的评论", BUTTON_FONT_SIZE_MEDIUM, "#FFFFFF",
+                "cell", True, "查看更多的评论", BUTTON_FONT_SIZE_MEDIUM, "bigButtonFont",
                 20
                 )
             self.readMoreBox.pack_start(self.readMoreAlign)
@@ -726,7 +726,7 @@ class DetailView(object):
         # Show send comment button.
         (sendCommentButton, sendCommentAlign) = newActionButton(
             "update_selected", 1.0, 0.5, 
-            "cell", True, "发表评论", BUTTON_FONT_SIZE_MEDIUM, "#FFFFFF",
+            "cell", True, "发表评论", BUTTON_FONT_SIZE_MEDIUM, "bigButtonFont",
             5
             )
         sendCommentButton.connect("button-press-event", lambda w, e: self.sendComment())
@@ -1039,15 +1039,15 @@ class AppInfoItem(DownloadItem):
         if self.appInfo.status == APP_STATE_INSTALLED:
             appActionButton = utils.newButtonWithoutPadding()
             appActionButton.connect("button-release-event", lambda widget, event: self.switchToUninstalling())
-            drawButton(appActionButton, "uninstall", "cell", False, "卸载", BUTTON_FONT_SIZE_SMALL)
+            drawButton(appActionButton, "uninstall", "cell", False, "卸载", BUTTON_FONT_SIZE_SMALL, "buttonFont")
         elif self.appInfo.status == APP_STATE_UPGRADE:
             appActionButton = utils.newButtonWithoutPadding()
             appActionButton.connect("button-release-event", lambda widget, event: self.switchToDownloading())
-            drawButton(appActionButton, "update", "cell", False, "升级", BUTTON_FONT_SIZE_SMALL)
+            drawButton(appActionButton, "update", "cell", False, "升级", BUTTON_FONT_SIZE_SMALL, "buttonFont")
         else:
             appActionButton = utils.newButtonWithoutPadding()
             appActionButton.connect("button-release-event", lambda widget, event: self.switchToDownloading())
-            drawButton(appActionButton, "install", "cell", False, "安装", BUTTON_FONT_SIZE_SMALL)
+            drawButton(appActionButton, "install", "cell", False, "安装", BUTTON_FONT_SIZE_SMALL, "buttonFont")
         appActionBox.pack_start(appActionButton, False, False)
         self.appAdditionBox.pack_start(appActionBox, False, False, self.EXTRA_PADDING_X)
         

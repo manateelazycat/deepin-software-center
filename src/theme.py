@@ -52,8 +52,6 @@ class DynamicLabel(object):
         self.draw()
         self.label.connect("expose-event", self.exposeCallback)
         
-        # print "__init__:\n %s" % (dir(self))
-        
     def getLabel(self):
         '''Get label.'''
         return self.label
@@ -86,7 +84,6 @@ class DynamicLabel(object):
         
     def exposeCallback(self, widget, event):
         '''Draw label.'''
-        # print "exposeCallback:\n %s" % (dir(self))
         if self.ticker != appTheme.ticker:
             self.ticker = appTheme.ticker
             self.draw()

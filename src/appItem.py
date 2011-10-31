@@ -20,9 +20,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from theme import *
 from constant import *
 from draw import *
+from theme import *
 import appView
 import gobject
 import gtk

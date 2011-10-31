@@ -1,0 +1,3 @@
+{"background" : "#000000",
+ "buttonFont" : "#FFFFFF",
+ "bigButtonFont" : "#000000"}

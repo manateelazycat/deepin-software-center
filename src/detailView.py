@@ -151,7 +151,7 @@ class DetailView(object):
         
         # Add return button.
         self.returnButton = utils.newButtonWithoutPadding()
-        self.returnButton.connect("button-release-event", lambda widget, event: exitCallback(pageId))
+        self.returnButton.connect("button-release-event", lambda widget, event: exitCallback(pageId, utils.getPkgName(pkg)))
         self.returnButton.connect("button-release-event", lambda widget, event: self.closeBigScreenshot(True))
         drawButton(self.returnButton, "return", "cell", False, "返回", BUTTON_FONT_SIZE_MEDIUM, "bigButtonFont")
         

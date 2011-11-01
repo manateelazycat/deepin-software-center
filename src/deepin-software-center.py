@@ -961,7 +961,7 @@ class DeepinSoftwareCenter(object):
         sendVoteThread = SendVote("%s/vote.php?n=%s&m=%s" % (SERVER_ADDRESS, name, vote), name, self.message)
         sendVoteThread.start()
 
-    def exitDetailView(self, pageId):
+    def exitDetailView(self, pageId, pkgName):
         '''Exit detail view.'''
         # Remove detail view first.
         if self.detailViewDict.has_key(pageId):
@@ -969,6 +969,9 @@ class DeepinSoftwareCenter(object):
 
         # Back page.
         self.selectPage(pageId)
+        
+        # Update vote.
+        self.fetchVote(pageId, [pkgName], self.searchViewDict.has_key(pageId))
 
     def entrySearchView(self, pageId, keyword, pkgList):
         '''Entry search view.'''
@@ -1029,6 +1032,7 @@ class DeepinSoftwareCenter(object):
             for vote in voteJson.items():
                 (pkgName, [starLevel, voteNum]) = vote
                 view.updateVoteView(pkgName, starLevel, voteNum)
+                
     @postGUI
     # Replace function for `updateDetailView` to toggle comment features.
     def updateDetailView_(self, pageId, pkgName, voteJson):

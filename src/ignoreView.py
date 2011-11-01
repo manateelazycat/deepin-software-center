@@ -155,8 +155,10 @@ class IgnoreItem(object):
         self.appAdditionBox.pack_start(appSize, False, False, self.APP_RIGHT_PADDING_X)
         
         # Add ignore button.
-        (ignoreLabel, ignoreEventBox) = utils.setDefaultClickableLabel(
-            "重新提醒")
+        (ignoreLabel, ignoreEventBox) = setDefaultClickableDynamicLabel(
+            "重新提醒",
+            "appIgnore",
+            )
         ignoreEventBox.connect("button-press-event", 
                                lambda w, e: self.removeIgnorePkgCallback([utils.getPkgName(pkg)]))
         

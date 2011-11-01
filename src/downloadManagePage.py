@@ -76,7 +76,10 @@ class Topbar(object):
         
         self.numLabel = gtk.Label()
         
-        (self.openDirLabel, self.openDirEventBox) = utils.setDefaultClickableLabel("打开下载目录")
+        (self.openDirLabel, self.openDirEventBox) = setDefaultClickableDynamicLabel(
+            "打开下载目录",
+            "topbarButton",
+            )
         self.openDirAlign = gtk.Alignment()
         self.openDirAlign.set(1.0, 0.5, 0.0, 0.0)
         self.openDirAlign.add(self.openDirEventBox)

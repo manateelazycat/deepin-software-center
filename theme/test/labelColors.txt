@@ -1,1 +1,6 @@
-{"appName" : ("#1A3E88", "#0084FF", "#1A3E88")}
+{"appName" : ("#1A0088", "#FF84FF", "#1A0088"),
+ "appIgnore" : ("#1A0088", "#FF84FF", "#1A0088"),
+ "appVote" : ("#1A0088", "#FF84FF", "#1A0088"),
+ "recommendMore" : ("#FF0000", "#00FF00", "#FF0000"),
+ "topbarButton" : ("#FF0000", "#FFFF00", "#FF0000"),
+ "link" : ("#1A3E88", "#0084FF", "#1A3E88")}

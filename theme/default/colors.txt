@@ -8,6 +8,8 @@
  "detailName" : "#000000",
  "detailSummary" : "#333333",
  "detailAction" : "#000000",
+ "detailInfo" : "#000000",
+ "detailTitle" : "#1A3E88", 
  "frame" : "#2B4D5D",
  "recommendTitle" : "#000000",
  "recommendFrame" : "#BCE0F6",

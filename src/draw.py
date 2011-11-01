@@ -1002,6 +1002,23 @@ def drawVScrollbarOnExpose(
     
     return True
 
+def setDefaultClickableDynamicLabel(content, colorName, size=LABEL_FONT_SIZE, resetAfterClick=True):
+    '''Set default clickable dynamic label.'''
+    dLabel = DynamicLabel(
+        content,
+        appTheme.getDynamicLabelColor(colorName),
+        size,
+        )
+    label = dLabel.getLabel()
+    eventbox = gtk.EventBox()
+    eventbox.set_visible_window(False)
+    eventbox.add(label)
+    eventbox.connect("size-allocate", lambda w, e: label.set_width_chars(-1))
+    
+    setClickableDynamicLabel(eventbox, dLabel, resetAfterClick)
+    
+    return (label, eventbox)
+
 #  LocalWords:  scaleX imageWidth scaleY imageHeight pixbuf cr drawPixbuf
 #  LocalWords:  buttonSetBackground normalImg hoverImg pressImg buttonLabel
 #  LocalWords:  fontSize labelColor normalPixbuf hoverPixbuf pressPixbuf

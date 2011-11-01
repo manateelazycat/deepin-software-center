@@ -150,7 +150,10 @@ class Topbar(object):
         utils.containerRemoveAll(self.ignoreNumBox)
         
         if ignoreNum > 0:
-            (ignoreLabel, ignoreEventBox) = utils.setDefaultClickableLabel("(不再提醒升级%s款)" % (ignoreNum))
+            (ignoreLabel, ignoreEventBox) = setDefaultClickableDynamicLabel(
+                "不再提醒升级%s款" % (ignoreNum),
+                "topbarButton",
+                )
             ignoreEventBox.connect("button-press-event", lambda w, e: self.showIgnorePageCallback())
             self.ignoreNumBox.add(ignoreEventBox)
             self.ignoreNumBox.show_all()

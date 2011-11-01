@@ -515,7 +515,7 @@ def setDefaultClickableLabel(content, normalColor="#1A3E88", hoverColor="#0084FF
         )
     
     return (label, eventbox)
-        
+
 def setClickableDynamicLabel(widget, dLabel, resetAfterClick=True):
     '''Set click-able label.'''
     # Set label markup.

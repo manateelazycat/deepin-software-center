@@ -174,8 +174,10 @@ class UpdateItem(DownloadItem):
         self.appAdditionBox.pack_start(appSize, False, False, self.APP_RIGHT_PADDING_X)
         
         # Add ignore button.
-        (ignoreLabel, ignoreEventBox) = utils.setDefaultClickableLabel(
-            "不再提醒")
+        (ignoreLabel, ignoreEventBox) = setDefaultClickableDynamicLabel(
+            "不再提醒",
+            "appIgnore",
+            )
         self.appAdditionBox.pack_start(ignoreEventBox, False, False)
         ignoreEventBox.connect("button-press-event", 
                                lambda w, e: self.addIgnorePkgCallback(utils.getPkgName(pkg)))

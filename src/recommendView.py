@@ -423,7 +423,10 @@ class RecommendItem(DownloadItem):
         
         # Add application name.
         pkgName = utils.getPkgName(pkg)
-        (appName, appNameEventBox) = utils.setDefaultClickableLabel(pkgName)
+        (appName, appNameEventBox) = setDefaultClickableDynamicLabel(
+            pkgName,
+            "appName"
+            )
         appName.set_size_request(self.NAME_WIDTH, -1)
         appName.set_single_line_mode(True)
         appName.set_alignment(0.0, 0.5)
@@ -562,8 +565,11 @@ class RecommendView(object):
         
         # Show more label.
         if showMore:
-            (moreLabel, moreLabelEventBox) = utils.setDefaultClickableLabel(
-                "更多 >>", "#000000", "#0084FF", LABEL_FONT_MEDIUM_SIZE)
+            (moreLabel, moreLabelEventBox) = setDefaultClickableDynamicLabel(
+                "更多 >>",
+                "recommendMore",
+                LABEL_FONT_MEDIUM_SIZE,
+                )
             moreLabelPaddingRight = 15
             moreLabelAlign = gtk.Alignment()
             moreLabelAlign.set(1.0, 0.5, 0.0, 0.0)

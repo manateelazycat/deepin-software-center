@@ -247,9 +247,14 @@ class DetailView(object):
         # Add summary.
         summaryAlignRight = 30
         summaryAlignTop = 10
-        summaryLabel = gtk.Label()
-        summaryLabel.set_markup("<span foreground='#1A3E88' size='%s'><b>详细介绍</b></span>" % (LABEL_FONT_LARGE_SIZE))
+        summaryDLabel = DynamicSimpleLabel(
+            "<b>详细介绍</b>",
+            appTheme.getDynamicColor("detailTitle"),
+            LABEL_FONT_LARGE_SIZE,
+            )
+        summaryLabel = summaryDLabel.getLabel()
         summaryLabel.set_alignment(0.0, 0.5)
+        detailBox.connect("size-allocate", lambda w, e: summaryLabel.set_width_chars(-1))
         detailBox.pack_start(summaryLabel)
         
         summaryView = createContentView(utils.getPkgLongDesc(pkg), False)
@@ -262,7 +267,10 @@ class DetailView(object):
         homepage = utils.getPkgHomepage(pkg)
         if homepage != "":
             homepageAlignY = 20
-            (homepageLabel, homepageEventBox) = utils.setDefaultClickableLabel("访问首页")
+            (homepageLabel, homepageEventBox) = setDefaultClickableDynamicLabel(
+                "访问首页",
+                "link",
+                )
             homepageLabel.set_alignment(0.0, 0.5)
             homepageEventBox.connect("button-press-event", lambda w, e: utils.runCommand("xdg-open %s" % (homepage)))
             detailBox.pack_start(homepageEventBox, False, False)
@@ -274,7 +282,10 @@ class DetailView(object):
         lang = utils.getDefaultLanguage()
         if lang == "zh_CN":
             translationAlignY = 20
-            (translationLabel, translationEventBox) = utils.setDefaultClickableLabel("协助翻译")
+            (translationLabel, translationEventBox) = setDefaultClickableDynamicLabel(
+                "协助翻译",
+                "link"
+                )
             translationLabel.set_alignment(0.0, 0.5)
             translationEventBox.connect(
                 "button-press-event", 
@@ -287,9 +298,15 @@ class DetailView(object):
         # Add screenshot.
         screenshotBox = gtk.VBox()
         
-        screenshotLabel = gtk.Label()
-        screenshotLabel.set_markup("<span foreground='#1A3E88' size='%s'><b>软件截图</b></span>" % (LABEL_FONT_LARGE_SIZE))
+        screenshotDLabel = DynamicSimpleLabel(
+            "<b>软件截图</b>",
+            appTheme.getDynamicColor("detailTitle"),
+            LABEL_FONT_LARGE_SIZE,
+            )
+        screenshotLabel = screenshotDLabel.getLabel()
+        
         screenshotLabel.set_alignment(0.0, 0.5)
+        screenshotBox.connect("size-allocate", lambda w, e: screenshotLabel.set_width_chars(-1))
         screenshotBox.pack_start(screenshotLabel, False, False)
         
         self.imageBox = gtk.EventBox()
@@ -608,11 +625,16 @@ class DetailView(object):
         self.appNameBox.pack_start(appStarAlign, False, False, self.STAR_PADDING_X)
         
         if voteNum > 0:
-            appVoteNum = gtk.Label()
-            appVoteNum.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, "(%s 人参与了评分)" % (voteNum)))
+            appVoteNumLabel = DynamicSimpleLabel(
+                "(%s 人参与了评分)" % (voteNum),
+                appTheme.getDynamicColor("detailInfo"),
+                LABEL_FONT_SIZE,
+                )
+            appVoteNum = appVoteNumLabel.getLabel()
             appVoteAlign = gtk.Alignment()
             appVoteAlign.set(0.0, 1.0, 0.0, 0.0)
             appVoteAlign.add(appVoteNum)
+            appVoteAlign.connect("size-allocate", lambda w, e: appVoteNum.set_width_chars(-1))
             self.appNameBox.pack_start(appVoteAlign, False, False)
         
         # Update comment list.
@@ -621,12 +643,18 @@ class DetailView(object):
         commentTitleBox = gtk.HBox()
         self.commentAreaBox.pack_start(commentTitleBox)
         
-        commentLabel = gtk.Label()
-        commentLabel.set_markup("<span foreground='#1A3E88' size='%s'><b>用户评论</b></span>" % (LABEL_FONT_LARGE_SIZE))
+        commentDLabel = DynamicSimpleLabel(
+            "<b>用户评论</b>",
+            appTheme.getDynamicColor("detailTitle"),
+            LABEL_FONT_LARGE_SIZE,
+            )
+        commentLabel = commentDLabel.getLabel()
+        
         commentLabelAlign = gtk.Alignment()
         commentLabelAlign.set(0.0, 1.0, 0.0, 0.0)
         commentLabelAlign.set_padding(self.COMMENT_PADDING_TOP, self.COMMENT_PADDING_BOTTOM, 0, 0)
         commentLabelAlign.add(commentLabel)
+        commentLabelAlign.connect("size-allocate", lambda w, e: commentLabel.set_width_chars(-1))
         commentTitleBox.pack_start(commentLabelAlign, False, False)
         
         # Temp send comment entry.
@@ -644,13 +672,17 @@ class DetailView(object):
         self.switchCommentInit()
         
         if commentNum > 0:
-            self.commentNumLabel = gtk.Label()
-            self.commentNumLabel.set_markup(
-                "<span foreground='#000000' size='%s'>%s 人参与了讨论</span>" % (LABEL_FONT_SIZE, commentNum))
+            commentNumDLabel = DynamicSimpleLabel(
+                "%s 人参与了讨论" % commentNum,
+                appTheme.getDynamicColor("detailInfo"),
+                LABEL_FONT_SIZE,
+                )
+            self.commentNumLabel = commentNumDLabel.getLabel()
             commentNumLabelAlign = gtk.Alignment()
             commentNumLabelAlign.set(1.0, 1.0, 0.0, 0.0)
             commentNumLabelAlign.set_padding(self.COMMENT_PADDING_TOP, self.COMMENT_PADDING_BOTTOM, 0, 0)
             commentNumLabelAlign.add(self.commentNumLabel)
+            commentNumLabelAlign.connect("size-allocate", lambda w, e: self.commentNumLabel.set_width_chars(-1))
             commentTitleBox.pack_start(commentNumLabelAlign)
             
         line = gtk.Image()

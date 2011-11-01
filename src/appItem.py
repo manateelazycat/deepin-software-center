@@ -606,14 +606,23 @@ class VoteView(object):
         
         self.starBox.pack_start(starBox)
         
-        (self.voteLabel, self.voteEventBox) = utils.setDefaultClickableLabel("评分")
+        (self.voteLabel, self.voteEventBox) = setDefaultClickableDynamicLabel(
+            "评分",
+            "appVote",
+            )
         self.voteEventBox.connect("button-press-event", lambda w, e: self.switchFocusStatus(self.FOCUS_STAR))
         self.voteBox.pack_start(self.voteEventBox)
         
         if self.voteNum == 0:
-            (self.rate, self.rateEventBox) = utils.setDefaultClickableLabel("抢沙发!")
+            (self.rate, self.rateEventBox) = setDefaultClickableDynamicLabel(
+                "抢沙发!",
+                "appVote",
+                )
         else:
-            (self.rate, self.rateEventBox) = utils.setDefaultClickableLabel("%s 评论" % (self.voteNum))
+            (self.rate, self.rateEventBox) = setDefaultClickableDynamicLabel(
+                "%s 评论" % (self.voteNum),
+                "appVote",
+                )
         
         self.rateEventBox.connect("button-press-event", 
                                   lambda w, e: self.entryDetailCallback(self.pageId, self.appInfo))

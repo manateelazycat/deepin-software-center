@@ -26,6 +26,8 @@ from copy import deepcopy
 from draw import *
 from tooltips import *
 from utils import postGUI
+import math
+import cairo
 import checkUpdate
 import action
 import apt
@@ -98,7 +100,7 @@ class DeepinSoftwareCenter(object):
         
         # Init widgets.
         self.window = self.initMainWindow()
-        self.window.connect("size-allocate", lambda w, a: self.updateShape(w, a))
+        self.window.connect("size-allocate", lambda w, a: updateShape(w, a, 6))
         self.hasMax = False
         self.leftLine = gtk.Image()
         drawLine(self.leftLine, appTheme.getDynamicColor("frame"), 1)
@@ -130,6 +132,11 @@ class DeepinSoftwareCenter(object):
         
         # Redraw.
         self.window.queue_draw()
+        
+        # Redraw big screenshot.
+        for dView in self.detailViewDict.values():
+            if dView.bigScreenshot != None:
+                dView.bigScreenshot.window.queue_draw()
 
     def createTooltips(self):
         '''Create tooltips.'''
@@ -139,27 +146,6 @@ class DeepinSoftwareCenter(object):
         '''Show message.'''
         self.tooltips.start(message)
 
-    def updateShape(self, widget, allocation):
-        '''Update shape.'''
-        if allocation.width > 0 and allocation.height > 0:
-            bottomHeight = self.bottombarPixbuf.getPixbuf().get_height()
-            topHeight = self.topbarPixbuf.getPixbuf().get_height()
-            width, height = allocation.width, allocation.height
-            middleHeight = height - topHeight - bottomHeight
-
-            topPixbuf = self.topbarPixbuf.getPixbuf().scale_simple(width, topHeight, gtk.gdk.INTERP_BILINEAR)
-            middlePixbuf = gtk.gdk.Pixbuf(gtk.gdk.COLORSPACE_RGB, False, 8, width, middleHeight)
-            bottomPixbuf = self.bottombarPixbuf.getPixbuf().scale_simple(width, bottomHeight, gtk.gdk.INTERP_BILINEAR)
-
-            pixbuf = gtk.gdk.Pixbuf(gtk.gdk.COLORSPACE_RGB, True, 8, width, height)
-
-            topPixbuf.copy_area(0, 0, width, topHeight, pixbuf, 0, 0)
-            middlePixbuf.copy_area(0, 0, width, middleHeight, pixbuf, 0, topHeight)
-            bottomPixbuf.copy_area(0, 0, width, bottomHeight, pixbuf, 0, topHeight + middleHeight)
-
-            (_, mask) = pixbuf.render_pixmap_and_mask(255)
-            if mask != None:
-                self.window.shape_combine_mask(mask, 0, 0)
 
     def switchStatus(self, pkgName, appStatus):
         '''Switch status.'''

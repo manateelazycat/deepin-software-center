@@ -1037,9 +1037,29 @@ def getCandidates(pkgs, text):
         return map(lambda (preStr, matchStr, restStr, pkg): 
                    # Highlight keyword.
                    ["<span foreground='%s'>%s</span>" % (textColor, preStr) + "<span foreground='%s'><b>%s</b></span>" % (keywordColor, matchStr) + "<span foreground='%s'>%s</span>" % (textColor, restStr), pkg],
-                   # [preStr + "<span foreground='#1A3E88'><b>" + matchStr + "</b></span>" + restStr, pkg],
                    # Sorted candidates.
                    sorted(candidates, cmp=compareCandidates))
+    
+def updateShape(widget, allocation, radius):
+    '''Update shape.'''
+    if allocation.width > 0 and allocation.height > 0:
+        # Init.
+        w, h = allocation.width, allocation.height
+        bitmap = gtk.gdk.Pixmap(None, w, h, 1)
+        cr = bitmap.cairo_create()
+        
+        # Clear the bitmap
+        cr.set_source_rgb(0.0, 0.0, 0.0)
+        cr.set_operator(cairo.OPERATOR_CLEAR)
+        cr.paint()
+        
+        # Draw our shape into the bitmap using cairo
+        cr.set_source_rgb(1.0, 1.0, 1.0)
+        cr.set_operator(cairo.OPERATOR_SOURCE)
+        drawRoundRectangle(cr, 0, 0, w, h, radius)
+        cr.fill()
+
+        widget.shape_combine_mask(bitmap, 0, 0)
     
 #  LocalWords:  scaleX imageWidth scaleY imageHeight pixbuf cr drawPixbuf
 #  LocalWords:  buttonSetBackground normalImg hoverImg pressImg buttonLabel

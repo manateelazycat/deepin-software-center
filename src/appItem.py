@@ -132,12 +132,12 @@ class UninstallItem(object):
         size = utils.getPkgInstalledSize(pkg)
         
         appSizeLabel = DynamicSimpleLabel(
+            self.appAdditionBox,
             utils.formatFileSize(size),
             appTheme.getDynamicColor("appSize"),
             LABEL_FONT_SIZE,
             )
         appSize = appSizeLabel.getLabel()
-        self.appAdditionBox.connect("size-allocate", lambda w, e: appSize.set_width_chars(-1))
         
         appSize.set_size_request(self.SIZE_LABEL_WIDTH, -1)
         appSize.set_alignment(1.0, 0.5)
@@ -439,6 +439,7 @@ def createItemBasicBox(appInfo, maxWidth, parent, entryDetailCallback, showUpgra
     pkgName = utils.getPkgName(pkg)
     
     appNameLabel = DynamicLabel(
+        parent,
         pkgName,
         appTheme.getDynamicLabelColor("appName"), 
         LABEL_FONT_SIZE)
@@ -477,6 +478,7 @@ def createItemBasicBox(appInfo, maxWidth, parent, entryDetailCallback, showUpgra
     summary = utils.getPkgShortDesc(pkg)
     appSummaryBox = gtk.HBox()
     appSummaryLabel = DynamicSimpleLabel(
+        parent,
         summary,
         appTheme.getDynamicColor("appSummary"),
         LABEL_FONT_SIZE
@@ -770,24 +772,51 @@ def newActionButton(iconPrefix, alignX, alignY,
 class SearchEntry(gtk.Entry):
     '''Search entry.'''
 	
-    def __init__(self, helpString):
+    def __init__(self, parent, helpString, hintDColor, backgroundDColor, foregroundDColor):
         '''Init for search entry.'''
         # Init.
         gtk.Entry.__init__(self)
+        self.helpString = helpString
+        self.hintDColor = hintDColor
+        self.backgroundDColor = backgroundDColor
+        self.foregroundDColor = foregroundDColor
+        self.focusIn = False
+        self.ticker = 0
         
         # Show help string.
-        self.set_text(helpString)
+        self.updateColor()
         
         # Clean input when first time focus in entry.
         self.focusInHandler = self.connect("focus-in-event", lambda w, e: self.firstFocusIn())
+        self.connect("expose-event", self.exposeCallback)
+        
+        parent.connect("size-allocate", lambda w, e: self.realize())
+        
+    def exposeCallback(self, widget, event):
+        '''Expose callback.'''
+        if self.ticker != appTheme.ticker:
+            self.ticker = appTheme.ticker
+            self.updateColor()
+        
+    def updateColor(self):
+        '''Update color.'''
+        self.modify_base(gtk.STATE_NORMAL, gtk.gdk.color_parse(self.backgroundDColor.getColor()))
+        if self.focusIn:
+            self.modify_text(gtk.STATE_NORMAL, gtk.gdk.color_parse(self.foregroundDColor.getColor()))
+        else:
+            self.modify_text(gtk.STATE_NORMAL, gtk.gdk.color_parse(self.hintDColor.getColor()))
+            self.set_text(self.helpString)
         
     def firstFocusIn(self):
         '''First touch callback.'''
+        self.focusIn = True
+        
         # Empty entry when first time focus in.
         self.set_text("")
         
         # Adjust input text color.
-        self.modify_text(gtk.STATE_NORMAL, gtk.gdk.color_parse("#000000"))
+        self.modify_base(gtk.STATE_NORMAL, gtk.gdk.color_parse(self.backgroundDColor.getColor()))
+        self.modify_text(gtk.STATE_NORMAL, gtk.gdk.color_parse(self.foregroundDColor.getColor()))
         
         # And disconnect signal itself.
         self.disconnect(self.focusInHandler)
@@ -806,8 +835,13 @@ def newSearchUI(helpString, getCandidatesCallback, clickCandidateCallback, searc
     searchAlign.set(1.0, 0.0, 0.0, 1.0)
     searchAlign.add(searchBox)
     
-    searchEntry = SearchEntry(helpString)
-    searchEntry.modify_text(gtk.STATE_NORMAL, gtk.gdk.color_parse("#999999"))
+    searchEntry = SearchEntry(
+        searchBox, 
+        helpString, 
+        appTheme.getDynamicColor("entryHint"),
+        appTheme.getDynamicColor("entryBackground"),
+        appTheme.getDynamicColor("entryForeground"),
+        )
     searchEntry.set_size_request(SEARCH_ENTRY_WIDTH, -1)
     searchEntry.connect("activate", searchCallback)
     searchBox.pack_start(searchEntry, False, False, entryPaddingX)

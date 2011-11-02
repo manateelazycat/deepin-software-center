@@ -136,12 +136,12 @@ class RepoItem(DownloadItem):
         size = utils.getPkgSize(pkg)
         
         appSizeLabel = DynamicSimpleLabel(
+            self.appAdditionBox,
             utils.formatFileSize(size),
             appTheme.getDynamicColor("appSize"),
             LABEL_FONT_SIZE,
             )
         appSize = appSizeLabel.getLabel()
-        self.appAdditionBox.connect("size-allocate", lambda w, e: appSize.set_width_chars(-1))
         
         appSize.set_size_request(self.SIZE_LABEL_WIDTH, -1)
         appSize.set_alignment(1.0, 0.5)
@@ -175,12 +175,12 @@ class RepoItem(DownloadItem):
                 actionButtonBox.pack_start(appButtonAlign)
             else:
                 appInstalledDynamicLabel = DynamicSimpleLabel(
+                    actionButtonBox,
                     "已安装",
                     appTheme.getDynamicColor("installed"),
                     LABEL_FONT_SIZE,
                     )
                 appInstalledLabel = appInstalledDynamicLabel.getLabel()
-                actionButtonBox.connect("size-allocate", lambda w, e: appInstalledLabel.set_width_chars(-1))
                 buttonImage = appTheme.getDynamicPixbuf("cell/update_hover.png").getPixbuf()
                 appInstalledLabel.set_size_request(buttonImage.get_width(), buttonImage.get_height())
                 actionButtonBox.pack_start(appInstalledLabel)

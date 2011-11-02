@@ -64,8 +64,14 @@ class SearchCompletion(object):
         self.window.set_property("accept-focus", False)
         self.window.set_opacity(0.9)
         self.listStore = gtk.ListStore(str, str)
-        self.treeView = gtk.TreeView(self.listStore)
-        self.treeView.modify_base(gtk.STATE_ACTIVE, gtk.gdk.color_parse("#16A5ED"))        
+        self.scrolledwindow = gtk.ScrolledWindow()
+        dTreeView = DynamicTreeView(
+            self.scrolledwindow,
+            self.listStore,
+            appTheme.getDynamicColor("completionBackground"),
+            appTheme.getDynamicColor("completionSelect"),
+            )
+        self.treeView = dTreeView.treeView
         self.treeView.set_headers_visible(False)
         self.cell = gtk.CellRendererText()
         self.cell.set_property("size-points", self.FONT_SIZE)
@@ -73,7 +79,6 @@ class SearchCompletion(object):
         self.treeViewColumn = gtk.TreeViewColumn(None, self.cell, markup=self.MARKUP_COLUMN)
         self.treeViewColumn.set_sort_column_id(self.MARKUP_COLUMN)
         self.treeView.append_column(self.treeViewColumn)
-        self.scrolledwindow = gtk.ScrolledWindow()
         self.scrolledwindow.set_property("shadow-type", gtk.SHADOW_NONE)
         self.scrolledwindow.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
         drawVScrollbar(self.scrolledwindow)
@@ -133,7 +138,10 @@ class SearchCompletion(object):
             self.listStore.clear()
             
             content = self.entry.get_chars(0, -1)
-            self.listStore.append(["全文搜索 <span foreground='#1A3E88'><b> %s </b></span>" % content, content])
+            textColor = appTheme.getDynamicColor("completionText").getColor()
+            keywordColor = appTheme.getDynamicColor("completionKeyword").getColor()
+            self.listStore.append(
+                ["<span foreground='%s'>%s</span>" % (textColor, "全文搜索") + " <span foreground='%s'>%s</span>" % (keywordColor, content), content])
             
             for candidate in candidates:
                 self.listStore.append(candidate)

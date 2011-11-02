@@ -109,12 +109,12 @@ def buttonSetBackground(widget, scaleX, scaleY, normalDPixbuf, hoverDPixbuf, pre
             size = int (fontSize * 1000)
             
         dynamicSimpleLabel = DynamicSimpleLabel(
+            widget,
             buttonLabel,
             appTheme.getDynamicColor(labelDColor),
             size,
             )
         label = dynamicSimpleLabel.getLabel()
-        widget.connect("size-allocate", lambda w, e: label.set_width_chars(-1))
 
         # label = gtk.Label()
         # label.set_markup("<span foreground='%s' size='%s'>%s</span>" % (color, size, buttonLabel))
@@ -1004,21 +1004,43 @@ def drawVScrollbarOnExpose(
 
 def setDefaultClickableDynamicLabel(content, colorName, size=LABEL_FONT_SIZE, resetAfterClick=True):
     '''Set default clickable dynamic label.'''
+    eventbox = gtk.EventBox()
     dLabel = DynamicLabel(
+        eventbox,
         content,
         appTheme.getDynamicLabelColor(colorName),
         size,
         )
     label = dLabel.getLabel()
-    eventbox = gtk.EventBox()
     eventbox.set_visible_window(False)
     eventbox.add(label)
-    eventbox.connect("size-allocate", lambda w, e: label.set_width_chars(-1))
     
     setClickableDynamicLabel(eventbox, dLabel, resetAfterClick)
     
     return (label, eventbox)
 
+def getCandidates(pkgs, text):
+    '''Get candidates.'''
+    if len(text) == 0:
+        return []
+    else:
+        # Filter match candidates.
+        candidates = []
+        for pkg in pkgs:
+            if text in pkg:
+                (preStr, matchStr, restStr) = pkg.partition(text)
+                candidates.append((preStr, matchStr, restStr, pkg))
+                
+        textColor = appTheme.getDynamicColor("completionText").getColor()
+        keywordColor = appTheme.getDynamicColor("completionKeyword").getColor()
+                
+        return map(lambda (preStr, matchStr, restStr, pkg): 
+                   # Highlight keyword.
+                   ["<span foreground='%s'>%s</span>" % (textColor, preStr) + "<span foreground='%s'><b>%s</b></span>" % (keywordColor, matchStr) + "<span foreground='%s'>%s</span>" % (textColor, restStr), pkg],
+                   # [preStr + "<span foreground='#1A3E88'><b>" + matchStr + "</b></span>" + restStr, pkg],
+                   # Sorted candidates.
+                   sorted(candidates, cmp=compareCandidates))
+    
 #  LocalWords:  scaleX imageWidth scaleY imageHeight pixbuf cr drawPixbuf
 #  LocalWords:  buttonSetBackground normalImg hoverImg pressImg buttonLabel
 #  LocalWords:  fontSize labelColor normalPixbuf hoverPixbuf pressPixbuf

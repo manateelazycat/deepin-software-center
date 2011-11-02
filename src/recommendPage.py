@@ -184,12 +184,12 @@ class SlideItem(DownloadItem):
                 actionButtonBox.pack_start(appButtonAlign)
             else:
                 appInstalledDynamicLabel = DynamicSimpleLabel(
+                    actionButtonBox,
                     "已安装",
                     appTheme.getDynamicColor("installed"),
                     LABEL_FONT_SIZE,
                     )
                 appInstalledLabel = appInstalledDynamicLabel.getLabel()
-                actionButtonBox.connect("size-allocate", lambda w, e: appInstalledLabel.set_width_chars(-1))
                 buttonImage = appTheme.getDynamicPixbuf("cell/update_hover.png").getPixbuf()
                 appInstalledLabel.set_size_request(buttonImage.get_width(), buttonImage.get_height())
                 actionButtonBox.pack_start(appInstalledLabel)

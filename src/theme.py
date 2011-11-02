@@ -24,6 +24,62 @@ from utils import *
 import gobject, gtk
 import os
 
+class DynamicTreeView:
+    '''Dynamic tree view.'''
+	
+    def __init__(self, parent, liststore, backgroundDColor, selectDColor):
+        '''Init dynamic tree view.'''
+        self.treeView = gtk.TreeView(liststore)
+        self.backgroundDColor = backgroundDColor
+        self.selectDColor = selectDColor
+        self.ticker = 0
+        
+        self.updateColor()
+        self.treeView.connect("expose-event", self.exposeCallback)
+        
+        parent.connect("size-allocate", lambda w, e: self.treeView.realize())
+        
+    def updateColor(self):
+        '''Update color.'''
+        self.treeView.modify_base(gtk.STATE_NORMAL, gtk.gdk.color_parse(self.backgroundDColor.getColor()))
+        self.treeView.modify_base(gtk.STATE_ACTIVE, gtk.gdk.color_parse(self.selectDColor.getColor()))
+        
+    def exposeCallback(self, widget, event):
+        '''Expose callback.'''
+        if self.ticker != appTheme.ticker:
+            self.ticker = appTheme.ticker
+            self.updateColor()
+            
+        return False
+
+class DynamicTextView:
+    '''Dynamic text view.'''
+	
+    def __init__(self, parent, backgroundDColor, foregroundDColor):
+        '''Init dynamic text view.'''
+        self.textView = gtk.TextView()
+        self.backgroundDColor = backgroundDColor
+        self.foregroundDColor = foregroundDColor
+        self.ticker = 0
+
+        self.updateColor()
+        self.textView.connect("expose-event", self.exposeCallback)
+        
+        parent.connect("size-allocate", lambda w, e: self.textView.realize())
+        
+    def updateColor(self):
+        '''Update color.'''
+        self.textView.modify_base(gtk.STATE_NORMAL, gtk.gdk.color_parse(self.backgroundDColor.getColor()))
+        self.textView.modify_text(gtk.STATE_NORMAL, gtk.gdk.color_parse(self.foregroundDColor.getColor()))
+        
+    def exposeCallback(self, widget, event):
+        '''Expose callback.'''
+        if self.ticker != appTheme.ticker:
+            self.ticker = appTheme.ticker
+            self.updateColor()
+            
+        return False
+
 class DynamicLabel(object):
     '''Dynamic label.'''
     
@@ -31,7 +87,7 @@ class DynamicLabel(object):
     LABEL_HOVER = 2
     LABEL_PRESS = 3
 	
-    def __init__(self, text, dColor, size=None, underline=None):
+    def __init__(self, parent, text, dColor, size=None, underline=None):
         '''Init dynamic label.'''
         self.status = self.LABEL_NORMAL
         self.text = text
@@ -51,6 +107,8 @@ class DynamicLabel(object):
         self.label = gtk.Label()
         self.draw()
         self.label.connect("expose-event", self.exposeCallback)
+        
+        parent.connect("size-allocate", lambda w, e: self.label.realize())
         
     def getLabel(self):
         '''Get label.'''
@@ -118,7 +176,7 @@ class DynamicLabelColor(object):
 class DynamicSimpleLabel(object):
     '''Dynamic label.'''
 	
-    def __init__(self, text, dColor, size=None):
+    def __init__(self, parent, text, dColor, size=None):
         '''Init dynamic label.'''
         self.text = text
         self.dColor = dColor
@@ -132,6 +190,8 @@ class DynamicSimpleLabel(object):
         self.label = gtk.Label()
         self.draw()
         self.label.connect("expose-event", self.exposeCallback)
+        
+        parent.connect("size-allocate", lambda w, e: self.label.realize())
         
     def getLabel(self):
         '''Get label.'''

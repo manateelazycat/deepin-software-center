@@ -123,30 +123,30 @@ class DetailView(object):
         appMiddleBox.pack_start(self.appNameBox, False, False)
         
         pkgName = utils.getPkgName(pkg)
+        appNameAlign = gtk.Alignment()
         appNameLabel = DynamicSimpleLabel(
+            appNameAlign,
             "<b>%s</b>" % (pkgName),
             appTheme.getDynamicColor("detailName"),
             LABEL_FONT_XXX_LARGE_SIZE,
             )
         appName = appNameLabel.getLabel()
         
-        appNameAlign = gtk.Alignment()
         appNameAlign.set(0.0, 0.5, 0.0, 0.0)
         appNameAlign.add(appName)
-        appNameAlign.connect("size-allocate", lambda w, e: appName.set_width_chars(-1))
         
         self.appNameBox.pack_start(appNameAlign, False, False)
         
+        appIntroAlign = gtk.Alignment()
         appIntroLabel = DynamicSimpleLabel(
+            appIntroAlign,
             utils.getPkgShortDesc(pkg),
             appTheme.getDynamicColor("detailSummary"),
             LABEL_FONT_LARGE_SIZE,
             )
         appIntro = appIntroLabel.getLabel()
-        appIntroAlign = gtk.Alignment()
         appIntroAlign.set(0.0, 0.0, 0.0, 0.0)
         appIntroAlign.add(appIntro)
-        appIntroAlign.connect("size-allocate", lambda w, e: appIntro.set_width_chars(-1))
         appMiddleBox.pack_start(appIntroAlign, False, False)
         
         # Add return button.
@@ -248,17 +248,17 @@ class DetailView(object):
         summaryAlignRight = 30
         summaryAlignTop = 10
         summaryDLabel = DynamicSimpleLabel(
+            detailBox,
             "<b>详细介绍</b>",
             appTheme.getDynamicColor("detailTitle"),
             LABEL_FONT_LARGE_SIZE,
             )
         summaryLabel = summaryDLabel.getLabel()
         summaryLabel.set_alignment(0.0, 0.5)
-        detailBox.connect("size-allocate", lambda w, e: summaryLabel.set_width_chars(-1))
         detailBox.pack_start(summaryLabel)
         
-        summaryView = createContentView(utils.getPkgLongDesc(pkg), False)
         summaryAlign = gtk.Alignment()
+        summaryView = createContentView(summaryAlign, utils.getPkgLongDesc(pkg), False)
         summaryAlign.set(0.0, 0.0, 1.0, 1.0)
         summaryAlign.set_padding(summaryAlignTop, 0, 0, summaryAlignRight)
         summaryAlign.add(summaryView)
@@ -299,6 +299,7 @@ class DetailView(object):
         screenshotBox = gtk.VBox()
         
         screenshotDLabel = DynamicSimpleLabel(
+            screenshotBox,
             "<b>软件截图</b>",
             appTheme.getDynamicColor("detailTitle"),
             LABEL_FONT_LARGE_SIZE,
@@ -306,7 +307,6 @@ class DetailView(object):
         screenshotLabel = screenshotDLabel.getLabel()
         
         screenshotLabel.set_alignment(0.0, 0.5)
-        screenshotBox.connect("size-allocate", lambda w, e: screenshotLabel.set_width_chars(-1))
         screenshotBox.pack_start(screenshotLabel, False, False)
         
         self.imageBox = gtk.EventBox()
@@ -463,15 +463,15 @@ class DetailView(object):
             sourceComboBox.append_text(sourceLanguage)
         sourceComboBox.set_active(sourceIndex)
         
-        self.sourceShortView = createContentView(utils.getPkgShortDesc(pkg), False)
         sourceShortFrame = gtk.Frame("简介")
+        self.sourceShortView = createContentView(sourceShortFrame, utils.getPkgShortDesc(pkg), False)
         sourceShortFrame.add(self.sourceShortView)
         sourceBox.pack_start(sourceShortFrame, False, False)
         
         sourceBox.pack_start(gtk.VSeparator(), False, False)
         
-        sourceLongView = createContentView(utils.getPkgLongDesc(pkg), False)
         sourceLongFrame = gtk.Frame("详细介绍")
+        sourceLongView = createContentView(sourceLongFrame, utils.getPkgLongDesc(pkg), False)
         sourceLongFrame.add(sourceLongView)
         sourceBox.pack_start(sourceLongFrame)
 
@@ -498,16 +498,16 @@ class DetailView(object):
             targetComboBox.append_text(targetLanguage)
         targetComboBox.set_active(targetIndex)
             
-        self.targetShortView = createContentView("", True)
-        self.sourceShortView.connect("size-allocate", lambda w, e: self.adjustTargetShortView())
         targetShortFrame = gtk.Frame("简介")
+        self.targetShortView = createContentView(targetShortFrame, "", True)
+        self.sourceShortView.connect("size-allocate", lambda w, e: self.adjustTargetShortView())
         targetShortFrame.add(self.targetShortView)
         targetBox.pack_start(targetShortFrame, False, False)
         
         targetBox.pack_start(gtk.VSeparator(), False, False)
         
-        targetLongView = createContentView("", True)
         targetLongFrame = gtk.Frame("详细介绍")
+        targetLongView = createContentView(targetLongFrame, "", True)
         targetLongFrame.add(targetLongView)
         targetBox.pack_start(targetLongFrame)
         
@@ -625,16 +625,16 @@ class DetailView(object):
         self.appNameBox.pack_start(appStarAlign, False, False, self.STAR_PADDING_X)
         
         if voteNum > 0:
+            appVoteAlign = gtk.Alignment()
             appVoteNumLabel = DynamicSimpleLabel(
+                appVoteAlign,
                 "(%s 人参与了评分)" % (voteNum),
                 appTheme.getDynamicColor("detailInfo"),
                 LABEL_FONT_SIZE,
                 )
             appVoteNum = appVoteNumLabel.getLabel()
-            appVoteAlign = gtk.Alignment()
             appVoteAlign.set(0.0, 1.0, 0.0, 0.0)
             appVoteAlign.add(appVoteNum)
-            appVoteAlign.connect("size-allocate", lambda w, e: appVoteNum.set_width_chars(-1))
             self.appNameBox.pack_start(appVoteAlign, False, False)
         
         # Update comment list.
@@ -643,18 +643,18 @@ class DetailView(object):
         commentTitleBox = gtk.HBox()
         self.commentAreaBox.pack_start(commentTitleBox)
         
+        commentLabelAlign = gtk.Alignment()
         commentDLabel = DynamicSimpleLabel(
+            commentLabelAlign,
             "<b>用户评论</b>",
             appTheme.getDynamicColor("detailTitle"),
             LABEL_FONT_LARGE_SIZE,
             )
         commentLabel = commentDLabel.getLabel()
         
-        commentLabelAlign = gtk.Alignment()
         commentLabelAlign.set(0.0, 1.0, 0.0, 0.0)
         commentLabelAlign.set_padding(self.COMMENT_PADDING_TOP, self.COMMENT_PADDING_BOTTOM, 0, 0)
         commentLabelAlign.add(commentLabel)
-        commentLabelAlign.connect("size-allocate", lambda w, e: commentLabel.set_width_chars(-1))
         commentTitleBox.pack_start(commentLabelAlign, False, False)
         
         # Temp send comment entry.
@@ -672,17 +672,17 @@ class DetailView(object):
         self.switchCommentInit()
         
         if commentNum > 0:
+            commentNumLabelAlign = gtk.Alignment()
             commentNumDLabel = DynamicSimpleLabel(
+                commentNumLabelAlign,
                 "%s 人参与了讨论" % commentNum,
                 appTheme.getDynamicColor("detailInfo"),
                 LABEL_FONT_SIZE,
                 )
             self.commentNumLabel = commentNumDLabel.getLabel()
-            commentNumLabelAlign = gtk.Alignment()
             commentNumLabelAlign.set(1.0, 1.0, 0.0, 0.0)
             commentNumLabelAlign.set_padding(self.COMMENT_PADDING_TOP, self.COMMENT_PADDING_BOTTOM, 0, 0)
             commentNumLabelAlign.add(self.commentNumLabel)
-            commentNumLabelAlign.connect("size-allocate", lambda w, e: self.commentNumLabel.set_width_chars(-1))
             commentTitleBox.pack_start(commentNumLabelAlign)
             
         line = gtk.Image()
@@ -931,9 +931,14 @@ class FetchMoreComment(td.Thread):
         except Exception, e:
             print "Fetch more comment data failed."
         
-def createContentView(content, editable=True):
+def createContentView(parent, content, editable=True):
     '''Create summary view.'''
-    textView = gtk.TextView()
+    dTextView = DynamicTextView(
+        parent,
+        appTheme.getDynamicColor("background"),
+        appTheme.getDynamicColor("foreground"),
+        )
+    textView = dTextView.textView
     textView.modify_font(pango.FontDescription("%s %s" % (DEFAULT_FONT, DEFAULT_FONT_SIZE)))
     textView.set_editable(editable)
     textView.set_wrap_mode(gtk.WRAP_CHAR)
@@ -1007,13 +1012,13 @@ class AppInfoItem(DownloadItem):
 
         # Add application version.
         appVersionLabel = DynamicSimpleLabel(
+            self.appExtraBox,
             "版本: " + utils.getPkgVersion(pkg),
             appTheme.getDynamicColor("detailAction"),
             LABEL_FONT_MEDIUM_SIZE,
             )
         appVersion = appVersionLabel.getLabel()
         appVersion.set_alignment(0.0, 0.5)
-        self.appExtraBox.connect("size-allocate", lambda w, e: appVersion.set_width_chars(-1))
         self.appExtraBox.pack_start(appVersion, False, False, self.INFO_PADDING_Y)
 
         # Add size information.
@@ -1022,6 +1027,7 @@ class AppInfoItem(DownloadItem):
         if self.appInfo.status == APP_STATE_INSTALLED:
             (_, rSize) = utils.getPkgDependSize(self.aptCache, pkg, ACTION_UNINSTALL)
             uninstallSizeLabel = DynamicSimpleLabel(
+                appSizeBox,
                 "卸载后释放%s空间" % (utils.formatFileSize(rSize)),
                 appTheme.getDynamicColor("detailAction"),
                 LABEL_FONT_MEDIUM_SIZE,
@@ -1029,7 +1035,6 @@ class AppInfoItem(DownloadItem):
             uninstallSize = uninstallSizeLabel.getLabel()
             uninstallSize.set_alignment(0.0, 0.5)
             appSizeBox.pack_start(uninstallSize, False, False)
-            appSizeBox.connect("size-allocate", lambda w, e: uninstallSize.set_width_chars(-1))
         else:
             useSizeLabel = gtk.Label()
             useSizeLabel.set_alignment(0.0, 0.5)
@@ -1042,6 +1047,7 @@ class AppInfoItem(DownloadItem):
                 (downloadSize, useSize) = utils.getPkgDependSize(self.aptCache, pkg, ACTION_INSTALL)
 
             updateSizeLabel = DynamicSimpleLabel(
+                appSizeBox,
                 "%s后占用 %s 空间 需要下载 %s" % (actionLabel, utils.formatFileSize(useSize), utils.formatFileSize(downloadSize)),
                 appTheme.getDynamicColor("detailAction"),
                 LABEL_FONT_MEDIUM_SIZE,
@@ -1049,7 +1055,6 @@ class AppInfoItem(DownloadItem):
             updateSize = updateSizeLabel.getLabel()
             updateSize.set_alignment(0.0, 0.5)
             appSizeBox.pack_start(updateSize, False, False)
-            appSizeBox.connect("size-allocate", lambda w, e: updateSize.set_width_chars(-1))
             
     def initAdditionStatus(self):
         '''Add addition status.'''

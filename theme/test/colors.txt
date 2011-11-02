@@ -1,4 +1,5 @@
 {"background" : "#000000",
+ "foreground" : "#FFFFFF", 
  "appSize" : "#0000FF",
  "appSummary" : "#00FF00",
  "buttonFont" : "#FFFFFF",
@@ -14,4 +15,11 @@
  "recommendTitle" : "#FF0000",
  "recommendFrame" : "#361804",
  "commentFrame" : "#FF0000",
+ "entryBackground" : "#000000",
+ "entryForeground" : "#FFFFFF",
+ "entryHint" : "#333333",
+ "completionText" : "#FFFFFF",
+ "completionKeyword" : "#FF0000",
+ "completionBackground" : "#000000",
+ "completionSelect" : "#555555",
 }

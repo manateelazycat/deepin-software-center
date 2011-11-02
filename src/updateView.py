@@ -162,12 +162,12 @@ class UpdateItem(DownloadItem):
         size = utils.getPkgSize(pkg)
 
         appSizeLabel = DynamicSimpleLabel(
+            self.appAdditionBox,
             utils.formatFileSize(size),
             appTheme.getDynamicColor("appSize"),
             LABEL_FONT_SIZE,
             )
         appSize = appSizeLabel.getLabel()
-        self.appAdditionBox.connect("size-allocate", lambda w, e: appSize.set_width_chars(-1))
         
         appSize.set_size_request(self.SIZE_LABEL_WIDTH, -1)
         appSize.set_alignment(1.0, 0.5)

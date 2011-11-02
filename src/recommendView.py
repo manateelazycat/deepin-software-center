@@ -182,12 +182,12 @@ class RecommendItem(DownloadItem):
                 appButtonBox.pack_start(appButtonAlign)
             else:
                 appInstalledDynamicLabel = DynamicSimpleLabel(
+                    appButtonBox,
                     "已安装",
                     appTheme.getDynamicColor("installed"),
                     LABEL_FONT_SIZE,
                     )
                 appInstalledLabel = appInstalledDynamicLabel.getLabel()
-                appButtonBox.connect("size-allocate", lambda w, e: appInstalledLabel.set_width_chars(-1))
                 buttonImage = appTheme.getDynamicPixbuf("cell/update_hover.png").getPixbuf()
                 appInstalledLabel.set_size_request(buttonImage.get_width(), buttonImage.get_height())
                 appButtonBox.pack_start(appInstalledLabel)
@@ -442,12 +442,12 @@ class RecommendItem(DownloadItem):
         # Add application summary.
         summary = utils.getPkgShortDesc(pkg)
         appSummaryLabel = DynamicSimpleLabel(
+            self.appSummaryBox,
             summary,
             appTheme.getDynamicColor("appSummary"),
             LABEL_FONT_SIZE
             )
         appSummary = appSummaryLabel.getLabel()
-        self.appSummaryBox.connect("size-allocate", lambda w, e: appSummary.set_width_chars(-1))
         appSummary.set_size_request(self.SUMMARY_WIDTH, -1)
         appSummary.set_single_line_mode(True)
         appSummary.set_ellipsize(pango.ELLIPSIZE_END)
@@ -549,18 +549,18 @@ class RecommendView(object):
         
         nameLabelPaddingLeft = 20
         
+        nameLabelAlign = gtk.Alignment()
         nameDLabel = DynamicSimpleLabel(
+            nameLabelAlign,
             itemName,
             appTheme.getDynamicColor("recommendTitle"),
             LABEL_FONT_LARGE_SIZE,
             )
         nameLabel = nameDLabel.getLabel()
         
-        nameLabelAlign = gtk.Alignment()
         nameLabelAlign.set(0.0, 0.5, 0.0, 0.0)
         nameLabelAlign.set_padding(0, 0, nameLabelPaddingLeft, 0)
         nameLabelAlign.add(nameLabel)
-        nameLabelAlign.connect("size-allocate", lambda w, e: nameLabel.set_width_chars(-1))
         nameLabelBox.pack_start(nameLabelAlign)
         
         # Show more label.

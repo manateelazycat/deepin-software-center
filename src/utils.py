@@ -371,24 +371,6 @@ def getAria2Version():
     
     return (int(versionList[0]), int(versionList[1]), int(versionList[2]))
 
-def getCandidates(pkgs, text):
-    '''Get candidates.'''
-    if len(text) == 0:
-        return []
-    else:
-        # Filter match candidates.
-        candidates = []
-        for pkg in pkgs:
-            if text in pkg:
-                (preStr, matchStr, restStr) = pkg.partition(text)
-                candidates.append((preStr, matchStr, restStr, pkg))
-                
-        return map(lambda (preStr, matchStr, restStr, pkg): 
-                   # Highlight keyword.
-                   [preStr + "<span foreground='#1A3E88'><b>" + matchStr + "</b></span>" + restStr, pkg],
-                   # Sorted candidates.
-                   sorted(candidates, cmp=compareCandidates))
-    
 def compareCandidates((preA, matchA, restA, pkgA), (preB, matchB, restB, pkgB)):
     '''Compare candidates.'''
     lenA = len(preA)
@@ -703,7 +685,7 @@ def aptsearch(keywords):
 #  LocalWords:  oldlibs resize moveWindow addInScrolledWindow scrolledWindow
 #  LocalWords:  shadowType viewport newButtonWithoutPadding getFontYCoordinate
 #  LocalWords:  fontSize xmlrpclib ServerProxy getVersion getAria versionList
-#  LocalWords:  getCommandOutputFirstLine getCandidates pkgs len preStr matchStr restStr
+#  LocalWords:  getCommandOutputFirstLine pkgs len preStr matchStr restStr
 #  LocalWords:  BBBB setMarkup activeMarkup normalMarkup setCursor eventbox
 #  LocalWords:  setDefaultCursor resetAfterClick setCustomizeClickableCursor
 #  LocalWords:  cursorPath setCustomizeCursor runCommand subprocess touchFile

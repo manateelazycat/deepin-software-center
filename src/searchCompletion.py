@@ -36,7 +36,8 @@ class SearchCompletion(object):
     
     MARKUP_COLUMN = 0
     TEXT_COLUMN = 1
-    CELL_HEIGHT = 20
+    CELL_HEIGHT = 22
+    SINGLE_CELL_HEIGHT = 28
     FONT_SIZE = 10
     MAX_CELL_NUMBER = 10
     INPUT_DELAY = 200           # in millisecond 
@@ -133,32 +134,33 @@ class SearchCompletion(object):
         
         text = self.entry.get_chars(0, -1)
         candidates = self.getCandidatesCallback(text)
-        # if len(candidates) != 0:
-        if True:
-            self.listStore.clear()
-            
-            content = self.entry.get_chars(0, -1)
-            textColor = appTheme.getDynamicColor("completionText").getColor()
-            keywordColor = appTheme.getDynamicColor("completionKeyword").getColor()
-            self.listStore.append(
-                ["<span foreground='%s'>%s</span>" % (textColor, "全文搜索") + " <span foreground='%s'>%s</span>" % (keywordColor, content), content])
-            
-            for candidate in candidates:
-                self.listStore.append(candidate)
-                
-            # Scroll to top first.
-            utils.scrollToTop(self.scrolledwindow)
-            
-            w, h = rect.width, (min (len(candidates) + 1, self.MAX_CELL_NUMBER)) * self.CELL_HEIGHT + self.CELL_HEIGHT / 2
-            # FIXME, i don't know why entry'height is bigger than i need, so i decrease 8 pixel here.
-            self.window.move(wx, wy + rect.height - 8)
-            self.window.set_size_request(w, h)
-            self.window.resize(w, h)
-            self.window.show_all()    
+        self.listStore.clear()
         
-            # Focus first candidate.
-            self.treeView.set_cursor((0))
-            gtk.Widget.grab_focus(self.treeView)
+        content = self.entry.get_chars(0, -1)
+        textColor = appTheme.getDynamicColor("completionText").getColor()
+        keywordColor = appTheme.getDynamicColor("completionKeyword").getColor()
+        self.listStore.append(
+            ["<span foreground='%s'>%s</span>" % (textColor, "全文搜索") + " <span foreground='%s'>%s</span>" % (keywordColor, content), content])
+            
+        for candidate in candidates:
+            self.listStore.append(candidate)
+            
+        # Scroll to top first.
+        utils.scrollToTop(self.scrolledwindow)
+        
+        if len(candidates) == 0:
+            w, h = rect.width, self.SINGLE_CELL_HEIGHT
+        else:
+            w, h = rect.width, (min (len(candidates) + 1, self.MAX_CELL_NUMBER)) * (self.CELL_HEIGHT + 2)
+        # FIXME, i don't know why entry'height is bigger than i need, so i decrease 8 pixel here.
+        self.window.move(wx, wy + rect.height - 8)
+        self.window.set_size_request(w, h)
+        self.window.resize(w, h)
+        self.window.show_all()    
+        
+        # Focus first candidate.
+        self.treeView.set_cursor((0))
+        gtk.Widget.grab_focus(self.treeView)
                 
     def handleKeyPress(self, entry, keyPressEvent):
         '''Handle key press.'''
@@ -177,6 +179,10 @@ class SearchCompletion(object):
                 selectedPath = utils.treeViewGetSelectedPath(self.treeView)
                 if selectedPath != None:
                     self.click(self.treeView, (selectedPath), None)
+            elif eventName == "Page_Up":
+                utils.treeViewScrollVertical(self.treeView, True)
+            elif eventName == "Page_Down":
+                utils.treeViewScrollVertical(self.treeView, False)
             else:
                 self.entry.event(keyPressEvent)
             self.propagateLock = False

@@ -598,7 +598,30 @@ def treeViewFocusLastToplevelNode(treeview):
     else:
         path = (0)
     treeview.set_cursor(path)
-
+    
+def treeViewScrollVertical(treeview, scrollUp=True):
+    '''Scroll tree view vertical.'''
+    # Init.
+    scrollNum = 9
+    candidateCount = treeViewGetToplevelNodeCount(treeview)
+    cursor = treeview.get_cursor()
+    (path, column) = cursor
+    maxCandidate = candidateCount - 1
+    
+    # Get candidate at cursor.
+    if path == None:
+        currentCandidate = maxCandidate
+    else:
+        (currentCandidate,) = path
+        
+    # Set cursor to new candidate.
+    if scrollUp:
+        newCandidate = max(0, currentCandidate - scrollNum)
+    else:
+        newCandidate = min(currentCandidate + scrollNum, maxCandidate)
+        
+    treeview.set_cursor((newCandidate))
+    
 def treeViewFocusNextToplevelNode(treeview):
     '''Focus next toplevel node.'''
     selectedPath = treeViewGetSelectedPath(treeview)

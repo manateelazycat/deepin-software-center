@@ -223,6 +223,29 @@ class DynamicColor(object):
     def getColor(self):
         '''Get color.'''
         return self.color
+
+class DynamicAlphaColor(object):
+    '''Dynamic alpha color.'''
+    
+    def __init__(self, colorInfo):
+        '''Init.'''
+        self.update(colorInfo)
+        
+    def update(self, colorInfo):
+        '''Update path.'''
+        (self.color, self.alpha) = colorInfo
+        
+    def getColorInfo(self):
+        '''Get color info.'''
+        return (self.color, self.alpha)
+
+    def getColor(self):
+        '''Get color info.'''
+        return self.color
+    
+    def getAlpha(self):
+        '''Get alpha.'''
+        return self.alpha
     
 class DynamicPixbuf(object):
     '''Dynamic pixbuf.'''
@@ -247,7 +270,6 @@ class Theme(object):
         # Init.
         self.themeName = "default"
         self.colorPath = "colors.txt"
-        self.labelColorPath = "labelColors.txt"
         self.pixbufDict = {}
         self.ticker = 0
         
@@ -260,13 +282,18 @@ class Theme(object):
                 
         # Scan dynamic colors.
         self.colorDict = {}
-        for (colorName, color) in evalFile(self.getColorPath(self.colorPath)).items():
-            self.colorDict[colorName] = DynamicColor(color)
-        
-        # Scan dynamic label colors.
         self.labelColorDict = {}
-        for (colorName, colorTuple) in evalFile(self.getColorPath(self.labelColorPath)).items():
+        self.alphaColorDict = {}
+        colors = evalFile(self.getColorPath(self.colorPath))
+        
+        for (colorName, color) in colors["colors"].items():
+            self.colorDict[colorName] = DynamicColor(color)
+
+        for (colorName, colorTuple) in colors["labelColors"].items():
             self.labelColorDict[colorName] = DynamicLabelColor(colorTuple)
+
+        for (colorName, colorInfo) in colors["alphaColors"].items():
+            self.alphaColorDict[colorName] = DynamicAlphaColor(colorInfo)
                 
     def getImageDir(self):
         '''Get theme directory.'''
@@ -295,6 +322,10 @@ class Theme(object):
     def getDynamicLabelColor(self, colorName):
         '''Get dynamic label color.'''
         return self.labelColorDict[colorName]
+
+    def getDynamicAlphaColor(self, colorName):
+        '''Get dynamic label color.'''
+        return self.alphaColorDict[colorName]
     
     def changeTheme(self, newThemeName):
         '''Change theme.'''
@@ -309,12 +340,18 @@ class Theme(object):
             pixbuf.update(self.getImagePath(path))
             
         # Update dynamic colors.
-        for (colorName, color) in evalFile(self.getColorPath(self.colorPath)).items():
+        colors = evalFile(self.getColorPath(self.colorPath))
+            
+        for (colorName, color) in colors["colors"].items():
             self.colorDict[colorName].update(color)
             
         # Update dynamic label colors.
-        for (colorName, colorTuple) in evalFile(self.getColorPath(self.labelColorPath)).items():
+        for (colorName, colorTuple) in colors["labelColors"].items():
             self.labelColorDict[colorName].update(colorTuple)
+
+        # Update dynamic alpha colors.
+        for (colorName, colorInfo) in colors["alphaColors"].items():
+            self.alphaColorDict[colorName].update(colorInfo)
             
 # Init.
 appTheme = Theme()            

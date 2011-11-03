@@ -39,10 +39,20 @@ class Statusbar(object):
         self.paddingY = 5
         self.eventbox = gtk.EventBox()
         
-        eventBoxSetBackground(
+        drawStatusbarBackground(
             self.eventbox,
-            True, False,
-            appTheme.getDynamicPixbuf("statusbar/background.png"))
+            appTheme.getDynamicColor("navigateExtend"),
+            appTheme.getDynamicColor("frame"),
+            appTheme.getDynamicAlphaColor("frameLigtht"),
+            appTheme.getDynamicAlphaColor("topbarBottom"),
+            )
+        # eventBoxSetBackground(
+        #     self.eventbox,
+        #     True, False,
+        #     appTheme.getDynamicPixbuf("statusbar/background.png"))
+        self.eventbox.set_size_request(-1, 34)
+        # self.eventbox.connect("expose-event", lambda w, e: drawBackground(w, e, appTheme.getDynamicColor("navigateExtend")))
+        
         self.box = gtk.HBox()
         
         self.name = gtk.Label()
@@ -52,19 +62,6 @@ class Statusbar(object):
         self.nameAlignment.set(0.0, 0.0, 0.0, 1.0)
         self.nameAlignment.add(self.name)
         self.box.pack_start(self.nameAlignment)
-        
-        self.join = gtk.Label()
-        self.join.set_markup("<span foreground='#FFFFFF' size='%s' underline='single'>加入我们</span>" % (LABEL_FONT_SIZE))
-        self.joinAlignment = gtk.Alignment()
-        self.joinAlignment.set_padding(self.paddingY, self.paddingY, self.paddingX, self.paddingX)
-        self.joinAlignment.set(1.0, 0.0, 0.0, 1.0)
-        self.joinAlignment.add(self.join)
-        self.joinBox = gtk.EventBox()
-        self.joinBox.set_visible_window(False)
-        self.joinBox.add(self.joinAlignment)
-        self.joinBox.connect("button-press-event", lambda w, e: utils.runCommand("xdg-open http://www.linuxdeepin.com/job-offers"))
-        self.box.pack_start(self.joinBox)
-        utils.setClickableCursor(self.joinBox)
         
         # Connect components.
         self.eventbox.add(self.box)

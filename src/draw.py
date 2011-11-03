@@ -490,6 +490,35 @@ def sideButtonOnExpose(widget, event,
 
     return True
 
+def drawAlphaLine(widget, daColor, lineWidth, vertical=True):
+    '''Draw line.'''
+    if vertical:
+        widget.set_size_request(lineWidth, -1)
+    else:
+        widget.set_size_request(-1, lineWidth)
+        
+    widget.connect("expose-event", lambda w, e: drawAlphaLineExpose(
+            w, e, daColor, lineWidth, vertical))
+
+def drawAlphaLineExpose(widget, event, daColor, lineWidth, vertical):
+    '''Draw line.'''
+    rect = widget.allocation
+    
+    cr = widget.window.cairo_create()
+    cr.set_line_width(lineWidth)
+    cr.set_source_rgba(*alphaColorHexToCairo(daColor.getColorInfo()))
+    
+    if vertical:
+        cr.move_to(rect.x, rect.y)
+        cr.rel_line_to(0, rect.height)
+    else:
+        cr.move_to(rect.x, rect.y)
+        cr.rel_line_to(rect.width, 0)
+        
+    cr.stroke()
+    
+    return True
+
 def drawLine(widget, dColor,
              lineWidth, vertical=True, lineType=None):
     '''Draw line.'''
@@ -645,6 +674,41 @@ def drawRoundRectangle(cr, x, y, width, height, r):
     cr.arc(x + width - r, y + r, r, 3 * pi / 2, 2 * pi);
     cr.arc(x + width - r, y + height - r, r, 0, pi / 2);
     cr.arc(x + r, y + height - r, r, pi / 2, pi);
+
+def drawNavigateFrame(cr, x, y, width, height, r):
+    '''Draw round rectangle.'''
+    cr.move_to(x + r, y);
+    cr.line_to(x + width - r, y);
+
+    cr.move_to(x + width, y + r);
+    cr.line_to(x + width, y + height);
+
+    cr.move_to(x, y + height);
+    cr.line_to(x, y + r);
+
+    cr.arc(x + r, y + r, r, pi, 3 * pi / 2.0);
+    cr.arc(x + width - r, y + r, r, 3 * pi / 2, 2 * pi);
+
+def drawStatusbarFrame(cr, x, y, width, height, r):
+    '''Draw round rectangle.'''
+    # cr.move_to(x + r, y);
+    # cr.line_to(x + width - r, y);
+
+    cr.move_to(x + width, y);
+    cr.line_to(x + width, y + height - r);
+
+    cr.arc(x + width - r, y + height - r, r, 0, pi / 2);
+    
+    cr.move_to(x + width - r, y + height);
+    cr.line_to(x + r, y + height);
+
+    cr.arc(x + r, y + height - r, r, pi / 2, pi);
+    
+    cr.move_to(x, y + height - r);
+    cr.line_to(x, y);
+
+    # cr.arc(x + r, y + r, r, pi, 3 * pi / 2.0);
+    # cr.arc(x + width - r, y + r, r, 3 * pi / 2, 2 * pi);
     
 def checkButtonSetBackground(widget, scaleX, scaleY, normalImg, selectImg):
     '''Set event box's background.'''
@@ -810,6 +874,11 @@ def toggleTabOnExpose(widget, event,
         widget.propagate_expose(widget.get_child(), event)
 
     return True
+
+def alphaColorHexToCairo((color, alpha)):
+    '''Alpha color hext to cairo color.'''
+    (r, g, b) = colorHexToCairo(color)
+    return (r, g, b, alpha)
 
 def colorHexToCairo(color):
     """ 
@@ -1058,9 +1127,148 @@ def updateShape(widget, allocation, radius):
         cr.set_operator(cairo.OPERATOR_SOURCE)
         drawRoundRectangle(cr, 0, 0, w, h, radius)
         cr.fill()
-
+        
         widget.shape_combine_mask(bitmap, 0, 0)
+        
+def drawExtendBackground(widget, dPixbuf):
+    '''Draw extend background.'''
+    widget.set_size_request(-1, dPixbuf.getPixbuf().get_height())
     
+    widget.connect_after("expose-event", lambda w, e: exposeExtendBackground(w, e, dPixbuf))
+    
+def exposeExtendBackground(widget, event, dPixbuf):
+    '''Expose extend background.'''
+    w, h = widget.allocation.width, widget.allocation.height
+    cr = widget.window.cairo_create()
+    pixbuf = dPixbuf.getPixbuf()
+    pixbufWidth = pixbuf.get_width()
+    
+    # cr.set_source_rgb(*colorHexToCairo("#FFF8E5"))
+    cr.set_source_rgb(*colorHexToCairo("#2991DA"))
+    cr.rectangle(0, 0, w - pixbufWidth, h)
+    cr.fill()
+    
+    cr.set_source_pixbuf(pixbuf, w - pixbufWidth, 0)
+    cr.paint()
+    
+    if widget.get_child() != None:
+        widget.propagate_expose(widget.get_child(), event)
+
+    return True
+
+def drawLoopBackground(widget, dPixbuf):
+    '''Draw extend background.'''
+    widget.set_size_request(-1, dPixbuf.getPixbuf().get_height())
+    
+    widget.connect_after("expose-event", lambda w, e: exposeLoopBackground(w, e, dPixbuf))
+    
+def exposeLoopBackground(widget, event, dPixbuf):
+    '''Expose extend background.'''
+    w, h = widget.allocation.width, widget.allocation.height
+    cr = widget.window.cairo_create()
+    pixbuf = dPixbuf.getPixbuf()
+    pixbufWidth = pixbuf.get_width()
+    times = int(math.ceil(w / float(pixbufWidth)))
+    
+    for index in range(0, times):
+        cr.set_source_pixbuf(pixbuf, pixbufWidth * index, 0)
+        cr.paint()
+    
+    if widget.get_child() != None:
+        widget.propagate_expose(widget.get_child(), event)
+
+    return True
+
+def drawNavigateBackground(widget, dPixbuf, frameColor, extendColor, frameLightColor, bottomColor):
+    '''Draw extend background.'''
+    widget.set_size_request(-1, dPixbuf.getPixbuf().get_height())
+    
+    widget.connect_after("expose-event", 
+                         lambda w, e: exposeNavigateBackground(w, e, dPixbuf, frameColor, extendColor, frameLightColor, bottomColor))
+    
+def exposeNavigateBackground(widget, event, dPixbuf, frameColor, extendColor, frameLightColor, bottomColor):
+    '''Expose extend background.'''
+    # Init.
+    rect = widget.allocation
+    w, h = widget.allocation.width, widget.allocation.height
+    cr = widget.window.cairo_create()
+    pixbuf = dPixbuf.getPixbuf()
+    pixbufWidth = pixbuf.get_width()
+    
+    # Draw extend color.
+    cr.set_source_rgb(*colorHexToCairo(extendColor.getColor()))
+    cr.rectangle(0, 0, w - pixbufWidth, h)
+    cr.fill()
+    
+    # Draw pixbuf.
+    cr.set_source_pixbuf(pixbuf, w - pixbufWidth, 0)
+    cr.paint()
+    
+    # Draw frame.
+    cr.set_line_width(1)
+    cr.set_source_rgb(*colorHexToCairo(frameColor.getColor()))
+    drawNavigateFrame(cr, 0, 0, w, h, 6)
+    cr.stroke()
+
+    # Draw frame light.
+    cr.set_line_width(1)
+    cr.set_source_rgba(*alphaColorHexToCairo(frameLightColor.getColorInfo()))
+    drawNavigateFrame(cr, 1, 1, w - 2, h - 2, 6)
+    cr.stroke()
+    
+    # Draw bottom line.
+    cr.set_line_width(1)
+    cr.set_source_rgba(*alphaColorHexToCairo(bottomColor.getColorInfo()))
+    cr.move_to(1, h)
+    cr.line_to(rect.width - 1, h)
+    cr.stroke()
+    
+    if widget.get_child() != None:
+        widget.propagate_expose(widget.get_child(), event)
+
+    return True
+    
+def drawStatusbarBackground(widget, backgroundColor, frameColor, frameLightColor, topColor):
+    '''Draw extend background.'''
+    widget.connect_after("expose-event", 
+                         lambda w, e: exposeStatusbarBackground(w, e, backgroundColor, frameColor, frameLightColor, topColor))
+    
+def exposeStatusbarBackground(widget, event, backgroundColor, frameColor, frameLightColor, topColor):
+    '''Expose extend background.'''
+    # Init.
+    rect = widget.allocation
+    w, h = widget.allocation.width, widget.allocation.height
+    cr = widget.window.cairo_create()
+    
+    # Draw background.
+    cr.set_source_rgb(*colorHexToCairo(backgroundColor.getColor()))
+    cr.rectangle(0, 0, w, h)
+    cr.fill()
+    
+    # Draw frame.
+    cr.set_line_width(1)
+    cr.set_source_rgb(*colorHexToCairo(frameColor.getColor()))
+    drawStatusbarFrame(cr, 0, 0, w, h, 6)
+    cr.stroke()
+
+    # Draw frame light.
+    cr.set_line_width(1)
+    cr.set_source_rgba(*alphaColorHexToCairo(frameLightColor.getColorInfo()))
+    drawStatusbarFrame(cr, 1, 1, w - 2, h - 2, 6)
+    cr.stroke()
+    
+    # Draw top line.
+    cr.set_line_width(1)
+    cr.set_source_rgba(*alphaColorHexToCairo(topColor.getColorInfo()))
+    cr.move_to(1, 0)
+    cr.line_to(rect.width - 1, 0)
+    cr.stroke()
+    
+    if widget.get_child() != None:
+        widget.propagate_expose(widget.get_child(), event)
+
+    return True
+
 #  LocalWords:  scaleX imageWidth scaleY imageHeight pixbuf cr drawPixbuf
 #  LocalWords:  buttonSetBackground normalImg hoverImg pressImg buttonLabel
 #  LocalWords:  fontSize labelColor normalPixbuf hoverPixbuf pressPixbuf

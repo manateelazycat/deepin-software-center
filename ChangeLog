@@ -1,5 +1,8 @@
 * News in 2.0
 
+2011-11-03 Yong Wang <lazycat.manatee@gmail.com>
+	* Add new render code for window.
+
 2011-11-02 Yong Wang <lazycat.manatee@gmail.com>
 	* Update theme code.
 	* Make search completion window response PageUp/PageDown.

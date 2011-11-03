@@ -74,9 +74,6 @@ class DeepinSoftwareCenter(object):
         # Init gdk threads.
         gtk.gdk.threads_init()
         
-        self.topbarPixbuf = appTheme.getDynamicPixbuf("navigate/background.png")
-        self.bottombarPixbuf = appTheme.getDynamicPixbuf("statusbar/background.png")
-            
         # Init apt cache.
         self.statusbar = statusbar.Statusbar()
         self.statusbar.eventbox.connect("button-press-event", lambda w, e: utils.resizeWindow(w, e, self.window))
@@ -102,18 +99,25 @@ class DeepinSoftwareCenter(object):
         self.window = self.initMainWindow()
         self.window.connect("size-allocate", lambda w, a: updateShape(w, a, 6))
         self.hasMax = False
+        self.topLine = gtk.Image()
         self.leftLine = gtk.Image()
-        drawLine(self.leftLine, appTheme.getDynamicColor("frame"), 1)
         self.rightLine = gtk.Image()
+        drawAlphaLine(self.topLine, appTheme.getDynamicAlphaColor("bodyTop"), 1, False)
+        drawLine(self.leftLine, appTheme.getDynamicColor("frame"), 1)
         drawLine(self.rightLine, appTheme.getDynamicColor("frame"), 1)
         self.mainBox = gtk.VBox()
         self.topbox = gtk.VBox()
         self.topbar = gtk.EventBox()
 
-        eventBoxSetBackground(
+        drawNavigateBackground(
             self.topbar,
-            True, False,
-            appTheme.getDynamicPixbuf("navigate/background.png"))
+            appTheme.getDynamicPixbuf("navigate/background3.png")    ,
+            appTheme.getDynamicColor("frame"),
+            appTheme.getDynamicColor("navigateExtend"),
+            appTheme.getDynamicAlphaColor("frameLigtht"),
+            appTheme.getDynamicAlphaColor("topbarBottom"),
+            )
+
         # make window movable or re-sizable even window is decorated.
         self.topbar.connect('button-press-event',
                             lambda w, e: utils.moveWindow(w, e, self.window))
@@ -121,6 +125,7 @@ class DeepinSoftwareCenter(object):
         self.titlebar = titlebar.Titlebar(self.selectTheme, self.minWindow, self.toggleWindow, self.closeWindow)
         self.navigatebar = navigatebar.NavigateBar()
         self.bodyBox = gtk.HBox()
+        self.frameBox = gtk.VBox()
         self.contentBox = gtk.VBox()
         
         self.window.connect_after("show", lambda w: self.createTooltips())
@@ -792,7 +797,9 @@ class DeepinSoftwareCenter(object):
         self.topbox.pack_start(self.navigatebar.box, False)
         self.mainBox.pack_start(self.bodyBox)
         self.bodyBox.pack_start(self.leftLine, False, False)
-        self.bodyBox.pack_start(self.contentBox)
+        self.bodyBox.pack_start(self.frameBox)
+        self.frameBox.pack_start(self.topLine, False, False)
+        self.frameBox.pack_start(self.contentBox)
         self.bodyBox.pack_start(self.rightLine, False, False)
 
         # Add statusbar.

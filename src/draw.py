@@ -536,6 +536,7 @@ def drawLineExpose(widget, event, dColor, lineWidth, vertical, lineType):
     
     cr = widget.window.cairo_create()
     cr.set_line_width(lineWidth)
+    # print "*** 1: %s" % (str(colorHexToCairo(color)))
     cr.set_source_rgb(*colorHexToCairo(color))
     
     if lineType in [LINE_TOP, LINE_BOTTOM]:
@@ -1206,6 +1207,7 @@ def exposeNavigateBackground(widget, event, dPixbuf, frameColor, extendColor, fr
     
     # Draw frame.
     cr.set_line_width(1)
+    # print "*** 2: %s" % (str(colorHexToCairo(frameColor.getColor())))
     cr.set_source_rgb(*colorHexToCairo(frameColor.getColor()))
     drawNavigateFrame(cr, 0, 0, w, h, 6)
     cr.stroke()

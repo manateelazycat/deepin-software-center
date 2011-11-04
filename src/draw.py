@@ -536,8 +536,8 @@ def drawLineExpose(widget, event, dColor, lineWidth, vertical, lineType):
     
     cr = widget.window.cairo_create()
     cr.set_line_width(lineWidth)
-    # print "*** 1: %s" % (str(colorHexToCairo(color)))
     cr.set_source_rgb(*colorHexToCairo(color))
+    cr.set_operator(cairo.OPERATOR_SOURCE)
     
     if lineType in [LINE_TOP, LINE_BOTTOM]:
         xAdjust = 0
@@ -692,9 +692,6 @@ def drawNavigateFrame(cr, x, y, width, height, r):
 
 def drawStatusbarFrame(cr, x, y, width, height, r):
     '''Draw round rectangle.'''
-    # cr.move_to(x + r, y);
-    # cr.line_to(x + width - r, y);
-
     cr.move_to(x + width, y);
     cr.line_to(x + width, y + height - r);
 
@@ -707,9 +704,6 @@ def drawStatusbarFrame(cr, x, y, width, height, r):
     
     cr.move_to(x, y + height - r);
     cr.line_to(x, y);
-
-    # cr.arc(x + r, y + r, r, pi, 3 * pi / 2.0);
-    # cr.arc(x + width - r, y + r, r, 3 * pi / 2, 2 * pi);
     
 def checkButtonSetBackground(widget, scaleX, scaleY, normalImg, selectImg):
     '''Set event box's background.'''
@@ -1205,24 +1199,26 @@ def exposeNavigateBackground(widget, event, dPixbuf, frameColor, extendColor, fr
     cr.set_source_pixbuf(pixbuf, w - pixbufWidth, 0)
     cr.paint()
     
-    # Draw frame.
-    cr.set_line_width(1)
-    # print "*** 2: %s" % (str(colorHexToCairo(frameColor.getColor())))
-    cr.set_source_rgb(*colorHexToCairo(frameColor.getColor()))
-    drawNavigateFrame(cr, 0, 0, w, h, 6)
-    cr.stroke()
-
     # Draw frame light.
     cr.set_line_width(1)
     cr.set_source_rgba(*alphaColorHexToCairo(frameLightColor.getColorInfo()))
-    drawNavigateFrame(cr, 1, 1, w - 2, h - 2, 6)
+    cr.set_operator(cairo.OPERATOR_OVER)
+    drawNavigateFrame(cr, 1, 1, w - 2, h - 2, RADIUS)
     cr.stroke()
     
+    # Draw frame.
+    cr.set_line_width(1)
+    cr.set_source_rgb(*colorHexToCairo(frameColor.getColor()))
+    cr.set_operator(cairo.OPERATOR_SOURCE)
+    drawNavigateFrame(cr, 0, 0, w, h, RADIUS)
+    cr.stroke()
+
     # Draw bottom line.
     cr.set_line_width(1)
     cr.set_source_rgba(*alphaColorHexToCairo(bottomColor.getColorInfo()))
     cr.move_to(1, h)
     cr.line_to(rect.width - 1, h)
+    cr.set_operator(cairo.OPERATOR_OVER)
     cr.stroke()
     
     if widget.get_child() != None:
@@ -1247,23 +1243,26 @@ def exposeStatusbarBackground(widget, event, backgroundColor, frameColor, frameL
     cr.rectangle(0, 0, w, h)
     cr.fill()
     
-    # Draw frame.
-    cr.set_line_width(1)
-    cr.set_source_rgb(*colorHexToCairo(frameColor.getColor()))
-    drawStatusbarFrame(cr, 0, 0, w, h, 6)
-    cr.stroke()
-
     # Draw frame light.
     cr.set_line_width(1)
     cr.set_source_rgba(*alphaColorHexToCairo(frameLightColor.getColorInfo()))
-    drawStatusbarFrame(cr, 1, 1, w - 2, h - 2, 6)
+    cr.set_operator(cairo.OPERATOR_OVER)
+    drawStatusbarFrame(cr, 1, 1, w - 2, h - 2, RADIUS)
     cr.stroke()
     
+    # Draw frame.
+    cr.set_line_width(1)
+    cr.set_source_rgb(*colorHexToCairo(frameColor.getColor()))
+    drawStatusbarFrame(cr, 0, 0, w, h, RADIUS)
+    cr.set_operator(cairo.OPERATOR_SOURCE)
+    cr.stroke()
+
     # Draw top line.
     cr.set_line_width(1)
     cr.set_source_rgba(*alphaColorHexToCairo(topColor.getColorInfo()))
     cr.move_to(1, 0)
     cr.line_to(rect.width - 1, 0)
+    cr.set_operator(cairo.OPERATOR_OVER)
     cr.stroke()
     
     if widget.get_child() != None:

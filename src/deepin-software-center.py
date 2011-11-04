@@ -97,7 +97,7 @@ class DeepinSoftwareCenter(object):
         
         # Init widgets.
         self.window = self.initMainWindow()
-        self.window.connect("size-allocate", lambda w, a: updateShape(w, a, 6))
+        self.window.connect("size-allocate", lambda w, a: updateShape(w, a, RADIUS))
         self.hasMax = False
         self.topLine = gtk.Image()
         self.leftLine = gtk.Image()

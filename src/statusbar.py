@@ -49,21 +49,6 @@ class Statusbar(object):
             appTheme.getDynamicColor("statusbarExtend"),
             )
         
-        # drawStatusbarBackground(
-        #     self.eventbox,
-        #     appTheme.getDynamicColor("navigateExtend"),
-        #     appTheme.getDynamicColor("frame"),
-        #     appTheme.getDynamicAlphaColor("frameLigtht"),
-        #     appTheme.getDynamicAlphaColor("topbarBottom"),
-        #     )
-        # self.eventbox.set_size_request(-1, 34)
-        
-        # eventBoxSetBackground(
-        #     self.eventbox,
-        #     True, False,
-        #     appTheme.getDynamicPixbuf("statusbar/background.png"))
-        # self.eventbox.connect("expose-event", lambda w, e: drawBackground(w, e, appTheme.getDynamicColor("navigateExtend")))
-        
         self.box = gtk.HBox()
         
         self.name = gtk.Label()

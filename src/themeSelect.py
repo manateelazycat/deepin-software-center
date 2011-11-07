@@ -116,7 +116,7 @@ class ThemeSelect(object):
     
     def getIndex(self):
         '''Get index.'''
-        return index
+        return self.index
 
 class ThemeSlide(object):
     '''Theme slide.'''
@@ -136,11 +136,17 @@ class ThemeSlide(object):
         self.align = gtk.Alignment()
         self.align.set(0.5, 0.5, 0.0, 0.0)
         self.align.set_padding(self.PADDING_Y, self.PADDING_Y, self.PADDING_X, self.PADDING_X)
-        self.iconBox = gtk.EventBox()
-        self.iconBox.set_visible_window(False)
+        self.iconBox = gtk.Button()
         self.iconBox.set_size_request(self.pixbuf.get_width(), self.pixbuf.get_height())
         self.iconBox.connect("button-press-event", lambda w, e: setIndexCallback(index))
-        drawThemeIcon(self.iconBox, self.pixbuf, index, getIndexCallback)
+        drawThemeIcon(
+            self.iconBox, 
+            self.pixbuf, 
+            appTheme.getDynamicPixbuf("skin/select.png"),
+            appTheme.getDynamicColor("themeIconHover"),
+            appTheme.getDynamicColor("themeIconPress"),
+            index, 
+            getIndexCallback)
         
         self.iconNameBox = gtk.EventBox()
         self.iconNameBox.set_visible_window(False)

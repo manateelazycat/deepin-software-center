@@ -307,12 +307,14 @@ def navButtonOnExpose(widget, event,
 
     return True
 
-def drawThemeIcon(widget, pixbuf, index, getIndex):
+def drawThemeIcon(widget, pixbuf, selectDPixbuf, hoverDColor, pressDColor, index, getIndex):
     '''Draw theme icon.'''
     widget.connect("expose-event", lambda w, e: themeIconOnExpose(
-            w, e, pixbuf, index, getIndex))
+            w, e, pixbuf, selectDPixbuf,
+            hoverDColor, pressDColor,
+            index, getIndex))
 
-def themeIconOnExpose(widget, event, pixbuf, index, getIndex):
+def themeIconOnExpose(widget, event, pixbuf, selectDPixbuf, hoverDColor, pressDColor, index, getIndex):
     '''Expose function to theme icon.'''
     # Init.
     cr = widget.window.cairo_create()
@@ -322,6 +324,22 @@ def themeIconOnExpose(widget, event, pixbuf, index, getIndex):
     drawPixbuf(cr, pixbuf, rect.x, rect.y)
     
     # Draw frame.
+    if widget.state == gtk.STATE_ACTIVE or index == getIndex():
+        # Draw press frame.
+        cr.set_line_width(1)
+        cr.set_source_rgb(*colorHexToCairo(pressDColor.getColor()))
+        cr.rectangle(rect.x, rect.y, rect.width, rect.height)
+        cr.stroke()
+        
+        # Draw select pixbuf.
+        selectPixbuf = selectDPixbuf.getPixbuf()
+        drawPixbuf(cr, selectPixbuf, rect.x + rect.width - selectPixbuf.get_width() - 1, rect.y)
+    elif widget.state == gtk.STATE_PRELIGHT:
+        # Hover status.
+        cr.set_line_width(1)
+        cr.set_source_rgb(*colorHexToCairo(hoverDColor.getColor()))
+        cr.rectangle(rect.x, rect.y, rect.width, rect.height)
+        cr.stroke()
 
     if widget.get_child() != None:
         widget.propagate_expose(widget.get_child(), event)
@@ -1345,11 +1363,6 @@ def exposeStatusbarBackground(widget, event, dPixbuf, dType, frameColor, frameLi
             cr.set_source_pixbuf(pixbuf, pixbufWidth * index, 0)
             cr.paint()
             
-    # # Draw background.
-    # cr.set_source_rgb(*colorHexToCairo(backgroundColor.getColor()))
-    # cr.rectangle(0, 0, w, h)
-    # cr.fill()
-    
     # Draw frame light.
     cr.set_line_width(1)
     cr.set_source_rgba(*alphaColorHexToCairo(frameLightColor.getColorInfo()))

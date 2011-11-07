@@ -27,6 +27,8 @@
 	 "statusbarExtend" : "#2991DA",
 	 "themeSelectTitleText" : "#FFFFFF",
 	 "themeIconName" : "#FFFFFF",
+	 "themeIconHover" : "#FFFFFF",
+	 "themeIconPress" : "#FF0000",
     },
  "labelColors" : 
     {"appName" : ("#1A3E88", "#0084FF", "#1A3E88"),

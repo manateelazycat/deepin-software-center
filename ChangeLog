@@ -2,6 +2,7 @@
 
 2011-11-07 Yong Wang <lazycat.manatee@gmail.com>
 	* Support multiple theme format.
+	* Finish select theme code.
 
 2011-11-04 Yong Wang <lazycat.manatee@gmail.com>
 	* Finish window graphics code.

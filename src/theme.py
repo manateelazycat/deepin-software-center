@@ -24,7 +24,7 @@ from utils import *
 import gobject, gtk
 import os
 
-class DynamicTreeView:
+class DynamicTreeView(object):
     '''Dynamic tree view.'''
 	
     def __init__(self, parent, liststore, backgroundDColor, selectDColor):
@@ -52,7 +52,7 @@ class DynamicTreeView:
             
         return False
 
-class DynamicTextView:
+class DynamicTextView(object):
     '''Dynamic text view.'''
 	
     def __init__(self, parent, backgroundDColor, foregroundDColor):
@@ -261,6 +261,21 @@ class DynamicPixbuf(object):
     def getPixbuf(self):
         '''Get pixbuf.'''
         return self.pixbuf
+    
+class DynamicDrawType(object):
+    '''Dynamic draw type.'''
+	
+    def __init__(self, dType):
+        '''Init dynamic type.'''
+        self.update(dType)
+        
+    def update(self, dType):
+        '''Update dynamic type.'''
+        self.type = dType
+
+    def getType(self):
+        '''Get dynamic type.'''
+        return self.type    
 
 class Theme(object):
     '''Theme.'''
@@ -270,8 +285,13 @@ class Theme(object):
         # Init.
         self.themeName = "default"
         self.colorPath = "colors.txt"
-        self.pixbufDict = {}
+        self.drawTypePath = "types.txt"
         self.ticker = 0
+        self.pixbufDict = {}
+        self.colorDict = {}
+        self.labelColorDict = {}
+        self.alphaColorDict = {}
+        self.drawTypeDict = {}
         
         # Scan theme files.
         themeDir = self.getImageDir()
@@ -281,9 +301,6 @@ class Theme(object):
                 self.pixbufDict[path] = DynamicPixbuf(self.getImagePath(path))
                 
         # Scan dynamic colors.
-        self.colorDict = {}
-        self.labelColorDict = {}
-        self.alphaColorDict = {}
         colors = evalFile(self.getColorPath(self.colorPath))
         
         for (colorName, color) in colors["colors"].items():
@@ -294,6 +311,12 @@ class Theme(object):
 
         for (colorName, colorInfo) in colors["alphaColors"].items():
             self.alphaColorDict[colorName] = DynamicAlphaColor(colorInfo)
+            
+        # Scan dynamic draw type.
+        types = evalFile(self.getThemeDir() + self.drawTypePath)
+        
+        for (typeName, typeInfo) in types.items():
+            self.drawTypeDict[typeName] = DynamicDrawType(typeInfo)
                 
     def getImageDir(self):
         '''Get theme directory.'''
@@ -303,13 +326,13 @@ class Theme(object):
         '''Get pixbuf path.'''
         return os.path.join(self.getImageDir(), path)
 
-    def getColorDir(self):
+    def getThemeDir(self):
         '''Get theme directory.'''
         return "../theme/%s/" % (self.themeName)
                 
     def getColorPath(self, path):
         '''Get pixbuf path.'''
-        return os.path.join(self.getColorDir(), path)
+        return os.path.join(self.getThemeDir(), path)
             
     def getDynamicPixbuf(self, path):
         '''Get dynamic pixbuf.'''
@@ -326,6 +349,10 @@ class Theme(object):
     def getDynamicAlphaColor(self, colorName):
         '''Get dynamic label color.'''
         return self.alphaColorDict[colorName]
+    
+    def getDynamicDrawType(self, typeName):
+        '''Get dynamic type name.'''
+        return self.drawTypeDict[typeName]
     
     def changeTheme(self, newThemeName):
         '''Change theme.'''
@@ -352,6 +379,12 @@ class Theme(object):
         # Update dynamic alpha colors.
         for (colorName, colorInfo) in colors["alphaColors"].items():
             self.alphaColorDict[colorName].update(colorInfo)
+            
+        # Scan dynamic draw type.
+        types = evalFile(self.getThemeDir() + self.drawTypePath)
+        
+        for (typeName, typeInfo) in types.items():
+            self.drawTypeDict[typeName].update(typeInfo)
             
 # Init.
 appTheme = Theme()            

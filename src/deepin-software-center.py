@@ -113,11 +113,12 @@ class DeepinSoftwareCenter(object):
 
         drawNavigateBackground(
             self.topbar,
-            appTheme.getDynamicPixbuf("navigate/background.png")    ,
+            appTheme.getDynamicPixbuf("navigate/background.png"),
+            appTheme.getDynamicDrawType("navigatebar"),
             appTheme.getDynamicColor("frame"),
-            appTheme.getDynamicColor("navigateExtend"),
             appTheme.getDynamicAlphaColor("frameLigtht"),
             appTheme.getDynamicAlphaColor("topbarBottom"),
+            appTheme.getDynamicColor("navigatebarExtend"),
             )
 
         # make window movable or re-sizable even window is decorated.

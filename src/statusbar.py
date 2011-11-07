@@ -37,7 +37,17 @@ class Statusbar(object):
         # Init.
         self.paddingX = 10
         self.paddingY = 5
+        
         self.eventbox = gtk.EventBox()
+        drawStatusbarBackground(
+            self.eventbox,
+            appTheme.getDynamicPixbuf("statusbar/background.png"),
+            appTheme.getDynamicDrawType("statusbar"),
+            appTheme.getDynamicColor("frame"),
+            appTheme.getDynamicAlphaColor("frameLigtht"),
+            appTheme.getDynamicAlphaColor("statusbarTop"),
+            appTheme.getDynamicColor("statusbarExtend"),
+            )
         
         # drawStatusbarBackground(
         #     self.eventbox,
@@ -48,11 +58,11 @@ class Statusbar(object):
         #     )
         # self.eventbox.set_size_request(-1, 34)
         
-        eventBoxSetBackground(
-            self.eventbox,
-            True, False,
-            appTheme.getDynamicPixbuf("statusbar/background.png"))
-        self.eventbox.connect("expose-event", lambda w, e: drawBackground(w, e, appTheme.getDynamicColor("navigateExtend")))
+        # eventBoxSetBackground(
+        #     self.eventbox,
+        #     True, False,
+        #     appTheme.getDynamicPixbuf("statusbar/background.png"))
+        # self.eventbox.connect("expose-event", lambda w, e: drawBackground(w, e, appTheme.getDynamicColor("navigateExtend")))
         
         self.box = gtk.HBox()
         

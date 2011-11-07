@@ -29,7 +29,7 @@ import utils
 import os
 pygtk.require('2.0')
 
-class ThemeSelect:
+class ThemeSelect(object):
     '''Theme select.'''
     def __init__(self, widget, changeThemeCallback):
         '''Init theme select.'''
@@ -118,7 +118,7 @@ class ThemeSelect:
         '''Get index.'''
         return index
 
-class ThemeSlide:
+class ThemeSlide(object):
     '''Theme slide.'''
     
     PADDING_X = 10

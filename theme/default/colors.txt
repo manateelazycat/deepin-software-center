@@ -24,6 +24,8 @@
      "completionBackground" : "#FFFFFF",
      "completionSelect" : "#16A5ED",
 	 "navigateExtend" : "#2991DA",
+	 "themeSelectTitleText" : "#FFFFFF",
+	 "themeIconName" : "#FFFFFF",
     },
  "labelColors" : 
     {"appName" : ("#1A3E88", "#0084FF", "#1A3E88"),
@@ -38,5 +40,6 @@
      "statusbarTop" : ("#333333", 0.5),
 	 "bodyTop" : ("#FFFFFF", 0.5),
      "frameLigtht" : ("#FFFFFF", 0.5),
+	 "themeSelectTitleBackground" : ("#000000", 0.5), 
 	},
 }

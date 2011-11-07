@@ -26,6 +26,7 @@ from copy import deepcopy
 from draw import *
 from tooltips import *
 from utils import postGUI
+import themeSelect
 import math
 import cairo
 import checkUpdate
@@ -108,6 +109,7 @@ class DeepinSoftwareCenter(object):
         self.mainBox = gtk.VBox()
         self.topbox = gtk.VBox()
         self.topbar = gtk.EventBox()
+        self.themeSelectWindow = themeSelect.ThemeSelect(self.window, self.selectTheme)
 
         drawNavigateBackground(
             self.topbar,
@@ -122,7 +124,7 @@ class DeepinSoftwareCenter(object):
         self.topbar.connect('button-press-event',
                             lambda w, e: utils.moveWindow(w, e, self.window))
         self.topbar.connect("button-press-event", self.doubleClickWindow)
-        self.titlebar = titlebar.Titlebar(self.selectTheme, self.minWindow, self.toggleWindow, self.closeWindow)
+        self.titlebar = titlebar.Titlebar(self.showThemeSelectWindow, self.minWindow, self.toggleWindow, self.closeWindow)
         self.navigatebar = navigatebar.NavigateBar()
         self.bodyBox = gtk.HBox()
         self.frameBox = gtk.VBox()
@@ -130,10 +132,20 @@ class DeepinSoftwareCenter(object):
         
         self.window.connect_after("show", lambda w: self.createTooltips())
         
-    def selectTheme(self):
+    def showThemeSelectWindow(self, widget, event):
+        '''Show theme select window.'''
+        if self.themeSelectWindow.window.get_visible():
+            self.themeSelectWindow.hide()
+        else:
+            rect = widget.allocation
+            (wx, wy) = widget.window.get_origin()
+            (x, y) = widget.translate_coordinates(self.window, wx, wy)
+            self.themeSelectWindow.show(x + rect.width - THEME_WINDOW_WIDTH, y + rect.height)
+        
+    def selectTheme(self, themeName):
         '''Select theme.'''
         # Change theme.
-        appTheme.changeTheme("test")            
+        appTheme.changeTheme(themeName)            
         
         # Redraw.
         self.window.queue_draw()
@@ -142,6 +154,10 @@ class DeepinSoftwareCenter(object):
         for dView in self.detailViewDict.values():
             if dView.bigScreenshot != None:
                 dView.bigScreenshot.window.queue_draw()
+                
+        # Redraw theme select window.
+        if self.themeSelectWindow.window.get_visible():
+            self.themeSelectWindow.window.queue_draw()
 
     def createTooltips(self):
         '''Create tooltips.'''

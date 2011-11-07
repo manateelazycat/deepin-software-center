@@ -1,0 +1,4 @@
+{"zh_CN" : "多啦A梦",
+ "zh_TW" : "多啦A夢",
+ "en" : "Doraemon",
+}

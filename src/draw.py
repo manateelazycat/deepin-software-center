@@ -246,7 +246,6 @@ def navButtonSetBackground(widget,
     requestWidth = hoverDPixbuf.getPixbuf().get_width()
     requestHeight = hoverDPixbuf.getPixbuf().get_height()
     widget.set_size_request(requestWidth, requestHeight)
-    # widget.set_size_request(100, requestHeight)
     
     widget.connect("expose-event", lambda w, e: navButtonOnExpose(
             w, e,
@@ -302,6 +301,27 @@ def navButtonOnExpose(widget, event,
     drawFont(cr, navName, fontSize, "#FFFFFF",
              x + backgroundWidth / 2 - fontSize * 2, 
              y + (backgroundHeight + navHeight) / 2)
+
+    if widget.get_child() != None:
+        widget.propagate_expose(widget.get_child(), event)
+
+    return True
+
+def drawThemeIcon(widget, pixbuf, index, getIndex):
+    '''Draw theme icon.'''
+    widget.connect("expose-event", lambda w, e: themeIconOnExpose(
+            w, e, pixbuf, index, getIndex))
+
+def themeIconOnExpose(widget, event, pixbuf, index, getIndex):
+    '''Expose function to theme icon.'''
+    # Init.
+    cr = widget.window.cairo_create()
+    rect = widget.allocation
+    
+    # Draw pixbuf.
+    drawPixbuf(cr, pixbuf, rect.x, rect.y)
+    
+    # Draw frame.
 
     if widget.get_child() != None:
         widget.propagate_expose(widget.get_child(), event)
@@ -1263,6 +1283,48 @@ def exposeStatusbarBackground(widget, event, backgroundColor, frameColor, frameL
     cr.move_to(1, 0)
     cr.line_to(rect.width - 1, 0)
     cr.set_operator(cairo.OPERATOR_OVER)
+    cr.stroke()
+    
+    if widget.get_child() != None:
+        widget.propagate_expose(widget.get_child(), event)
+
+    return True
+
+def drawThemeSelectWindow(widget, backgroundPixbuf, frameColor, frameLightColor):
+    '''Draw theme select window.'''
+    widget.connect("expose-event", 
+                   lambda w, e: exposeDrawThemeSelectWindow(w, e, backgroundPixbuf, frameColor, frameLightColor))
+    
+def exposeDrawThemeSelectWindow(widget, event, backgroundPixbuf, frameColor, frameLightColor):
+    '''Expose draw theme select window.'''
+    # Init.
+    rect = widget.allocation
+    w, h = widget.allocation.width, widget.allocation.height
+    cr = widget.window.cairo_create()
+    pixbuf = backgroundPixbuf.getPixbuf()
+
+    # Draw background.
+    cr.set_source_pixbuf(pixbuf, 0, 0)
+    cr.paint()
+    
+    # Draw mask.
+    cr.set_source_rgb(*colorHexToCairo("#999999"))
+    cr.set_operator(cairo.OPERATOR_SOURCE)
+    drawRoundRectangle(cr, 0, 0, w, h, RADIUS)
+    cr.paint_with_alpha(0.5)
+    
+    # Draw frame light.
+    cr.set_line_width(1)
+    cr.set_source_rgba(*alphaColorHexToCairo(frameLightColor.getColorInfo()))
+    cr.set_operator(cairo.OPERATOR_OVER)
+    drawRoundRectangle(cr, 1, 1, w - 2, h - 2, RADIUS)
+    cr.stroke()
+
+    # Draw frame.
+    cr.set_line_width(1)
+    cr.set_source_rgb(*colorHexToCairo(frameColor.getColor()))
+    cr.set_operator(cairo.OPERATOR_SOURCE)
+    drawRoundRectangle(cr, 0, 0, w, h, RADIUS)
     cr.stroke()
     
     if widget.get_child() != None:

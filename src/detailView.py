@@ -186,19 +186,6 @@ class DetailView(object):
         self.actionAlign.add(self.actionBox)
         self.bodyBox.pack_start(self.actionAlign, False, False)
         
-        self.toggleTab = gtk.CheckButton()
-        self.toggleTab.connect("button-press-event", lambda w, e: self.selectTab())
-        # NOTE: Un-comment below line when finish translate help features.
-        # self.actionBox.pack_start(self.toggleTab, False, False)
-        toggleTabSetBackground(
-            self.toggleTab,
-            False, False,
-            "detail/detailTab.png",
-            "detail/helpTab.png",
-            "详细信息",
-            "协助翻译"
-            )
-        
         # Content box.
         self.contentBox = gtk.VBox()
         self.bodyBox.pack_start(self.contentBox, False, False)
@@ -206,26 +193,11 @@ class DetailView(object):
         self.infoTab = self.createInfoTab(appInfo, pkg, noscreenshotList)
         self.helpTab = self.createHelpTab(pkg)
         
-        self.toggleTab.set_active(False)
-        self.selectTab()
+        self.contentBox.pack_start(self.infoTab)
+        self.contentBox.show_all()
         
         self.scrolledWindow.show_all()
         
-    def selectTab(self):
-        '''Select info tab.'''
-        utils.containerRemoveAll(self.contentBox)        
-        
-        self.toggleTab.set_active(not self.toggleTab.get_active())
-        
-        if self.toggleTab.get_active():
-            self.contentBox.pack_start(self.infoTab)
-        else:
-            self.contentBox.pack_start(self.helpTab)
-        
-        self.contentBox.show_all()
-        
-        return True
-    
     def createInfoTab(self, appInfo, pkg, noscreenshotList):
         '''Select information tab.'''
         pkgName = utils.getPkgName(pkg)

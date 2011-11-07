@@ -41,7 +41,7 @@ class Titlebar(object):
         self.box.add(self.controlAlign)
         
         self.themeButton = gtk.Button()
-        self.themeButton.connect("button-release-event", lambda w, e: selectThemeCallback())
+        self.themeButton.connect("button-release-event", lambda w, e: selectThemeCallback(w, e))
         drawButton(self.themeButton, "theme", "navigate")
         self.controlBox.pack_start(self.themeButton, False, False)
         

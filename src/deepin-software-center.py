@@ -113,7 +113,7 @@ class DeepinSoftwareCenter(object):
 
         drawNavigateBackground(
             self.topbar,
-            appTheme.getDynamicPixbuf("navigate/background3.png")    ,
+            appTheme.getDynamicPixbuf("navigate/background.png")    ,
             appTheme.getDynamicColor("frame"),
             appTheme.getDynamicColor("navigateExtend"),
             appTheme.getDynamicAlphaColor("frameLigtht"),

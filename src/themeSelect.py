@@ -90,7 +90,8 @@ class ThemeSelect(object):
         '''Show.'''
         # Scan theme directory.
         containerRemoveAll(self.themeIconBox)
-        dirs = os.listdir("../theme/")
+        # dirs = os.listdir("../theme/")
+        dirs = ["default", "stardust", "blackgold", "wood", "test", "006"]
         self.dirnames = dirs
         boxs = map (lambda n: gtk.HBox(), range(0, len(dirs) / 3 + len(dirs) % 3))
         boxIndex = 0

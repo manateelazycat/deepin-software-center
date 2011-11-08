@@ -1,4 +1,4 @@
-{"zh_CN" : "多啦A梦",
- "zh_TW" : "多啦A夢",
- "en" : "Doraemon",
+{"zh_CN" : "默认",
+ "zh_TW" : "默認",
+ "en" : "Default",
 }

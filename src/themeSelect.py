@@ -41,7 +41,6 @@ class ThemeSelect(object):
         self.window.set_decorated(False)
         self.window.set_resizable(False)
         self.window.set_transient_for(widget.get_toplevel())
-        self.window.set_opacity(0.95)
         
         self.mainBox = gtk.VBox()
         self.window.add(self.mainBox)

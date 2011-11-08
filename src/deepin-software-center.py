@@ -1120,7 +1120,78 @@ class DeepinSoftwareCenter(object):
         '''Launch application.'''
         self.message("发送启动请求 (%s)" % (command))
         utils.runCommand(command)
-
+        
+    def cleanDownloadCache(self):
+        '''Clean download cache.'''
+        # Get downloading packages.
+        downloadingPkgs = self.downloadQueue.getDownloadPkgs()
+        
+        # Get action packages.
+        actionPkgs = self.actionQueue.getActionPkgs()
+        
+        # Get packages.
+        pkgs = downloadingPkgs + actionPkgs
+        
+        # Get depend packages.
+        dependPkgs = []
+        for pkgName in pkgs:
+            for dependency in self.aptCache[pkgName].candidate.dependencies:
+                dependPkgs.append(map(lambda baseDep: baseDep.name, dependency.or_dependencies))
+        
+        # Get black list.
+        debs = []
+        for pList in dependPkgs:
+            if pList != []:
+                debs.append(os.path.basename(self.aptCache[pList[0]].candidate.filename))
+                
+        # Init clean size.
+        packageNum = 0
+        cleanSize = 0
+                
+        # Delete cache directory.
+        archiveDir = apt_pkg.config.find_dir('Dir::Cache::Archives')
+        partialDir = os.path.join(archiveDir, "deepin_software_center_cache")
+        for pDir in os.listdir(partialDir):
+            # Get path.
+            dirPath = os.path.join(partialDir, pDir)
+                
+            if pDir in pkgs:
+                print "*Can't remove directory: %s, software center using it." % (pDir)
+            elif os.path.isdir(dirPath):
+                # Update number.
+                packageNum += len(os.listdir(dirPath))
+                cleanSize += utils.getDirSize(dirPath)
+                
+                # Remove directory.
+                utils.removeDirectory(dirPath)
+                print "Delete directory: %s" % (dirPath)
+                
+        # Delete deb packages.
+        for debFile in os.listdir(archiveDir):
+            # Get path.
+            filePath = os.path.join(archiveDir, debFile)
+            
+            if os.path.isfile(filePath) and os.path.splitext(debFile):
+                if debFile in debs:
+                    print "*Can't remove deb file: %s, software center using it." % (debFile)
+                else:
+                    # Update number.
+                    packageNum += 1
+                    cleanSize += os.path.getsize(filePath)
+                    
+                    # Remove file.
+                    utils.removeFile(filePath)
+                    print "Delete deb file: %s" % (filePath)
+                    
+        # Notify clean size.
+        if cleanSize == 0:
+            if pkgs == []:
+                self.message("恭喜你， 你的系统非常干净. :)")
+            else:
+                self.message("软件中心正在使用下载的软件包， 请稍候清理。:)")
+        else:
+            self.message("清理了%s个软件包， 释放了%s空间." % (packageNum, utils.formatFileSize(cleanSize)))            
+        
 class InitThread(td.Thread):
     '''Add long time calculate in init thread to make startup faster.'''
 
@@ -1217,6 +1288,7 @@ class InitThread(td.Thread):
             center.entryDetailView,
             center.sendVote,
             center.fetchVote,
+            center.cleanDownloadCache,
             )
         
         # Set callback for navigatebar.

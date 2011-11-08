@@ -642,6 +642,16 @@ def removeFile(path):
     if os.path.exists(path):
         print "Remove ", path
         os.remove(path)
+        
+def removeDirectory(path):
+    """equivalent to rm -rf path"""
+    for i in os.listdir(path):
+        fullPath = os.path.join(path, i)
+        if os.path.isdir(fullPath):
+            removeDirectory(fullPath)
+        else:
+            os.remove(fullPath)
+    os.rmdir(path)        
 
 def getUserID():
     '''Get Mac Address and MD5.'''
@@ -702,6 +712,15 @@ def aptsearch(keywords):
             pkgs.append(splitList[0])        
             
     return pkgs
+
+def getDirSize(dirname):
+    '''Get directory size.'''
+    totalSize = 0
+    for root, dirs, files in os.walk(dirname):
+        for filepath in files:
+            totalSize += os.path.getsize(os.path.join(root, filepath))
+            
+    return totalSize
 
 #  LocalWords:  halfstar AppIcon pkgInfo shortDesc zh TW longDesc downloadSize
 #  LocalWords:  getPkgInstalledSize getPkgDependSize useSize uname libdevel ZB

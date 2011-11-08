@@ -30,13 +30,13 @@ class DownloadManagePage(object):
     '''Interface for download page.'''
 	
     def __init__(self, repoCache, getRunningNum, getRunningList, switchStatus, downloadQueue,
-                 entryDetailCallback, sendVoteCallback, fetchVoteCallback):
+                 entryDetailCallback, sendVoteCallback, fetchVoteCallback, cleanDownloadCacheCallback):
         '''Init for download page.'''
         # Init.
         self.box = gtk.VBox()
         
         appNum = getRunningNum()
-        self.topbar = Topbar(appNum)
+        self.topbar = Topbar(appNum, cleanDownloadCacheCallback)
         
         self.downloadManageView = downloadManageView.DownloadManageView(
             repoCache,
@@ -57,7 +57,7 @@ class DownloadManagePage(object):
 class Topbar(object):
     '''Top bar.'''
 	
-    def __init__(self, itemNum):
+    def __init__(self, itemNum, cleanDownloadCacheCallback):
         '''Init for top bar.'''
         # Init.
         self.paddingX = 5
@@ -81,15 +81,26 @@ class Topbar(object):
             "topbarButton",
             )
         self.openDirAlign = gtk.Alignment()
-        self.openDirAlign.set(1.0, 0.5, 0.0, 0.0)
+        self.openDirAlign.set(0.0, 0.5, 0.0, 0.0)
         self.openDirAlign.add(self.openDirEventBox)
         self.openDirEventBox.connect("button-press-event", lambda w, e: utils.runCommand("xdg-open /var/cache/apt/archives/"))
+        
+        (self.cleanLabel, self.cleanEventBox) = setDefaultClickableDynamicLabel(
+            "智能清理下载缓存",
+            "topbarButton",
+            )
+        self.cleanEventBox.connect("button-press-event", lambda w, e: cleanDownloadCacheCallback())
+        self.cleanAlign = gtk.Alignment()
+        self.cleanAlign.set(1.0, 0.5, 0.0, 0.0)
+        self.cleanAlign.add(self.cleanEventBox)
+        utils.setHelpTooltip(self.cleanEventBox, "清理下载缓存， 节省您的硬盘空间！")
         
         # Connect.
         self.updateNum(itemNum)
         self.numLabel.set_alignment(0.0, 0.5)
         self.box.pack_start(self.numLabel, False, False, self.paddingX)
         self.box.pack_start(self.openDirAlign, True, True, self.paddingX)
+        self.box.pack_start(self.cleanAlign, True, True, self.paddingX)
         self.eventbox.add(self.boxAlign)
         
     def updateNum(self, upgradeNum):

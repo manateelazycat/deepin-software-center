@@ -1,5 +1,8 @@
 * News in 2.0
 
+2011-11-08 Yong Wang <lazycat.manatee@gmail.com>
+	* Finish download cache clean feature.
+
 2011-11-07 Yong Wang <lazycat.manatee@gmail.com>
 	* Support multiple theme format.
 	* Finish select theme code.

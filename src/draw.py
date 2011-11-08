@@ -1407,12 +1407,6 @@ def exposeDrawThemeSelectWindow(widget, event, backgroundPixbuf, frameColor, fra
     cr.set_source_pixbuf(pixbuf, 0, 0)
     cr.paint()
     
-    # Draw mask.
-    cr.set_source_rgb(*colorHexToCairo("#999999"))
-    cr.set_operator(cairo.OPERATOR_SOURCE)
-    drawRoundRectangle(cr, 0, 0, w, h, RADIUS)
-    cr.paint_with_alpha(0.5)
-    
     # Draw frame light.
     cr.set_line_width(1)
     cr.set_source_rgba(*alphaColorHexToCairo(frameLightColor.getColorInfo()))

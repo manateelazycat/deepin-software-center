@@ -166,7 +166,7 @@ class Topbar(object):
         
         # Add search entry and label.
         (self.searchEntry, searchAlign, self.searchCompletion) = newSearchUI(
-            "请输入你要搜索的软件名称、版本或其他信息",
+            "请输入您要搜索的软件名称、版本或其他信息",
             lambda text: getCandidates(map (lambda appInfo: appInfo.pkg.name, appInfos), text),
             self.clickCandidate,
             self.search)

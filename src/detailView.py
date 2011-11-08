@@ -811,7 +811,7 @@ class DetailView(object):
         self.switchCommentInit()
 
         # Notify user.
-        self.messageCallback("发表 %s 评论失败, 请检查你的网络链接" % (pkgName))
+        self.messageCallback("发表 %s 评论失败, 请检查您的网络链接" % (pkgName))
         
     def fetchMoreComment(self):
         '''Fetch more comment.'''

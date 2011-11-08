@@ -130,7 +130,7 @@ class Topbar(object):
 
         # Add search entry and label.
         (self.searchEntry, searchAlign, self.searchCompletion) = newSearchUI(
-            "请输入你要卸载的软件名称、版本或其他信息",
+            "请输入您要卸载的软件名称、版本或其他信息",
             lambda text: getCandidates(self.repoCache.uninstallablePkgs, text),
             clickCandidateCallback,
             searchCallback)

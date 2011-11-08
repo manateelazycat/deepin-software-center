@@ -263,7 +263,7 @@ class UpdateView(appView.AppView):
             notifyLabel = gtk.Label()
             notifyLabel.set_markup(
                 "<span foreground='#1A38EE' size='%s'>%s</span>"
-                % (LABEL_FONT_XXX_LARGE_SIZE, "你的系统已经是最新的. :)"))
+                % (LABEL_FONT_XXX_LARGE_SIZE, "您的系统已经是最新的. :)"))
             notifyBox.pack_start(notifyLabel, False, False)
             
             self.box.show_all()

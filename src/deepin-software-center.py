@@ -1186,7 +1186,7 @@ class DeepinSoftwareCenter(object):
         # Notify clean size.
         if cleanSize == 0:
             if pkgs == []:
-                self.message("恭喜你， 你的系统非常干净. :)")
+                self.message("恭喜您， 您的系统非常干净. :)")
             else:
                 self.message("软件中心正在使用下载的软件包， 请稍候清理。:)")
         else:
@@ -1353,7 +1353,7 @@ class SendVote(td.Thread):
                 self.messageCallback("%s 评分成功, 感谢参与!" % (self.name))
                 utils.touchFile(voteFile)
         except Exception, e:
-            self.messageCallback("%s 评分失败, 请检查你的网络链接." % (self.name))
+            self.messageCallback("%s 评分失败, 请检查您的网络链接." % (self.name))
             print "Error: ", e
 
 class FetchDetail(td.Thread):

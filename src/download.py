@@ -118,7 +118,7 @@ class Download(td.Thread):
             result = self.download([self.pkgName])
             self.server.aria2.shutdown()
         except Exception, e:
-            self.messageCallback("%s: 下载失败, 请检查你的网络链接." % self.pkgName)
+            self.messageCallback("%s: 下载失败, 请检查您的网络链接." % self.pkgName)
             self.updateCallback(self.pkgName, self.progress, "下载失败")
             result = DOWNLOAD_STATUS_FAILED
             print "Download error: ", e
@@ -205,7 +205,7 @@ class Download(td.Thread):
             
             # Stop download if reach retry times.
             if self.retryTicker > DOWNLOAD_TIMEOUT:
-                self.messageCallback("%s: 下载超时, 请检查你的网络链接." % (self.pkgName))
+                self.messageCallback("%s: 下载超时, 请检查您的网络链接." % (self.pkgName))
                 self.updateCallback(self.pkgName, self.progress, "下载超时")
                 return DOWNLOAD_STATUS_TIMEOUT
             elif self.retryTicker > 0:

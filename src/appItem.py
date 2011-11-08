@@ -149,7 +149,7 @@ class UninstallItem(object):
         
         if self.confirmUninstall:
             appUninstallLabel = gtk.Label()
-            appUninstallLabel.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, "你确定要卸载吗？"))
+            appUninstallLabel.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, "您确定要卸载吗？"))
             actionButtonBox.pack_start(appUninstallLabel, False, False)
             
             appUninstallBox = gtk.HBox()

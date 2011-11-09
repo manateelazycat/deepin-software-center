@@ -860,9 +860,11 @@ class DeepinSoftwareCenter(object):
         waitBoxAlign.add(waitBox)
         backgroundBox.add(waitBoxAlign)
         
-        image = gtk.Image()
-        image.set_from_animation(gtk.gdk.PixbufAnimation("../theme/default/image/animation/wait.gif"))
-        waitBox.pack_start(image)
+        waitAnimation = DynamicImage(
+            waitBox,
+            appTheme.getDynamicPixbufAnimation("wait.gif"),
+            ).image
+        waitBox.pack_start(waitAnimation)
         
         waitLabel = gtk.Label()
         waitLabel.set_markup("<span foreground='#1A3E88' size='%s'>%s</span>" % (LABEL_FONT_LARGE_SIZE, "  加载中， 请稍候..."))

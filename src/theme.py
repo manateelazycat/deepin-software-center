@@ -261,6 +261,47 @@ class DynamicPixbuf(object):
     def getPixbuf(self):
         '''Get pixbuf.'''
         return self.pixbuf
+
+class DynamicPixbufAnimation(object):
+    '''Dynamic pixbuf animation.'''
+    
+    def __init__(self, filepath):
+        '''Init.'''
+        self.update(filepath)
+        
+    def update(self, filepath):
+        '''Update path.'''
+        self.pixbufAnimation = gtk.gdk.PixbufAnimation(filepath)
+
+    def getPixbufAnimation(self):
+        '''Get pixbuf animation.'''
+        return self.pixbufAnimation
+    
+class DynamicImage(object):
+    '''Dynamic image.'''
+	
+    def __init__(self, parent, dPixbufAnimation):
+        '''Init dynamic image.'''
+        self.dPixbufAnimation = dPixbufAnimation
+        self.image = gtk.Image()
+        self.ticker = 0
+
+        self.updateAnimation()
+        self.image.connect("expose-event", self.exposeCallback)
+        
+        parent.connect("size-allocate", lambda w, e: self.image.realize())
+        
+    def updateAnimation(self):
+        '''Update animation.'''
+        self.image.set_from_animation(self.dPixbufAnimation.getPixbufAnimation())    
+        
+    def exposeCallback(self, widget, event):
+        '''Expose callback.'''
+        if self.ticker != appTheme.ticker:
+            self.ticker = appTheme.ticker
+            self.updateAnimation()
+            
+        return False
     
 class DynamicDrawType(object):
     '''Dynamic draw type.'''
@@ -293,6 +334,7 @@ class Theme(object):
         self.labelColorDict = {}
         self.alphaColorDict = {}
         self.drawTypeDict = {}
+        self.animationDict = {}
         
         # Scan theme files.
         themeDir = self.getImageDir()
@@ -318,15 +360,30 @@ class Theme(object):
         
         for (typeName, typeInfo) in types.items():
             self.drawTypeDict[typeName] = DynamicDrawType(typeInfo)
+            
+        # Scan animation.
+        animationDir = self.getAnimationDir()
+        for root, dirs, files in os.walk(animationDir):
+            for filepath in files:
+                path = (os.path.join(root, filepath)).split(animationDir)[1]
+                self.animationDict[path] = DynamicPixbufAnimation(self.getAnimationPath(path))
                 
     def getImageDir(self):
         '''Get theme directory.'''
         return "../theme/%s/image/" % (self.themeName)
-                
+
     def getImagePath(self, path):
         '''Get pixbuf path.'''
         return os.path.join(self.getImageDir(), path)
 
+    def getAnimationDir(self):
+        '''Get theme directory.'''
+        return "../theme/%s/animation/" % (self.themeName)
+
+    def getAnimationPath(self, path):
+        '''Get pixbuf path.'''
+        return os.path.join(self.getAnimationDir(), path)
+    
     def getThemeDir(self):
         '''Get theme directory.'''
         return "../theme/%s/" % (self.themeName)
@@ -338,6 +395,10 @@ class Theme(object):
     def getDynamicPixbuf(self, path):
         '''Get dynamic pixbuf.'''
         return self.pixbufDict[path]
+
+    def getDynamicPixbufAnimation(self, path):
+        '''Get dynamic pixbuf animation.'''
+        return self.animationDict[path]
     
     def getDynamicColor(self, colorName):
         '''Get dynamic color.'''
@@ -386,6 +447,10 @@ class Theme(object):
         
         for (typeName, typeInfo) in types.items():
             self.drawTypeDict[typeName].update(typeInfo)
+            
+        # Update animation.
+        for (path, animation) in self.animationDict.items():
+            animation.update(self.getAnimationPath(path))
             
 # Init.
 appTheme = Theme()            

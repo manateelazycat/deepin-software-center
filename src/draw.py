@@ -98,11 +98,6 @@ def buttonSetBackground(widget, scaleX, scaleY, normalDPixbuf, hoverDPixbuf, pre
     
     # Add button label if buttonLabel is not None.
     if buttonLabel != None and labelDColor != None:
-        # if labelColor == None:
-        #     color = "#000000"
-        # else:
-        #     color = labelColor
-            
         if fontSize == None:
             size = "medium"
         else:
@@ -116,8 +111,6 @@ def buttonSetBackground(widget, scaleX, scaleY, normalDPixbuf, hoverDPixbuf, pre
             )
         label = dynamicSimpleLabel.getLabel()
 
-        # label = gtk.Label()
-        # label.set_markup("<span foreground='%s' size='%s'>%s</span>" % (color, size, buttonLabel))
         widget.add(label)
     
     widget.connect("expose-event", lambda w, e: buttonOnExpose(
@@ -1467,6 +1460,50 @@ def exposeDrawThemeSelectWindow(widget, event, backgroundPixbuf, frameColor, fra
 
     return True
 
+
+def menuItemSetBackground(widget, 
+                          normalImg, hoverImg, pressImg,
+                          pageId, getPageId):
+    '''Set event box's background.'''
+    widget.connect("expose-event", lambda w, e: menuItemOnExpose(
+            w, e,
+            appTheme.getDynamicPixbuf(normalImg),
+            appTheme.getDynamicPixbuf(hoverImg),
+            appTheme.getDynamicPixbuf(pressImg),
+            pageId, getPageId))
+        
+def menuItemOnExpose(widget, event, 
+                     normalDPixbuf, hoverDPixbuf, pressDPixbuf,
+                     pageId, getPageId):
+    '''Expose function to replace event box's image.'''
+    normalPixbuf = normalDPixbuf.getPixbuf()
+    hoverPixbuf = hoverDPixbuf.getPixbuf()
+    pressPixbuf = pressDPixbuf.getPixbuf()
+    
+    selectPageId = getPageId()
+    
+    if widget.state == gtk.STATE_NORMAL:
+        if selectPageId == pageId:
+            image = pressPixbuf
+        else:
+            image = normalPixbuf
+    elif widget.state == gtk.STATE_PRELIGHT:
+        if selectPageId == pageId:
+            image = pressPixbuf
+        else:
+            image = hoverPixbuf
+    elif widget.state == gtk.STATE_ACTIVE:
+        image = pressPixbuf
+        
+    rect = widget.allocation
+    pixbuf = image.scale_simple(rect.width, rect.height, gtk.gdk.INTERP_BILINEAR)
+    cr = widget.window.cairo_create()
+    drawPixbuf(cr, pixbuf, rect.x, rect.y)
+
+    if widget.get_child() != None:
+        widget.propagate_expose(widget.get_child(), event)
+
+    return True
 
 #  LocalWords:  scaleX imageWidth scaleY imageHeight pixbuf cr drawPixbuf
 #  LocalWords:  buttonSetBackground normalImg hoverImg pressImg buttonLabel

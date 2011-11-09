@@ -640,7 +640,6 @@ def treeViewFocusPrevToplevelNode(treeview):
 def removeFile(path):
     '''Remove file.'''
     if os.path.exists(path):
-        print "Remove ", path
         os.remove(path)
         
 def removeDirectory(path):

@@ -27,6 +27,7 @@ from draw import *
 from tooltips import *
 from utils import postGUI
 import themeSelect
+import moreWindow
 import math
 import cairo
 import checkUpdate
@@ -110,6 +111,8 @@ class DeepinSoftwareCenter(object):
         self.topbox = gtk.VBox()
         self.topbar = gtk.EventBox()
         self.themeSelectWindow = themeSelect.ThemeSelect(self.window, self.selectTheme)
+        self.moreWindow = moreWindow.MoreWindow(
+            self.window)
 
         drawNavigateBackground(
             self.topbar,
@@ -125,7 +128,12 @@ class DeepinSoftwareCenter(object):
         self.topbar.connect('button-press-event',
                             lambda w, e: utils.moveWindow(w, e, self.window))
         self.topbar.connect("button-press-event", self.doubleClickWindow)
-        self.titlebar = titlebar.Titlebar(self.showThemeSelectWindow, self.minWindow, self.toggleWindow, self.closeWindow)
+        self.titlebar = titlebar.Titlebar(
+            self.showThemeSelectWindow, 
+            self.showMoreWindow,
+            self.minWindow, 
+            self.toggleWindow, 
+            self.closeWindow)
         self.navigatebar = navigatebar.NavigateBar()
         self.bodyBox = gtk.HBox()
         self.frameBox = gtk.VBox()
@@ -142,6 +150,16 @@ class DeepinSoftwareCenter(object):
             (wx, wy) = widget.window.get_origin()
             (x, y) = widget.translate_coordinates(self.window, wx, wy)
             self.themeSelectWindow.show(x + rect.width - THEME_WINDOW_WIDTH, y + rect.height)
+            
+    def showMoreWindow(self, widget, event):
+        '''Show more window.'''
+        if self.moreWindow.window.get_visible():
+            self.moreWindow.hide()
+        else:
+            rect = widget.allocation
+            (wx, wy) = widget.window.get_origin()
+            (x, y) = widget.translate_coordinates(self.window, wx, wy)
+            self.moreWindow.show(x, y + rect.height)
         
     def selectTheme(self, themeName):
         '''Select theme.'''
@@ -1160,7 +1178,7 @@ class DeepinSoftwareCenter(object):
             dirPath = os.path.join(partialDir, pDir)
                 
             if pDir in pkgs:
-                print "*Can't remove directory: %s, software center using it." % (pDir)
+                print "*** Can't remove directory: %s, software center using it." % (pDir)
             elif os.path.isdir(dirPath):
                 # Update number.
                 packageNum += len(os.listdir(dirPath))
@@ -1177,7 +1195,7 @@ class DeepinSoftwareCenter(object):
             
             if os.path.isfile(filePath) and os.path.splitext(debFile):
                 if debFile in debs:
-                    print "*Can't remove deb file: %s, software center using it." % (debFile)
+                    print "*** Can't remove deb file: %s, software center using it." % (debFile)
                 else:
                     # Update number.
                     packageNum += 1

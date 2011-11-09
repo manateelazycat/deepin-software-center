@@ -29,6 +29,7 @@
 	 "themeIconName" : "#FFFFFF",
 	 "themeIconHover" : "#FFFFFF",
 	 "themeIconPress" : "#FF0000",
+	 "menuItem" : "#000000",
     },
  "labelColors" : 
     {"appName" : ("#1A3E88", "#0084FF", "#1A3E88"),

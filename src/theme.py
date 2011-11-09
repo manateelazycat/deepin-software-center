@@ -283,7 +283,8 @@ class Theme(object):
     def __init__(self):
         '''Init theme.'''
         # Init.
-        self.themeName = "default"
+        # self.themeName = "default"
+        self.themeName = evalFile("../theme/list.txt")[0]
         self.colorPath = "colors.txt"
         self.drawTypePath = "types.txt"
         self.ticker = 0

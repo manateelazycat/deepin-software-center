@@ -1210,102 +1210,102 @@ class InitThread(td.Thread):
         center = self.softwareCenter
         center.prevInitThread()
         
-        # # Init apt operation.
-        # apt_pkg.init()
-        # center.aptCache = apt.Cache()
+        # Init apt operation.
+        apt_pkg.init()
+        center.aptCache = apt.Cache()
         
-        # # Init repo cache.
-        # center.repoCache = repoCache.RepoCache(center.aptCache)
+        # Init repo cache.
+        center.repoCache = repoCache.RepoCache(center.aptCache)
         
-        # # Init update list.
-        # center.updateList = updateList.UpdateList(center.aptCache, center.statusbar)       
+        # Init update list.
+        center.updateList = updateList.UpdateList(center.aptCache, center.statusbar)       
         
-        # # Init search query.
-        # center.searchQuery = search.Search(center.repoCache, center.message, center.statusbar)
+        # Init search query.
+        center.searchQuery = search.Search(center.repoCache, center.message, center.statusbar)
         
-        # # Download queue.
-        # center.downloadQueue = download.DownloadQueue(
-        #     center.downloadUpdateCallback,
-        #     center.downloadFinishCallback,
-        #     center.downloadFailedCallback,
-        #     center.message
-        #     )
+        # Download queue.
+        center.downloadQueue = download.DownloadQueue(
+            center.downloadUpdateCallback,
+            center.downloadFinishCallback,
+            center.downloadFailedCallback,
+            center.message
+            )
 
-        # # Action queue.
-        # center.actionQueue = action.ActionQueue(
-        #     center.actionUpdateCallback,
-        #     center.actionFinishCallback,
-        #     center.actionFailedCallback,
-        #     center.message
-        #     )
+        # Action queue.
+        center.actionQueue = action.ActionQueue(
+            center.actionUpdateCallback,
+            center.actionFinishCallback,
+            center.actionFailedCallback,
+            center.message
+            )
 
-        # # Init pages.
-        # center.recommendPage = recommendPage.RecommendPage(
-        #     center.repoCache,
-        #     center.switchStatus,
-        #     center.downloadQueue,
-        #     center.entryDetailView,
-        #     center.selectCategory,
-        #     center.launchApplication,
-        #     )
-        # center.repoPage = repoPage.RepoPage(
-        #     center.repoCache,
-        #     center.searchQuery,
-        #     center.switchStatus,
-        #     center.downloadQueue,
-        #     center.entryDetailView,
-        #     center.entrySearchView,
-        #     center.sendVote,
-        #     center.fetchVote,
-        #     center.launchApplication,
-        #     )
-        # center.updatePage = updatePage.UpdatePage(
-        #     center.repoCache,
-        #     center.switchStatus,
-        #     center.downloadQueue,
-        #     center.entryDetailView,
-        #     center.sendVote,
-        #     center.fetchVote,
-        #     center.upgradeSelectedPkgs,
-        #     center.addIgnorePkg,
-        #     center.showIgnorePage
-        #     )
-        # center.ignorePage = None
-        # center.uninstallPage = uninstallPage.UninstallPage(
-        #     center.repoCache,
-        #     center.searchQuery,
-        #     center.actionQueue,
-        #     center.entryDetailView,
-        #     center.entrySearchView,
-        #     center.sendVote,
-        #     center.fetchVote,
-        #     )
+        # Init pages.
+        center.recommendPage = recommendPage.RecommendPage(
+            center.repoCache,
+            center.switchStatus,
+            center.downloadQueue,
+            center.entryDetailView,
+            center.selectCategory,
+            center.launchApplication,
+            )
+        center.repoPage = repoPage.RepoPage(
+            center.repoCache,
+            center.searchQuery,
+            center.switchStatus,
+            center.downloadQueue,
+            center.entryDetailView,
+            center.entrySearchView,
+            center.sendVote,
+            center.fetchVote,
+            center.launchApplication,
+            )
+        center.updatePage = updatePage.UpdatePage(
+            center.repoCache,
+            center.switchStatus,
+            center.downloadQueue,
+            center.entryDetailView,
+            center.sendVote,
+            center.fetchVote,
+            center.upgradeSelectedPkgs,
+            center.addIgnorePkg,
+            center.showIgnorePage
+            )
+        center.ignorePage = None
+        center.uninstallPage = uninstallPage.UninstallPage(
+            center.repoCache,
+            center.searchQuery,
+            center.actionQueue,
+            center.entryDetailView,
+            center.entrySearchView,
+            center.sendVote,
+            center.fetchVote,
+            )
         
-        # center.downloadManagePage = downloadManagePage.DownloadManagePage(
-        #     center.repoCache,
-        #     center.getRunningNum,
-        #     center.getRunningList,
-        #     center.switchStatus,
-        #     center.downloadQueue,
-        #     center.entryDetailView,
-        #     center.sendVote,
-        #     center.fetchVote,
-        #     center.cleanDownloadCache,
-        #     )
+        center.downloadManagePage = downloadManagePage.DownloadManagePage(
+            center.repoCache,
+            center.getRunningNum,
+            center.getRunningList,
+            center.switchStatus,
+            center.downloadQueue,
+            center.entryDetailView,
+            center.sendVote,
+            center.fetchVote,
+            center.cleanDownloadCache,
+            )
         
-        # # Set callback for navigatebar.
-        # center.navigatebar.setUpgradableNumCallback(
-        #     center.repoCache.getUpgradableNum)
-        # center.navigatebar.setSelectPageCallback(
-        #     center.selectPage)
-        # center.navigatebar.setRunningNumCallback(
-        #     center.getRunningNum)
+        # Set callback for navigatebar.
+        center.navigatebar.setUpgradableNumCallback(
+            center.repoCache.getUpgradableNum)
+        center.navigatebar.setSelectPageCallback(
+            center.selectPage)
+        center.navigatebar.setRunningNumCallback(
+            center.getRunningNum)
         
-        # # Update update icon.
-        # center.navigatebar.updateIcon.queue_draw()
+        # Update update icon.
+        center.navigatebar.updateIcon.queue_draw()
         
-        # # Execute operation when finish init.
-        # center.postInitThread()
+        # Execute operation when finish init.
+        center.postInitThread()
                 
 class FetchVote(td.Thread):
     '''Fetch vote.'''

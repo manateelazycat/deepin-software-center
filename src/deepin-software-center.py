@@ -855,19 +855,21 @@ class DeepinSoftwareCenter(object):
         backgroundBox.connect("expose-event", lambda w, e: drawBackground(w, e, appTheme.getDynamicColor("background")))
         
         waitBox = gtk.HBox()
-        waitAlign = gtk.Alignment()
-        waitAlign.set(0.5, 0.5, 0.0, 0.0)
-        waitAlign.add(waitBox)
-        backgroundBox.add(waitAlign)
+        waitBoxAlign = gtk.Alignment()
+        waitBoxAlign.set(0.5, 0.5, 0.0, 0.0)
+        waitBoxAlign.add(waitBox)
+        backgroundBox.add(waitBoxAlign)
         
-        waitSpinner = gtk.Spinner()
-        waitBox.pack_start(waitSpinner, False, False)
-        waitSpinner.start()
+        image = gtk.Image()
+        image.set_from_animation(gtk.gdk.PixbufAnimation("../theme/default/image/animation/wait.gif"))
+        waitBox.pack_start(image)
         
         waitLabel = gtk.Label()
-        waitLabel.set_markup("<span foreground='#1A3E88' size='%s'>%s</span>"
-                             % (LABEL_FONT_LARGE_SIZE, "  加载中， 请稍候..."))
-        waitBox.pack_start(waitLabel, False, False)
+        waitLabel.set_markup("<span foreground='#1A3E88' size='%s'>%s</span>" % (LABEL_FONT_LARGE_SIZE, "  加载中， 请稍候..."))
+        waitAlign = gtk.Alignment()
+        waitAlign.set(0.5, 0.3, 0.0, 0.0)
+        waitAlign.add(waitLabel)
+        waitBox.pack_start(waitAlign)
         
         self.contentBox.pack_start(backgroundBox)
         self.contentBox.show_all()
@@ -1208,102 +1210,102 @@ class InitThread(td.Thread):
         center = self.softwareCenter
         center.prevInitThread()
         
-        # Init apt operation.
-        apt_pkg.init()
-        center.aptCache = apt.Cache()
+        # # Init apt operation.
+        # apt_pkg.init()
+        # center.aptCache = apt.Cache()
         
-        # Init repo cache.
-        center.repoCache = repoCache.RepoCache(center.aptCache)
+        # # Init repo cache.
+        # center.repoCache = repoCache.RepoCache(center.aptCache)
         
-        # Init update list.
-        center.updateList = updateList.UpdateList(center.aptCache, center.statusbar)       
+        # # Init update list.
+        # center.updateList = updateList.UpdateList(center.aptCache, center.statusbar)       
         
-        # Init search query.
-        center.searchQuery = search.Search(center.repoCache, center.message, center.statusbar)
+        # # Init search query.
+        # center.searchQuery = search.Search(center.repoCache, center.message, center.statusbar)
         
-        # Download queue.
-        center.downloadQueue = download.DownloadQueue(
-            center.downloadUpdateCallback,
-            center.downloadFinishCallback,
-            center.downloadFailedCallback,
-            center.message
-            )
+        # # Download queue.
+        # center.downloadQueue = download.DownloadQueue(
+        #     center.downloadUpdateCallback,
+        #     center.downloadFinishCallback,
+        #     center.downloadFailedCallback,
+        #     center.message
+        #     )
 
-        # Action queue.
-        center.actionQueue = action.ActionQueue(
-            center.actionUpdateCallback,
-            center.actionFinishCallback,
-            center.actionFailedCallback,
-            center.message
-            )
+        # # Action queue.
+        # center.actionQueue = action.ActionQueue(
+        #     center.actionUpdateCallback,
+        #     center.actionFinishCallback,
+        #     center.actionFailedCallback,
+        #     center.message
+        #     )
 
-        # Init pages.
-        center.recommendPage = recommendPage.RecommendPage(
-            center.repoCache,
-            center.switchStatus,
-            center.downloadQueue,
-            center.entryDetailView,
-            center.selectCategory,
-            center.launchApplication,
-            )
-        center.repoPage = repoPage.RepoPage(
-            center.repoCache,
-            center.searchQuery,
-            center.switchStatus,
-            center.downloadQueue,
-            center.entryDetailView,
-            center.entrySearchView,
-            center.sendVote,
-            center.fetchVote,
-            center.launchApplication,
-            )
-        center.updatePage = updatePage.UpdatePage(
-            center.repoCache,
-            center.switchStatus,
-            center.downloadQueue,
-            center.entryDetailView,
-            center.sendVote,
-            center.fetchVote,
-            center.upgradeSelectedPkgs,
-            center.addIgnorePkg,
-            center.showIgnorePage
-            )
-        center.ignorePage = None
-        center.uninstallPage = uninstallPage.UninstallPage(
-            center.repoCache,
-            center.searchQuery,
-            center.actionQueue,
-            center.entryDetailView,
-            center.entrySearchView,
-            center.sendVote,
-            center.fetchVote,
-            )
+        # # Init pages.
+        # center.recommendPage = recommendPage.RecommendPage(
+        #     center.repoCache,
+        #     center.switchStatus,
+        #     center.downloadQueue,
+        #     center.entryDetailView,
+        #     center.selectCategory,
+        #     center.launchApplication,
+        #     )
+        # center.repoPage = repoPage.RepoPage(
+        #     center.repoCache,
+        #     center.searchQuery,
+        #     center.switchStatus,
+        #     center.downloadQueue,
+        #     center.entryDetailView,
+        #     center.entrySearchView,
+        #     center.sendVote,
+        #     center.fetchVote,
+        #     center.launchApplication,
+        #     )
+        # center.updatePage = updatePage.UpdatePage(
+        #     center.repoCache,
+        #     center.switchStatus,
+        #     center.downloadQueue,
+        #     center.entryDetailView,
+        #     center.sendVote,
+        #     center.fetchVote,
+        #     center.upgradeSelectedPkgs,
+        #     center.addIgnorePkg,
+        #     center.showIgnorePage
+        #     )
+        # center.ignorePage = None
+        # center.uninstallPage = uninstallPage.UninstallPage(
+        #     center.repoCache,
+        #     center.searchQuery,
+        #     center.actionQueue,
+        #     center.entryDetailView,
+        #     center.entrySearchView,
+        #     center.sendVote,
+        #     center.fetchVote,
+        #     )
         
-        center.downloadManagePage = downloadManagePage.DownloadManagePage(
-            center.repoCache,
-            center.getRunningNum,
-            center.getRunningList,
-            center.switchStatus,
-            center.downloadQueue,
-            center.entryDetailView,
-            center.sendVote,
-            center.fetchVote,
-            center.cleanDownloadCache,
-            )
+        # center.downloadManagePage = downloadManagePage.DownloadManagePage(
+        #     center.repoCache,
+        #     center.getRunningNum,
+        #     center.getRunningList,
+        #     center.switchStatus,
+        #     center.downloadQueue,
+        #     center.entryDetailView,
+        #     center.sendVote,
+        #     center.fetchVote,
+        #     center.cleanDownloadCache,
+        #     )
         
-        # Set callback for navigatebar.
-        center.navigatebar.setUpgradableNumCallback(
-            center.repoCache.getUpgradableNum)
-        center.navigatebar.setSelectPageCallback(
-            center.selectPage)
-        center.navigatebar.setRunningNumCallback(
-            center.getRunningNum)
+        # # Set callback for navigatebar.
+        # center.navigatebar.setUpgradableNumCallback(
+        #     center.repoCache.getUpgradableNum)
+        # center.navigatebar.setSelectPageCallback(
+        #     center.selectPage)
+        # center.navigatebar.setRunningNumCallback(
+        #     center.getRunningNum)
         
-        # Update update icon.
-        center.navigatebar.updateIcon.queue_draw()
+        # # Update update icon.
+        # center.navigatebar.updateIcon.queue_draw()
         
-        # Execute operation when finish init.
-        center.postInitThread()
+        # # Execute operation when finish init.
+        # center.postInitThread()
                 
 class FetchVote(td.Thread):
     '''Fetch vote.'''

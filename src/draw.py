@@ -1267,12 +1267,32 @@ def exposeNavigateBackground(widget, event, dPixbuf, dType, frameColor, frameLig
         # Draw pixbuf.
         cr.set_source_pixbuf(pixbuf.scale_simple(w, h, gtk.gdk.INTERP_BILINEAR), 0, 0)
         cr.paint()
-        
     elif drawType == DRAW_LOOP:
         times = int(math.ceil(w / float(pixbufWidth)))
         for index in range(0, times):
             cr.set_source_pixbuf(pixbuf, pixbufWidth * index, 0)
             cr.paint()
+    # Split from middle.
+    else:
+        # Get split data.
+        (splitWidth, fillColor) = drawType        
+        leftWidth = splitWidth
+        rightWidth = pixbufWidth - splitWidth
+        
+        # Draw left pixbuf.
+        leftPixbuf = pixbuf.subpixbuf(0, 0, leftWidth, h)
+        cr.set_source_pixbuf(leftPixbuf, 0, 0)
+        cr.paint()
+        
+        # Draw middle color.
+        cr.set_source_rgb(*colorHexToCairo(fillColor))
+        cr.rectangle(splitWidth, 0, w - pixbufWidth, h)
+        cr.fill()
+        
+        # Draw right pixbuf.
+        rightPixbuf = pixbuf.subpixbuf(splitWidth, 0, rightWidth, h)
+        cr.set_source_pixbuf(rightPixbuf, w - rightWidth, 0)
+        cr.paint()
     
     # Draw frame light.
     cr.set_line_width(1)
@@ -1362,6 +1382,27 @@ def exposeStatusbarBackground(widget, event, dPixbuf, dType, frameColor, frameLi
         for index in range(0, times):
             cr.set_source_pixbuf(pixbuf, pixbufWidth * index, 0)
             cr.paint()
+    # Split from middle.
+    else:
+        # Get split data.
+        (splitWidth, fillColor) = drawType        
+        leftWidth = splitWidth
+        rightWidth = pixbufWidth - splitWidth
+        
+        # Draw left pixbuf.
+        leftPixbuf = pixbuf.subpixbuf(0, 0, leftWidth, h)
+        cr.set_source_pixbuf(leftPixbuf, 0, 0)
+        cr.paint()
+        
+        # Draw middle color.
+        cr.set_source_rgb(*colorHexToCairo(fillColor))
+        cr.rectangle(splitWidth, 0, w - pixbufWidth, h)
+        cr.fill()
+        
+        # Draw right pixbuf.
+        rightPixbuf = pixbuf.subpixbuf(splitWidth, 0, rightWidth, h)
+        cr.set_source_pixbuf(rightPixbuf, w - rightWidth, 0)
+        cr.paint()
             
     # Draw frame light.
     cr.set_line_width(1)

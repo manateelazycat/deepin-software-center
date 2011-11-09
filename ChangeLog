@@ -1,5 +1,8 @@
 * News in 2.0
 
+2011-11-09 Yong Wang <lazycat.manatee@gmail.com>
+	* Support fill color of navigatebar background from middle.
+
 2011-11-08 Yong Wang <lazycat.manatee@gmail.com>
 	* Finish download cache clean feature.
 

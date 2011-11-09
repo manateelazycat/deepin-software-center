@@ -354,17 +354,17 @@ class DetailView(object):
         commentWaitBox = gtk.HBox()
         commentWaitAlign = gtk.Alignment()
         commentWaitAlign.set(0.5, 0.5, 0.0, 0.0)
-        commentWaitAlign.set_padding(20, 20, 0, 0)
         commentWaitAlign.add(commentWaitBox)
         self.commentAreaBox.pack_start(commentWaitAlign)
         
-        commentWaitSpinner = gtk.Spinner()
-        commentWaitSpinner.start()
-        commentWaitSpinnerAlign = gtk.Alignment()
-        commentWaitSpinnerAlign.set(0.5, 0.5, 0.0, 0.0)
-        commentWaitSpinnerAlign.set_padding(10, 10, 10, 10)
-        commentWaitSpinnerAlign.add(commentWaitSpinner)
-        commentWaitBox.pack_start(commentWaitSpinnerAlign, False, False)
+        commentWaitAnimation = DynamicImage(
+            commentWaitBox,
+            appTheme.getDynamicPixbufAnimation("wait.gif"),
+            ).image
+        commentWaitAlign = gtk.Alignment()
+        commentWaitAlign.set(0.5, 0.5, 0.0, 0.0)
+        commentWaitAlign.add(commentWaitAnimation)
+        commentWaitBox.pack_start(commentWaitAlign, False, False)
         
         commentWaitLabel = gtk.Label()
         commentWaitLabel.set_markup("<span foreground='#1A3E88' size='%s'><b>读取用户评论...</b></span>"
@@ -755,17 +755,18 @@ class DetailView(object):
         # Clean send comment box first.
         utils.containerRemoveAll(self.sendCommentBox)            
         
-        # Show waiting spinner.
-        sendCommentSpinnerBox = gtk.VBox()
-        sendCommentSpinnerAlign = gtk.Alignment()
-        sendCommentSpinnerAlign.set(1.0, 0.5, 0.0, 0.0)
-        sendCommentSpinnerAlign.set_padding(0, 0, 10, 10)
-        sendCommentSpinnerAlign.add(sendCommentSpinnerBox)
-        self.sendCommentBox.pack_start(sendCommentSpinnerAlign)
+        # Show waiting.
+        sendCommentWaitBox = gtk.VBox()
+        sendCommentWaitAlign = gtk.Alignment()
+        sendCommentWaitAlign.set(1.0, 0.5, 0.0, 0.0)
+        sendCommentWaitAlign.add(sendCommentWaitBox)
+        self.sendCommentBox.pack_start(sendCommentWaitAlign)
         
-        self.sendCommentSpinner = gtk.Spinner()
-        self.sendCommentSpinner.start()
-        sendCommentSpinnerBox.pack_start(self.sendCommentSpinner, True, True)
+        sendCommentWaitAnimation = DynamicImage(
+            sendCommentWaitAlign,
+            appTheme.getDynamicPixbufAnimation("wait.gif"),
+            ).image
+        sendCommentWaitBox.pack_start(sendCommentWaitAnimation, True, True)
         
         # Show waiting label.
         sendCommentLabel = gtk.Label()
@@ -825,13 +826,15 @@ class DetailView(object):
         
         # Display waiting status.
         utils.containerRemoveAll(self.readMoreBox)
-        fetchMoreSpinner = gtk.Spinner()
-        fetchMoreSpinner.start()
         fetchMoreAlign = gtk.Alignment()
         fetchMoreAlign.set(1.0, 0.5, 0.0, 0.0)
-        fetchMoreAlign.set_padding(10, 10, 10, 10)
-        fetchMoreAlign.add(fetchMoreSpinner)
         self.readMoreBox.pack_start(fetchMoreAlign, True, True)
+        
+        fetchWaitAnimation = DynamicImage(
+            fetchMoreAlign,
+            appTheme.getDynamicPixbufAnimation("wait.gif"),
+            ).image
+        fetchMoreAlign.add(fetchWaitAnimation)
         
         fetchMoreLabel = gtk.Label()
         fetchMoreLabel.set_markup("<span foreground='#1a3e88' size='%s'>读取更多评论...</span>" % (LABEL_FONT_LARGE_SIZE))
@@ -1160,14 +1163,14 @@ class FetchScreenshot(td.Thread):
     def run(self):
         '''Run'''
         # Add wait widget.
-        padding = 40
         utils.containerRemoveAll(self.imageBox)
-        waitSpinner = gtk.Spinner()
-        waitSpinner.start()
         waitAlign = gtk.Alignment()
+        waitAnimation = DynamicImage(
+            waitAlign,
+            appTheme.getDynamicPixbufAnimation("wait.gif"),
+            ).image
         waitAlign.set(0.5, 0.5, 1.0, 1.0)
-        waitAlign.set_padding(padding, padding, padding, padding)
-        waitAlign.add(waitSpinner)
+        waitAlign.add(waitAnimation)
         self.imageBox.add(waitAlign)
         
         # Download screenshot.
@@ -1376,5 +1379,5 @@ class BigScreenshot(object):
 #  LocalWords:  installingProgressbar installingFeedbackLabel FetchScreenshot
 #  LocalWords:  updateUpgradingStatus upgradingProgressbar noscreenshotList
 #  LocalWords:  upgradingFeedbackLabel updateUninstallingStatus setDaemon
-#  LocalWords:  returnCode waitSpinner waitAlign pkgName screenshotPath cmdline
+#  LocalWords:  returnCode waitAlign pkgName screenshotPath cmdline
 #  LocalWords:  subprocess

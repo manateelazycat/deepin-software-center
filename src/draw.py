@@ -318,15 +318,15 @@ def themeIconOnExpose(widget, event, pixbuf, selectDPixbuf, hoverDColor, pressDC
     
     # Draw frame.
     if widget.state == gtk.STATE_ACTIVE or index == getIndex():
+        # Draw select pixbuf.
+        selectPixbuf = selectDPixbuf.getPixbuf()
+        drawPixbuf(cr, selectPixbuf, rect.x + rect.width - selectPixbuf.get_width() - 1, rect.y)
+        
         # Draw press frame.
         cr.set_line_width(1)
         cr.set_source_rgb(*colorHexToCairo(pressDColor.getColor()))
         cr.rectangle(rect.x, rect.y, rect.width, rect.height)
         cr.stroke()
-        
-        # Draw select pixbuf.
-        selectPixbuf = selectDPixbuf.getPixbuf()
-        drawPixbuf(cr, selectPixbuf, rect.x + rect.width - selectPixbuf.get_width() - 1, rect.y)
     elif widget.state == gtk.STATE_PRELIGHT:
         # Hover status.
         cr.set_line_width(1)

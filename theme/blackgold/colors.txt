@@ -25,8 +25,8 @@
      "completionSelect" : "#16A5ED",
 	 "themeSelectTitleText" : "#FFFFFF",
 	 "themeIconName" : "#FFFFFF",
-	 "themeIconHover" : "#FFFFFF",
-	 "themeIconPress" : "#FF0000",
+	 "themeIconHover" : "#1A4A6E",
+	 "themeIconPress" : "#FFFFFF",
 	 "menuItem" : "#000000",
     },
  "labelColors" : 

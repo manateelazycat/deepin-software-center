@@ -1,3 +1,3 @@
-{"navigatebar" : (445, "#214613"),
- "statusbar" : (445, "#214613"),
+{"navigatebar" : "loop",
+ "statusbar" : "loop",
 }

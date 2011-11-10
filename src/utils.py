@@ -109,6 +109,14 @@ def getPkgExecPath(pkg):
         return content.split("\n")[0]
     else:
         return None
+    
+def readFile(filepath):
+    '''Read file.'''
+    rFile = open(filepath, "r")
+    content = rFile.read()
+    rFile.close()
+    
+    return content
 
 def evalFile(filepath):
     '''Eval file content.'''

@@ -1276,7 +1276,7 @@ class BigScreenshot(object):
         
         self.window.connect("destroy", lambda w: exitCallback())
         self.window.connect("button-press-event", self.click)
-        self.window.connect("size-allocate", lambda w, a: updateShape(w, a, 4))
+        self.window.connect("size-allocate", lambda w, a: updateShape(w, a, POPUP_WINDOW_RADIUS))
         self.eventbox.connect("expose-event", self.show)
         self.eventbox.connect("button-press-event", lambda w, e: self.exit())
         utils.setCustomizeClickableCursor(

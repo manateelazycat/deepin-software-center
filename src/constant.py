@@ -142,9 +142,8 @@ THEME_WINDOW_WIDTH = 380
 THEME_WINDOW_HEIGHT = 270
 
 DRAW_LOOP = "loop"
+DRAW_EXTEND = "extend"
 DRAW_LEFT = "left"
 DRAW_RIGHT = "right"
-DRAW_MIDDLE = "middle"
-DRAW_EXTEND = "extend"
 
 SERVER_ADDRESS = "http://test-linux.gteasy.com"

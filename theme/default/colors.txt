@@ -23,8 +23,6 @@
      "completionKeyword" : "#1A3E88",
      "completionBackground" : "#FFFFFF",
      "completionSelect" : "#16A5ED",
-	 "navigatebarExtend" : "#2991DA",
-	 "statusbarExtend" : "#2991DA",
 	 "themeSelectTitleText" : "#FFFFFF",
 	 "themeIconName" : "#FFFFFF",
 	 "themeIconHover" : "#FFFFFF",

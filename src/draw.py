@@ -1211,15 +1211,15 @@ def exposeLoopBackground(widget, event, dPixbuf):
 
     return True
 
-def drawNavigateBackground(widget, dPixbuf, dType, frameColor, frameLightColor, bottomColor, extendColor=None):
+def drawNavigateBackground(widget, dPixbuf, dType, frameColor, frameLightColor, bottomColor):
     '''Draw extend background.'''
     widget.set_size_request(-1, dPixbuf.getPixbuf().get_height())
     
     widget.connect_after(
         "expose-event", 
-        lambda w, e: exposeNavigateBackground(w, e, dPixbuf, dType, frameColor, frameLightColor, bottomColor, extendColor))
+        lambda w, e: exposeNavigateBackground(w, e, dPixbuf, dType, frameColor, frameLightColor, bottomColor))
     
-def exposeNavigateBackground(widget, event, dPixbuf, dType, frameColor, frameLightColor, bottomColor, extendColor=None):
+def exposeNavigateBackground(widget, event, dPixbuf, dType, frameColor, frameLightColor, bottomColor):
     '''Expose extend background.'''
     # Init.
     rect = widget.allocation
@@ -1230,7 +1230,7 @@ def exposeNavigateBackground(widget, event, dPixbuf, dType, frameColor, frameLig
     
     # Draw background.
     drawType = dType.getType()
-    drawBarBackground(cr, pixbuf, drawType, rect, extendColor)
+    drawBarBackground(cr, pixbuf, drawType, rect)
     
     # Draw frame light.
     cr.set_line_width(1)
@@ -1259,15 +1259,15 @@ def exposeNavigateBackground(widget, event, dPixbuf, dType, frameColor, frameLig
 
     return True
     
-def drawStatusbarBackground(widget, dPixbuf, dType, frameColor, frameLightColor, topColor, extendColor=None):
+def drawStatusbarBackground(widget, dPixbuf, dType, frameColor, frameLightColor, topColor):
     '''Draw extend background.'''
     widget.set_size_request(-1, dPixbuf.getPixbuf().get_height())
     
     widget.connect_after(
         "expose-event", 
-        lambda w, e: exposeStatusbarBackground(w, e, dPixbuf, dType, frameColor, frameLightColor, topColor, extendColor))
+        lambda w, e: exposeStatusbarBackground(w, e, dPixbuf, dType, frameColor, frameLightColor, topColor))
     
-def exposeStatusbarBackground(widget, event, dPixbuf, dType, frameColor, frameLightColor, topColor, extendColor=None):
+def exposeStatusbarBackground(widget, event, dPixbuf, dType, frameColor, frameLightColor, topColor):
     '''Expose extend background.'''
     # Init.
     rect = widget.allocation
@@ -1278,7 +1278,7 @@ def exposeStatusbarBackground(widget, event, dPixbuf, dType, frameColor, frameLi
 
     # Draw background.
     drawType = dType.getType()
-    drawBarBackground(cr, pixbuf, drawType, rect, extendColor)
+    drawBarBackground(cr, pixbuf, drawType, rect)
             
     # Draw frame light.
     cr.set_line_width(1)
@@ -1385,47 +1385,15 @@ def menuItemOnExpose(widget, event,
 
     return True
 
-def drawBarBackground(cr, pixbuf, drawType, rect, extendColor):
+def drawBarBackground(cr, pixbuf, drawType, rect):
     '''Draw bar background.'''
     w, h = rect.width, rect.height
     pixbufWidth = pixbuf.get_width()
-    if drawType == DRAW_RIGHT:
-        # Draw extend color.
-        cr.set_source_rgb(*colorHexToCairo(extendColor.getColor()))
-        cr.rectangle(0, 0, w - pixbufWidth, h)
-        cr.fill()
-        
-        # Draw pixbuf.
-        cr.set_source_pixbuf(pixbuf, w - pixbufWidth, 0)
-        cr.paint()
-    elif drawType == DRAW_LEFT:
-        # Draw extend color.
-        cr.set_source_rgb(*colorHexToCairo(extendColor.getColor()))
-        cr.rectangle(pixbufWidth, 0, w - pixbufWidth, h)
-        cr.fill()
-        
-        # Draw pixbuf.
-        cr.set_source_pixbuf(pixbuf, 0, 0)
-        cr.paint()
-    elif drawType == DRAW_MIDDLE:
-        # Draw extend color.
-        cr.set_source_rgb(*colorHexToCairo(extendColor.getColor()))
-        cr.rectangle(0, 0, (w - pixbufWidth) / 2, h)
-        cr.fill()
-        
-        # Draw pixbuf.
-        cr.set_source_pixbuf(pixbuf, (w - pixbufWidth) / 2, 0)
-        cr.paint()
-        
-        # Draw extend color.
-        cr.set_source_rgb(*colorHexToCairo(extendColor.getColor()))
-        cr.rectangle((w + pixbufWidth) / 2, 0, (w - pixbufWidth) / 2, h)
-        cr.fill()
-    elif drawType == DRAW_EXTEND:
+    if drawType == DRAW_EXTEND:
         # Draw pixbuf.
         cr.set_source_pixbuf(pixbuf.scale_simple(w, h, gtk.gdk.INTERP_BILINEAR), 0, 0)
         cr.paint()
-        
+    # Loop.
     elif drawType == DRAW_LOOP:
         times = int(math.ceil(w / float(pixbufWidth)))
         for index in range(0, times):
@@ -1434,24 +1402,44 @@ def drawBarBackground(cr, pixbuf, drawType, rect, extendColor):
     # Split from middle.
     else:
         # Get split data.
-        (splitWidth, fillColor) = drawType        
-        leftWidth = splitWidth
-        rightWidth = pixbufWidth - splitWidth
-        
-        # Draw left pixbuf.
-        leftPixbuf = pixbuf.subpixbuf(0, 0, leftWidth, h)
-        cr.set_source_pixbuf(leftPixbuf, 0, 0)
-        cr.paint()
-        
-        # Draw middle color.
-        cr.set_source_rgb(*colorHexToCairo(fillColor))
-        cr.rectangle(splitWidth, 0, w - pixbufWidth, h)
-        cr.fill()
-        
-        # Draw right pixbuf.
-        rightPixbuf = pixbuf.subpixbuf(splitWidth, 0, rightWidth, h)
-        cr.set_source_pixbuf(rightPixbuf, w - rightWidth, 0)
-        cr.paint()
+        (fillType, fillColor) = drawType        
+        if fillType == DRAW_LEFT:
+            # Draw extend color.
+            cr.set_source_rgb(*colorHexToCairo(fillColor))
+            cr.rectangle(0, 0, w - pixbufWidth, h)
+            cr.fill()
+            
+            # Draw pixbuf.
+            cr.set_source_pixbuf(pixbuf, w - pixbufWidth, 0)
+            cr.paint()
+        elif fillType == DRAW_RIGHT:
+            # Draw extend color.
+            cr.set_source_rgb(*colorHexToCairo(fillColor))
+            cr.rectangle(pixbufWidth, 0, w - pixbufWidth, h)
+            cr.fill()
+            
+            # Draw pixbuf.
+            cr.set_source_pixbuf(pixbuf, 0, 0)
+            cr.paint()
+        else:
+            splitWidth = fillType
+            leftWidth = splitWidth
+            rightWidth = pixbufWidth - splitWidth
+            
+            # Draw left pixbuf.
+            leftPixbuf = pixbuf.subpixbuf(0, 0, leftWidth, h)
+            cr.set_source_pixbuf(leftPixbuf, 0, 0)
+            cr.paint()
+            
+            # Draw middle color.
+            cr.set_source_rgb(*colorHexToCairo(fillColor))
+            cr.rectangle(splitWidth, 0, w - pixbufWidth, h)
+            cr.fill()
+            
+            # Draw right pixbuf.
+            rightPixbuf = pixbuf.subpixbuf(splitWidth, 0, rightWidth, h)
+            cr.set_source_pixbuf(rightPixbuf, w - rightWidth, 0)
+            cr.paint()
 
 #  LocalWords:  scaleX imageWidth scaleY imageHeight pixbuf cr drawPixbuf
 #  LocalWords:  buttonSetBackground normalImg hoverImg pressImg buttonLabel

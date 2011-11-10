@@ -121,7 +121,6 @@ class DeepinSoftwareCenter(object):
             appTheme.getDynamicColor("frame"),
             appTheme.getDynamicAlphaColor("frameLigtht"),
             appTheme.getDynamicAlphaColor("topbarBottom"),
-            appTheme.getDynamicColor("navigatebarExtend"),
             )
 
         # make window movable or re-sizable even window is decorated.

@@ -1,4 +1,4 @@
-{"zh_CN" : "Green",
- "zh_TW" : "Green",
- "en" : "Green",
+{"zh_CN" : "清新",
+ "zh_TW" : "清新",
+ "en" : "Clear",
 }

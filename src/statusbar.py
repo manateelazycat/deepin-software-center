@@ -46,7 +46,6 @@ class Statusbar(object):
             appTheme.getDynamicColor("frame"),
             appTheme.getDynamicAlphaColor("frameLigtht"),
             appTheme.getDynamicAlphaColor("statusbarTop"),
-            appTheme.getDynamicColor("statusbarExtend"),
             )
         
         self.box = gtk.HBox()

@@ -715,6 +715,9 @@ def drawNavigateFrame(cr, x, y, width, height, r):
     cr.move_to(x + width, y + r);
     cr.line_to(x + width, y + height);
 
+    cr.move_to(x + width, y + height);
+    cr.line_to(x, y + height);
+    
     cr.move_to(x, y + height);
     cr.line_to(x, y + r);
 
@@ -723,6 +726,9 @@ def drawNavigateFrame(cr, x, y, width, height, r):
 
 def drawStatusbarFrame(cr, x, y, width, height, r):
     '''Draw round rectangle.'''
+    cr.move_to(x, y);
+    cr.line_to(x + width, y);
+    
     cr.move_to(x + width, y);
     cr.line_to(x + width, y + height - r);
 

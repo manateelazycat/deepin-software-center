@@ -4,6 +4,7 @@
 	* Add menu for more features.
 	* Add new feature window.
 	* Refactory code.
+	* Adjust bar background code.
 
 2011-11-09 Yong Wang <lazycat.manatee@gmail.com>
 	* Support fill color of navigatebar background from middle.

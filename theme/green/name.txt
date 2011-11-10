@@ -1,0 +1,4 @@
+{"zh_CN" : "Green",
+ "zh_TW" : "Green",
+ "en" : "Green",
+}

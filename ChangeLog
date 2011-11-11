@@ -5,6 +5,7 @@
 	* Fix new feature window don't hide when other window show.
 	* Add close button on new feature window.
 	* Give main window minimum width.
+	* Don't allowed new feature window change size.
 
 2011-11-10 Yong Wang <lazycat.manatee@gmail.com>
 	* Add menu for more features.

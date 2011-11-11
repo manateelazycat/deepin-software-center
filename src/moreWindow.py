@@ -143,7 +143,7 @@ class NewFeature:
         self.widget = widget
         self.window = gtk.Window()
         self.window.set_decorated(False)
-        self.window.set_resizable(True)
+        self.window.set_resizable(False)
         self.window.set_transient_for(widget.get_toplevel())
         self.window.set_property("accept-focus", False)
         

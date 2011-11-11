@@ -1043,8 +1043,8 @@ def drawVScrollbar(scrolledWindow):
         lambda w, e: drawVScrollbarOnExpose(
             w, e, vAdjust,
             appTheme.getDynamicPixbuf("progress/progress_bg_top.png"),
-            appTheme.getDynamicPixbuf("progress/progress_bg_bottom.png"),
             appTheme.getDynamicPixbuf("progress/progress_bg_middle.png"),
+            appTheme.getDynamicPixbuf("progress/progress_bg_bottom.png"),
             appTheme.getDynamicPixbuf("progress/progress_fg_top.png"),
             appTheme.getDynamicPixbuf("progress/progress_fg_middle.png"),
             appTheme.getDynamicPixbuf("progress/progress_fg_bottom.png"),

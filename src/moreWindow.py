@@ -60,9 +60,10 @@ class MoreWindow(object):
         
         # Create list item.
         self.createListItem(1, "新版功能", self.newFeature)
-        self.createListItem(2, "论坛求助", self.forumHelp)
-        self.createListItem(3, "加入我们", self.joinUs)
-        self.createListItem(4, "问题反馈", self.reportProblem)
+        self.createListItem(2, "代理设置", self.setProxy)
+        self.createListItem(3, "论坛求助", self.forumHelp)
+        self.createListItem(4, "加入我们", self.joinUs)
+        self.createListItem(5, "问题反馈", self.reportProblem)
 
         # Set shape.
         self.window.connect("size-allocate", lambda w, a: updateShape(w, a, POPUP_WINDOW_RADIUS))
@@ -73,6 +74,10 @@ class MoreWindow(object):
     def newFeature(self):
         '''New feature.'''
         self.newFeatureWindow.show()
+        
+    def setProxy(self):
+        '''Set proxy.'''
+        pass    
             
     def forumHelp(self):
         '''Forum help.'''

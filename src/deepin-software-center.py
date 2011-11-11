@@ -77,10 +77,6 @@ class DeepinSoftwareCenter(object):
         gtk.gdk.threads_init()
         
         # Init apt cache.
-        self.statusbar = statusbar.Statusbar()
-        self.statusbar.eventbox.connect("button-press-event", lambda w, e: utils.resizeWindow(w, e, self.window))
-        self.statusbar.eventbox.connect("button-press-event", lambda w, e: utils.moveWindow(w, e, self.window))
-        
         self.detailViewDict = {}
         self.searchViewDict = {}
         self.noscreenshotList = []
@@ -113,7 +109,11 @@ class DeepinSoftwareCenter(object):
         self.themeSelectWindow = themeSelect.ThemeSelect(self.window, self.selectTheme)
         self.moreWindow = moreWindow.MoreWindow(
             self.window)
-
+        
+        self.statusbar = statusbar.Statusbar()
+        self.statusbar.eventbox.connect("button-press-event", lambda w, e: utils.resizeWindow(w, e, self.window))
+        self.statusbar.eventbox.connect("button-press-event", lambda w, e: utils.moveWindow(w, e, self.window))
+        
         drawNavigateBackground(
             self.topbar,
             appTheme.getDynamicPixbuf("navigate/background.png"),
@@ -792,6 +792,11 @@ class DeepinSoftwareCenter(object):
         window.set_position(gtk.WIN_POS_CENTER_ALWAYS)
         (width, height) = utils.getScreenSize(window)
         window.set_default_size(self.DEFAULT_WIDTH, -1)
+        window.set_geometry_hints(
+            None,
+            self.DEFAULT_WIDTH, # minimum width
+            -1, -1, -1, -1, -1, -1, -1, -1, -1
+            )
 
         # Set icon.
         gtk.window_set_default_icon_from_file("../icon/icon.ico")

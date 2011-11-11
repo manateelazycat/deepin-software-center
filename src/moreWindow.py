@@ -49,6 +49,7 @@ class MoreWindow(object):
                 appTheme.getDynamicAlphaColor("frameLigtht"),
                 appTheme.getDynamicColor("frame"),
                 ))
+        self.newFeatureWindow = NewFeature(widget)
         
         self.mainBox = gtk.VBox()
         self.mainAlign = gtk.Alignment()
@@ -71,8 +72,8 @@ class MoreWindow(object):
         
     def newFeature(self):
         '''New feature.'''
-        NewFeature(self.widget)
-    
+        self.newFeatureWindow.show()
+            
     def forumHelp(self):
         '''Forum help.'''
         runCommand("xdg-open http://www.linuxdeepin.com/forum")
@@ -134,6 +135,7 @@ class NewFeature:
 	
     def __init__(self, widget):
         '''Init new feature.'''
+        self.widget = widget
         self.window = gtk.Window()
         self.window.set_decorated(False)
         self.window.set_resizable(True)
@@ -174,19 +176,21 @@ class NewFeature:
         self.scrolledwindow = gtk.ScrolledWindow()
         self.scrolledwindow.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
         drawVScrollbar(self.scrolledwindow)
+        
         self.textView = DynamicTextView(
             self.scrolledwindow,
             appTheme.getDynamicColor("background"),
-            appTheme.getDynamicColor("foreground"),
+            appTheme.getDynamicColor("newFeatureText"),
+            appTheme.getDynamicPixbuf("skin/background.png"),
             ).textView
         utils.addInScrolledWindow(self.scrolledwindow, self.textView)
         self.textViewAlign = gtk.Alignment()
         self.textViewAlign.set(0.5, 0.5, 1.0, 1.0)
         self.textViewAlign.set_padding(10, 10, 10, 10)
         self.textViewAlign.add(self.scrolledwindow)
-        self.mainBox.pack_start(self.textViewAlign)
         self.textView.set_editable(False)
         self.textView.set_wrap_mode(gtk.WRAP_CHAR)
+        self.mainBox.pack_start(self.textViewAlign, True, True)
         lang = getDefaultLanguage()
         if lang == "zh_CN":
             news = readFile("../news/%s.txt" % (lang))
@@ -197,18 +201,20 @@ class NewFeature:
         self.textView.get_buffer().set_text(news)
         
         self.window.set_size_request(self.WINDOW_WIDTH, self.WINDOW_HEIGHT)
-        (wx, wy) = widget.window.get_origin()
-        rect = widget.get_allocation()
+        
+        # Hide window if user click on main window.
+        widget.connect("button-press-event", lambda w, e: self.hide())
+        
+    def show(self):
+        '''Show.'''
+        (wx, wy) = self.widget.window.get_origin()
+        rect = self.widget.get_allocation()
         self.window.move(
             wx + rect.x + (rect.width - self.WINDOW_WIDTH) / 2,
             wy + rect.y + (rect.height - self.WINDOW_HEIGHT) / 2,
             )
         self.window.show_all()
         
-        # Hide window if user click on main window.
-        widget.connect("button-press-event", lambda w, e: self.exit())
-        
-    def exit(self):
-        '''Exit'''
-        self.window.destroy()
-        
+    def hide(self):
+        '''Hide.'''
+        self.window.hide_all()

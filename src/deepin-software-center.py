@@ -153,6 +153,10 @@ class DeepinSoftwareCenter(object):
             # Hide more window if it visible now.
             if self.moreWindow.window.get_visible():
                 self.moreWindow.hide()
+                
+            # Hide new feature window if it visible now.
+            if self.moreWindow.newFeatureWindow.window.get_visible():
+                self.moreWindow.newFeatureWindow.hide()
             
     def showMoreWindow(self, widget, event):
         '''Show more window.'''
@@ -168,6 +172,10 @@ class DeepinSoftwareCenter(object):
             if self.themeSelectWindow.window.get_visible():
                 self.themeSelectWindow.hide()
         
+            # Hide new feature window if it visible now.
+            if self.moreWindow.newFeatureWindow.window.get_visible():
+                self.moreWindow.newFeatureWindow.hide()
+                
     def selectTheme(self, themeName):
         '''Select theme.'''
         # Change theme.

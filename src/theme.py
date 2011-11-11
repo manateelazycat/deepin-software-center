@@ -55,15 +55,17 @@ class DynamicTreeView(object):
 class DynamicTextView(object):
     '''Dynamic text view.'''
 	
-    def __init__(self, parent, backgroundDColor, foregroundDColor):
+    def __init__(self, parent, backgroundDColor, foregroundDColor, backgroundDPixbuf=None):
         '''Init dynamic text view.'''
         self.textView = gtk.TextView()
         self.backgroundDColor = backgroundDColor
         self.foregroundDColor = foregroundDColor
+        self.backgroundDPixbuf = backgroundDPixbuf
         self.ticker = 0
 
         self.updateColor()
         self.textView.connect("expose-event", self.exposeCallback)
+        self.textView.connect("realize", lambda w: self.updateBackground())
         
         parent.connect("size-allocate", lambda w, e: self.textView.realize())
         
@@ -71,6 +73,13 @@ class DynamicTextView(object):
         '''Update color.'''
         self.textView.modify_base(gtk.STATE_NORMAL, gtk.gdk.color_parse(self.backgroundDColor.getColor()))
         self.textView.modify_text(gtk.STATE_NORMAL, gtk.gdk.color_parse(self.foregroundDColor.getColor()))
+        self.updateBackground()
+        
+    def updateBackground(self):
+        '''Update background.'''
+        if self.backgroundDPixbuf != None and self.textView.get_realized():
+            (pixmap, _) = self.backgroundDPixbuf.getPixbuf().render_pixmap_and_mask(127)
+            self.textView.get_window(gtk.TEXT_WINDOW_TEXT).set_back_pixmap(pixmap, False)
         
     def exposeCallback(self, widget, event):
         '''Expose callback.'''

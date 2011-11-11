@@ -119,9 +119,7 @@ class MoreWindow(object):
         button.connect("button-press-event", lambda w, e: callback())
         menuItemSetBackground(
             button,
-            "category/sidebar_normal.png",
-            "category/sidebar_hover.png",
-            "category/sidebar_press.png",
+            "menu/item_hover.png",
             index,
             self.getIndex,
             )

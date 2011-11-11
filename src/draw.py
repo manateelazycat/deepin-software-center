@@ -1345,34 +1345,25 @@ def exposeDrawThemeSelectWindow(widget, event, backgroundPixbuf, frameColor, fra
 
 
 def menuItemSetBackground(widget, 
-                          normalImg, hoverImg, pressImg,
+                          hoverImg,
                           pageId, getPageId):
     '''Set event box's background.'''
     widget.connect("expose-event", lambda w, e: menuItemOnExpose(
             w, e,
-            appTheme.getDynamicPixbuf(normalImg),
             appTheme.getDynamicPixbuf(hoverImg),
-            appTheme.getDynamicPixbuf(pressImg),
             pageId, getPageId))
         
 def menuItemOnExpose(widget, event, 
-                     normalDPixbuf, hoverDPixbuf, pressDPixbuf,
+                     hoverDPixbuf,
                      pageId, getPageId):
     '''Expose function to replace event box's image.'''
-    normalPixbuf = normalDPixbuf.getPixbuf()
     hoverPixbuf = hoverDPixbuf.getPixbuf()
-    pressPixbuf = pressDPixbuf.getPixbuf()
     
     selectPageId = getPageId()
     
     image = None
-    if widget.state == gtk.STATE_PRELIGHT:
-        if selectPageId == pageId:
-            image = pressPixbuf
-        else:
-            image = hoverPixbuf
-    elif widget.state == gtk.STATE_ACTIVE:
-        image = pressPixbuf
+    if widget.state in [gtk.STATE_PRELIGHT, gtk.STATE_ACTIVE]:
+        image = hoverPixbuf
         
     if image != None:
         rect = widget.allocation

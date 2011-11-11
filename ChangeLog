@@ -1,5 +1,8 @@
 * News in 2.0
 
+2011-11-11 Yong Wang <lazycat.manatee@gmail.com>
+	* Fix more window and theme select window show at the same time.
+
 2011-11-10 Yong Wang <lazycat.manatee@gmail.com>
 	* Add menu for more features.
 	* Add new feature window.

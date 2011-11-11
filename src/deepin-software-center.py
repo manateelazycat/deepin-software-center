@@ -150,6 +150,10 @@ class DeepinSoftwareCenter(object):
             (x, y) = widget.translate_coordinates(self.window, wx, wy)
             self.themeSelectWindow.show(x + rect.width - THEME_WINDOW_WIDTH, y + rect.height)
             
+            # Hide more window if it visible now.
+            if self.moreWindow.window.get_visible():
+                self.moreWindow.hide()
+            
     def showMoreWindow(self, widget, event):
         '''Show more window.'''
         if self.moreWindow.window.get_visible():
@@ -159,6 +163,10 @@ class DeepinSoftwareCenter(object):
             (wx, wy) = widget.window.get_origin()
             (x, y) = widget.translate_coordinates(self.window, wx, wy)
             self.moreWindow.show(x, y + rect.height)
+            
+            # Hide theme select window if it visible now.
+            if self.themeSelectWindow.window.get_visible():
+                self.themeSelectWindow.hide()
         
     def selectTheme(self, themeName):
         '''Select theme.'''

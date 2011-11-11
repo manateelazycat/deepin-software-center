@@ -8,6 +8,7 @@
 	* Don't allowed new feature window change size.
 	* Add proxy setup.
 	* Add menu select effect.
+	* Finish progressbar.
 
 2011-11-10 Yong Wang <lazycat.manatee@gmail.com>
 	* Add menu for more features.

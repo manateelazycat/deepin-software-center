@@ -155,9 +155,8 @@ class NewFeature:
         self.mainBox = gtk.VBox()
         self.window.add(self.mainBox)
         
-        self.titleEventBox = gtk.EventBox()
-        self.titleEventBox.set_visible_window(False)
-        self.mainBox.pack_start(self.titleEventBox, False, False)
+        self.titleBox = gtk.HBox()
+        self.mainBox.pack_start(self.titleBox, False, False)
         
         self.titleAlign = gtk.Alignment()
         dLabel = DynamicSimpleLabel(
@@ -167,11 +166,17 @@ class NewFeature:
             LABEL_FONT_LARGE_SIZE,
             )
         self.titleLabel = dLabel.getLabel()
-        alignY = 10
+        alignY = 4
+        alignX = 10
         self.titleAlign.set(0.0, 0.0, 1.0, 1.0)
-        self.titleAlign.set_padding(alignY, alignY, 0, 0)
+        self.titleAlign.set_padding(alignY, alignY, alignX, alignX)
         self.titleAlign.add(self.titleLabel)
-        self.titleEventBox.add(self.titleAlign)
+        self.titleBox.pack_start(self.titleAlign, True, True)
+        
+        self.closeButton = gtk.Button()
+        self.closeButton.connect("button-release-event", lambda w, e: self.hide())
+        drawButton(self.closeButton, "close", "navigate")
+        self.titleBox.pack_start(self.closeButton, False, False)
         
         self.scrolledwindow = gtk.ScrolledWindow()
         self.scrolledwindow.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)

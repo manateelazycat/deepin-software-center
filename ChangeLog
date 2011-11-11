@@ -1,5 +1,8 @@
 * News in 2.0
 
+2011-11-12 Yong Wang <lazycat.manatee@gmail.com>
+	* Close popup window when resize main window.
+
 2011-11-11 Yong Wang <lazycat.manatee@gmail.com>
 	* Fix more window and theme select window show at the same time.
 	* Fix new feature window don't hide when other window show.

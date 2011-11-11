@@ -123,8 +123,7 @@ class DeepinSoftwareCenter(object):
             )
 
         # make window movable or re-sizable even window is decorated.
-        self.topbar.connect('button-press-event',
-                            lambda w, e: utils.moveWindow(w, e, self.window))
+        self.topbar.connect('button-press-event', lambda w, e: utils.moveWindow(w, e, self.window))
         self.topbar.connect("button-press-event", self.doubleClickWindow)
         self.titlebar = titlebar.Titlebar(
             self.showThemeSelectWindow, 
@@ -144,44 +143,46 @@ class DeepinSoftwareCenter(object):
         if self.themeSelectWindow.window.get_visible():
             self.themeSelectWindow.hide()
         else:
+            # Hide popup window.
+            self.hidePopupWindow()
+            
+            # Show theme select window.
             rect = widget.allocation
             (wx, wy) = widget.window.get_origin()
             (x, y) = widget.translate_coordinates(self.window, wx, wy)
             self.themeSelectWindow.show(x + rect.width - THEME_WINDOW_WIDTH, y + rect.height)
-            
-            # Hide more window if it visible now.
-            if self.moreWindow.window.get_visible():
-                self.moreWindow.hide()
-                
-            # Hide new feature window if it visible now.
-            if self.moreWindow.newFeatureWindow.window.get_visible():
-                self.moreWindow.newFeatureWindow.hide()
-
-            # Hide proxy setup window if it visible now.
-            if self.moreWindow.proxySetupWindow.window.get_visible():
-                self.moreWindow.proxySetupWindow.hide()
             
     def showMoreWindow(self, widget, event):
         '''Show more window.'''
         if self.moreWindow.window.get_visible():
             self.moreWindow.hide()
         else:
+            # Hide popup window.
+            self.hidePopupWindow()
+            
+            # Show more window.
             rect = widget.allocation
             (wx, wy) = widget.window.get_origin()
             (x, y) = widget.translate_coordinates(self.window, wx, wy)
             self.moreWindow.show(x, y + rect.height)
-            
-            # Hide theme select window if it visible now.
-            if self.themeSelectWindow.window.get_visible():
-                self.themeSelectWindow.hide()
-        
-            # Hide new feature window if it visible now.
-            if self.moreWindow.newFeatureWindow.window.get_visible():
-                self.moreWindow.newFeatureWindow.hide()
                 
-            # Hide proxy setup window if it visible now.
-            if self.moreWindow.proxySetupWindow.window.get_visible():
-                self.moreWindow.proxySetupWindow.hide()
+    def hidePopupWindow(self):
+        '''Hide popup window.'''
+        # Hide more window if it visible now.
+        if self.moreWindow.window.get_visible():
+            self.moreWindow.hide()
+            
+        # Hide theme select window if it visible now.
+        if self.themeSelectWindow.window.get_visible():
+            self.themeSelectWindow.hide()
+        
+        # Hide new feature window if it visible now.
+        if self.moreWindow.newFeatureWindow.window.get_visible():
+            self.moreWindow.newFeatureWindow.hide()
+            
+        # Hide proxy setup window if it visible now.
+        if self.moreWindow.proxySetupWindow.window.get_visible():
+            self.moreWindow.proxySetupWindow.hide()
             
     def selectTheme(self, themeName):
         '''Select theme.'''
@@ -826,6 +827,9 @@ class DeepinSoftwareCenter(object):
             self.window.maximize()
 
         self.hasMax = not self.hasMax
+        
+        # Hide popup window.
+        self.hidePopupWindow()
 
     def closeWindow(self):
         '''Close window'''

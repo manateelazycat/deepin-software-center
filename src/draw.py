@@ -325,13 +325,13 @@ def themeIconOnExpose(widget, event, pixbuf, selectDPixbuf, hoverDColor, pressDC
         # Draw press frame.
         cr.set_line_width(1)
         cr.set_source_rgb(*colorHexToCairo(pressDColor.getColor()))
-        cr.rectangle(rect.x, rect.y, rect.width, rect.height)
+        cr.rectangle(rect.x, rect.y, rect.width, rect.height - 1)
         cr.stroke()
     elif widget.state == gtk.STATE_PRELIGHT:
         # Hover status.
         cr.set_line_width(1)
         cr.set_source_rgb(*colorHexToCairo(hoverDColor.getColor()))
-        cr.rectangle(rect.x, rect.y, rect.width, rect.height)
+        cr.rectangle(rect.x, rect.y, rect.width, rect.height - 1)
         cr.stroke()
 
     if widget.get_child() != None:

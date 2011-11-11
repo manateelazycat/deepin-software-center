@@ -12,7 +12,7 @@
      "detailAction" : "#000000",
      "detailInfo" : "#000000",
      "detailTitle" : "#1A3E88", 
-     "frame" : "#2B4D5D",
+     "frame" : "#000000",
      "recommendTitle" : "#000000",
      "recommendFrame" : "#D5D5D5",
      "commentFrame" : "#DDDDDD",

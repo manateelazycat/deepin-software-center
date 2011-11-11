@@ -1189,6 +1189,11 @@ class FetchScreenshot(td.Thread):
             '--continue',    
             ]
         
+        # Append proxy configuration.
+        proxyString = readFirstLine("./proxy")
+        if proxyString != "":
+            cmdline.append("=".join(["--all-proxy", proxyString]))
+        
         self.proc = subprocess.Popen(cmdline)
         self.returnCode = self.proc.wait()
         

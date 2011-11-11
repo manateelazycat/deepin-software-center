@@ -20,6 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from searchEntry import *
 from utils import *
 from draw import *
 import gtk
@@ -33,7 +34,7 @@ class MoreWindow(object):
     ALIGN_X = 10
     ALIGN_Y = 4
 	
-    def __init__(self, widget):
+    def __init__(self, widget, messageCallback):
         '''Init more window.'''
         self.widget = widget
         self.index = 0
@@ -50,6 +51,7 @@ class MoreWindow(object):
                 appTheme.getDynamicColor("frame"),
                 ))
         self.newFeatureWindow = NewFeature(widget)
+        self.proxySetupWindow = ProxySetup(widget, messageCallback)
         
         self.mainBox = gtk.VBox()
         self.mainAlign = gtk.Alignment()
@@ -77,7 +79,7 @@ class MoreWindow(object):
         
     def setProxy(self):
         '''Set proxy.'''
-        pass    
+        self.proxySetupWindow.show()
             
     def forumHelp(self):
         '''Forum help.'''
@@ -132,7 +134,7 @@ class MoreWindow(object):
         button.add(label)
         self.mainBox.pack_start(button)
     
-class NewFeature:
+class NewFeature(object):
     '''New feature.'''
     
     WINDOW_WIDTH = 360
@@ -214,6 +216,132 @@ class NewFeature:
         
         # Hide window if user click on main window.
         widget.connect("button-press-event", lambda w, e: self.hide())
+        
+    def show(self):
+        '''Show.'''
+        (wx, wy) = self.widget.window.get_origin()
+        rect = self.widget.get_allocation()
+        self.window.move(
+            wx + rect.x + (rect.width - self.WINDOW_WIDTH) / 2,
+            wy + rect.y + (rect.height - self.WINDOW_HEIGHT) / 2,
+            )
+        self.window.show_all()
+        
+    def hide(self):
+        '''Hide.'''
+        self.window.hide_all()
+
+class ProxySetup(object):
+    '''Proxy setup..'''
+    
+    WINDOW_WIDTH = 360
+    WINDOW_HEIGHT = 90
+    ALIGN_X = 10
+    ALIGN_Y = 4
+    SETUP_BUTTON_PADDING_X = 5
+	
+    def __init__(self, widget, messageCallback):
+        '''Init proxy setup.'''
+        self.widget = widget
+        self.messageCallback = messageCallback
+        self.window = gtk.Window()
+        self.window.set_decorated(False)
+        self.window.set_resizable(False)
+        self.window.set_transient_for(widget.get_toplevel())
+        self.window.connect("size-allocate", lambda w, a: updateShape(w, a, RADIUS))
+        self.window.set_size_request(self.WINDOW_WIDTH, self.WINDOW_HEIGHT)
+        
+        # Draw.
+        drawThemeSelectWindow(
+            self.window,
+            appTheme.getDynamicPixbuf("skin/background.png"),
+            appTheme.getDynamicColor("frame"),
+            appTheme.getDynamicAlphaColor("frameLigtht"),
+            )
+        
+        self.mainBox = gtk.VBox()
+        self.window.add(self.mainBox)
+        
+        self.titleBox = gtk.HBox()
+        self.mainBox.pack_start(self.titleBox, False, False)
+        
+        self.titleAlign = gtk.Alignment()
+        dLabel = DynamicSimpleLabel(
+            self.titleAlign,
+            "设置代理",
+            appTheme.getDynamicColor("themeSelectTitleText"),
+            LABEL_FONT_LARGE_SIZE,
+            )
+        self.titleLabel = dLabel.getLabel()
+        alignY = 4
+        alignX = 10
+        self.titleAlign.set(0.0, 0.0, 1.0, 1.0)
+        self.titleAlign.set_padding(alignY, alignY, alignX, alignX)
+        self.titleAlign.add(self.titleLabel)
+        self.titleBox.pack_start(self.titleAlign, True, True)
+        
+        self.closeButton = gtk.Button()
+        self.closeButton.connect("button-release-event", lambda w, e: self.hide())
+        drawButton(self.closeButton, "close", "navigate")
+        self.titleBox.pack_start(self.closeButton, False, False)
+        
+        self.setupBox = gtk.VBox()
+        self.setupAlign = gtk.Alignment()
+        self.setupAlign.set(0.0, 0.0, 1.0, 1.0)
+        self.setupAlign.set_padding(self.ALIGN_Y, self.ALIGN_Y, self.ALIGN_X, self.ALIGN_X - self.SETUP_BUTTON_PADDING_X)
+        self.setupAlign.add(self.setupBox)
+        self.mainBox.pack_start(self.setupAlign, False, False)
+        
+        self.proxyRuleLabel = DynamicSimpleLabel(
+            self.setupBox,
+            "代理规则:  [http://][USER:PASSWORD@]HOST[:PORT]",
+            appTheme.getDynamicColor("background"),
+            ).getLabel()
+        self.proxyRuleLabel.set_alignment(0.0, 0.0)
+        self.proxyRuleAlign = gtk.Alignment()
+        self.proxyRuleAlign.set(0.0, 0.0, 1.0, 1.0)
+        self.proxyRuleAlign.set_padding(0, self.ALIGN_Y, 0, 0)
+        self.proxyRuleAlign.add(self.proxyRuleLabel)
+        self.setupBox.pack_start(self.proxyRuleAlign, False, False)
+        
+        self.inputBox = gtk.HBox()
+        self.setupBox.pack_start(self.inputBox, False, False)
+        
+        proxyString = readFirstLine("./proxy")
+        self.inputEntry = SearchEntry(
+            self.inputBox,
+            proxyString,
+            appTheme.getDynamicColor("entryHint"),
+            appTheme.getDynamicColor("entryBackground"),
+            appTheme.getDynamicColor("entryForeground"),
+            True,
+            )
+        self.inputBox.pack_start(self.inputEntry, True, True)
+        
+        self.setupButton = utils.newButtonWithoutPadding()
+        self.setupButton.connect("button-press-event", lambda w, e: self.setProxy())
+        drawButton(self.setupButton, "confirm", "index", False, "设定", BUTTON_FONT_SIZE_SMALL, "buttonFont")
+        self.inputBox.pack_start(self.setupButton, False, False, self.SETUP_BUTTON_PADDING_X)
+            
+        # Hide window if user click on main window.
+        widget.connect("button-press-event", lambda w, e: self.hide())
+        
+    def setProxy(self):
+        '''Set proxy.'''
+        # Read proxy string.
+        proxyString = self.inputEntry.get_text().split(" ")[0]
+        
+        # Save proxy setup.
+        writeFile("./proxy", proxyString)
+        
+        # Hide window.
+        self.hide()
+        
+        # Display message.
+        if proxyString == "":
+            self.messageCallback("取消代理成功！")
+        else:
+            self.messageCallback("代理设置成功!")
         
     def show(self):
         '''Show.'''

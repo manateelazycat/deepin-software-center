@@ -118,6 +118,14 @@ def readFile(filepath):
     
     return content
 
+def readFirstLine(filepath):
+    '''Read first line.'''
+    rFile = open(filepath, "r")
+    content = rFile.readline().split("\n")[0]
+    rFile.close()
+    
+    return content
+
 def evalFile(filepath):
     '''Eval file content.'''
     readFile = open(filepath, "r")

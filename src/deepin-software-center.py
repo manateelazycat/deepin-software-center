@@ -107,8 +107,7 @@ class DeepinSoftwareCenter(object):
         self.topbox = gtk.VBox()
         self.topbar = gtk.EventBox()
         self.themeSelectWindow = themeSelect.ThemeSelect(self.window, self.selectTheme)
-        self.moreWindow = moreWindow.MoreWindow(
-            self.window)
+        self.moreWindow = moreWindow.MoreWindow(self.window, self.message)
         
         self.statusbar = statusbar.Statusbar()
         self.statusbar.eventbox.connect("button-press-event", lambda w, e: utils.resizeWindow(w, e, self.window))
@@ -157,6 +156,10 @@ class DeepinSoftwareCenter(object):
             # Hide new feature window if it visible now.
             if self.moreWindow.newFeatureWindow.window.get_visible():
                 self.moreWindow.newFeatureWindow.hide()
+
+            # Hide proxy setup window if it visible now.
+            if self.moreWindow.proxySetupWindow.window.get_visible():
+                self.moreWindow.proxySetupWindow.hide()
             
     def showMoreWindow(self, widget, event):
         '''Show more window.'''
@@ -176,6 +179,10 @@ class DeepinSoftwareCenter(object):
             if self.moreWindow.newFeatureWindow.window.get_visible():
                 self.moreWindow.newFeatureWindow.hide()
                 
+            # Hide proxy setup window if it visible now.
+            if self.moreWindow.proxySetupWindow.window.get_visible():
+                self.moreWindow.proxySetupWindow.hide()
+            
     def selectTheme(self, themeName):
         '''Select theme.'''
         # Change theme.
@@ -200,7 +207,6 @@ class DeepinSoftwareCenter(object):
     def message(self, message):
         '''Show message.'''
         self.tooltips.start(message)
-
 
     def switchStatus(self, pkgName, appStatus):
         '''Switch status.'''

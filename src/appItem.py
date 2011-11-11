@@ -20,6 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from searchEntry import *
 from constant import *
 from draw import *
 from theme import *
@@ -768,62 +769,6 @@ def newActionButton(iconPrefix, alignX, alignY,
     align.add(button)
     
     return (button, align)
-
-class SearchEntry(gtk.Entry):
-    '''Search entry.'''
-	
-    def __init__(self, parent, helpString, hintDColor, backgroundDColor, foregroundDColor):
-        '''Init for search entry.'''
-        # Init.
-        gtk.Entry.__init__(self)
-        self.helpString = helpString
-        self.hintDColor = hintDColor
-        self.backgroundDColor = backgroundDColor
-        self.foregroundDColor = foregroundDColor
-        self.focusIn = False
-        self.ticker = 0
-        
-        # Show help string.
-        self.updateColor()
-        
-        # Clean input when first time focus in entry.
-        self.focusInHandler = self.connect("focus-in-event", lambda w, e: self.firstFocusIn())
-        self.connect("expose-event", self.exposeCallback)
-        
-        parent.connect("size-allocate", lambda w, e: self.realize())
-        
-    def exposeCallback(self, widget, event):
-        '''Expose callback.'''
-        if self.ticker != appTheme.ticker:
-            self.ticker = appTheme.ticker
-            self.updateColor()
-        
-    def updateColor(self):
-        '''Update color.'''
-        self.modify_base(gtk.STATE_NORMAL, gtk.gdk.color_parse(self.backgroundDColor.getColor()))
-        if self.focusIn:
-            self.modify_text(gtk.STATE_NORMAL, gtk.gdk.color_parse(self.foregroundDColor.getColor()))
-        else:
-            self.modify_text(gtk.STATE_NORMAL, gtk.gdk.color_parse(self.hintDColor.getColor()))
-            self.set_text(self.helpString)
-        
-    def firstFocusIn(self):
-        '''First touch callback.'''
-        self.focusIn = True
-        
-        # Empty entry when first time focus in.
-        self.set_text("")
-        
-        # Adjust input text color.
-        self.modify_base(gtk.STATE_NORMAL, gtk.gdk.color_parse(self.backgroundDColor.getColor()))
-        self.modify_text(gtk.STATE_NORMAL, gtk.gdk.color_parse(self.foregroundDColor.getColor()))
-        
-        # And disconnect signal itself.
-        self.disconnect(self.focusInHandler)
-        
-        return False
-    
-gobject.type_register(SearchEntry)
 
 def newSearchUI(helpString, getCandidatesCallback, clickCandidateCallback, searchCallback):
     '''New search box.'''

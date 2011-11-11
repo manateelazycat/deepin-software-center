@@ -20,6 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from utils import *
 from constant import *
 from pprint import pprint
 import Queue as Q
@@ -98,16 +99,9 @@ class Download(td.Thread):
             cmdline.append('--min-split-size=%s' % (self.minSplitSize))
 
         # Append proxy configuration.
-        http_proxy = apt_pkg.config.find('Acquire::http::Proxy')
-        https_proxy = apt_pkg.config.find('Acquire::https::Proxy', http_proxy)
-        ftp_proxy = apt_pkg.config.find('Acquire::ftp::Proxy')
-
-        if http_proxy:
-            cmdline.append('='.join(['--http-proxy', http_proxy]))
-        if https_proxy:
-            cmdline.append('='.join(['--https-proxy', https_proxy]))
-        if ftp_proxy:
-            cmdline.append('='.join(['--ftp-proxy', ftp_proxy]))
+        proxyString = readFirstLine("./proxy")
+        if proxyString != "":
+            cmdline.append("=".join(["--all-proxy", proxyString]))
 
         # Start child process.
         proc = subprocess.Popen(cmdline)

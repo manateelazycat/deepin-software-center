@@ -6,6 +6,7 @@
 	* Add close button on new feature window.
 	* Give main window minimum width.
 	* Don't allowed new feature window change size.
+	* Add proxy setup.
 
 2011-11-10 Yong Wang <lazycat.manatee@gmail.com>
 	* Add menu for more features.

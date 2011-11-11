@@ -1365,9 +1365,8 @@ def menuItemOnExpose(widget, event,
     
     selectPageId = getPageId()
     
-    if widget.state == gtk.STATE_NORMAL:
-            image = normalPixbuf
-    elif widget.state == gtk.STATE_PRELIGHT:
+    image = None
+    if widget.state == gtk.STATE_PRELIGHT:
         if selectPageId == pageId:
             image = pressPixbuf
         else:
@@ -1375,10 +1374,11 @@ def menuItemOnExpose(widget, event,
     elif widget.state == gtk.STATE_ACTIVE:
         image = pressPixbuf
         
-    rect = widget.allocation
-    pixbuf = image.scale_simple(rect.width, rect.height, gtk.gdk.INTERP_BILINEAR)
-    cr = widget.window.cairo_create()
-    drawPixbuf(cr, pixbuf, rect.x, rect.y)
+    if image != None:
+        rect = widget.allocation
+        pixbuf = image.scale_simple(rect.width, rect.height, gtk.gdk.INTERP_BILINEAR)
+        cr = widget.window.cairo_create()
+        drawPixbuf(cr, pixbuf, rect.x, rect.y)
 
     if widget.get_child() != None:
         widget.propagate_expose(widget.get_child(), event)
@@ -1440,6 +1440,34 @@ def drawBarBackground(cr, pixbuf, drawType, rect):
             rightPixbuf = pixbuf.subpixbuf(splitWidth, 0, rightWidth, h)
             cr.set_source_pixbuf(rightPixbuf, w - rightWidth, 0)
             cr.paint()
+            
+def moreWindowOnExpose(widget, event, dPixbuf, frameLightColor, frameColor):
+    '''More window expose event callback.'''
+    # Init.
+    w, h = widget.allocation.width, widget.allocation.height
+    cr = widget.window.cairo_create()
+    
+    # Draw background.
+    drawPixbuf(cr, dPixbuf.getPixbuf(), 0, 0)
+    
+    # Draw frame light.
+    cr.set_line_width(1)
+    cr.set_source_rgba(*alphaColorHexToCairo(frameLightColor.getColorInfo()))
+    cr.set_operator(cairo.OPERATOR_OVER)
+    drawRoundRectangle(cr, 1, 1, w - 2, h - 2, POPUP_WINDOW_RADIUS)
+    cr.stroke()
+    
+    # Draw frame.
+    cr.set_line_width(1)
+    cr.set_source_rgb(*colorHexToCairo(frameColor.getColor()))
+    cr.set_operator(cairo.OPERATOR_SOURCE)
+    drawRoundRectangle(cr, 0, 0, w, h, POPUP_WINDOW_RADIUS)
+    cr.stroke()
+    
+    if widget.get_child() != None:
+        widget.propagate_expose(widget.get_child(), event)
+
+    return True
 
 #  LocalWords:  scaleX imageWidth scaleY imageHeight pixbuf cr drawPixbuf
 #  LocalWords:  buttonSetBackground normalImg hoverImg pressImg buttonLabel

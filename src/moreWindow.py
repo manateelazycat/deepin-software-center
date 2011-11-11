@@ -29,6 +29,9 @@ pygtk.require('2.0')
 
 class MoreWindow(object):
     '''More window.'''
+    
+    ALIGN_X = 10
+    ALIGN_Y = 4
 	
     def __init__(self, widget):
         '''Init more window.'''
@@ -38,11 +41,19 @@ class MoreWindow(object):
         self.window.set_decorated(False)
         self.window.set_resizable(False)
         self.window.set_transient_for(widget.get_toplevel())
+        self.window.connect(
+            "expose-event", 
+            lambda w, e: moreWindowOnExpose(
+                w, e,
+                appTheme.getDynamicPixbuf("skin/background.png"),
+                appTheme.getDynamicAlphaColor("frameLigtht"),
+                appTheme.getDynamicColor("frame"),
+                ))
         
         self.mainBox = gtk.VBox()
         self.mainAlign = gtk.Alignment()
         self.mainAlign.set(0.5, 0.5, 0.0, 0.0)
-        self.mainAlign.set_padding(1, 1, 1, 1)
+        self.mainAlign.set_padding(self.ALIGN_Y, self.ALIGN_Y, self.ALIGN_X, self.ALIGN_X)
         self.mainAlign.add(self.mainBox)
         self.window.add(self.mainAlign)
         

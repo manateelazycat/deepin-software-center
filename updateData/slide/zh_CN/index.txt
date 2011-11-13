@@ -1,1 +1,1 @@
-[("chromium-browser", "谷歌浏览器"), ("ppstream", "PPStream网络电视"), ("eio", "永中集成Office")]
+[("chromium-browser", "谷歌浏览器"), ("smplayer", "smplayer 万能播放器"), ("eio", "永中集成Office")]

@@ -1,1 +1,1 @@
-[("chromium-browser", "Chromium browser"), ("ppstream", "PPStream TV"), ("eio", "Evermore Integrated Office")]
+[("chromium-browser", "Chromium browser"), ("smplayer", "SMplayer"), ("eio", "Evermore Integrated Office")]

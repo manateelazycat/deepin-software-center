@@ -1,3 +1,9 @@
+deepin-software-center (2.0~beta1-1) oneiric; urgency=low
+
+  * New release. 
+
+ -- YunQiang Su <wzssyqa@gmail.com>  Sun, 13 Nov 2011 18:51:39 +0800
+
 deepin-software-center (1.0-2011.06.14) natty; urgency=low
 
   * Updated 2011.06.14
@@ -12,6 +18,6 @@ deepin-software-center (1.0-3) natty; urgency=low
 
 deepin-software-center (1.0-1) natty; urgency=low
 
-  * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+  * Initial release.
 
  -- Leng Ganghua <hiweed@gmail.com>  Tue, 31 May 2011 17:18:47 +0800

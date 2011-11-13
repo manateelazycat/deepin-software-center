@@ -1,15 +1,23 @@
 Source: deepin-software-center
 Section: admin
-Priority: extra
+Priority: optional
 Maintainer: Leng Ganghua <hiweed@gmail.com>
-Build-Depends: debhelper (>= 7.0.50~)
-Standards-Version: 3.9.1
-Homepage: <insert the upstream URL, if relevant>
+Build-Depends: debhelper (>= 8.0.0)
+Standards-Version: 3.9.2
+Homepage: https://github.com/manateelazycat/deepin-software-center
 #Vcs-Git: git://git.debian.org/collab-maint/deepin-software-center.git
 #Vcs-Browser: http://git.debian.org/?p=collab-maint/deepin-software-center.git;a=summary
 
 Package: deepin-software-center
 Architecture: all
-Depends: ${shlibs:Depends}, ${misc:Depends}, aria2, python-webkit, python-apt, apt-xapian-index, aptdaemon, python-pkg-resources, gksu
-Description: <insert up to 60 chars description>
- <insert long description, indented with spaces>
+Depends: ${shlibs:Depends}, ${misc:Depends}, aria2, python, python-webkit, python-apt, apt-xapian-index, python-pkg-resources, gksu
+Description: Software center for linux deepin
+ Linux Deepin 原名 Hiweed GNU/Linux，是一个基于Ubuntu的中文Linux发行版，
+ Linux Deepin（以下简称LD）是一个基于Ubuntu的桌面操作系统，
+ 适用于笔记本、台式机、上网本等环境。
+ .
+ LD包含了您所需的程序：文字处理、电子邮件、沟通交流、图片设计、休闲娱乐、
+ Web服务和编程工具；它的口号是"免除新手痛苦，节约老手时间"。
+ 用起来顺畅、舒服是其目标。它将为您提供稳定、便捷、简单、高效的系统。
+ .
+ 此包为专为Linux Deepin设计的软件中心，也可以用于Ubuntu。

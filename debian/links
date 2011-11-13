@@ -1,0 +1,3 @@
+/usr/share/deepin-software-center/src/deepin-software-center /usr/bin/deepin-software-center
+/usr/share/deepin-software-center/src/deepin-check-update /usr/bin/deepin-check-update
+/usr/share/deepin-software-center/src/deepin-software-center.desktop /usr/share/applications/deepin-software-center.desktop

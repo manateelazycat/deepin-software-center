@@ -738,7 +738,7 @@ def drawNavigateFrame(cr, x, y, width, height):
     
     drawPixbuf(cr, pixbuf.scale_simple(1, height - r, gtk.gdk.INTERP_BILINEAR), x + width - 1, y + r)
     
-    drawPixbuf(cr, pixbuf.scale_simple(width, 1, gtk.gdk.INTERP_BILINEAR), x, y + height - 1, 0.5)
+    drawPixbuf(cr, pixbuf.scale_simple(width, 1, gtk.gdk.INTERP_BILINEAR), x, y + height - 1, 0.2)
     
     drawPixbuf(cr, pixbuf.scale_simple(1, height - r, gtk.gdk.INTERP_BILINEAR), x, y + r)
     
@@ -1288,20 +1288,7 @@ def exposeNavigateBackground(widget, event, dPixbuf, dType, frameColor, frameLig
     cr.stroke()
     
     # Draw frame.
-    # cr.set_line_width(1)
-    # cr.set_source_rgb(*colorHexToCairo(frameColor.getColor()))
-    # cr.set_operator(cairo.OPERATOR_SOURCE)
-    # drawNavigateFrame(cr, 0, 0, w, h, RADIUS)
-    # cr.stroke()
     drawNavigateFrame(cr, 0, 0, w, h)
-
-    # Draw bottom line.
-    cr.set_line_width(1)
-    cr.set_source_rgba(*alphaColorHexToCairo(bottomColor.getColorInfo()))
-    cr.move_to(1, h)
-    cr.line_to(rect.width - 1, h)
-    cr.set_operator(cairo.OPERATOR_OVER)
-    cr.stroke()
     
     if widget.get_child() != None:
         widget.propagate_expose(widget.get_child(), event)
@@ -1339,14 +1326,6 @@ def exposeStatusbarBackground(widget, event, dPixbuf, dType, frameColor, frameLi
     # Draw frame.
     drawStatusbarFrame(cr, 0, 0, w, h)
 
-    # Draw top line.
-    cr.set_line_width(1)
-    cr.set_source_rgba(*alphaColorHexToCairo(topColor.getColorInfo()))
-    cr.move_to(1, 0)
-    cr.line_to(rect.width - 1, 0)
-    cr.set_operator(cairo.OPERATOR_OVER)
-    cr.stroke()
-    
     if widget.get_child() != None:
         widget.propagate_expose(widget.get_child(), event)
 

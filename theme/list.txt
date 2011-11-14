@@ -4,5 +4,5 @@
 "blackgold", 
 "wood", 
 "deepinblue",
-"green2",
+"green",
 ]

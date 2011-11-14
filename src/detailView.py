@@ -1183,12 +1183,18 @@ class FetchScreenshot(td.Thread):
             "http://screenshots.debian.net/screenshot/" + pkgName,
             '--auto-file-renaming=false',
             '--summary-interval=0',
-            '--no-conf',
             '--remote-time=true',
             '--auto-save-interval=0',
-            '--continue',    
             ]
         
+        # Make software center can work with aria2c 1.9.x.
+        if ARIA2_MAJOR_VERSION >= 1 and ARIA2_MINOR_VERSION <= 9:
+            cmdline.append("--no-conf")
+            cmdline.append("--continue")
+        else:
+            cmdline.append("--no-conf=true")
+            cmdline.append("--continue=true")
+            
         # Append proxy configuration.
         proxyString = readFirstLine("./proxy")
         if proxyString != "":

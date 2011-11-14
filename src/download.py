@@ -81,10 +81,8 @@ class Download(td.Thread):
                    '--auto-file-renaming=false',
                    '--dir=%s' % (self.partialDir),
                    '--summary-interval=0',
-                   '--no-conf=true',
                    '--remote-time=true',
                    '--auto-save-interval=%s' % (self.autoSaveInterval),
-                   '--continue=true',
                    '--enable-xml-rpc=true',
                    '--xml-rpc-listen-port=%s' % (self.rpcListenPort),
                    '--max-concurrent-downloads=%s' % (self.maxConcurrentDownloads),
@@ -97,6 +95,14 @@ class Download(td.Thread):
         if ARIA2_MAJOR_VERSION >= 1 and ARIA2_MINOR_VERSION >= 10:
             cmdline.append('--max-connection-per-server=%s' % (self.maxConnectionPerServer))
             cmdline.append('--min-split-size=%s' % (self.minSplitSize))
+            
+        # Make software center can work with aria2c 1.9.x.
+        if ARIA2_MAJOR_VERSION >= 1 and ARIA2_MINOR_VERSION <= 9:
+            cmdline.append("--no-conf")
+            cmdline.append("--continue")
+        else:
+            cmdline.append("--no-conf=true")
+            cmdline.append("--continue=true")
 
         # Append proxy configuration.
         proxyString = readFirstLine("./proxy")

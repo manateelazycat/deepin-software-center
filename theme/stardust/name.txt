@@ -1,4 +1,4 @@
 {"zh_CN" : "星尘",
  "zh_TW" : "星塵",
- "en" : "Stardust",
+ "default" : "Stardust",
 }

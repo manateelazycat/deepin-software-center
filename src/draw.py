@@ -729,6 +729,31 @@ def drawRoundRectangle(cr, x, y, width, height, r):
     cr.arc(x + width - r, y + height - r, r, 0, pi / 2);
     cr.arc(x + r, y + height - r, r, pi / 2, pi);
 
+def drawFrame(cr, x, y, width, height):
+    '''Draw frame.'''
+    r = 4
+    pixbuf = appTheme.getDynamicPixbuf("skin/frame.png").getPixbuf()
+    
+    drawPixbuf(cr, pixbuf.scale_simple(width - 2 * r, 1, gtk.gdk.INTERP_BILINEAR), x + r, y)
+    
+    drawPixbuf(cr, pixbuf.scale_simple(1, height - r, gtk.gdk.INTERP_BILINEAR), x + width - 1, y + r)
+    
+    drawPixbuf(cr, pixbuf.scale_simple(width - 2 * r, 1, gtk.gdk.INTERP_BILINEAR), x + r, y + height - 1)
+    
+    drawPixbuf(cr, pixbuf.scale_simple(1, height - r, gtk.gdk.INTERP_BILINEAR), x, y + r)
+    
+    drawPixbuf(cr, pixbuf, x + 2, y + 1)
+    drawPixbuf(cr, pixbuf, x + 1, y + 2)
+
+    drawPixbuf(cr, pixbuf, x + width - 2 - 1, y + 1)
+    drawPixbuf(cr, pixbuf, x + width - 1 - 1, y + 2)
+    
+    drawPixbuf(cr, pixbuf, x + 2, y + height - 2)
+    drawPixbuf(cr, pixbuf, x + 1, y + height - 3)
+
+    drawPixbuf(cr, pixbuf, x + width - 3, y + height - 2)
+    drawPixbuf(cr, pixbuf, x + width - 2, y + height - 3)
+    
 def drawNavigateFrame(cr, x, y, width, height):
     '''Draw round rectangle.'''
     r = 4
@@ -1259,15 +1284,15 @@ def exposeLoopBackground(widget, event, dPixbuf):
 
     return True
 
-def drawNavigateBackground(widget, dPixbuf, dType, frameColor, frameLightColor, bottomColor):
+def drawNavigateBackground(widget, dPixbuf, dType, frameLightColor, bottomColor):
     '''Draw extend background.'''
     widget.set_size_request(-1, dPixbuf.getPixbuf().get_height())
     
     widget.connect_after(
         "expose-event", 
-        lambda w, e: exposeNavigateBackground(w, e, dPixbuf, dType, frameColor, frameLightColor, bottomColor))
+        lambda w, e: exposeNavigateBackground(w, e, dPixbuf, dType, frameLightColor, bottomColor))
     
-def exposeNavigateBackground(widget, event, dPixbuf, dType, frameColor, frameLightColor, bottomColor):
+def exposeNavigateBackground(widget, event, dPixbuf, dType, frameLightColor, bottomColor):
     '''Expose extend background.'''
     # Init.
     rect = widget.allocation
@@ -1295,15 +1320,15 @@ def exposeNavigateBackground(widget, event, dPixbuf, dType, frameColor, frameLig
 
     return True
     
-def drawStatusbarBackground(widget, dPixbuf, dType, frameColor, frameLightColor, topColor):
+def drawStatusbarBackground(widget, dPixbuf, dType, frameLightColor, topColor):
     '''Draw extend background.'''
     widget.set_size_request(-1, dPixbuf.getPixbuf().get_height())
     
     widget.connect_after(
         "expose-event", 
-        lambda w, e: exposeStatusbarBackground(w, e, dPixbuf, dType, frameColor, frameLightColor, topColor))
+        lambda w, e: exposeStatusbarBackground(w, e, dPixbuf, dType, frameLightColor, topColor))
     
-def exposeStatusbarBackground(widget, event, dPixbuf, dType, frameColor, frameLightColor, topColor):
+def exposeStatusbarBackground(widget, event, dPixbuf, dType, frameLightColor, topColor):
     '''Expose extend background.'''
     # Init.
     rect = widget.allocation
@@ -1331,12 +1356,12 @@ def exposeStatusbarBackground(widget, event, dPixbuf, dType, frameColor, frameLi
 
     return True
 
-def drawThemeSelectWindow(widget, backgroundPixbuf, frameColor, frameLightColor):
+def drawThemeSelectWindow(widget, backgroundPixbuf, frameLightColor):
     '''Draw theme select window.'''
     widget.connect("expose-event", 
-                   lambda w, e: exposeDrawThemeSelectWindow(w, e, backgroundPixbuf, frameColor, frameLightColor))
+                   lambda w, e: exposeDrawThemeSelectWindow(w, e, backgroundPixbuf, frameLightColor))
     
-def exposeDrawThemeSelectWindow(widget, event, backgroundPixbuf, frameColor, frameLightColor):
+def exposeDrawThemeSelectWindow(widget, event, backgroundPixbuf, frameLightColor):
     '''Expose draw theme select window.'''
     # Init.
     rect = widget.allocation
@@ -1356,11 +1381,7 @@ def exposeDrawThemeSelectWindow(widget, event, backgroundPixbuf, frameColor, fra
     cr.stroke()
 
     # Draw frame.
-    cr.set_line_width(1)
-    cr.set_source_rgb(*colorHexToCairo(frameColor.getColor()))
-    cr.set_operator(cairo.OPERATOR_SOURCE)
-    drawRoundRectangle(cr, 0, 0, w, h, RADIUS)
-    cr.stroke()
+    drawFrame(cr, 0, 0, w, h)
     
     if widget.get_child() != None:
         widget.propagate_expose(widget.get_child(), event)
@@ -1456,7 +1477,7 @@ def drawBarBackground(cr, pixbuf, drawType, rect):
             cr.set_source_pixbuf(rightPixbuf, w - rightWidth, 0)
             cr.paint()
             
-def moreWindowOnExpose(widget, event, dPixbuf, frameLightColor, frameColor):
+def moreWindowOnExpose(widget, event, dPixbuf, frameLightColor):
     '''More window expose event callback.'''
     # Init.
     w, h = widget.allocation.width, widget.allocation.height
@@ -1473,11 +1494,7 @@ def moreWindowOnExpose(widget, event, dPixbuf, frameLightColor, frameColor):
     cr.stroke()
     
     # Draw frame.
-    cr.set_line_width(1)
-    cr.set_source_rgb(*colorHexToCairo(frameColor.getColor()))
-    cr.set_operator(cairo.OPERATOR_SOURCE)
-    drawRoundRectangle(cr, 0, 0, w, h, POPUP_WINDOW_RADIUS)
-    cr.stroke()
+    drawFrame(cr, 0, 0, w, h)
     
     if widget.get_child() != None:
         widget.propagate_expose(widget.get_child(), event)

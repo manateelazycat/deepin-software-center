@@ -1,5 +1,8 @@
 * News in 2.0
 
+2011-11-14 Yong Wang <lazycat.manatee@gmail.com>
+	* Fix bug that cause by language code.
+
 2011-11-12 Yong Wang <lazycat.manatee@gmail.com>
 	* Close popup window when resize main window.
 

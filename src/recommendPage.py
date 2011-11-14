@@ -211,13 +211,7 @@ class SlideBar(object):
         self.smallImagePaddingY = 10
 
         self.repoCache = repoCache
-        lang = getDefaultLanguage()
-        if lang == "zh_CN":
-            self.slideDir = "../updateData/slide/zh_CN"
-        elif lang == "zh_TW":
-            self.slideDir = "../updateData/slide/zh_TW"
-        else:
-            self.slideDir = "../updateData/slide/default"
+        self.slideDir = "../updateData/slide/%s" % (getDefaultLanguage())
         self.infoList = evalFile("%s/index.txt" % (self.slideDir))
         self.itemDict = sortedDict.SortedDict(map(lambda (pkgName, _): (pkgName, None), self.infoList))
         self.initItems(switchStatus, downloadQueue)

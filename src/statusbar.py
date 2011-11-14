@@ -43,7 +43,6 @@ class Statusbar(object):
             self.eventbox,
             appTheme.getDynamicPixbuf("statusbar/background.png"),
             appTheme.getDynamicDrawType("statusbar"),
-            appTheme.getDynamicColor("frame"),
             appTheme.getDynamicAlphaColor("frameLigtht"),
             appTheme.getDynamicAlphaColor("statusbarTop"),
             )

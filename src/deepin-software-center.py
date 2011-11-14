@@ -117,7 +117,6 @@ class DeepinSoftwareCenter(object):
             self.topbar,
             appTheme.getDynamicPixbuf("navigate/background.png"),
             appTheme.getDynamicDrawType("navigatebar"),
-            appTheme.getDynamicColor("frame"),
             appTheme.getDynamicAlphaColor("frameLigtht"),
             appTheme.getDynamicAlphaColor("topbarBottom"),
             )

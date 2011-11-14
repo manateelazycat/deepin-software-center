@@ -79,7 +79,6 @@ class ThemeSelect(object):
         drawThemeSelectWindow(
             self.window,
             appTheme.getDynamicPixbuf("skin/background.png"),
-            appTheme.getDynamicColor("frame"),
             appTheme.getDynamicAlphaColor("frameLigtht"),
             )
         

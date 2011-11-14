@@ -48,7 +48,6 @@ class MoreWindow(object):
                 w, e,
                 appTheme.getDynamicPixbuf("skin/background.png"),
                 appTheme.getDynamicAlphaColor("frameLigtht"),
-                appTheme.getDynamicColor("frame"),
                 ))
         self.newFeatureWindow = NewFeature(widget)
         self.proxySetupWindow = ProxySetup(widget, messageCallback)
@@ -153,7 +152,6 @@ class NewFeature(object):
         drawThemeSelectWindow(
             self.window,
             appTheme.getDynamicPixbuf("skin/background.png"),
-            appTheme.getDynamicColor("frame"),
             appTheme.getDynamicAlphaColor("frameLigtht"),
             )
         
@@ -201,14 +199,7 @@ class NewFeature(object):
         self.textView.set_editable(False)
         self.textView.set_wrap_mode(gtk.WRAP_CHAR)
         self.mainBox.pack_start(self.textViewAlign, True, True)
-        lang = getDefaultLanguage()
-        if lang == "zh_CN":
-            news = readFile("../news/%s.txt" % (lang))
-        elif lang == "zh_TW":
-            news = readFile("../news/%s.txt" % (lang))
-        else:
-            news = readFile("../news/en.txt")
-        self.textView.get_buffer().set_text(news)
+        self.textView.get_buffer().set_text(readFile("../news/%s.txt" % (getDefaultLanguage())))
         
         self.window.set_size_request(self.WINDOW_WIDTH, self.WINDOW_HEIGHT)
         
@@ -253,7 +244,6 @@ class ProxySetup(object):
         drawThemeSelectWindow(
             self.window,
             appTheme.getDynamicPixbuf("skin/background.png"),
-            appTheme.getDynamicColor("frame"),
             appTheme.getDynamicAlphaColor("frameLigtht"),
             )
         

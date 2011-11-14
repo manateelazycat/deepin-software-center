@@ -144,15 +144,7 @@ def getPkgShortDesc(pkg):
     '''Get package's short description.'''
     pkgPath = "../pkgData/pkgInfo/" + pkg.name
     if os.path.exists(pkgPath):
-        lang = getDefaultLanguage()
-        if lang == "zh_CN":
-            return ((evalFile(pkgPath))["zh-CN"])["shortDesc"]
-        elif lang == "zh_TW":
-            return ((evalFile(pkgPath))["zh-TW"])["shortDesc"]
-        # Default use English.
-        else:
-            return ((evalFile(pkgPath))["en"])["shortDesc"]
-            
+        return ((evalFile(pkgPath))[getDefaultLanguage()])["shortDesc"]
     else:
         return pkg.candidate.summary
 
@@ -160,15 +152,7 @@ def getPkgLongDesc(pkg):
     '''Get package's long description.'''
     pkgPath = "../pkgData/pkgInfo/" + pkg.name
     if os.path.exists(pkgPath):
-        lang = getDefaultLanguage()
-        if lang == "zh_CN":
-            return ((evalFile(pkgPath))["zh-CN"])["longDesc"]
-        elif lang == "zh_TW":
-            return ((evalFile(pkgPath))["zh-TW"])["longDesc"]
-        # Default use English.
-        else:
-            return ((evalFile(pkgPath))["en"])["longDesc"]
-            
+        return ((evalFile(pkgPath))[getDefaultLanguage()])["longDesc"]
     else:
         return pkg.candidate.description
 
@@ -571,7 +555,10 @@ def touchFile(filepath):
 def getDefaultLanguage():
     '''Get default language.'''
     (lang, _) = locale.getdefaultlocale()
-    return lang
+    if lang in ["zh_CN", "zh_TW"]:
+        return lang
+    else:
+        return "default"
 
 def setHelpTooltip(widget, helpText):
     '''Set help tooltip.'''

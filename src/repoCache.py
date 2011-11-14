@@ -123,13 +123,7 @@ class RepoCache(object):
 
         # Scan category dict.
         whiteList = []
-        lang = utils.getDefaultLanguage()
-        if lang == "zh_CN":
-            sortRecommendDir = "../updateData/pkgClassify/sortByDefault/zh_CN/"
-        elif lang == "zh_TW":
-            sortRecommendDir = "../updateData/pkgClassify/sortByDefault/zh_TW/"
-        else:
-            sortRecommendDir = "../updateData/pkgClassify/sortByDefault/default/"
+        sortRecommendDir = "../updateData/pkgClassify/sortByDefault/%s/" % (utils.getDefaultLanguage())
         sortDownloadDir =  "../updateData/pkgClassify/sortByDownload/"
         sortVoteDir =  "../updateData/pkgClassify/sortByVote/"
         

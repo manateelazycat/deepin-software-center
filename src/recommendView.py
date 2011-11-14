@@ -486,13 +486,7 @@ class RecommendView(object):
         
         # Create container box.
         listLen = 12
-        lang = getDefaultLanguage()
-        if lang == "zh_CN":
-            self.pkgRecomments = evalFile("../updateData/pkgRecommend/zh_CN/recommendList.txt")
-        elif lang == "zh_TW":
-            self.pkgRecomments = evalFile("../updateData/pkgRecommend/zh_TW/recommendList.txt")
-        else:
-            self.pkgRecomments = evalFile("../updateData/pkgRecommend/default/recommendList.txt")
+        self.pkgRecomments = evalFile("../updateData/pkgRecommend/%s/recommendList.txt" % (getDefaultLanguage()))
         boxlist = map (lambda n: gtk.HBox(), range(0, listLen / 2 + listLen % 2))
         for box in boxlist:
             self.box.pack_start(box, False, False)

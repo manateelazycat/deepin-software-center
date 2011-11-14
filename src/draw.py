@@ -550,6 +550,28 @@ def drawAlphaLineExpose(widget, event, daColor, lineWidth, vertical):
     
     return True
 
+def drawVerticalLine(widget, width):
+    '''Draw vertical line.'''
+    widget.set_size_request(width, -1)
+    
+    widget.connect(
+        "expose-event", 
+        lambda w, e: drawVerticalLineExpose(w, e))
+    
+def drawVerticalLineExpose(widget, event):
+    '''Draw vertical line expose.'''
+    pixbuf = appTheme.getDynamicPixbuf("skin/frame.png").getPixbuf()
+    rect = widget.allocation
+    cr = widget.window.cairo_create()
+    
+    drawPixbuf(
+        cr, 
+        pixbuf.scale_simple(rect.width, rect.height, gtk.gdk.INTERP_BILINEAR),
+        rect.x,
+        rect.y)
+    
+    return True
+
 def drawLine(widget, dColor,
              lineWidth, vertical=True, lineType=None):
     '''Draw line.'''
@@ -707,7 +729,45 @@ def drawRoundRectangle(cr, x, y, width, height, r):
     cr.arc(x + width - r, y + height - r, r, 0, pi / 2);
     cr.arc(x + r, y + height - r, r, pi / 2, pi);
 
-def drawNavigateFrame(cr, x, y, width, height, r):
+def drawNavigateFrame(cr, x, y, width, height):
+    '''Draw round rectangle.'''
+    r = 4
+    pixbuf = appTheme.getDynamicPixbuf("skin/frame.png").getPixbuf()
+
+    drawPixbuf(cr, pixbuf.scale_simple(width - 2 * r, 1, gtk.gdk.INTERP_BILINEAR), x + r, y)
+    
+    drawPixbuf(cr, pixbuf.scale_simple(1, height - r, gtk.gdk.INTERP_BILINEAR), x + width - 1, y + r)
+    
+    drawPixbuf(cr, pixbuf.scale_simple(width, 1, gtk.gdk.INTERP_BILINEAR), x, y + height - 1, 0.5)
+    
+    drawPixbuf(cr, pixbuf.scale_simple(1, height - r, gtk.gdk.INTERP_BILINEAR), x, y + r)
+    
+    drawPixbuf(cr, pixbuf, x + 2, y + 1)
+    drawPixbuf(cr, pixbuf, x + 1, y + 2)
+
+    drawPixbuf(cr, pixbuf, x + width - 2 - 1, y + 1)
+    drawPixbuf(cr, pixbuf, x + width - 1 - 1, y + 2)
+
+def drawStatusbarFrame(cr, x, y, width, height):
+    '''Draw round rectangle.'''
+    r = 4
+    pixbuf = appTheme.getDynamicPixbuf("skin/frame.png").getPixbuf()
+    
+    drawPixbuf(cr, pixbuf.scale_simple(width, 1, gtk.gdk.INTERP_BILINEAR), x, y, 0.5)
+    
+    drawPixbuf(cr, pixbuf.scale_simple(1, height - r, gtk.gdk.INTERP_BILINEAR), x + width - 1, y)
+    
+    drawPixbuf(cr, pixbuf.scale_simple(width - 2 * r, 1, gtk.gdk.INTERP_BILINEAR), x + r, y + height - 1)
+    
+    drawPixbuf(cr, pixbuf.scale_simple(1, height - r, gtk.gdk.INTERP_BILINEAR), x, y)
+    
+    drawPixbuf(cr, pixbuf, x + 2, y + height - 2)
+    drawPixbuf(cr, pixbuf, x + 1, y + height - 3)
+
+    drawPixbuf(cr, pixbuf, x + width - 3, y + height - 2)
+    drawPixbuf(cr, pixbuf, x + width - 2, y + height - 3)
+
+def drawNavigateFrameLight(cr, x, y, width, height, r):
     '''Draw round rectangle.'''
     cr.move_to(x + r, y);
     cr.line_to(x + width - r, y);
@@ -724,7 +784,7 @@ def drawNavigateFrame(cr, x, y, width, height, r):
     cr.arc(x + r, y + r, r, pi, 3 * pi / 2.0);
     cr.arc(x + width - r, y + r, r, 3 * pi / 2, 2 * pi);
 
-def drawStatusbarFrame(cr, x, y, width, height, r):
+def drawStatusbarFrameLight(cr, x, y, width, height, r):
     '''Draw round rectangle.'''
     cr.move_to(x, y);
     cr.line_to(x + width, y);
@@ -1000,11 +1060,11 @@ def drawFont(cr, content, fontSize, fontColor, x, y):
     cr.move_to(x, y)
     cr.show_text(content)
     
-def drawPixbuf(cr, pixbuf, x=0, y=0):
+def drawPixbuf(cr, pixbuf, x=0, y=0, alpha=1.0):
     '''Draw pixbuf.'''
     if pixbuf != None:
         cr.set_source_pixbuf(pixbuf, x, y)
-        cr.paint()
+        cr.paint_with_alpha(alpha)
 
 def drawProgressbar(width):
     '''Draw progressbar.'''
@@ -1224,15 +1284,16 @@ def exposeNavigateBackground(widget, event, dPixbuf, dType, frameColor, frameLig
     cr.set_line_width(1)
     cr.set_source_rgba(*alphaColorHexToCairo(frameLightColor.getColorInfo()))
     cr.set_operator(cairo.OPERATOR_OVER)
-    drawNavigateFrame(cr, 1, 1, w - 2, h - 2, RADIUS)
+    drawNavigateFrameLight(cr, 1, 1, w - 2, h - 2, RADIUS)
     cr.stroke()
     
     # Draw frame.
-    cr.set_line_width(1)
-    cr.set_source_rgb(*colorHexToCairo(frameColor.getColor()))
-    cr.set_operator(cairo.OPERATOR_SOURCE)
-    drawNavigateFrame(cr, 0, 0, w, h, RADIUS)
-    cr.stroke()
+    # cr.set_line_width(1)
+    # cr.set_source_rgb(*colorHexToCairo(frameColor.getColor()))
+    # cr.set_operator(cairo.OPERATOR_SOURCE)
+    # drawNavigateFrame(cr, 0, 0, w, h, RADIUS)
+    # cr.stroke()
+    drawNavigateFrame(cr, 0, 0, w, h)
 
     # Draw bottom line.
     cr.set_line_width(1)
@@ -1272,15 +1333,11 @@ def exposeStatusbarBackground(widget, event, dPixbuf, dType, frameColor, frameLi
     cr.set_line_width(1)
     cr.set_source_rgba(*alphaColorHexToCairo(frameLightColor.getColorInfo()))
     cr.set_operator(cairo.OPERATOR_OVER)
-    drawStatusbarFrame(cr, 1, 1, w - 2, h - 2, RADIUS)
+    drawStatusbarFrameLight(cr, 1, 1, w - 2, h - 2, RADIUS)
     cr.stroke()
     
     # Draw frame.
-    cr.set_line_width(1)
-    cr.set_source_rgb(*colorHexToCairo(frameColor.getColor()))
-    drawStatusbarFrame(cr, 0, 0, w, h, RADIUS)
-    cr.set_operator(cairo.OPERATOR_SOURCE)
-    cr.stroke()
+    drawStatusbarFrame(cr, 0, 0, w, h)
 
     # Draw top line.
     cr.set_line_width(1)

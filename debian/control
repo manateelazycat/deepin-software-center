@@ -2,7 +2,7 @@ Source: deepin-software-center
 Section: admin
 Priority: optional
 Maintainer: Leng Ganghua <hiweed@gmail.com>
-Build-Depends: debhelper (>= 8.0.0)
+Build-Depends: debhelper (>= 8.0.0), python (>= 2.6.3~)
 Standards-Version: 3.9.2
 Homepage: https://github.com/manateelazycat/deepin-software-center
 #Vcs-Git: git://git.debian.org/collab-maint/deepin-software-center.git

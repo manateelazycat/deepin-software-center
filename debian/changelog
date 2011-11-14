@@ -1,4 +1,11 @@
-deepin-software-center (2.0~beta1-1) oneiric; urgency=low
+deepin-software-center (2.0~beta1.1-2) oneiric; urgency=low
+
+  * New commit: fix crash on en: zh-CN -> zh_CN.
+  * Add green theme.
+
+ -- YunQiang Su <wzssyqa@gmail.com>  Mon, 14 Nov 2011 15:53:32 +0800
+
+deepin-software-center (2.0~beta1-2) oneiric; urgency=low
 
   * New release. 
 

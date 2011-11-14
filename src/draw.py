@@ -1215,7 +1215,7 @@ def exposeNavigateBackground(widget, event, dPixbuf, dType, frameColor, frameLig
     cr = widget.window.cairo_create()
     pixbuf = dPixbuf.getPixbuf()
     pixbufWidth = pixbuf.get_width()
-    
+
     # Draw background.
     drawType = dType.getType()
     drawBarBackground(cr, pixbuf, drawType, rect)

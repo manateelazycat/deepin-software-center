@@ -42,7 +42,7 @@
     {"topbarBottom" : ("#333333", 0.5),
      "statusbarTop" : ("#333333", 0.5),
 	 "bodyTop" : ("#FFFFFF", 0.5),
-     "frameLigtht" : ("#FFFFFF", 0.5),
+     "frameLigtht" : ("#FFFFFF", 0.8),
 	 "themeSelectTitleBackground" : ("#000000", 0.5), 
 	},
 }

@@ -1,3 +1,0 @@
-{"navigatebar" : "loop",
- "statusbar" : "loop",
-}

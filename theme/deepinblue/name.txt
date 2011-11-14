@@ -1,0 +1,4 @@
+﻿{"zh_CN" : "深度蓝",
+ "zh_TW" : "深度蓝",
+ "en" : "deepinblue",
+}

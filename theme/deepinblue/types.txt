@@ -1,0 +1,3 @@
+{"navigatebar" : (346, "#1b3973"),
+ "statusbar" : (367, "#0e1a40"),
+}

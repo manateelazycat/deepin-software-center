@@ -3,6 +3,6 @@
 "stardust", 
 "blackgold", 
 "wood", 
-"green",
+"deepinblue",
 "green2",
 ]

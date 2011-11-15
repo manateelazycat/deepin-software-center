@@ -1,3 +1,0 @@
-{"navigatebar" : "extend",
- "statusbar" : "extend",
-}

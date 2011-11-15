@@ -1,7 +1,6 @@
 [
 "default", 
 "stardust",
-#"stardust", 
 "blackgold", 
 "wood", 
 "deepinblue",

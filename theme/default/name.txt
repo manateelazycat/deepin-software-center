@@ -1,4 +1,0 @@
-{"zh_CN" : "默认",
- "zh_TW" : "默認",
- "default" : "Default",
-}

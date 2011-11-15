@@ -1,4 +1,0 @@
-{"zh_CN" : "黑金",
- "zh_TW" : "黑金",
- "default" : "BlackGold",
-}

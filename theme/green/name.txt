@@ -1,4 +1,0 @@
-{"zh_CN" : "清新",
- "zh_TW" : "清新",
- "default" : "Clear",
-}

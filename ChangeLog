@@ -3,7 +3,8 @@
 2011-11-15 Yong Wang <lazycat.manatee@gmail.com>
 	* Fix aria2c version bug.
 	* Update theme stuff.
-	* Delete pink 
+	* Delete pink theme.
+	* Remove name.txt, don't need anymore.
 
 2011-11-14 Yong Wang <lazycat.manatee@gmail.com>
 	* Fix bug that cause by language code.

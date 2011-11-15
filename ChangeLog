@@ -1,5 +1,8 @@
 * News in 2.0
 
+2011-11-15 Yong Wang <lazycat.manatee@gmail.com>
+	* Fix aria2c version bug.
+
 2011-11-14 Yong Wang <lazycat.manatee@gmail.com>
 	* Fix bug that cause by language code.
 	* Compatible with aria2c 1.9.x.

@@ -43,6 +43,8 @@ import time
 import base64
 pygtk.require('2.0')
 
+(ARIA2_MAJOR_VERSION, ARIA2_MINOR_VERSION, _) = utils.getAria2Version()
+
 class DetailView(object):
     '''Detail view.'''
 

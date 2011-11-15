@@ -156,7 +156,11 @@ class NewFeature(object):
             )
         
         self.mainBox = gtk.VBox()
-        self.window.add(self.mainBox)
+        self.mainEventBox = gtk.EventBox()
+        self.mainEventBox.set_visible_window(False)
+        self.mainEventBox.add(self.mainBox)
+        self.window.add(self.mainEventBox)
+        self.mainEventBox.connect("button-press-event", lambda w, e: utils.moveWindow(w, e, self.window))
         
         self.titleBox = gtk.HBox()
         self.mainBox.pack_start(self.titleBox, False, False)
@@ -248,7 +252,11 @@ class ProxySetup(object):
             )
         
         self.mainBox = gtk.VBox()
-        self.window.add(self.mainBox)
+        self.mainEventBox = gtk.EventBox()
+        self.mainEventBox.set_visible_window(False)
+        self.mainEventBox.add(self.mainBox)
+        self.window.add(self.mainEventBox)
+        self.mainEventBox.connect("button-press-event", lambda w, e: utils.moveWindow(w, e, self.window))
         
         self.titleBox = gtk.HBox()
         self.mainBox.pack_start(self.titleBox, False, False)

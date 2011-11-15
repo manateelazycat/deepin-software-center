@@ -326,6 +326,7 @@ class SlideBar(object):
                                (self.imageHeight - self.smallImagePaddingY * 2) / 3)
         image.connect("expose_event", lambda w, e: self.exposeSmallArea(w, e, index))
         image.queue_draw()
+        utils.setClickableCursor(image)
         
         imageAlign = gtk.Alignment()
         if index == 1:
@@ -337,7 +338,7 @@ class SlideBar(object):
         imageAlign.add(image)
         labelBox = gtk.EventBox()
         labelBox.add(imageAlign)
-        labelBox.connect("enter-notify-event", lambda widget, event: self.start(index))
+        labelBox.connect("button-press-event", lambda widget, event: self.start(index))
         labelBox.connect("expose-event", lambda w, e: drawBackground(w, e, appTheme.getDynamicColor("background")))
         self.labelBox.pack_start(labelBox, True, True)
         

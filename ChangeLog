@@ -6,6 +6,7 @@
 	* Delete pink theme.
 	* Remove name.txt, don't need anymore.
 	* Make new feature window and proxy setup window movable.
+	* Change behavior of homepage recommend slide.
 
 2011-11-14 Yong Wang <lazycat.manatee@gmail.com>
 	* Fix bug that cause by language code.

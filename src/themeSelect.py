@@ -57,15 +57,19 @@ class ThemeSelect(object):
             LABEL_FONT_LARGE_SIZE,
             )
         self.titleLabel = dLabel.getLabel()
-        alignY = 10
+        titleIconPaddingTop = 6
+        titleIconPaddingBottom = 2
         self.titleAlign.set(0.0, 0.0, 1.0, 1.0)
-        self.titleAlign.set_padding(alignY, alignY, 0, 0)
+        self.titleAlign.set_padding(titleIconPaddingTop, titleIconPaddingBottom, 0, 0)
         self.titleAlign.add(self.titleLabel)
         self.titleEventBox.add(self.titleAlign)
         
+        themeIconPaddingTop = 0
+        themeIconPaddingBottom = 4
         self.themeIconBox = gtk.VBox()
         self.themeIconAlign = gtk.Alignment()
         self.themeIconAlign.set(0.5, 0.5, 0.0, 0.0)
+        self.themeIconAlign.set_padding(themeIconPaddingTop, themeIconPaddingBottom, 0, 0)
         self.themeIconAlign.add(self.themeIconBox)
         self.mainBox.pack_start(self.themeIconAlign)
         
@@ -120,15 +124,14 @@ class ThemeSelect(object):
 class ThemeSlide(object):
     '''Theme slide.'''
     
-    PADDING_X = 10
-    PADDING_Y = 5
+    PADDING_X = 2
+    PADDING_Y = 2
 	
     def __init__(self, dirname, index, setIndexCallback, getIndexCallback):
         '''Init theme slide.'''
         # Init.
         self.dirname = dirname
         self.pixbuf = gtk.gdk.pixbuf_new_from_file("../theme/%s/image/skin/icon.png" % (self.dirname))
-        self.iconName = evalFile("../theme/%s/name.txt" % dirname)[getDefaultLanguage()]
         
         # Build widget.
         self.box = gtk.VBox()
@@ -147,18 +150,6 @@ class ThemeSlide(object):
             index, 
             getIndexCallback)
         
-        self.iconNameBox = gtk.EventBox()
-        self.iconNameBox.set_visible_window(False)
-        dLabel = DynamicSimpleLabel(
-            self.iconNameBox,
-            self.iconName,
-            appTheme.getDynamicColor("themeIconName"),
-            LABEL_FONT_SIZE,
-            )
-        self.iconNameLabel = dLabel.getLabel()
-        self.iconNameBox.add(self.iconNameLabel)
-        
         self.box.pack_start(self.iconBox, False, False)
-        self.box.pack_start(self.iconNameBox, False, False)
         self.align.add(self.box)
         

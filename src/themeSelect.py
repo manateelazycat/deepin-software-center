@@ -57,7 +57,7 @@ class ThemeSelect(object):
             LABEL_FONT_LARGE_SIZE,
             )
         self.titleLabel = dLabel.getLabel()
-        titleIconPaddingTop = 6
+        titleIconPaddingTop = 8
         titleIconPaddingBottom = 2
         self.titleAlign.set(0.0, 0.0, 1.0, 1.0)
         self.titleAlign.set_padding(titleIconPaddingTop, titleIconPaddingBottom, 0, 0)
@@ -65,7 +65,7 @@ class ThemeSelect(object):
         self.titleEventBox.add(self.titleAlign)
         
         themeIconPaddingTop = 0
-        themeIconPaddingBottom = 4
+        themeIconPaddingBottom = 5
         self.themeIconBox = gtk.VBox()
         self.themeIconAlign = gtk.Alignment()
         self.themeIconAlign.set(0.5, 0.5, 0.0, 0.0)

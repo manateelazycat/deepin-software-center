@@ -320,8 +320,7 @@ def themeIconOnExpose(widget, event, pixbuf, selectDPixbuf, hoverDColor, pressDC
     if widget.state == gtk.STATE_ACTIVE or index == getIndex():
         # Draw select pixbuf.
         selectPixbuf = selectDPixbuf.getPixbuf()
-        drawPixbuf(cr, selectPixbuf, rect.x + rect.width - selectPixbuf.get_width() - 1, rect.y)
-        
+        drawPixbuf(cr, selectPixbuf, rect.x + rect.width - selectPixbuf.get_width() - 3, rect.y + 3)
     if widget.state == gtk.STATE_PRELIGHT:
         # Draw Hover frame.
         cr.set_line_width(2)

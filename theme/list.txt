@@ -1,6 +1,6 @@
 [
 "default", 
-"pink",
+"stardust",
 #"stardust", 
 "blackgold", 
 "wood", 

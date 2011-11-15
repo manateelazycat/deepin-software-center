@@ -24,6 +24,7 @@
      "completionBackground" : "#FFFFFF",
      "completionSelect" : "#16A5ED",
 	 "themeSelectTitleText" : "#FFFFFF",
+	 "themeIconName" : "#FFFFFF",
 	 "themeIconHover" : "#1A4A6E",
 	 "themeIconPress" : "#FFFFFF",
 	 "menuItem" : "#FFFFFF",

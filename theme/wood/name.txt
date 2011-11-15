@@ -1,4 +1,4 @@
 {"zh_CN" : "原木",
  "zh_TW" : "原木",
- "default" : "Wood",
+ "en" : "Wood",
 }

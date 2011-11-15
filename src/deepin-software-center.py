@@ -1048,7 +1048,8 @@ class DeepinSoftwareCenter(object):
                 self.searchQuery,
                 pageId, self.repoCache, keyword, pkgList,
                 self.actionQueue,
-                self.entryDetailView, self.sendVote, self.fetchVote, self.exitSearchView)
+                self.entryDetailView, self.sendVote, self.fetchVote, self.exitSearchView,
+                self.message)
         self.searchViewDict[pageId] = page
         self.selectPage(pageId)
 
@@ -1328,6 +1329,7 @@ class InitThread(td.Thread):
             center.entrySearchView,
             center.sendVote,
             center.fetchVote,
+            center.message,
             )
         
         center.downloadManagePage = downloadManagePage.DownloadManagePage(

@@ -35,7 +35,7 @@ class UninstallPage(object):
     '''Interface for uninstall page.'''
 	
     def __init__(self, repoCache, searchQuery, actionQueue, entryDetailCallback, entrySearchCallback, 
-                 sendVoteCallback, fetchVoteCallback):
+                 sendVoteCallback, fetchVoteCallback, messageCallback):
         '''Init for uninstall page.'''
         # Init.
         self.repoCache = repoCache
@@ -44,6 +44,7 @@ class UninstallPage(object):
         self.topbar = Topbar(len(self.repoCache.uninstallablePkgs),
                              repoCache,
                              entrySearchCallback,
+                             messageCallback,
                              searchQuery)
         self.uninstallView = uninstallView.UninstallView(
             len(self.repoCache.uninstallablePkgs), 
@@ -51,7 +52,7 @@ class UninstallPage(object):
             actionQueue,
             entryDetailCallback,
             sendVoteCallback,
-            fetchVoteCallback
+            fetchVoteCallback,
             )
         
         # Connect components.
@@ -64,7 +65,7 @@ class Topbar(object):
 	
     SEARCH_ENTRY_WIDTH = 300
     
-    def __init__(self, upgradeNum, repoCache, entrySearchCallback, searchQuery):
+    def __init__(self, upgradeNum, repoCache, entrySearchCallback, messageCallback, searchQuery):
         '''Init for top bar.'''
         # Init.
         self.searchQuery = searchQuery
@@ -72,6 +73,7 @@ class Topbar(object):
         self.numColor = '#006efe'
         self.textColor = '#1A3E88'
         self.repoCache = repoCache
+        self.messageCallback = messageCallback
         self.entrySearchCallback = entrySearchCallback
         
         self.box = gtk.HBox()
@@ -86,7 +88,7 @@ class Topbar(object):
         # Add search entry and label.
         (self.searchEntry, searchAlign, self.searchCompletion) = newSearchUI(
             "请输入您要卸载的软件名称、版本或其他信息",
-            lambda text: getCandidates(self.repoCache.uninstallablePkgs, text),
+            lambda text: getCandidates(map(lambda appInfo: appInfo.pkg.name, self.repoCache.cache.values()), text),
             self.clickCandidate,
             self.search)
         
@@ -115,8 +117,11 @@ class Topbar(object):
         
     def clickCandidate(self, candidate):
         '''Click candidate.'''
-        keyword = self.searchEntry.get_chars(0, -1)
-        self.entrySearchCallback(PAGE_UNINSTALL, keyword, [candidate])
+        if candidate in self.repoCache.uninstallablePkgs:
+            keyword = self.searchEntry.get_chars(0, -1)
+            self.entrySearchCallback(PAGE_UNINSTALL, keyword, [candidate])
+        else:
+            self.messageCallback("为保障您系统的稳定， 请不要卸载 %s." % (candidate))
         
 
 #  LocalWords:  efe

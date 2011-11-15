@@ -38,7 +38,8 @@ class SearchUninstallPage(object):
 	
     def __init__(self, searchQuery, pageId, repoCache, keyword, pkgList, 
                  actionQueue, 
-                 entryDetailCallback, sendVoteCallback, fetchVoteCallback, exitSearchPageCallback):
+                 entryDetailCallback, sendVoteCallback, fetchVoteCallback, exitSearchPageCallback, 
+                 messageCallback):
         '''Init for search page.'''
         # Init.
         self.searchQuery = searchQuery
@@ -46,6 +47,7 @@ class SearchUninstallPage(object):
         self.pkgList = pkgList
         self.content = keyword
         self.keywords = keyword.split()
+        self.messageCallback = messageCallback
         
         self.box = gtk.VBox()
         self.topbar = Topbar(pageId,
@@ -97,10 +99,13 @@ class SearchUninstallPage(object):
         
     def clickCandidate(self, candidate):
         '''Click candidate.'''
-        self.pkgList = [candidate]
-        self.topbar.searchCompletion.hide()
-        self.topbar.updateTopbar(candidate, len(self.pkgList))
-        self.searchView.updateSearch(len(self.pkgList))
+        if candidate in self.repoCache.uninstallablePkgs:
+            self.pkgList = [candidate]
+            self.topbar.searchCompletion.hide()
+            self.topbar.updateTopbar(candidate, len(self.pkgList))
+            self.searchView.updateSearch(len(self.pkgList))
+        else:
+            self.messageCallback("为保障您系统的稳定， 请不要卸载 %s." % (candidate))
     
 class Topbar(object):
     '''Top bar.'''
@@ -131,7 +136,7 @@ class Topbar(object):
         # Add search entry and label.
         (self.searchEntry, searchAlign, self.searchCompletion) = newSearchUI(
             "请输入您要卸载的软件名称、版本或其他信息",
-            lambda text: getCandidates(self.repoCache.uninstallablePkgs, text),
+            lambda text: getCandidates(map(lambda appInfo: appInfo.pkg.name, self.repoCache.cache.values()), text),
             clickCandidateCallback,
             searchCallback)
         

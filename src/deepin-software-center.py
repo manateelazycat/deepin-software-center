@@ -96,10 +96,8 @@ class DeepinSoftwareCenter(object):
         self.window = self.initMainWindow()
         self.window.connect("size-allocate", lambda w, a: updateShape(w, a, RADIUS))
         self.hasMax = False
-        self.topLine = gtk.Image()
         self.leftLine = gtk.Image()
         self.rightLine = gtk.Image()
-        drawAlphaLine(self.topLine, appTheme.getDynamicAlphaColor("bodyTop"), 1, False)
         drawVerticalLine(self.leftLine, 1)
         drawVerticalLine(self.rightLine, 1)
         self.mainBox = gtk.VBox()
@@ -131,7 +129,6 @@ class DeepinSoftwareCenter(object):
             self.closeWindow)
         self.navigatebar = navigatebar.NavigateBar()
         self.bodyBox = gtk.HBox()
-        self.frameBox = gtk.VBox()
         self.contentBox = gtk.VBox()
         
         self.window.connect_after("show", lambda w: self.createTooltips())
@@ -860,9 +857,7 @@ class DeepinSoftwareCenter(object):
         self.topbox.pack_start(self.navigatebar.box, False)
         self.mainBox.pack_start(self.bodyBox)
         self.bodyBox.pack_start(self.leftLine, False, False)
-        self.bodyBox.pack_start(self.frameBox)
-        self.frameBox.pack_start(self.topLine, False, False)
-        self.frameBox.pack_start(self.contentBox)
+        self.bodyBox.pack_start(self.contentBox)
         self.bodyBox.pack_start(self.rightLine, False, False)
 
         # Add statusbar.

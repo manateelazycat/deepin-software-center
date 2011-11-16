@@ -1121,16 +1121,16 @@ def drawVScrollbar(scrolledWindow):
     vScrollbar = scrolledWindow.get_vscrollbar()
     vAdjust = scrolledWindow.get_vadjustment()
     vScrollbar.set_size_request(
-        appTheme.getDynamicPixbuf("progress/progress_bg.png").getPixbuf().get_width(), 
+        appTheme.getDynamicPixbuf("scrollbar/vscrollbar_bg.png").getPixbuf().get_width(), 
         -1)
     vScrollbar.connect(
         "expose-event", 
         lambda w, e: drawVScrollbarOnExpose(
             w, e, vAdjust,
-            appTheme.getDynamicPixbuf("progress/progress_bg.png"),
-            appTheme.getDynamicPixbuf("progress/progress_fg_top.png"),
-            appTheme.getDynamicPixbuf("progress/progress_fg_middle.png"),
-            appTheme.getDynamicPixbuf("progress/progress_fg_bottom.png"),
+            appTheme.getDynamicPixbuf("scrollbar/vscrollbar_bg.png"),
+            appTheme.getDynamicPixbuf("scrollbar/vscrollbar_fg_top.png"),
+            appTheme.getDynamicPixbuf("scrollbar/vscrollbar_fg_middle.png"),
+            appTheme.getDynamicPixbuf("scrollbar/vscrollbar_fg_bottom.png"),
             ))
     
 def drawVScrollbarOnExpose(

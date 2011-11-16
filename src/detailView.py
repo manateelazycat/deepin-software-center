@@ -27,6 +27,8 @@ from draw import *
 from constant import *
 from draw import *
 from math import pi
+import copy
+import zipfile
 import appView
 import gtk
 import os
@@ -55,8 +57,8 @@ class DetailView(object):
     SCREENSHOT_PADDING = 20
     SMALL_SCREENSHOT_WIDTH = 80
     SMALL_SCREENSHOT_HEIGHT = 60 
-    SMALL_SCREENSHOT_PADDING_X = 10
-    SMALL_SCREENSHOT_PADDING_Y = 10
+    SMALL_SCREENSHOT_PADDING_X = 5
+    SMALL_SCREENSHOT_PADDING_Y = 5
     LANGUAGE_BOX_PADDING = 3
     DETAIL_PADDING_X = 10
     ALIGN_X = 20
@@ -152,7 +154,6 @@ class DetailView(object):
         # Add return button.
         self.returnButton = utils.newButtonWithoutPadding()
         self.returnButton.connect("button-release-event", lambda widget, event: exitCallback(pageId, utils.getPkgName(pkg)))
-        self.returnButton.connect("button-release-event", lambda widget, event: self.closeBigScreenshot(True))
         drawButton(self.returnButton, "return", "cell", False, "返回", BUTTON_FONT_SIZE_MEDIUM, "bigButtonFont")
         
         buttonPaddingTop = 20
@@ -281,60 +282,18 @@ class DetailView(object):
         screenshotLabel.set_alignment(0.0, 0.5)
         screenshotBox.pack_start(screenshotLabel, False, False)
         
-        self.imageBox = gtk.EventBox()
-        self.imageBox.set_size_request(self.SCREENSHOT_WIDTH, self.SCREENSHOT_HEIGHT)
-        self.imageBox.connect("expose-event", lambda w, e: drawBackground(w, e, appTheme.getDynamicColor("background")))
-        screenshotBox.pack_start(self.imageBox, False, False)
+        smallScreenshot = SmallScreenshot(pkgName, self.scrolledWindow)
+        screenshotBox.pack_start(smallScreenshot.box, False, False)
+        smallScreenshot.start()
         
-        self.screenshotImage = gtk.Image()
-        self.imageBox.add(self.screenshotImage)
-        self.imageBox.connect("button-press-event", lambda w, e: self.showBigScreenshot(w, pkgName))
-
         infoBox.pack_start(screenshotBox, False, False, self.DETAIL_PADDING_X)
-        
-        # Fetch screenshot.
-        screenshotPath = SCREENSHOT_DOWNLOAD_DIR + pkgName
-        screenshotWidth = self.SCREENSHOT_WIDTH - self.SCREENSHOT_PADDING
-        screenshotHeight = self.SCREENSHOT_HEIGHT - self.SCREENSHOT_PADDING
-        # Set screenshot image if has in cache.
-        if os.path.exists (screenshotPath):
-            self.screenshotImage.set_from_pixbuf(
-                gtk.gdk.pixbuf_new_from_file_at_size(screenshotPath, screenshotWidth, screenshotHeight))
-            utils.setCustomizeClickableCursor(
-                self.imageBox, 
-                self.screenshotImage, 
-                appTheme.getDynamicPixbuf("screenshot/zoom_in.png"))
-            utils.setHelpTooltip(self.imageBox, "点击放大")
-        # Otherwise just fetch screenshot when not in black list.
-        else:
-            # Init fetch thread.
-            fetchScreenshot = FetchScreenshot(
-                appInfo, 
-                self.imageBox, self.screenshotImage, 
-                screenshotWidth, screenshotHeight)
             
-            # Start fetch thread.
-            fetchScreenshot.start()
-            
-            # Make sure download thread stop when detail view destroy.
-            self.returnButton.connect("button-release-event", lambda widget, event: fetchScreenshot.stop())
-            self.returnButton.connect("destroy", lambda widget: fetchScreenshot.stop())
+        # Make sure download thread stop when detail view destroy.
+        self.returnButton.connect("button-release-event", lambda widget, event: smallScreenshot.stop())
+        self.returnButton.connect("button-release-event", lambda widget, event: smallScreenshot.closeBigScreenshotWindow(True))
+        self.returnButton.connect("destroy", lambda widget: smallScreenshot.stop())
 
         return align
-    
-    def showBigScreenshot(self, imageWidget, pkgName):
-        '''Show big screenshot.'''
-        screenshotPixbuf = self.screenshotImage.get_pixbuf()
-        if screenshotPixbuf != None:
-            if self.bigScreenshot == None:
-                 screenshotPath = SCREENSHOT_DOWNLOAD_DIR + pkgName
-                 self.bigScreenshot = BigScreenshot(self.scrolledWindow, screenshotPath, self.closeBigScreenshot)
-                     
-    def closeBigScreenshot(self, destroy=False):
-        '''Close big screenshot.'''
-        if destroy and self.bigScreenshot != None:
-            self.bigScreenshot.window.destroy()
-        self.bigScreenshot = None
     
     def adjustTranslatePaned(self, widget):
         '''Adjust translate paned.'''
@@ -800,10 +759,427 @@ class FetchScreenshot(td.Thread):
             
                 print "Haven't screenshot for %s !" % (pkgName)
 
+class SmallScreenshot(td.Thread):
+    '''Small screenshot.'''
+	
+    SMALL_SCREENSHOT_ROW = 3
+    SMALL_SCREENSHOT_COLUMN = 3
+    SCREENSHOT_WIDTH = 280
+    SCREENSHOT_HEIGHT = 210
+    SMALL_SCREENSHOT_WIDTH = 80
+    SMALL_SCREENSHOT_HEIGHT = 60 
+    SMALL_SCREENSHOT_PADDING_X = 10
+    SMALL_SCREENSHOT_PADDING_Y = 10
+    SCREENSHOT_MAX_NUM = 9
+    
+    def __init__(self, pkgName, scrolledWindow):
+        '''Init small screenshot.'''
+        # Init.
+        td.Thread.__init__(self)
+        self.setDaemon(True) # make thread exit when main program exit 
+        
+        self.scrolledWindow = scrolledWindow
+        self.images = []
+        self.imageIndex = 0
+        self.pkgName = pkgName
+        self.proc = None
+        self.box = gtk.VBox()
+        self.topBox = gtk.HBox()
+        self.topBox.set_size_request(self.SCREENSHOT_WIDTH, self.SCREENSHOT_HEIGHT)
+        self.bottomBox = gtk.VBox()
+        self.bigScreenshotImage = None
+        self.bigScreenshot = None
+        
+        self.bottomBox.set_size_request(
+            self.SMALL_SCREENSHOT_WIDTH * self.SMALL_SCREENSHOT_COLUMN + (self.SMALL_SCREENSHOT_COLUMN + 1) * self.SMALL_SCREENSHOT_PADDING_X,
+            self.SMALL_SCREENSHOT_HEIGHT * self.SMALL_SCREENSHOT_ROW + (self.SMALL_SCREENSHOT_ROW + 1) * self.SMALL_SCREENSHOT_PADDING_Y,
+            )
+        
+        self.box.pack_start(self.topBox, False, False)
+        self.box.pack_start(self.bottomBox, False, False)
+        self.box.show_all()
+        
+    @postGUI
+    def initWaitStatus(self):
+        '''Init wait status.'''
+        # Clean top box.
+        utils.containerRemoveAll(self.topBox)
+        
+        # Init wait box.
+        waitBox = gtk.HBox()
+        waitAlign = gtk.Alignment()
+        waitAlign.set(0.5, 0.5, 0.0, 0.0)
+        waitAlign.add(waitBox)
+        self.topBox.add(waitAlign)
+
+        # Add wait animation.
+        waitAnimation = DynamicImage(
+            waitBox,
+            appTheme.getDynamicPixbufAnimation("wait.gif"),
+            ).image
+        waitBox.pack_start(waitAnimation, False, False)
+
+        # Add wait message.
+        waitMessage = DynamicSimpleLabel(
+            waitBox,
+            "查询截图...",
+            appTheme.getDynamicColor("detailTitle"),
+            LABEL_FONT_SIZE,
+            ).getLabel()
+        waitBox.pack_start(waitMessage, False, False)
+        
+    @postGUI
+    def initDownloadingStatus(self):
+        '''Init downloading status.'''
+        # Clean top box.
+        utils.containerRemoveAll(self.topBox)
+        
+        # Init downloading box.
+        downloadingBox = gtk.HBox()
+        downloadingAlign = gtk.Alignment()
+        downloadingAlign.set(0.5, 0.5, 0.0, 0.0)
+        downloadingAlign.add(downloadingBox)
+        self.topBox.add(downloadingAlign)
+
+        # Add downloading animation.
+        downloadingAnimation = DynamicImage(
+            downloadingBox,
+            appTheme.getDynamicPixbufAnimation("wait.gif"),
+            ).image
+        downloadingBox.pack_start(downloadingAnimation, False, False)
+
+        # Add downloading message.
+        downloadingMessage = DynamicSimpleLabel(
+            downloadingBox,
+            "正在下载截图...",
+            appTheme.getDynamicColor("detailTitle"),
+            LABEL_FONT_SIZE,
+            ).getLabel()
+        downloadingBox.pack_start(downloadingMessage, False, False)
+        
+    @postGUI
+    def initQueryErrorStatus(self):
+        '''Init network query status.'''
+        # Clean top box.
+        utils.containerRemoveAll(self.topBox)
+        
+        # Init query box.
+        queryBox = gtk.HBox()
+        queryAlign = gtk.Alignment()
+        queryAlign.set(0.5, 0.5, 0.0, 0.0)
+        queryAlign.add(queryBox)
+        self.topBox.add(queryAlign)
+        
+        # Add query message.
+        queryMessage = DynamicSimpleLabel(
+            queryBox,
+            "查询失败, 请检查你的网络并点击刷新重试.",
+            appTheme.getDynamicColor("detailTitle"),
+            LABEL_FONT_SIZE,
+            ).getLabel()
+        queryBox.pack_start(queryMessage, False, False)
+        
+    @postGUI
+    def initDownloadErrorStatus(self):
+        '''Init network download status.'''
+        # Clean top box.
+        utils.containerRemoveAll(self.topBox)
+        
+        # Init download box.
+        downloadBox = gtk.HBox()
+        downloadAlign = gtk.Alignment()
+        downloadAlign.set(0.5, 0.5, 0.0, 0.0)
+        downloadAlign.add(downloadBox)
+        self.topBox.add(downloadAlign)
+        
+        # Add download message.
+        downloadMessage = DynamicSimpleLabel(
+            downloadBox,
+            "下载失败, 请检查你的网络并点击刷新重试.",
+            appTheme.getDynamicColor("detailTitle"),
+            LABEL_FONT_SIZE,
+            ).getLabel()
+        downloadBox.pack_start(downloadMessage, False, False)
+        
+    @postGUI
+    def initNoneedStatus(self):
+        '''Init no need status.'''
+        # Clean top box.
+        utils.containerRemoveAll(self.topBox)
+        
+        # Init noneed box.
+        noneedBox = gtk.HBox()
+        noneedAlign = gtk.Alignment()
+        noneedAlign.set(0.5, 0.5, 0.0, 0.0)
+        noneedAlign.add(noneedBox)
+        self.topBox.add(noneedAlign)
+        
+        # Add noneed message.
+        noneedMessage = DynamicSimpleLabel(
+            noneedBox,
+            "这个软件不需要截图",
+            appTheme.getDynamicColor("detailTitle"),
+            LABEL_FONT_SIZE,
+            ).getLabel()
+        noneedBox.pack_start(noneedMessage, False, False)
+    
+    @postGUI
+    def initUploadStatus(self):
+        '''Init upload status.'''
+        # Clean top box.
+        utils.containerRemoveAll(self.topBox)
+        
+        # Init upload box.
+        uploadBox = gtk.HBox()
+        uploadAlign = gtk.Alignment()
+        uploadAlign.set(0.5, 0.5, 0.0, 0.0)
+        uploadAlign.add(uploadBox)
+        self.topBox.add(uploadAlign)
+        
+        # Add upload message.
+        uploadMessage = DynamicSimpleLabel(
+            uploadBox,
+            "上传新图",
+            appTheme.getDynamicColor("detailTitle"),
+            LABEL_FONT_SIZE,
+            ).getLabel()
+        uploadBox.pack_start(uploadMessage, False, False)
+        
+        
+    def getTimestamp(self):
+        '''Get timestamp of screenshot.'''
+        timestampDict = evalFile("./screenshotTimestamp")    
+        
+        if timestampDict.has_key(self.pkgName):
+            return timestampDict[self.pkgName]
+        else:
+            return -1
+        
+    def updateTimestamp(self, timestamp):
+        '''Update timestamp.'''
+        timestampDict = evalFile("./screenshotTimestamp")    
+        timestampDict[self.pkgName] = timestamp
+        writeFile("./screenshotTimestamp", str(timestampDict))
+        
+    def hasScreenshot(self):
+        '''Whether has screenshot.'''
+        screenshotPath = SCREENSHOT_DOWNLOAD_DIR + self.pkgName
+        if os.path.exists(screenshotPath) and os.listdir(screenshotPath) != []:
+            return True
+        else:
+            return False
+        
+    def stop(self):
+        '''Stop download.'''
+        if self.proc != None and self.returnCode == DOWNLOAD_FAILED:
+            self.killed = True
+            self.proc.kill()
+            
+    @postGUI
+    def show(self):
+        '''Show screenshot.'''
+        # Add images.
+        for image in os.listdir(os.path.join(SCREENSHOT_DOWNLOAD_DIR, self.pkgName))[0:self.SCREENSHOT_MAX_NUM]:
+            self.images.append(os.path.join(SCREENSHOT_DOWNLOAD_DIR, self.pkgName, image))
+            
+        # Show big screenshot.
+        self.showBigScreenshotArea(0)
+        
+        # Show small screenshot.
+        if len(self.images) > 1:
+            self.showSmallScreenshotArea()
+
+    def showBigScreenshotArea(self, index):
+        '''Show big screenshot.'''
+        # Update image index.
+        self.imageIndex = index
+        
+        # Clean top box.
+        utils.containerRemoveAll(self.topBox)
+        
+        eventbox = gtk.EventBox()
+        eventbox.set_visible_window(False)
+        self.topBox.add(eventbox)
+        
+        self.bigScreenshotImage = gtk.image_new_from_pixbuf(
+            gtk.gdk.pixbuf_new_from_file_at_size(self.images[index], self.SCREENSHOT_WIDTH, self.SCREENSHOT_HEIGHT)
+            )
+        eventbox.add(self.bigScreenshotImage)
+        
+        eventbox.connect("button-press-event", lambda w, e: self.popupBigScreenshotWindow())
+        utils.setCustomizeClickableCursor(
+            eventbox,
+            self.bigScreenshotImage,
+            appTheme.getDynamicPixbuf("screenshot/zoom_in.png"))
+        utils.setHelpTooltip(eventbox, "点击放大")
+        
+        self.box.show_all()
+        
+    def popupBigScreenshotWindow(self):
+        '''Popup big screenshot window.'''
+        if self.images != [] and self.bigScreenshot == None:
+            self.bigScreenshot = BigScreenshot(self.scrolledWindow, self.images, self.imageIndex, self.closeBigScreenshotWindow)
+            
+    def closeBigScreenshotWindow(self, destroy=False):
+        '''Close big screenshot.'''
+        if destroy and self.bigScreenshot != None:
+            self.bigScreenshot.window.destroy()
+        self.bigScreenshot = None
+        
+    def getImageIndex(self):
+        '''Get image index.'''
+        return self.imageIndex
+        
+    def showSmallScreenshotArea(self):
+        '''Show small screenshot.'''
+        utils.containerRemoveAll(self.bottomBox)
+        
+        listLen = len(self.images)
+        boxlist = map (lambda n: gtk.HBox(), range(0, listLen / self.SMALL_SCREENSHOT_COLUMN + listLen % self.SMALL_SCREENSHOT_COLUMN))
+        for (index, box) in enumerate(boxlist):
+            if index == 0:
+                paddingTop = self.SMALL_SCREENSHOT_PADDING_Y
+            else:
+                paddingTop = self.SMALL_SCREENSHOT_PADDING_Y / 2
+            align = gtk.Alignment()
+            align.set(0.0, 0.0, 1.0, 1.0)
+            align.set_padding(
+                paddingTop,
+                self.SMALL_SCREENSHOT_PADDING_Y / 2, 
+                self.SMALL_SCREENSHOT_PADDING_X / 2,
+                self.SMALL_SCREENSHOT_PADDING_X / 2)
+            align.add(box)
+            self.bottomBox.pack_start(align, False, False)
+        
+        for (index, image) in enumerate(self.images):
+            box = boxlist[index / self.SMALL_SCREENSHOT_COLUMN]
+            box.pack_start(self.createSmallScreenshot(index, image), False, False)
+            
+        self.box.show_all()
+            
+    def createSmallScreenshot(self, index, image):
+        '''Create small screenshot.'''
+        align = gtk.Alignment()
+        align.set(0.0, 0.0, 1.0, 1.0)
+        align.set_padding(
+            0, 0,
+            self.SMALL_SCREENSHOT_PADDING_X / 2,
+            self.SMALL_SCREENSHOT_PADDING_X / 2)
+        pixbuf = gtk.gdk.pixbuf_new_from_file_at_size(image, self.SMALL_SCREENSHOT_WIDTH, self.SMALL_SCREENSHOT_HEIGHT)
+        eventbox = gtk.Button()
+        eventbox.set_size_request(self.SMALL_SCREENSHOT_WIDTH, self.SMALL_SCREENSHOT_HEIGHT)
+        eventbox.connect("button-press-event", lambda w, e: self.showBigScreenshotArea(index))
+        eventbox.connect(
+            "expose-event", 
+            lambda w, e: exposeSmallScreenshot(
+                w, e, pixbuf, 
+                appTheme.getDynamicColor("themeIconPress"),
+                appTheme.getDynamicColor("themeIconHover"),
+                index, self.getImageIndex
+                ))
+        align.add(eventbox)
+            
+        return align
+    
+    def downloadScreenshot(self):
+        '''Download screenshot.'''
+        cmdline = [
+            'aria2c',
+            "--dir=" + SCREENSHOT_DOWNLOAD_DIR,
+            "%s/screenshots/package?n=" % (SERVER_ADDRESS) + self.pkgName,
+            '--auto-file-renaming=false',
+            '--summary-interval=0',
+            '--remote-time=true',
+            '--auto-save-interval=0',
+            ]
+        
+        # Make software center can work with aria2c 1.9.x.
+        if ARIA2_MAJOR_VERSION >= 1 and ARIA2_MINOR_VERSION <= 9:
+            cmdline.append("--no-conf")
+            cmdline.append("--continue")
+        else:
+            cmdline.append("--no-conf=true")
+            cmdline.append("--continue=true")
+            
+        # Append proxy configuration.
+        proxyString = readFirstLine("./proxy")
+        if proxyString != "":
+            cmdline.append("=".join(["--all-proxy", proxyString]))
+        
+        self.proc = subprocess.Popen(cmdline)
+        self.proc.wait()
+        
+        # Extract file.
+        f = zipfile.ZipFile(os.path.join(SCREENSHOT_DOWNLOAD_DIR, self.pkgName) + ".zip")
+        f.extractall(os.path.join(SCREENSHOT_DOWNLOAD_DIR, self.pkgName))
+        f.close()
+        
+        # Delete zip file.
+        removeFile(os.path.join(SCREENSHOT_DOWNLOAD_DIR, self.pkgName) + ".zip")
+        
+    def run(self):
+        '''Run'''
+        self.fetchScreenshot()
+        
+    def fetchScreenshot(self):
+        '''Update.'''
+        # Init wait status.
+        self.initWaitStatus()
+        
+        try:
+            # Fetch screenshot information.
+            connection = urllib2.urlopen(("%s/screenshots/screenshot?n=" % (SERVER_ADDRESS)) + self.pkgName, timeout=GET_TIMEOUT)
+            voteJson = json.loads(connection.read())
+            
+            # Get timestamp.
+            timestamp = voteJson["timestamp"]
+            if timestamp == SCREENSHOT_NONEED:
+                self.initNoneedStatus()
+            elif timestamp == SCREENSHOT_UPLOAD:
+                self.initUploadStatus()
+            else:
+                currentTimestamp = self.getTimestamp()
+                if timestamp == currentTimestamp and self.hasScreenshot():
+                    self.show()
+                    
+                    print "Tell user screenshot has newest."
+                else:
+                    try:
+                        # Init downloading status.
+                        self.initDownloadingStatus()
+                        
+                        # Downloading.
+                        self.downloadScreenshot()
+                        print "Download finish."
+                        
+                        # Update timestamp.
+                        self.updateTimestamp(timestamp)
+                        
+                        # Show.
+                        self.show()
+                    except Exception, e:
+                        print "Download screenshot error: %s" % (e)
+                        
+                        if self.hasScreenshot():
+                            self.show()
+                            
+                            print "Tell user use old screenshot."
+                        else:
+                            self.initDownloadErrorStatus()
+        except Exception, e:
+            print "Query screenshot error: %s" % (e)
+            
+            if self.hasScreenshot():
+                self.show()
+                
+                print "Tell user use old screenshot."
+            else:
+                self.initQueryErrorStatus()
+            
 class BigScreenshot(object):
     '''Big screenshot.'''
 	
-    def __init__(self, widget, screenshotPath, exitCallback):
+    def __init__(self, widget, images, imageIndex, exitCallback):
         '''Init for big screenshot.'''
         self.closeIconWidth = 11
         self.closeIconHeight = 10
@@ -834,7 +1210,7 @@ class BigScreenshot(object):
         self.requestWidth = rect.width * 4 / 5
         self.requestHeight = rect.height * 4 / 5
         self.pixbuf = gtk.gdk.pixbuf_new_from_file_at_size(
-            screenshotPath, 
+            images[imageIndex],
             self.requestWidth,
             self.requestHeight)
         self.eventbox = gtk.EventBox()
@@ -948,7 +1324,7 @@ class BigScreenshot(object):
             widget.propagate_expose(widget.get_child(), event)
 
         return True
-
+    
 #  LocalWords:  FFFFFF toggleTab xdg DDDDDD nums cuid cid feedbackLabel td
 #  LocalWords:  initActionStatus appAdditionBox uninstallingProgressbar appInfo
 #  LocalWords:  uninstallingFeedbackLabel switchToUninstalling UNINSTALLING

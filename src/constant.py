@@ -146,7 +146,8 @@ DRAW_EXTEND = "extend"
 DRAW_LEFT = "left"
 DRAW_RIGHT = "right"
 
-SCREENSHOT_NO_NEED = -1
-SCREENSHOT_NO_EXIST = 0
+SCREENSHOT_NONEED = -1
+SCREENSHOT_UPLOAD = 0
 
-SERVER_ADDRESS = "http://test-linux.gteasy.com"
+# SERVER_ADDRESS = "http://test-linux.gteasy.com"
+SERVER_ADDRESS = "http://apis.linuxdeepin.com"

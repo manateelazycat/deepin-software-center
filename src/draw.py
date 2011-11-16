@@ -1501,32 +1501,24 @@ def moreWindowOnExpose(widget, event, dPixbuf, frameLightColor):
 
     return True
 
-def exposeSmallScreenshot(widget, event, pixbuf, hoverDColor, pressDColor, index, getIndex):
+def exposeSmallScreenshot(widget, event, pixbuf, index, getIndex):
     '''Expose small screenshot.'''
     # Init.
     cr = widget.window.cairo_create()
     rect = widget.allocation
     
     # Draw pixbuf.
+    if index == getIndex():
+        alpha = 1.0
+    else:
+        alpha = 0.3
     drawPixbuf(
         cr, 
         pixbuf, 
         rect.x + (rect.width - pixbuf.get_width()) / 2, 
-        rect.y + (rect.height - pixbuf.get_height()) / 2)
-    
-    # Draw frame.
-    if widget.state == gtk.STATE_ACTIVE or index == getIndex():
-        # Draw frame.
-        cr.set_line_width(2)
-        cr.set_source_rgb(*colorHexToCairo(pressDColor.getColor()))
-        cr.rectangle(rect.x + 1, rect.y + 1, rect.width - 2, rect.height - 2)
-        cr.stroke()
-    if widget.state == gtk.STATE_PRELIGHT:
-        # Draw Hover frame.
-        cr.set_line_width(2)
-        cr.set_source_rgb(*colorHexToCairo(hoverDColor.getColor()))
-        cr.rectangle(rect.x + 1, rect.y + 1, rect.width - 2, rect.height - 2)
-        cr.stroke()
+        rect.y + (rect.height - pixbuf.get_height()) / 2,
+        alpha,
+        )
     
     if widget.get_child() != None:
         widget.propagate_expose(widget.get_child(), event)

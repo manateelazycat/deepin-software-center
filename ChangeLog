@@ -1,5 +1,8 @@
 * News in 2.0
 
+2011-11-17 Yong Wang <lazycat.manatee@gmail.com>
+	* Enhance the effect of small screenshot switch.
+
 2011-11-16 Yong Wang <lazycat.manatee@gmail.com>
 	* Clean departed comment code, use web technology implement user comment.
 	* Remove noscreenshotList, new backend technology, yay!

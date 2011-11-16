@@ -221,7 +221,7 @@ class DetailView(object):
             )
         summaryLabel = summaryDLabel.getLabel()
         summaryLabel.set_alignment(0.0, 0.5)
-        detailBox.pack_start(summaryLabel)
+        detailBox.pack_start(summaryLabel, False, False)
         
         summaryAlign = gtk.Alignment()
         summaryView = createContentView(summaryAlign, utils.getPkgLongDesc(pkg), False)
@@ -1068,18 +1068,17 @@ class SmallScreenshot(td.Thread):
         pixbuf = gtk.gdk.pixbuf_new_from_file_at_size(image, self.SMALL_SCREENSHOT_WIDTH, self.SMALL_SCREENSHOT_HEIGHT)
         eventbox = gtk.Button()
         eventbox.set_size_request(self.SMALL_SCREENSHOT_WIDTH, self.SMALL_SCREENSHOT_HEIGHT)
-        eventbox.connect("button-press-event", lambda w, e: self.showBigScreenshotArea(index))
-        eventbox.connect(
-            "expose-event", 
-            lambda w, e: exposeSmallScreenshot(
-                w, e, pixbuf, 
-                appTheme.getDynamicColor("themeIconPress"),
-                appTheme.getDynamicColor("themeIconHover"),
-                index, self.getImageIndex
-                ))
+        eventbox.connect("button-press-event", lambda w, e: self.switchBigScreenshot(index))
+        eventbox.connect("expose-event", lambda w, e: exposeSmallScreenshot(w, e, pixbuf, index, self.getImageIndex))
         align.add(eventbox)
             
         return align
+    
+    def switchBigScreenshot(self, index):
+        '''Switch big screenshot.'''
+        self.showBigScreenshotArea(index)
+        
+        self.bottomBox.queue_draw()    
     
     def downloadScreenshot(self):
         '''Download screenshot.'''

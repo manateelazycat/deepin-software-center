@@ -333,8 +333,7 @@ class Theme(object):
     def __init__(self):
         '''Init theme.'''
         # Init.
-        # self.themeName = "default"
-        self.themeName = evalFile("../theme/list.txt")[0]
+        self.themeName = readFile("./theme")
         self.colorPath = "colors.txt"
         self.drawTypePath = "types.txt"
         self.ticker = 0
@@ -460,6 +459,9 @@ class Theme(object):
         # Update animation.
         for (path, animation) in self.animationDict.items():
             animation.update(self.getAnimationPath(path))
+            
+        # Remeber theme.
+        writeFile("./theme", newThemeName)
             
 # Init.
 appTheme = Theme()            

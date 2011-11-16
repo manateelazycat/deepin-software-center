@@ -7,6 +7,7 @@
 	* Remove global search in uninstal interface, go to hell!
 	* Finish big screenshot.
 	* Hide screenshot window in function `hidePopupWindow`.
+	* Remember theme setup.
 
 2011-11-15 Yong Wang <lazycat.manatee@gmail.com>
 	* Fix aria2c version bug.

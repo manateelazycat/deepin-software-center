@@ -1008,12 +1008,8 @@ class DeepinSoftwareCenter(object):
         '''Entry detail view.'''
         view = detailView.DetailView(
             self.aptCache, pageId, appInfo, self.switchStatus, self.downloadQueue, self.actionQueue,
-            self.exitDetailView, self.noscreenshotList, self.updateMoreComment, self.message)
+            self.exitDetailView, self.noscreenshotList, self.message)
         self.detailViewDict[pageId] = view
-
-        # Fetch detail thread.
-        fetchDetailThread = FetchDetail(pageId, utils.getPkgName(appInfo.pkg), self.updateDetailView)
-        fetchDetailThread.start()
 
         self.selectPage(pageId)
 
@@ -1095,27 +1091,6 @@ class DeepinSoftwareCenter(object):
                 (pkgName, [starLevel, voteNum]) = vote
                 view.updateVoteView(pkgName, starLevel, voteNum)
                 
-    @postGUI
-    # Replace function for `updateDetailView` to toggle comment features.
-    def updateDetailView_(self, pageId, pkgName, voteJson):
-        pass
-
-    @postGUI
-    def updateDetailView(self, pageId, pkgName, voteJson):
-        '''Update vote view.'''
-        if self.detailViewDict.has_key(pageId):
-            detailView = self.detailViewDict[pageId]
-            if pkgName == utils.getPkgName(detailView.appInfo.pkg):
-                detailView.updateInfo(voteJson)
-
-    @postGUI
-    def updateMoreComment(self, pageId, pkgName, voteJson):
-        '''Update vote view.'''
-        if self.detailViewDict.has_key(pageId):
-            detailView = self.detailViewDict[pageId]
-            if pkgName == utils.getPkgName(detailView.appInfo.pkg):
-                detailView.updateMoreComment(voteJson)
-
     def upgradeSelectedPkgs(self, selectList):
         '''Upgrade select packages.'''
         # Get download and action packages.
@@ -1408,26 +1383,6 @@ class SendVote(td.Thread):
         except Exception, e:
             self.messageCallback("%s 评分失败, 请检查您的网络链接." % (self.name))
             print "Error: ", e
-
-class FetchDetail(td.Thread):
-    '''Fetch detail view data.'''
-
-    def __init__(self, pageId, pkgName, updateDetailViewCallback):
-        '''Init for fetch detail.'''
-        td.Thread.__init__(self)
-        self.setDaemon(True) # make thread exit when main program exit
-        self.pageId  = pageId
-        self.pkgName = pkgName
-        self.updateDetailViewCallback = updateDetailViewCallback
-
-    def run(self):
-        '''Run'''
-        try:
-            connection = urllib2.urlopen(("%s/getComment.php?n=" % (SERVER_ADDRESS)) + self.pkgName, timeout=GET_TIMEOUT)
-            voteJson = json.loads(connection.read())
-            self.updateDetailViewCallback(self.pageId, self.pkgName, voteJson)
-        except Exception, e:
-            print "Fetch detail view data failed."
 
 class SocketThread(td.Thread):
     '''Socket thread.'''

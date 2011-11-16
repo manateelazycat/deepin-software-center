@@ -8,6 +8,7 @@
 	* Finish big screenshot.
 	* Hide screenshot window in function `hidePopupWindow`.
 	* Remember theme setup.
+	* Add checkExists option in read file functions.
 
 2011-11-15 Yong Wang <lazycat.manatee@gmail.com>
 	* Fix aria2c version bug.

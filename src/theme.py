@@ -333,7 +333,15 @@ class Theme(object):
     def __init__(self):
         '''Init theme.'''
         # Init.
-        self.themeName = readFile("./theme")
+        themes = os.listdir("../theme")
+        themeName = readFile("./defaultTheme", True)
+        if themeName == "" or not themeName in themes:
+            if "default" in themes:
+                self.themeName = "default"
+            else:
+                self.themeName = themes[0]
+        else:
+            self.themeName = themeName
         self.colorPath = "colors.txt"
         self.drawTypePath = "types.txt"
         self.ticker = 0
@@ -461,7 +469,7 @@ class Theme(object):
             animation.update(self.getAnimationPath(path))
             
         # Remeber theme.
-        writeFile("./theme", newThemeName)
+        writeFile("./defaultTheme", newThemeName)
             
 # Init.
 appTheme = Theme()            

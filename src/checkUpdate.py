@@ -229,10 +229,11 @@ class TrayIcon(object):
         apt_pkg.init()
         cache = apt.Cache()
         updateNum = 0
-        ignorePkgs = evalFile("./ignorePkgs")
+        ignorePkgs = evalFile("./ignorePkgs", True)
         for pkg in cache:
-            if pkg.candidate != None and pkg.is_upgradable and not pkg.name in ignorePkgs:
-                updateNum += 1
+            if pkg.candidate != None and pkg.is_upgradable:
+                if ignorePkgs == None or not pkg.name in ignorePkgs:
+                    updateNum += 1
                 
         return updateNum
 

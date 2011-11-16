@@ -117,7 +117,11 @@ class RepoCache(object):
         # Init.
         self.cache = {}
         self.upgradablePkgs = []
-        self.ignorePkgs = evalFile("./ignorePkgs")
+        ignorePkgs = evalFile("./ignorePkgs", True)
+        if ignorePkgs == None:
+            self.ignorePkgs = []
+        else:
+            self.ignorePkgs = ignorePkgs
         self.uninstallablePkgs = []
         self.categoryDict = sortedDict.SortedDict(CLASSIFY_LIST)
 

@@ -303,7 +303,7 @@ class ProxySetup(object):
         self.inputBox = gtk.HBox()
         self.setupBox.pack_start(self.inputBox, False, False)
         
-        proxyString = readFirstLine("./proxy")
+        proxyString = readFirstLine("./proxy", True)
         self.inputEntry = SearchEntry(
             self.inputBox,
             proxyString,

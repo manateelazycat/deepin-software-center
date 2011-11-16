@@ -1,4 +1,7 @@
 *.pyc
+proxy
+defaultTheme
+screenshotTimestamp
 ignorePkgs
 firstLock
 voteInfo

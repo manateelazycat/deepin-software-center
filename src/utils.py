@@ -110,29 +110,38 @@ def getPkgExecPath(pkg):
     else:
         return None
     
-def readFile(filepath):
+def readFile(filepath, checkExists=False):
     '''Read file.'''
-    rFile = open(filepath, "r")
-    content = rFile.read()
-    rFile.close()
-    
-    return content
+    if checkExists and not os.path.exists(filepath):
+        return ""
+    else:
+        rFile = open(filepath, "r")
+        content = rFile.read()
+        rFile.close()
+        
+        return content
 
-def readFirstLine(filepath):
+def readFirstLine(filepath, checkExists=False):
     '''Read first line.'''
-    rFile = open(filepath, "r")
-    content = rFile.readline().split("\n")[0]
-    rFile.close()
-    
-    return content
+    if checkExists and not os.path.exists(filepath):
+        return ""
+    else:
+        rFile = open(filepath, "r")
+        content = rFile.readline().split("\n")[0]
+        rFile.close()
+        
+        return content
 
-def evalFile(filepath):
+def evalFile(filepath, checkExists=False):
     '''Eval file content.'''
-    readFile = open(filepath, "r")
-    content = eval(readFile.read())
-    readFile.close()
-    
-    return content
+    if checkExists and not os.path.exists(filepath):
+        return None
+    else:
+        readFile = open(filepath, "r")
+        content = eval(readFile.read())
+        readFile.close()
+        
+        return content
 
 def writeFile(filepath, content):
     '''Write file.'''

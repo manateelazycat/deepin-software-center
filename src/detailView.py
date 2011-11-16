@@ -722,7 +722,7 @@ class FetchScreenshot(td.Thread):
             cmdline.append("--continue=true")
             
         # Append proxy configuration.
-        proxyString = readFirstLine("./proxy")
+        proxyString = readFirstLine("./proxy", True)
         if proxyString != "":
             cmdline.append("=".join(["--all-proxy", proxyString]))
         
@@ -945,17 +945,20 @@ class SmallScreenshot(td.Thread):
         
     def getTimestamp(self):
         '''Get timestamp of screenshot.'''
-        timestampDict = evalFile("./screenshotTimestamp")    
+        timestampDict = evalFile("./screenshotTimestamp", True)    
         
-        if timestampDict.has_key(self.pkgName):
+        if timestampDict != None and timestampDict.has_key(self.pkgName):
             return timestampDict[self.pkgName]
         else:
             return -1
         
     def updateTimestamp(self, timestamp):
         '''Update timestamp.'''
-        timestampDict = evalFile("./screenshotTimestamp")    
-        timestampDict[self.pkgName] = timestamp
+        timestampDict = evalFile("./screenshotTimestamp", True)    
+        if timestampDict == None:
+            timestampDict = {self.pkgName : timestamp}
+        else:
+            timestampDict[self.pkgName] = timestamp
         writeFile("./screenshotTimestamp", str(timestampDict))
         
     def hasScreenshot(self):
@@ -1099,7 +1102,7 @@ class SmallScreenshot(td.Thread):
             cmdline.append("--continue=true")
             
         # Append proxy configuration.
-        proxyString = readFirstLine("./proxy")
+        proxyString = readFirstLine("./proxy", True)
         if proxyString != "":
             cmdline.append("=".join(["--all-proxy", proxyString]))
         

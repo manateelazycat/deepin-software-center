@@ -52,13 +52,6 @@ class DetailView(object):
 
     PADDING = 10
     EXTRA_PADDING_X = 20
-    SCREENSHOT_WIDTH = 280
-    SCREENSHOT_HEIGHT = 210
-    SCREENSHOT_PADDING = 20
-    SMALL_SCREENSHOT_WIDTH = 80
-    SMALL_SCREENSHOT_HEIGHT = 60 
-    SMALL_SCREENSHOT_PADDING_X = 5
-    SMALL_SCREENSHOT_PADDING_Y = 5
     LANGUAGE_BOX_PADDING = 3
     DETAIL_PADDING_X = 10
     ALIGN_X = 20
@@ -76,10 +69,10 @@ class DetailView(object):
         self.pageId = pageId
         self.appInfo = appInfo
         pkg = appInfo.pkg
-        self.bigScreenshot = None
         self.readMoreBox = gtk.HBox()
         self.readMoreAlign = None
         self.messageCallback = messageCallback
+        self.smallScreenshot = None
         
         self.box = gtk.VBox()
         self.eventbox = gtk.EventBox()
@@ -282,16 +275,20 @@ class DetailView(object):
         screenshotLabel.set_alignment(0.0, 0.5)
         screenshotBox.pack_start(screenshotLabel, False, False)
         
-        smallScreenshot = SmallScreenshot(pkgName, self.scrolledWindow)
-        screenshotBox.pack_start(smallScreenshot.box, False, False)
-        smallScreenshot.start()
+        self.smallScreenshot = SmallScreenshot(pkgName, self.scrolledWindow)
+        screenshotBox.pack_start(self.smallScreenshot.box, False, False)
+        self.smallScreenshot.start()
         
         infoBox.pack_start(screenshotBox, False, False, self.DETAIL_PADDING_X)
             
         # Make sure download thread stop when detail view destroy.
-        self.returnButton.connect("button-release-event", lambda widget, event: smallScreenshot.stop())
-        self.returnButton.connect("button-release-event", lambda widget, event: smallScreenshot.closeBigScreenshotWindow(True))
-        self.returnButton.connect("destroy", lambda widget: smallScreenshot.stop())
+        self.returnButton.connect(
+            "button-release-event", 
+            lambda widget, event: self.smallScreenshot.stop())
+        self.returnButton.connect(
+            "button-release-event", 
+            lambda widget, event: self.smallScreenshot.closeBigScreenshotWindow())
+        self.returnButton.connect("destroy", lambda widget: self.smallScreenshot.stop())
 
         return align
     
@@ -1020,11 +1017,11 @@ class SmallScreenshot(td.Thread):
         if self.images != [] and self.bigScreenshot == None:
             self.bigScreenshot = BigScreenshot(self.scrolledWindow, self.images, self.imageIndex, self.closeBigScreenshotWindow)
             
-    def closeBigScreenshotWindow(self, destroy=False):
+    def closeBigScreenshotWindow(self):
         '''Close big screenshot.'''
-        if destroy and self.bigScreenshot != None:
+        if self.bigScreenshot != None:
             self.bigScreenshot.window.destroy()
-        self.bigScreenshot = None
+            self.bigScreenshot = None
         
     def getImageIndex(self):
         '''Get image index.'''

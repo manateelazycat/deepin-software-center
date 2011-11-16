@@ -88,7 +88,7 @@ class Topbar(object):
         # Add search entry and label.
         (self.searchEntry, searchAlign, self.searchCompletion) = newSearchUI(
             "请输入您要卸载的软件名称、版本或其他信息",
-            lambda text: getCandidates(map(lambda appInfo: appInfo.pkg.name, self.repoCache.cache.values()), text),
+            lambda text: getCandidates(self.repoCache.uninstallablePkgs, text),
             self.clickCandidate,
             self.search)
         
@@ -117,11 +117,7 @@ class Topbar(object):
         
     def clickCandidate(self, candidate):
         '''Click candidate.'''
-        if candidate in self.repoCache.uninstallablePkgs:
-            keyword = self.searchEntry.get_chars(0, -1)
-            self.entrySearchCallback(PAGE_UNINSTALL, keyword, [candidate])
-        else:
-            self.messageCallback("为保障您系统的稳定， 请不要卸载 %s." % (candidate))
-        
+        keyword = self.searchEntry.get_chars(0, -1)
+        self.entrySearchCallback(PAGE_UNINSTALL, keyword, [candidate])
 
 #  LocalWords:  efe

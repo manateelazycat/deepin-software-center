@@ -99,13 +99,10 @@ class SearchUninstallPage(object):
         
     def clickCandidate(self, candidate):
         '''Click candidate.'''
-        if candidate in self.repoCache.uninstallablePkgs:
-            self.pkgList = [candidate]
-            self.topbar.searchCompletion.hide()
-            self.topbar.updateTopbar(candidate, len(self.pkgList))
-            self.searchView.updateSearch(len(self.pkgList))
-        else:
-            self.messageCallback("为保障您系统的稳定， 请不要卸载 %s." % (candidate))
+        self.pkgList = [candidate]
+        self.topbar.searchCompletion.hide()
+        self.topbar.updateTopbar(candidate, len(self.pkgList))
+        self.searchView.updateSearch(len(self.pkgList))
     
 class Topbar(object):
     '''Top bar.'''
@@ -136,7 +133,7 @@ class Topbar(object):
         # Add search entry and label.
         (self.searchEntry, searchAlign, self.searchCompletion) = newSearchUI(
             "请输入您要卸载的软件名称、版本或其他信息",
-            lambda text: getCandidates(map(lambda appInfo: appInfo.pkg.name, self.repoCache.cache.values()), text),
+            lambda text: getCandidates(self.repoCache.uninstallablePkgs, text),
             clickCandidateCallback,
             searchCallback)
         

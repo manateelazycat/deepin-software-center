@@ -79,7 +79,6 @@ class DeepinSoftwareCenter(object):
         # Init apt cache.
         self.detailViewDict = {}
         self.searchViewDict = {}
-        self.noscreenshotList = []
         self.entryIgnorePage = False
         self.downloadQueue = None
         self.actionQueue = None
@@ -1008,7 +1007,7 @@ class DeepinSoftwareCenter(object):
         '''Entry detail view.'''
         view = detailView.DetailView(
             self.aptCache, pageId, appInfo, self.switchStatus, self.downloadQueue, self.actionQueue,
-            self.exitDetailView, self.noscreenshotList, self.message)
+            self.exitDetailView, self.message)
         self.detailViewDict[pageId] = view
 
         self.selectPage(pageId)

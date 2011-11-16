@@ -66,7 +66,7 @@ class DetailView(object):
 
     def __init__(self, aptCache, pageId, appInfo, 
                  switchStatus, downloadQueue, actionQueue,
-                 exitCallback, noscreenshotList, 
+                 exitCallback, 
                  messageCallback):
         '''Init for detail view.'''
         # Init.
@@ -190,7 +190,7 @@ class DetailView(object):
         self.contentBox = gtk.VBox()
         self.bodyBox.pack_start(self.contentBox, False, False)
         
-        self.infoTab = self.createInfoTab(appInfo, pkg, noscreenshotList)
+        self.infoTab = self.createInfoTab(appInfo, pkg)
         self.helpTab = self.createHelpTab(pkg)
         
         self.contentBox.pack_start(self.infoTab)
@@ -198,7 +198,7 @@ class DetailView(object):
         
         self.scrolledWindow.show_all()
         
-    def createInfoTab(self, appInfo, pkg, noscreenshotList):
+    def createInfoTab(self, appInfo, pkg):
         '''Select information tab.'''
         pkgName = utils.getPkgName(pkg)
         
@@ -288,7 +288,7 @@ class DetailView(object):
         
         self.screenshotImage = gtk.Image()
         self.imageBox.add(self.screenshotImage)
-        self.imageBox.connect("button-press-event", lambda w, e: self.showBigScreenshot(w, pkgName, noscreenshotList))
+        self.imageBox.connect("button-press-event", lambda w, e: self.showBigScreenshot(w, pkgName))
 
         infoBox.pack_start(screenshotBox, False, False, self.DETAIL_PADDING_X)
         
@@ -306,10 +306,10 @@ class DetailView(object):
                 appTheme.getDynamicPixbuf("screenshot/zoom_in.png"))
             utils.setHelpTooltip(self.imageBox, "点击放大")
         # Otherwise just fetch screenshot when not in black list.
-        elif not pkgName in noscreenshotList:
+        else:
             # Init fetch thread.
             fetchScreenshot = FetchScreenshot(
-                appInfo, noscreenshotList,
+                appInfo, 
                 self.imageBox, self.screenshotImage, 
                 screenshotWidth, screenshotHeight)
             
@@ -319,25 +319,17 @@ class DetailView(object):
             # Make sure download thread stop when detail view destroy.
             self.returnButton.connect("button-release-event", lambda widget, event: fetchScreenshot.stop())
             self.returnButton.connect("destroy", lambda widget: fetchScreenshot.stop())
-        else:
-            print "No screenshot for %s, don't need fetch." % (pkgName)
-            
-            # Set upload image.
-            self.screenshotImage.set_from_pixbuf(gtk.gdk.pixbuf_new_from_file("../theme/default/image/screenshot/upload.png"))        
 
         return align
     
-    def showBigScreenshot(self, imageWidget, pkgName, noscreenshotList):
+    def showBigScreenshot(self, imageWidget, pkgName):
         '''Show big screenshot.'''
-        if not pkgName in noscreenshotList:
-            screenshotPixbuf = self.screenshotImage.get_pixbuf()
-            if screenshotPixbuf != None:
-                if self.bigScreenshot == None:
-                     screenshotPath = SCREENSHOT_DOWNLOAD_DIR + pkgName
-                     self.bigScreenshot = BigScreenshot(self.scrolledWindow, screenshotPath, self.closeBigScreenshot)
-        else:
-            print "*** Help us upload screenshot!"
-                 
+        screenshotPixbuf = self.screenshotImage.get_pixbuf()
+        if screenshotPixbuf != None:
+            if self.bigScreenshot == None:
+                 screenshotPath = SCREENSHOT_DOWNLOAD_DIR + pkgName
+                 self.bigScreenshot = BigScreenshot(self.scrolledWindow, screenshotPath, self.closeBigScreenshot)
+                     
     def closeBigScreenshot(self, destroy=False):
         '''Close big screenshot.'''
         if destroy and self.bigScreenshot != None:
@@ -718,7 +710,7 @@ class AppInfoItem(DownloadItem):
 class FetchScreenshot(td.Thread):
     '''Fetch screenshot.'''
 	
-    def __init__(self, appInfo, noscreenshotList, imageBox, image, width, height):
+    def __init__(self, appInfo, imageBox, image, width, height):
         '''Init for fetch screenshot.'''
         td.Thread.__init__(self)
         self.setDaemon(True) # make thread exit when main program exit 
@@ -730,7 +722,6 @@ class FetchScreenshot(td.Thread):
         self.returnCode = DOWNLOAD_FAILED
         self.width = width
         self.height = height
-        self.noscreenshotList = noscreenshotList
         self.killed = False
         
     def stop(self):
@@ -804,10 +795,6 @@ class FetchScreenshot(td.Thread):
                     
                 print "Download process stop."
             else:
-                # Add in black list if haven't found screenshot.
-                # Avoid send fetch request again. 
-                utils.addInList(self.noscreenshotList, pkgName)
-                    
                 # Set upload image.
                 self.image.set_from_pixbuf(gtk.gdk.pixbuf_new_from_file("../theme/default/image/screenshot/upload.png"))
             
@@ -967,7 +954,7 @@ class BigScreenshot(object):
 #  LocalWords:  uninstallingFeedbackLabel switchToUninstalling UNINSTALLING
 #  LocalWords:  initAdditionStatus getPkgName updateInstallingStatus imageBox
 #  LocalWords:  installingProgressbar installingFeedbackLabel FetchScreenshot
-#  LocalWords:  updateUpgradingStatus upgradingProgressbar noscreenshotList
+#  LocalWords:  updateUpgradingStatus upgradingProgressbar 
 #  LocalWords:  upgradingFeedbackLabel updateUninstallingStatus setDaemon
 #  LocalWords:  returnCode waitAlign pkgName screenshotPath cmdline
 #  LocalWords:  subprocess

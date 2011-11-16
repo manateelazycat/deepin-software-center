@@ -5,6 +5,7 @@
 	* Remove noscreenshotList, new backend technology, yay!
 	* Support multiple small screenshot.
 	* Remove global search in uninstal interface, go to hell!
+	* Finish big screenshot.
 
 2011-11-15 Yong Wang <lazycat.manatee@gmail.com>
 	* Fix aria2c version bug.

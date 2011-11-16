@@ -1175,150 +1175,121 @@ class SmallScreenshot(td.Thread):
                 print "Tell user use old screenshot."
             else:
                 self.initQueryErrorStatus()
-            
+                
 class BigScreenshot(object):
     '''Big screenshot.'''
 	
     def __init__(self, widget, images, imageIndex, exitCallback):
-        '''Init for big screenshot.'''
-        self.closeIconWidth = 11
-        self.closeIconHeight = 10
-        self.borderWidth = 4
-        self.borderTopHeight = 26
-        self.borderBottomHeight = 7
-        self.borderTopWidth = 7
-        self.borderBottomWidth = 7
+        '''Init big screenshot.'''
+        # Init. 
+        self.images = images
+        self.imageIndex = imageIndex
+        self.exitCallback = exitCallback
         
-        self.topleftPixbuf = appTheme.getDynamicPixbuf("screenshot/background_topleft.png")
-        self.toprightPixbuf = appTheme.getDynamicPixbuf("screenshot/background_topright.png")
-        self.topmiddlePixbuf = appTheme.getDynamicPixbuf("screenshot/background_topmiddle.png")
-        self.bottomleftPixbuf = appTheme.getDynamicPixbuf("screenshot/background_bottomleft.png")
-        self.bottomrightPixbuf = appTheme.getDynamicPixbuf("screenshot/background_bottomright.png")
-        self.bottommiddlePixbuf = appTheme.getDynamicPixbuf("screenshot/background_bottommiddle.png")
-        self.leftPixbuf = appTheme.getDynamicPixbuf("screenshot/background_left.png")
-        self.rightPixbuf = appTheme.getDynamicPixbuf("screenshot/background_right.png")
-        self.closePixbuf = appTheme.getDynamicPixbuf("screenshot/close.png")
+        rect = widget.get_allocation()
+        (wx, wy) = widget.window.get_origin()
+        self.width = rect.width * 3 / 4
+        self.height = rect.height * 3 / 4
+        self.screenshotWidth = rect.width * 2 / 3
+        self.screenshotHeight = rect.height * 2 / 3
         
         self.window = gtk.Window()
         self.window.set_decorated(False)
         self.window.set_resizable(True)
         self.window.set_transient_for(widget.get_toplevel())
         self.window.set_property("accept-focus", False)
-        
-        (wx, wy) = widget.window.get_origin()
-        rect = widget.get_allocation()
-        self.requestWidth = rect.width * 4 / 5
-        self.requestHeight = rect.height * 4 / 5
-        self.pixbuf = gtk.gdk.pixbuf_new_from_file_at_size(
-            images[imageIndex],
-            self.requestWidth,
-            self.requestHeight)
-        self.eventbox = gtk.EventBox()
-        self.window.add(self.eventbox)
-        self.width = self.pixbuf.get_width()
-        self.height = self.pixbuf.get_height()
-        self.windowWidth = self.width + self.borderWidth * 2
-        self.windowHeight = self.height + self.borderTopHeight + self.borderBottomHeight
-        self.windowX = wx + rect.x + (rect.width - self.width) / 2 - self.borderWidth
-        self.windowY = wy + rect.y + (rect.height - self.height) / 2 - self.borderTopHeight
-        self.closeIconAdjust = 8
-        self.closeIconX = self.windowX + self.windowWidth - self.closeIconWidth - self.closeIconAdjust
-        self.closeIconY = self.windowY + self.closeIconAdjust
-        self.window.move(self.windowX, self.windowY)
-        self.window.set_default_size(self.windowWidth, self.windowHeight)
-        
+        self.window.set_size_request(self.width, self.height)
+        self.window.move(
+            wx + rect.x + (rect.width - self.width) / 2, 
+            wy + rect.y + (rect.height - self.height) / 2)
         self.window.connect("destroy", lambda w: exitCallback())
-        self.window.connect("button-press-event", self.click)
-        self.window.connect("size-allocate", lambda w, a: updateShape(w, a, POPUP_WINDOW_RADIUS))
-        self.eventbox.connect("expose-event", self.show)
-        self.eventbox.connect("button-press-event", lambda w, e: self.exit())
+        self.window.connect("size-allocate", lambda w, a: updateShape(w, a, RADIUS))
+        self.window.connect("expose-event", self.expose)
+        self.window.set_opacity(0.9)
+        
+        self.controlBox = gtk.HBox()
+        self.window.add(self.controlBox)
+        
+        self.prevEventBox = gtk.EventBox()
+        self.prevEventBox.set_visible_window(False)
+        self.prevEventBox.set_size_request(
+            (self.width - self.screenshotWidth) * 2, -1)
+        self.prevEventBox.connect("button-press-event", lambda w, e: self.browsePrev())
+        self.controlBox.pack_start(self.prevEventBox, True, True)
         utils.setCustomizeClickableCursor(
-            self.eventbox, 
-            self.eventbox, 
-            appTheme.getDynamicPixbuf("screenshot/zoom_out.png"))
+            self.prevEventBox,
+            self.prevEventBox,
+            appTheme.getDynamicPixbuf("screenshot/prev.png")
+            )
+
+        self.middleEventBox = gtk.EventBox()
+        self.middleEventBox.set_visible_window(False)
+        self.middleEventBox.set_size_request(self.screenshotWidth, -1)
+        self.middleEventBox.connect("button-press-event", lambda w, e: self.exit())
+        self.controlBox.pack_start(self.middleEventBox, True, True)
+        utils.setCustomizeClickableCursor(
+            self.middleEventBox,
+            self.middleEventBox,
+            appTheme.getDynamicPixbuf("screenshot/zoom_out.png")
+            )
+        
+        self.nextEventBox = gtk.EventBox()
+        self.nextEventBox.set_visible_window(False)
+        self.nextEventBox.set_size_request(
+            (self.width - self.screenshotWidth) * 2, -1)
+        self.nextEventBox.connect("button-press-event", lambda w, e: self.browseNext())
+        self.controlBox.pack_start(self.nextEventBox, True, True)
+        utils.setCustomizeClickableCursor(
+            self.nextEventBox,
+            self.nextEventBox,
+            appTheme.getDynamicPixbuf("screenshot/next.png")
+            )
         
         self.window.show_all()
-
+        
     def exit(self):
         '''Exit'''
         self.window.destroy()
         
-    def click(self, widget, event):
-        '''Click.'''
-        point = event.get_root_coords()
-        if point != ():
-            (px, py) = point
-            if utils.isInRect(
-                (px, py), 
-                (self.closeIconX, self.closeIconY,
-                 self.closeIconWidth, self.closeIconHeight)):
-                self.exit()
-        
-    def show(self, widget, event):
+    def browseNext(self):
+        '''Browse next.'''
+        if self.imageIndex == len(self.images) - 1:
+            self.imageIndex = 0
+        else:
+            self.imageIndex += 1
+            
+        self.window.queue_draw()
+    
+    def browsePrev(self):
+        '''Browse previous.'''
+        if self.imageIndex == 0:
+            self.imageIndex = len(self.images) - 1
+        else:
+            self.imageIndex -= 1
+            
+        self.window.queue_draw()
+
+    def expose(self, widget, event):
         '''Show.'''
-        allocation = widget.get_allocation()
-        
-        windowWidth, windowHeight = allocation.width, allocation.height
-        middleHeight = windowHeight - self.borderTopHeight - self.borderBottomHeight
-        
-        topmiddlePixbuf = self.topmiddlePixbuf.getPixbuf().scale_simple(
-            windowWidth - self.borderTopWidth * 2, 
-            self.borderTopHeight, 
-            gtk.gdk.INTERP_BILINEAR)
-        bottommiddlePixbuf = self.bottommiddlePixbuf.getPixbuf().scale_simple(
-            windowWidth - self.borderBottomWidth * 2, 
-            self.borderBottomHeight,
-            gtk.gdk.INTERP_BILINEAR)
-        leftPixbuf = self.leftPixbuf.getPixbuf().scale_simple(
-            self.borderWidth,
-            middleHeight,
-            gtk.gdk.INTERP_BILINEAR
-            )
-        rightPixbuf = self.rightPixbuf.getPixbuf().scale_simple(
-            self.borderWidth,
-            middleHeight,
-            gtk.gdk.INTERP_BILINEAR
-            )
-        middlePixbuf = gtk.gdk.Pixbuf(gtk.gdk.COLORSPACE_RGB, 
-                                      False, 8, 
-                                      windowWidth, middleHeight)
-        pixbuf = gtk.gdk.Pixbuf(gtk.gdk.COLORSPACE_RGB, True, 8, windowWidth, windowHeight)
-        
-        self.topleftPixbuf.getPixbuf().copy_area(
-            0, 0, self.borderTopWidth, self.borderTopHeight, pixbuf,
-            0, 0)
-        topmiddlePixbuf.copy_area(
-            0, 0, windowWidth - self.borderTopWidth * 2, self.borderTopHeight, pixbuf, 
-            self.borderTopWidth, 0)
-        self.toprightPixbuf.getPixbuf().copy_area(
-            0, 0, self.borderTopWidth, self.borderTopHeight, pixbuf,
-            windowWidth - self.borderTopWidth, 0)
-        self.bottomleftPixbuf.getPixbuf().copy_area(
-            0, 0, self.borderBottomWidth, self.borderBottomHeight, pixbuf,
-            0, windowHeight - self.borderBottomHeight)
-        bottommiddlePixbuf.copy_area(
-            0, 0, windowWidth - self.borderBottomWidth * 2, self.borderBottomHeight, pixbuf, 
-            self.borderBottomWidth, self.windowHeight - self.borderBottomHeight)
-        self.bottomrightPixbuf.getPixbuf().copy_area(
-            0, 0, self.borderBottomWidth, self.borderBottomHeight, pixbuf,
-            windowWidth - self.borderBottomWidth, windowHeight - self.borderBottomHeight)
-        middlePixbuf.copy_area(0, 0, windowWidth, middleHeight, pixbuf, 
-                               0, self.borderTopHeight)
-        leftPixbuf.copy_area(0, 0, self.borderWidth, middleHeight, pixbuf, 
-                             0, self.borderTopHeight)
-        rightPixbuf.copy_area(0, 0, self.borderWidth, middleHeight, pixbuf, 
-                              windowWidth - self.borderWidth,
-                              self.borderTopHeight)
-        self.pixbuf.copy_area(0, 0, self.width, self.height, pixbuf, self.borderWidth, self.borderTopHeight)
-        
+        # Init.
         cr = widget.window.cairo_create()
-        cr.set_source_pixbuf(pixbuf, 0, 0)
-        cr.paint()
+        rect = widget.get_allocation()
         
-        cr.set_source_pixbuf(self.closePixbuf.getPixbuf(), 
-                             self.windowWidth - self.closeIconWidth - self.closeIconAdjust,
-                             self.closeIconAdjust)
-        cr.paint()
+        # Draw background.
+        cr.set_source_rgba(0.0, 0.0, 0.0, 0.5)
+        cr.rectangle(0, 0, rect.width, rect.height)
+        cr.fill()
+        
+        # Draw screenshot.
+        pixbuf = gtk.gdk.pixbuf_new_from_file_at_size(
+            self.images[self.imageIndex],
+            self.screenshotWidth,
+            self.screenshotHeight,
+            )
+        drawPixbuf(
+            cr, pixbuf, 
+            rect.x + (self.width - pixbuf.get_width()) / 2,
+            rect.y + (self.height - pixbuf.get_height()) / 2)
         
         if widget.get_child() != None:
             widget.propagate_expose(widget.get_child(), event)

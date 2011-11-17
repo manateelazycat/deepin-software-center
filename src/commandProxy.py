@@ -24,6 +24,7 @@ from utils import *
 from constant import *
 import socket
 import subprocess
+import sys
 
 class CommandProxy:
     '''Command proxy.'''
@@ -33,6 +34,8 @@ class CommandProxy:
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) # make sure socket port always work
         self.socket.bind(SOCKET_COMMANDPROXY_ADDRESS)
+        
+        self.noExit = len(sys.argv) == 2 and sys.argv[1] == "--daemon"
         
         self.run()
         
@@ -48,6 +51,8 @@ class CommandProxy:
                 print "Got error `%s` when execute `%s`." % (e, cmd)    
             finally:
                 self.run()
+        elif self.noExit:
+            self.run()
                 
         print "* Command proxy exit."
     

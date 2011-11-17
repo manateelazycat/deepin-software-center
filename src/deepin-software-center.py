@@ -180,11 +180,6 @@ class DeepinSoftwareCenter(object):
         if self.moreWindow.proxySetupWindow.window.get_visible():
             self.moreWindow.proxySetupWindow.hide()
             
-        # Hide screenshot window.
-        for dView in self.detailViewDict.values():
-            if dView.smallScreenshot != None and dView.smallScreenshot.bigScreenshot != None:
-                dView.smallScreenshot.closeBigScreenshotWindow()
-                
     def selectTheme(self, themeName):
         '''Select theme.'''
         # Change theme.

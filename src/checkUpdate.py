@@ -249,10 +249,7 @@ class TrayIcon(object):
     def main(self):
         '''Main.'''
         # Get input.
-        if len(sys.argv) == 2 and sys.argv[1] == "--now":
-            ignoreInterval = True
-        else:
-            ignoreInterval = False
+        ignoreInterval = len(sys.argv) == 2 and sys.argv[1] == "--now"
         
         # Get last update hours.
         agoHours = getLastUpdateHours("./check-update-stamp")

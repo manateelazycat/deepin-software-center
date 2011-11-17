@@ -82,15 +82,15 @@ class MoreWindow(object):
             
     def forumHelp(self):
         '''Forum help.'''
-        runCommand("xdg-open http://www.linuxdeepin.com/forum")
+        sendCommand("xdg-open http://www.linuxdeepin.com/forum")
     
     def joinUs(self):
         '''Join us.'''
-        runCommand("xdg-open http://www.linuxdeepin.com/recruitment")
+        sendCommand("xdg-open http://www.linuxdeepin.com/recruitment")
     
     def reportProblem(self,):
         '''Report problem.'''
-        runCommand("xdg-open http://www.linuxdeepin.com/forum/17")
+        sendCommand("xdg-open http://www.linuxdeepin.com/forum/17")
     
     def setIndex(self, index):
         '''Set index.'''

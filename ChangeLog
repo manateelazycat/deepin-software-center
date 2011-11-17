@@ -4,6 +4,7 @@
 	* Enhance the effect of small screenshot switch.
 	* Finish comment code.
 	* Finish backend test.
+	* Use commandProxy.py fix root permission hole.
 
 2011-11-16 Yong Wang <lazycat.manatee@gmail.com>
 	* Clean departed comment code, use web technology implement user comment.

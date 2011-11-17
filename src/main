@@ -24,6 +24,25 @@ from constant import *
 import socket
 import subprocess
 
+def startCommandProxy():
+    '''Start command proxy.'''
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  
+    
+    try:
+        # Software center is not running if address is not bind.
+        s.bind(SOCKET_COMMANDPROXY_ADDRESS)
+        
+        # Close socket.
+        s.close()
+        
+        # Show software center.
+        subprocess.Popen(["./commandProxy.py"])        
+    except Exception, e:
+        print "Command proxy has running."
+        
+        # Close socket.
+        s.close()  
+        
 def startSoftwareCenter():
     '''Start software center.'''
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  
@@ -45,4 +64,5 @@ def startSoftwareCenter():
         s.close()  
     
 if __name__ == "__main__":
+    startCommandProxy()
     startSoftwareCenter()

@@ -245,7 +245,7 @@ class DetailView(object):
                 "link",
                 )
             homepageLabel.set_alignment(0.0, 0.0)
-            homepageEventBox.connect("button-press-event", lambda w, e: utils.runCommand("xdg-open %s" % (homepage)))
+            homepageEventBox.connect("button-press-event", lambda w, e: utils.sendCommand("xdg-open %s" % (homepage)))
             detailBox.pack_start(homepageEventBox, False, False)
             
             # Show home page when hover link.
@@ -262,7 +262,7 @@ class DetailView(object):
             translationLabel.set_alignment(0.0, 0.0)
             translationEventBox.connect(
                 "button-press-event", 
-                lambda w, e: utils.runCommand("xdg-open http://pootle.linuxdeepin.com/zh_CN/ddtp-done/%s.po/translate/" % (pkgName)))
+                lambda w, e: utils.sendCommand("xdg-open http://pootle.linuxdeepin.com/zh_CN/ddtp-done/%s.po/translate/" % (pkgName)))
             detailBox.pack_start(translationEventBox, False, False)
             
             # Show translation  when hover link.

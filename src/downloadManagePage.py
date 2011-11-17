@@ -83,7 +83,7 @@ class Topbar(object):
         self.openDirAlign = gtk.Alignment()
         self.openDirAlign.set(0.0, 0.5, 0.0, 0.0)
         self.openDirAlign.add(self.openDirEventBox)
-        self.openDirEventBox.connect("button-press-event", lambda w, e: utils.runCommand("xdg-open /var/cache/apt/archives/"))
+        self.openDirEventBox.connect("button-press-event", lambda w, e: utils.sendCommand("xdg-open /var/cache/apt/archives/"))
         
         (self.cleanLabel, self.cleanEventBox) = setDefaultClickableDynamicLabel(
             "智能清理下载缓存",

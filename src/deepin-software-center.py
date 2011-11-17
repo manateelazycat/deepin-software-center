@@ -856,6 +856,9 @@ class DeepinSoftwareCenter(object):
         
         gtk.main_quit()
         
+        # Exit command proxy.
+        sendCommand("exit")
+        
     def main(self):
         '''Main'''
         # Connect components.
@@ -1152,7 +1155,7 @@ class DeepinSoftwareCenter(object):
     def launchApplication(self, command):
         '''Launch application.'''
         self.message("发送启动请求 (%s)" % (command))
-        utils.runCommand(command)
+        sendCommand(command)
         
     def cleanDownloadCache(self):
         '''Clean download cache.'''

@@ -34,6 +34,7 @@ import pygtk
 import stat
 import subprocess
 import threading as td
+import socket
 import time
 import uuid
 pygtk.require('2.0')
@@ -550,6 +551,16 @@ def setCustomizeCursor(widget, cursorDPixbuf):
 def runCommand(command):
     '''Run command.'''
     subprocess.Popen("nohup %s > /dev/null 2>&1" % (command), shell=True)
+    
+def sendCommand(command):
+    '''Send command.'''
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  
+    try:
+        s.sendto(command, SOCKET_COMMANDPROXY_ADDRESS)
+    except Exception, e:
+        print "sendCommand got error: %s" % (e)
+    finally:
+        s.close()
     
 def touchFile(filepath):
     '''Touch file.'''

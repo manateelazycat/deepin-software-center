@@ -971,7 +971,7 @@ class SmallScreenshot(td.Thread):
         
     def stop(self):
         '''Stop download.'''
-        if self.proc != None and self.returnCode == DOWNLOAD_FAILED:
+        if self.proc != None:
             self.killed = True
             self.proc.kill()
             
@@ -1187,10 +1187,11 @@ class BigScreenshot(object):
         
         rect = widget.get_allocation()
         (wx, wy) = widget.window.get_origin()
-        self.width = rect.width * 3 / 4
-        self.height = rect.height * 3 / 4
-        self.screenshotWidth = rect.width * 2 / 3
-        self.screenshotHeight = rect.height * 2 / 3
+        self.width = rect.width
+        self.height = rect.height
+        self.browseButtonWidth = 80
+        self.screenshotWidth = rect.width - self.browseButtonWidth
+        self.screenshotHeight = rect.height - self.browseButtonWidth
         
         self.window = gtk.Window()
         self.window.set_decorated(False)
@@ -1202,7 +1203,6 @@ class BigScreenshot(object):
             wx + rect.x + (rect.width - self.width) / 2, 
             wy + rect.y + (rect.height - self.height) / 2)
         self.window.connect("destroy", lambda w: exitCallback())
-        self.window.connect("size-allocate", lambda w, a: updateShape(w, a, RADIUS))
         self.window.connect("expose-event", self.expose)
         self.window.set_opacity(0.9)
         
@@ -1211,8 +1211,7 @@ class BigScreenshot(object):
         
         self.prevEventBox = gtk.EventBox()
         self.prevEventBox.set_visible_window(False)
-        self.prevEventBox.set_size_request(
-            (self.width - self.screenshotWidth) * 2, -1)
+        self.prevEventBox.set_size_request(self.browseButtonWidth, -1)
         self.prevEventBox.connect("button-press-event", lambda w, e: self.browsePrev())
         self.controlBox.pack_start(self.prevEventBox, True, True)
         utils.setCustomizeClickableCursor(
@@ -1234,8 +1233,7 @@ class BigScreenshot(object):
         
         self.nextEventBox = gtk.EventBox()
         self.nextEventBox.set_visible_window(False)
-        self.nextEventBox.set_size_request(
-            (self.width - self.screenshotWidth) * 2, -1)
+        self.nextEventBox.set_size_request(self.browseButtonWidth, -1)
         self.nextEventBox.connect("button-press-event", lambda w, e: self.browseNext())
         self.controlBox.pack_start(self.nextEventBox, True, True)
         utils.setCustomizeClickableCursor(

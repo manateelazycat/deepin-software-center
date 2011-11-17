@@ -149,5 +149,7 @@ DRAW_RIGHT = "right"
 SCREENSHOT_NONEED = -1
 SCREENSHOT_UPLOAD = 0
 
+COOKIE_FILE = "cookie.txt"
+
 # SERVER_ADDRESS = "http://test-linux.gteasy.com"
 SERVER_ADDRESS = "http://apis.linuxdeepin.com"

@@ -27,6 +27,7 @@ from draw import *
 from constant import *
 from draw import *
 from math import pi
+import browser
 import copy
 import zipfile
 import appView
@@ -185,9 +186,11 @@ class DetailView(object):
         self.bodyBox.pack_start(self.contentBox, False, False)
         
         self.infoTab = self.createInfoTab(appInfo, pkg)
-        self.helpTab = self.createHelpTab(pkg)
+        
+        self.commentArea = browser.Browser("%s/softcenter/v1/comment?n=%s" % (SERVER_ADDRESS, pkgName))
         
         self.contentBox.pack_start(self.infoTab)
+        self.contentBox.pack_start(self.commentArea)
         self.contentBox.show_all()
         
         self.scrolledWindow.show_all()
@@ -290,114 +293,6 @@ class DetailView(object):
             lambda widget, event: self.smallScreenshot.closeBigScreenshotWindow())
         self.returnButton.connect("destroy", lambda widget: self.smallScreenshot.stop())
 
-        return align
-    
-    def adjustTranslatePaned(self, widget):
-        '''Adjust translate paned.'''
-        self.translatePaned.set_position(widget.allocation.width / 2)
-        
-    def adjustTargetShortView(self):
-        '''Adjust target short view.'''
-        height = self.sourceShortView.allocation.height
-        self.targetShortView.set_size_request(-1, height)
-        
-    def createHelpTab(self, pkg):
-        '''Select help tab.'''
-        helpBox = gtk.VBox()
-        
-        align = gtk.Alignment()
-        align.set(0.0, 0.0, 1.0, 1.0)
-        align.set_padding(0, 0, self.ALIGN_X, self.ALIGN_X)
-        align.add(helpBox)
-        
-        self.translatePaned = gtk.HPaned()
-        helpBox.connect("size-allocate", lambda w, e: self.adjustTranslatePaned(w))
-        helpBox.pack_start(self.translatePaned)
-        
-        helpAlignX = 20
-
-        sourceBox = gtk.VBox()
-        sourceAlign = gtk.Alignment()
-        sourceAlign.set(0.0, 0.0, 1.0, 1.0)
-        sourceAlign.set_padding(0, 0, 0, helpAlignX)
-        sourceAlign.add(sourceBox)
-        self.translatePaned.pack1(sourceAlign)
-        
-        sourceLanguageBox = gtk.HBox()
-        sourceBox.pack_start(sourceLanguageBox, False, False)
-        
-        sourceLabel = gtk.Label()
-        sourceLabel.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, "原文"))
-        sourceLanguageBox.pack_start(sourceLabel, False, False, self.LANGUAGE_BOX_PADDING)
-        
-        sourceComboBox = gtk.combo_box_new_text()
-        sourceLanguageBox.pack_start(sourceComboBox, True, True, self.LANGUAGE_BOX_PADDING)
-        sourceIndex = 0
-        for (index, sourceLanguage) in enumerate(LANGUAGE):
-            if sourceLanguage == SOURCE_LANGUAGE:
-                sourceIndex = index
-            sourceComboBox.append_text(sourceLanguage)
-        sourceComboBox.set_active(sourceIndex)
-        
-        sourceShortFrame = gtk.Frame("简介")
-        self.sourceShortView = createContentView(sourceShortFrame, utils.getPkgShortDesc(pkg), False)
-        sourceShortFrame.add(self.sourceShortView)
-        sourceBox.pack_start(sourceShortFrame, False, False)
-        
-        sourceBox.pack_start(gtk.VSeparator(), False, False)
-        
-        sourceLongFrame = gtk.Frame("详细介绍")
-        sourceLongView = createContentView(sourceLongFrame, utils.getPkgLongDesc(pkg), False)
-        sourceLongFrame.add(sourceLongView)
-        sourceBox.pack_start(sourceLongFrame)
-
-        targetBox = gtk.VBox()
-        targetAlign = gtk.Alignment()
-        targetAlign.set(1.0, 0.0, 1.0, 1.0)
-        targetAlign.set_padding(0, 0, helpAlignX, 0)
-        targetAlign.add(targetBox)
-        self.translatePaned.pack2(targetAlign)
-        
-        targetLanguageBox = gtk.HBox()
-        targetBox.pack_start(targetLanguageBox, False, False)
-        
-        targetLabel = gtk.Label()
-        targetLabel.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, "译文"))
-        targetLanguageBox.pack_start(targetLabel, False, False, self.LANGUAGE_BOX_PADDING)
-        
-        targetComboBox = gtk.combo_box_new_text()
-        targetLanguageBox.pack_start(targetComboBox, True, True, self.LANGUAGE_BOX_PADDING)
-        targetIndex = 0
-        for (index, targetLanguage) in enumerate(LANGUAGE):
-            if targetLanguage == TARGET_LANGUAGE:
-                targetIndex = index
-            targetComboBox.append_text(targetLanguage)
-        targetComboBox.set_active(targetIndex)
-            
-        targetShortFrame = gtk.Frame("简介")
-        self.targetShortView = createContentView(targetShortFrame, "", True)
-        self.sourceShortView.connect("size-allocate", lambda w, e: self.adjustTargetShortView())
-        targetShortFrame.add(self.targetShortView)
-        targetBox.pack_start(targetShortFrame, False, False)
-        
-        targetBox.pack_start(gtk.VSeparator(), False, False)
-        
-        targetLongFrame = gtk.Frame("详细介绍")
-        targetLongView = createContentView(targetLongFrame, "", True)
-        targetLongFrame.add(targetLongView)
-        targetBox.pack_start(targetLongFrame)
-        
-        statusBox = gtk.HBox()
-        helpBox.pack_start(statusBox, False, False)
-        
-        statusLabel = gtk.Label()
-        statusLabel.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, "目前文档尚未翻译完成, 感谢您帮助我们!"))
-        statusLabel.set_alignment(0.0, 0.5)
-        statusBox.pack_start(statusLabel)
-        
-        translateCommitButton = gtk.Button("提交翻译")
-        statusBox.pack_start(translateCommitButton, False, False)
-        
         return align
     
     def updateDownloadingStatus(self, pkgName, progress, feedback):

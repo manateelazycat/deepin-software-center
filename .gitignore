@@ -6,5 +6,6 @@ ignorePkgs
 firstLock
 voteInfo
 nohup.out
+cookie.txt
 voteBlacklist/
 .#*

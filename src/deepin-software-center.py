@@ -1091,8 +1091,11 @@ class DeepinSoftwareCenter(object):
 
         if view != None:
             for vote in voteJson.items():
-                (pkgName, [starLevel, voteNum]) = vote
-                view.updateVoteView(pkgName, float(starLevel), voteNum)
+                try:
+                    (pkgName, [starLevel, voteNum]) = vote
+                    view.updateVoteView(pkgName, float(starLevel), voteNum)
+                except Exception, e:
+                    print "updateVote Error: %s" % (e)
                 
     def upgradeSelectedPkgs(self, selectList):
         '''Upgrade select packages.'''

@@ -86,7 +86,7 @@ class DetailView(object):
         self.align.add(self.eventbox)
        
         self.scrolledWindow = gtk.ScrolledWindow()
-        self.scrolledWindow.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+        self.scrolledWindow.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
         drawVScrollbar(self.scrolledWindow)
         utils.addInScrolledWindow(self.scrolledWindow, self.align)
         

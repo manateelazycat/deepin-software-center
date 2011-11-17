@@ -38,6 +38,7 @@ import threading as td
 import time
 import utils
 import urllib2
+import urllib
 import xmlrpclib
 
 (ARIA2_MAJOR_VERSION, ARIA2_MINOR_VERSION, _) = utils.getAria2Version()
@@ -287,8 +288,7 @@ class Download(td.Thread):
             self.updateCallback(self.pkgName, 100, "下载完毕")
             
             # Send download count to server.
-            sendDownloadCountThread = SendDownloadCount(self.pkgName)
-            sendDownloadCountThread.start()
+            SendDownloadCount(self.pkgName).start()
             
             return DOWNLOAD_STATUS_COMPLETE
         # Otherwise return DOWNLOAD_STATUS_FAILED.
@@ -324,7 +324,15 @@ class SendDownloadCount(td.Thread):
     def run(self):
         '''Run'''
         try:
-            urllib2.urlopen(("%s/down.php?n=" % (SERVER_ADDRESS)) + self.pkgName, timeout=POST_TIMEOUT)
+            args = {
+                'a' : 'd', 
+                'n' : self.pkgName}
+            
+            connection = urllib2.urlopen(
+                "%s/softcenter/v1/analytics" % (SERVER_ADDRESS),
+                data=urllib.urlencode(args),
+                timeout=POST_TIMEOUT
+                )
             print "Send download count (%s) successful." % (self.pkgName)
         except Exception, e:
             print "Send download count (%s) failed." % (self.pkgName)
@@ -436,5 +444,5 @@ class DownloadQueue(object):
         '''Stop all download task.'''
         for signalChannel in self.downloadingSignalChannel.values():
             signalChannel.put('STOP')
-        
+            
 #  LocalWords:  completedLength

@@ -61,6 +61,7 @@ import updateList
 import updatePage
 import ignorePage
 import urllib2
+import urllib
 import utils
 pygtk.require('2.0')
 
@@ -545,6 +546,9 @@ class DeepinSoftwareCenter(object):
                     print "Impossible: %s not in RepoCache" % (pkgName)
         elif actionType == ACTION_UNINSTALL:
             for (pkgName, isMarkDeleted) in pkgList:
+                # Send uninstall count.
+                SendUninstallCount(pkgName).start()
+                
                 if self.repoCache.cache.has_key(pkgName):
                     # Update application information.
                     appInfo = self.repoCache.cache[pkgName]
@@ -1014,7 +1018,7 @@ class DeepinSoftwareCenter(object):
 
     def sendVote(self, name, vote):
         '''Send vote.'''
-        sendVoteThread = SendVote("%s/vote.php?n=%s&m=%s" % (SERVER_ADDRESS, name, vote), name, self.message)
+        sendVoteThread = SendVote(name, vote, self.message)
         sendVoteThread.start()
 
     def exitDetailView(self, pageId, pkgName):
@@ -1088,7 +1092,7 @@ class DeepinSoftwareCenter(object):
         if view != None:
             for vote in voteJson.items():
                 (pkgName, [starLevel, voteNum]) = vote
-                view.updateVoteView(pkgName, starLevel, voteNum)
+                view.updateVoteView(pkgName, float(starLevel), voteNum)
                 
     def upgradeSelectedPkgs(self, selectList):
         '''Upgrade select packages.'''
@@ -1352,21 +1356,21 @@ class FetchVote(td.Thread):
     def run(self):
         '''Run.'''
         try:
-            connection = urllib2.urlopen(("%s/getMark.php?n=" % (SERVER_ADDRESS)) + self.pkgArguments, timeout=GET_TIMEOUT)
+            connection = urllib2.urlopen("%s/softcenter/v1/mark?n=%s" % (SERVER_ADDRESS, self.pkgArguments), timeout=GET_TIMEOUT)
             voteJson = json.loads(connection.read())
             self.updateVoteCallback(voteJson, self.pageId, self.isSearchPage)
         except Exception, e:
-            print "Fetch vote data failed."
+            print "Fetch vote data failed: %s." % (e)
 
 class SendVote(td.Thread):
     '''Vote'''
 
-    def __init__(self, url, name, messageCallback):
+    def __init__(self, name, vote, messageCallback):
         '''Init for vote.'''
         td.Thread.__init__(self)
         self.setDaemon(True) # make thread exit when main program exit
-        self.url = url
         self.name = name
+        self.vote = vote
         self.messageCallback = messageCallback
 
     def run(self):
@@ -1374,9 +1378,15 @@ class SendVote(td.Thread):
         try:
             voteFile = "../voteBlacklist/%s" % (self.name)
             if os.path.exists(voteFile) and getLastUpdateHours(voteFile) <= 24:
+            # if False:
                 self.messageCallback("为保证公正, 每天只能对%s评分一次." % (self.name))
             else:
-                post = urllib2.urlopen(self.url, timeout=POST_TIMEOUT)
+                args = {'n' : self.name, 'm' : self.vote}
+                connection = urllib2.urlopen(
+                    "%s/softcenter/v1/mark" % (SERVER_ADDRESS),
+                    data=urllib.urlencode(args),
+                    timeout=POST_TIMEOUT
+                    )
                 self.messageCallback("%s 评分成功, 感谢参与!" % (self.name))
                 utils.touchFile(voteFile)
         except Exception, e:
@@ -1409,6 +1419,30 @@ class SocketThread(td.Thread):
                 self.raiseToTopCallback()
 
         self.socket.close()
+        
+class SendUninstallCount(td.Thread):
+    '''Send uninstall count.'''
+	
+    def __init__(self, pkgName):
+        '''Init for vote.'''
+        td.Thread.__init__(self)
+        self.setDaemon(True) # make thread exit when main program exit 
+        self.pkgName = pkgName
+
+    def run(self):
+        '''Run'''
+        try:
+            args = {'a' : 'u', 'n' : self.pkgName}
+            
+            connection = urllib2.urlopen(
+                "%s/softcenter/v1/analytics" % (SERVER_ADDRESS),
+                data=urllib.urlencode(args),
+                timeout=POST_TIMEOUT
+                )
+            print "Send uninstall count (%s) successful." % (self.pkgName)
+        except Exception, e:
+            print "Send uninstall count (%s) failed." % (self.pkgName)
+            print "Error: ", e
         
 if __name__ == "__main__":
     DeepinSoftwareCenter().main()

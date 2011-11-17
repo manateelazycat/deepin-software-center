@@ -186,7 +186,7 @@ class NewFeature(object):
         self.titleBox.pack_start(self.closeButton, False, False)
         
         self.scrolledwindow = gtk.ScrolledWindow()
-        self.scrolledwindow.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+        self.scrolledwindow.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
         drawVScrollbar(self.scrolledwindow)
         
         self.textView = DynamicTextView(

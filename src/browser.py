@@ -48,8 +48,11 @@ class Browser(webkit.WebView):
         self.initProxy()
 
         # Load uri.
-        self.load_uri(uri)
-        
+        try:
+            self.load_uri(uri)
+        except Exception, e:
+            print "Got error when loading %s: %s" % (uri, e)
+            
     def initCookie(self):
         '''Init cookie.'''
     	if not os.path.exists(COOKIE_FILE):

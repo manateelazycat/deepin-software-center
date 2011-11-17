@@ -37,13 +37,22 @@ import subprocess
 import sys
 import threading as td
 import urllib2
+import urllib
 
 def sendStatistics():
     '''Send statistics.'''
     # Send Mac address to server for statistics.
     try:
         userId = getUserID()
-        connection = urllib2.urlopen(("%s/record.php?i=" % (SERVER_ADDRESS)) + str(userId), timeout=POST_TIMEOUT)
+        args = {'a' : 'm', 'n' : userId}
+        
+        connection = urllib2.urlopen(
+            "%s/softcenter/v1/analytics" % (SERVER_ADDRESS),
+            data=urllib.urlencode(args),
+            timeout=POST_TIMEOUT,
+            )
+        print connection.read()
+        
         print "Send mac address %s success." % (userId)
     except Exception, e:
         print "Send mac address %s failed" % (userId)

@@ -188,9 +188,13 @@ class DetailView(object):
         self.infoTab = self.createInfoTab(appInfo, pkg)
         
         self.commentArea = browser.Browser("%s/softcenter/v1/comment?n=%s" % (SERVER_ADDRESS, pkgName))
+        self.commentAreaAlign = gtk.Alignment()
+        self.commentAreaAlign.set(0.0, 0.0, 1.0, 1.0)
+        self.commentAreaAlign.set_padding(self.ALIGN_Y, 0, self.ALIGN_X, self.ALIGN_X)
+        self.commentAreaAlign.add(self.commentArea)
         
         self.contentBox.pack_start(self.infoTab)
-        self.contentBox.pack_start(self.commentArea)
+        self.contentBox.pack_start(self.commentAreaAlign)
         self.contentBox.show_all()
         
         self.scrolledWindow.show_all()
@@ -240,7 +244,7 @@ class DetailView(object):
                 "访问首页",
                 "link",
                 )
-            homepageLabel.set_alignment(0.0, 0.5)
+            homepageLabel.set_alignment(0.0, 0.0)
             homepageEventBox.connect("button-press-event", lambda w, e: utils.runCommand("xdg-open %s" % (homepage)))
             detailBox.pack_start(homepageEventBox, False, False)
             
@@ -255,7 +259,7 @@ class DetailView(object):
                 "协助翻译",
                 "link"
                 )
-            translationLabel.set_alignment(0.0, 0.5)
+            translationLabel.set_alignment(0.0, 0.0)
             translationEventBox.connect(
                 "button-press-event", 
                 lambda w, e: utils.runCommand("xdg-open http://pootle.linuxdeepin.com/zh_CN/ddtp-done/%s.po/translate/" % (pkgName)))
@@ -682,11 +686,6 @@ class SmallScreenshot(td.Thread):
         self.bigScreenshotImage = None
         self.bigScreenshot = None
         
-        self.bottomBox.set_size_request(
-            self.SMALL_SCREENSHOT_WIDTH * self.SMALL_SCREENSHOT_COLUMN + (self.SMALL_SCREENSHOT_COLUMN + 1) * self.SMALL_SCREENSHOT_PADDING_X,
-            self.SMALL_SCREENSHOT_HEIGHT * self.SMALL_SCREENSHOT_ROW + (self.SMALL_SCREENSHOT_ROW + 1) * self.SMALL_SCREENSHOT_PADDING_Y,
-            )
-        
         self.box.pack_start(self.topBox, False, False)
         self.box.pack_start(self.bottomBox, False, False)
         self.box.show_all()
@@ -886,6 +885,7 @@ class SmallScreenshot(td.Thread):
 
     def showBigScreenshotArea(self, index):
         '''Show big screenshot.'''
+        
         # Update image index.
         self.imageIndex = index
         
@@ -927,6 +927,11 @@ class SmallScreenshot(td.Thread):
         
     def showSmallScreenshotArea(self):
         '''Show small screenshot.'''
+        self.bottomBox.set_size_request(
+            self.SMALL_SCREENSHOT_WIDTH * self.SMALL_SCREENSHOT_COLUMN + (self.SMALL_SCREENSHOT_COLUMN + 1) * self.SMALL_SCREENSHOT_PADDING_X,
+            self.SMALL_SCREENSHOT_HEIGHT * self.SMALL_SCREENSHOT_ROW + (self.SMALL_SCREENSHOT_ROW + 1) * self.SMALL_SCREENSHOT_PADDING_Y,
+            )
+        
         utils.containerRemoveAll(self.bottomBox)
         
         listLen = len(self.images)
@@ -1099,7 +1104,7 @@ class BigScreenshot(object):
             wy + rect.y + (rect.height - self.height) / 2)
         self.window.connect("destroy", lambda w: exitCallback())
         self.window.connect("expose-event", self.expose)
-        self.window.set_opacity(0.9)
+        self.window.set_opacity(0.95)
         
         self.controlBox = gtk.HBox()
         self.window.add(self.controlBox)

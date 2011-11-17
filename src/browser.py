@@ -20,6 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from utils import *
 from constant import *
 from ctypes import *
 import os, webkit, webbrowser
@@ -42,12 +43,23 @@ class Browser(webkit.WebView):
         
         # Init cookie.
         self.initCookie()
+        
+        # Init proxy.
+        self.initProxy()
 
         # Load uri.
         self.load_uri(uri)
         
     def initCookie(self):
+        '''Init cookie.'''
     	if not os.path.exists(COOKIE_FILE):
     		os.mknod(COOKIE_FILE)
     	session = libwebkit.webkit_get_default_session()
     	libgobject.g_object_set(session, 'add-feature', libsoup.soup_cookie_jar_text_new(COOKIE_FILE, False), None)
+        
+    def initProxy(self):
+        '''Init proxy.'''
+        proxyString = readFirstLine("./proxy", True)
+        if proxyString != "":
+            session = libwebkit.webkit_get_default_session()
+            libgobject.g_object_set(session, 'proxy-uri', proxyString, None)

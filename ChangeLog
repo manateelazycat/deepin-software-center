@@ -4,6 +4,7 @@
 	* Avoid comment area can't shrink window when main window shrink.
 	* Finish big screenshot.
 	* Hide popup window when switch page.
+	* Add search power, if match package name, sort at front.
 
 2011-11-17 Yong Wang <lazycat.manatee@gmail.com>
 	* Enhance the effect of small screenshot switch.

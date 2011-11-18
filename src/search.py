@@ -295,7 +295,7 @@ class Search(object):
             if results == []:
                 self.messageCallback("没有搜索到和 %s 相关的包" % (" ".join(args)))
             
-            return self.repoCache.sortPackages(results)
+            return self.repoCache.sortPackages(results, " ".join(args))
     
 class RebuildSearchIndex(td.Thread):
     '''Rebuild search index.'''

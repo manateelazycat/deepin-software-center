@@ -322,20 +322,39 @@ class RepoCache(object):
         # Update file content.
         writeFile("./ignorePkgs", str(self.ignorePkgs))
         
-    def sortPackages(self, pkgs):
+    def sortPackages(self, pkgs, keyword=None):
         '''Sort packages, first sort packages in white list, then other packages.'''
-        # Init.
-        whiteList = []
-        otherlist = []
-        
-        # Split packages.
-        for pkgName in pkgs:
-            if self.whiteListDict.has_key(pkgName):
-                whiteList.append(pkgName)
-            else:
-                otherlist.append(pkgName)
-    
-        return utils.sortAlpha(whiteList) + utils.sortAlpha(otherlist)
+        # Don't consider keyword power if keyword is None.
+        if keyword == None:
+            # Init.
+            whiteList = []
+            otherlist = []
+            
+            # Split packages.
+            for pkgName in pkgs:
+                if self.whiteListDict.has_key(pkgName):
+                    whiteList.append(pkgName)
+                else:
+                    otherlist.append(pkgName)
+            
+            return utils.sortAlpha(whiteList) + utils.sortAlpha(otherlist)
+        # Otherwise sort package at front if package name match keyword.
+        else:
+            # Init.
+            matchList = []
+            whiteList = []
+            otherList = []
+            
+            # Split packages.
+            for pkgName in pkgs:
+                if keyword in pkgName:
+                    matchList.append(pkgName)
+                elif self.whiteListDict.has_key(pkgName):
+                    whiteList.append(pkgName)
+                else:
+                    otherList.append(pkgName)
+                
+            return utils.sortMatchKeyword(matchList, keyword) + utils.sortAlpha(whiteList) + utils.sortAlpha(otherList)
 
 #  LocalWords:  pkgClassify AppInfo appList startIndex endIndex pkgName
 #  LocalWords:  uninstallablePkgs removePkgFromUpgradableList upgradablePkgs

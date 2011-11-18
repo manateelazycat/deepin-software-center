@@ -719,6 +719,40 @@ def sortAlpha(eList):
     '''Get alpha list.'''
     return sorted(eList, key=lambda e: e)
 
+def sortMatchKeyword(eList, keyword):
+    '''Sort list by match keyword.'''
+    return sorted(eList, cmp=lambda x, y: cmpMatchKeyword(x, y, keyword))
+
+def cmpMatchKeyword(x, y, keyword):
+    '''Compare match keyword.'''
+    xMatches = x.split(keyword)
+    yMatches = y.split(keyword)
+    xMatchPre, xMatchPost = xMatches[0], ''.join(xMatches[1:])
+    yMatchPre, yMatchPost = yMatches[0], ''.join(yMatches[1:])
+    xMatchTimes = len(xMatches)
+    yMatchTimes = len(yMatches)
+    xLenPre = len(xMatchPre)
+    xLenPost = len(xMatchPost)
+    yLenPre = len(yMatchPre)
+    yLenPost = len(yMatchPost)
+    
+    if xLenPre < yLenPre:
+        return -1
+    elif xLenPre > yLenPre:
+        return 1
+    elif xLenPost < yLenPost:
+        return -1
+    elif xLenPost > yLenPost:
+        return 1
+    elif xMatchTimes > yMatchTimes:
+        return -1
+    elif xMatchTimes < yMatchTimes:
+        return 1
+    elif len(xMatchPost.split(keyword)[0]) < len(yMatchPost.split(keyword)[0]):
+        return -1
+    else:
+        return cmp(xMatchPre + xMatchPost, yMatchPre + yMatchPost)
+
 def todayStr():
     '''Get string of today.'''
     structTime = time.localtime()

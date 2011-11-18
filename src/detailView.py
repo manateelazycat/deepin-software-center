@@ -87,6 +87,9 @@ class DetailView(object):
        
         self.scrolledWindow = gtk.ScrolledWindow()
         self.scrolledWindow.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
+        self.scrolledWindow.connect(
+            "hierarchy-changed", 
+            lambda w, t: self.smallScreenshot.toggleBigScreenshot())
         drawVScrollbar(self.scrolledWindow)
         utils.addInScrolledWindow(self.scrolledWindow, self.align)
         
@@ -693,6 +696,14 @@ class SmallScreenshot(td.Thread):
         self.box.pack_start(self.bottomBox, False, False)
         self.box.show_all()
         
+    def toggleBigScreenshot(self):
+        '''Toggle big screenshot.'''
+        if self.bigScreenshot != None:
+            if self.bigScreenshot.window.get_visible():
+                self.bigScreenshot.hide()
+            else:
+                self.bigScreenshot.show()
+        
     @postGUI
     def initWaitStatus(self):
         '''Init wait status.'''
@@ -1080,72 +1091,112 @@ class SmallScreenshot(td.Thread):
                 
 class BigScreenshot(object):
     '''Big screenshot.'''
+    
+    CURSOR_BROWSE_PREV = 1
+    CURSOR_BROWSE_NEXT = 2
+    CURSOR_ZOOM_OUT = 3
 	
     def __init__(self, widget, images, imageIndex, exitCallback):
         '''Init big screenshot.'''
         # Init. 
+        self.widget = widget
         self.images = images
         self.imageIndex = imageIndex
         self.exitCallback = exitCallback
         
-        rect = widget.get_allocation()
-        (wx, wy) = widget.window.get_origin()
-        self.width = rect.width
-        self.height = rect.height
-        self.browseButtonWidth = 80
-        self.screenshotWidth = rect.width - self.browseButtonWidth
-        self.screenshotHeight = rect.height - self.browseButtonWidth
+        self.browsePadding = 80
+        self.x = self.y = self.width = self.height = 0
+        self.imgX = self.imgY = self.imgWidth = self.imgHeight = 0
+        self.cursorType = self.CURSOR_ZOOM_OUT
         
         self.window = gtk.Window()
         self.window.set_decorated(False)
         self.window.set_resizable(True)
         self.window.set_transient_for(widget.get_toplevel())
+        self.window.set_opacity(0.95)
         self.window.set_property("accept-focus", False)
-        self.window.set_size_request(self.width, self.height)
-        self.window.move(
-            wx + rect.x + (rect.width - self.width) / 2, 
-            wy + rect.y + (rect.height - self.height) / 2)
         self.window.connect("destroy", lambda w: exitCallback())
         self.window.connect("expose-event", self.expose)
-        self.window.set_opacity(0.95)
         
-        self.controlBox = gtk.HBox()
-        self.window.add(self.controlBox)
+        self.eventbox = gtk.EventBox()
+        self.eventbox.set_visible_window(False)
+        self.eventbox.add_events(gtk.gdk.POINTER_MOTION_MASK)
+        self.eventbox.add_events(gtk.gdk.POINTER_MOTION_HINT_MASK)
+        self.eventbox.connect("motion-notify-event", self.updateCursor)
+        self.eventbox.connect("button-press-event", self.click)
+        self.window.add(self.eventbox)
         
-        self.prevEventBox = gtk.EventBox()
-        self.prevEventBox.set_visible_window(False)
-        self.prevEventBox.set_size_request(self.browseButtonWidth, -1)
-        self.prevEventBox.connect("button-press-event", lambda w, e: self.browsePrev())
-        self.controlBox.pack_start(self.prevEventBox, True, True)
-        utils.setCustomizeClickableCursor(
-            self.prevEventBox,
-            self.prevEventBox,
-            appTheme.getDynamicPixbuf("screenshot/prev.png")
-            )
-
-        self.middleEventBox = gtk.EventBox()
-        self.middleEventBox.set_visible_window(False)
-        self.middleEventBox.set_size_request(self.screenshotWidth, -1)
-        self.middleEventBox.connect("button-press-event", lambda w, e: self.exit())
-        self.controlBox.pack_start(self.middleEventBox, True, True)
-        utils.setCustomizeClickableCursor(
-            self.middleEventBox,
-            self.middleEventBox,
-            appTheme.getDynamicPixbuf("screenshot/zoom_out.png")
-            )
-        
-        self.nextEventBox = gtk.EventBox()
-        self.nextEventBox.set_visible_window(False)
-        self.nextEventBox.set_size_request(self.browseButtonWidth, -1)
-        self.nextEventBox.connect("button-press-event", lambda w, e: self.browseNext())
-        self.controlBox.pack_start(self.nextEventBox, True, True)
-        utils.setCustomizeClickableCursor(
-            self.nextEventBox,
-            self.nextEventBox,
-            appTheme.getDynamicPixbuf("screenshot/next.png")
-            )
+        self.updateAllocate()
         
         self.window.show_all()
+        
+        self.widget.get_toplevel().connect("size-allocate", lambda w, a: self.updateAllocate())
+        self.widget.get_toplevel().connect("configure-event", lambda w, a: self.updateAllocate())
+        
+    def show(self):
+        '''Show.'''
+        self.window.show_all()
+    
+    def hide(self):
+        '''Hide.'''
+        self.window.hide_all()
+        
+    def click(self, widget, event):
+        '''Click.'''
+        point = event.get_coords()
+        if point != ():
+            (px, py) = point
+            if utils.isInRect((px, py), (0, 0, self.imgX, self.imgHeight)):
+                self.browsePrev()
+            elif utils.isInRect((px, py), (self.imgX + self.imgWidth, 0, self.imgX, self.imgHeight)):
+                self.browseNext()
+            else:
+                self.exit()
+        
+    def updateCursor(self, widget, event):
+        '''Update cursor.'''
+        point = event.get_coords()
+        if point != ():
+            (px, py) = point
+            if utils.isInRect((px, py), (0, 0, self.imgX, self.imgHeight)):
+                # Set default cursor.
+                widget.window.set_cursor(None)
+                
+                # Set cursor type.
+                self.cursorType = self.CURSOR_BROWSE_PREV
+                
+                self.window.queue_draw()
+            elif utils.isInRect((px, py), (self.imgX + self.imgWidth, 0, self.imgX, self.imgHeight)):
+                # Set default cursor.
+                widget.window.set_cursor(None)
+                
+                # Set cursor type.
+                self.cursorType = self.CURSOR_BROWSE_NEXT
+                
+                self.window.queue_draw()
+            else:
+                # Change to zoom out cursor.
+                widget.window.set_cursor(gtk.gdk.Cursor(
+                        gtk.gdk.display_get_default(),
+                        appTheme.getDynamicPixbuf("screenshot/zoom_out.png").getPixbuf(),
+                        0, 0))
+                
+                # Set cursor type.
+                self.cursorType = self.CURSOR_ZOOM_OUT
+                
+                self.window.queue_draw()
+
+    def updateAllocate(self):
+        '''Update allocate.'''
+        if self.widget.get_child().window != None:
+            (self.x, self.y) = self.widget.get_child().window.get_origin()
+            rect = self.widget.get_allocation()
+            (self.width, self.height) = (rect.width, rect.height)
+            
+            self.window.move(self.x, self.y)
+            self.window.resize(self.width, self.height)
+            
+            self.window.queue_draw()
         
     def exit(self):
         '''Exit'''
@@ -1177,19 +1228,36 @@ class BigScreenshot(object):
         
         # Draw background.
         cr.set_source_rgba(0.0, 0.0, 0.0, 0.5)
-        cr.rectangle(0, 0, rect.width, rect.height)
+        cr.rectangle(0, 0, self.width, self.height)
         cr.fill()
         
         # Draw screenshot.
         pixbuf = gtk.gdk.pixbuf_new_from_file_at_size(
             self.images[self.imageIndex],
-            self.screenshotWidth,
-            self.screenshotHeight,
+            self.width - self.browsePadding,
+            self.height - self.browsePadding,
             )
-        drawPixbuf(
-            cr, pixbuf, 
-            rect.x + (self.width - pixbuf.get_width()) / 2,
-            rect.y + (self.height - pixbuf.get_height()) / 2)
+        self.imgWidth = pixbuf.get_width()
+        self.imgHeight = pixbuf.get_height()
+        self.imgX = rect.x + (self.width - self.imgWidth) / 2
+        self.imgY = rect.y + (self.height - self.imgHeight) / 2
+        drawPixbuf(cr, pixbuf, self.imgX, self.imgY)
+        
+        # Draw cursor.
+        if self.cursorType == self.CURSOR_BROWSE_PREV:
+            drawPixbuf(
+                cr, 
+                appTheme.getDynamicPixbuf("screenshot/prev.png").getPixbuf(),
+                self.imgX / 2,
+                self.imgHeight / 2,
+                )
+        elif self.cursorType == self.CURSOR_BROWSE_NEXT:
+            drawPixbuf(
+                cr, 
+                appTheme.getDynamicPixbuf("screenshot/next.png").getPixbuf(),
+                self.imgX * 3 / 2 + self.imgWidth,
+                self.imgHeight / 2,
+                )
         
         if widget.get_child() != None:
             widget.propagate_expose(widget.get_child(), event)

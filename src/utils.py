@@ -541,11 +541,11 @@ def setCustomizeClickableCursor(eventbox, widget, cursorDPixbuf):
     eventbox.connect("enter-notify-event", lambda w, e: setCustomizeCursor(widget, cursorDPixbuf))
     eventbox.connect("leave-notify-event", lambda w, e: setDefaultCursor(widget))
         
-def setCustomizeCursor(widget, cursorDPixbuf):
+def setCustomizeCursor(widget, cursorDPixbuf, x=0, y=0):
     '''Set cursor.'''
     widget.window.set_cursor(gtk.gdk.Cursor(gtk.gdk.display_get_default(),
                                             cursorDPixbuf.getPixbuf(),
-                                            0, 0))
+                                            x, y))
     return False
     
 def runCommand(command):

@@ -193,6 +193,9 @@ class DetailView(object):
         self.commentAreaAlign.set_padding(self.ALIGN_Y, 0, self.ALIGN_X, self.ALIGN_X)
         self.commentAreaAlign.add(self.commentArea)
         
+        # Set small width to avoid comment area can't shrink window when main window shrink.
+        self.commentArea.set_size_request(DEFAULT_WINDOW_WIDTH / 2, -1) 
+        
         self.contentBox.pack_start(self.infoTab)
         self.contentBox.pack_start(self.commentAreaAlign)
         self.contentBox.show_all()

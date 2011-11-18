@@ -70,7 +70,6 @@ import os
 
 class DeepinSoftwareCenter(object):
     '''Interface for software center.'''
-    DEFAULT_WIDTH = 890
 
     def __init__(self):
         '''Init.'''
@@ -797,10 +796,10 @@ class DeepinSoftwareCenter(object):
         window.set_title('深度Linux软件中心')
         window.set_position(gtk.WIN_POS_CENTER_ALWAYS)
         (width, height) = utils.getScreenSize(window)
-        window.set_default_size(self.DEFAULT_WIDTH, -1)
+        window.set_default_size(DEFAULT_WINDOW_WIDTH, -1)
         window.set_geometry_hints(
             None,
-            self.DEFAULT_WIDTH, # minimum width
+            DEFAULT_WINDOW_WIDTH, # minimum width
             -1, -1, -1, -1, -1, -1, -1, -1, -1
             )
 

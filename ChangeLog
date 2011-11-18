@@ -1,5 +1,8 @@
 * News in 2.0
 
+2011-11-18 Yong Wang <lazycat.manatee@gmail.com>
+	* Avoid comment area can't shrink window when main window shrink.
+
 2011-11-17 Yong Wang <lazycat.manatee@gmail.com>
 	* Enhance the effect of small screenshot switch.
 	* Finish comment code.

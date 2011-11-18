@@ -5,6 +5,7 @@
 	* Finish big screenshot.
 	* Hide popup window when switch page.
 	* Add search power, if match package name, sort at front.
+	* Change password prompt text and fix bug that update manager startup software center.
 
 2011-11-17 Yong Wang <lazycat.manatee@gmail.com>
 	* Enhance the effect of small screenshot switch.

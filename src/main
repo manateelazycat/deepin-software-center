@@ -55,7 +55,7 @@ def startSoftwareCenter():
         s.close()
         
         # Show software center.
-        subprocess.Popen(["gksu", "./deepin-software-center.py"])        
+        subprocess.Popen(["gksu", "./deepin-software-center.py", "--message=请输入管理员密码以启用深度Linux软件中心"])        
     except Exception, e:
         # Just need send show request if software center has running.
         s.sendto("show", SOCKET_SOFTWARECENTER_ADDRESS)  

@@ -83,6 +83,7 @@ class DeepinSoftwareCenter(object):
         self.downloadQueue = None
         self.actionQueue = None
         self.pauseList = []
+        self.defaultPageId = PAGE_RECOMMEND
         
         # dpkg will failed if not set TERM and PATH environment variable.  
         os.environ["TERM"] = "xterm"
@@ -880,8 +881,8 @@ class DeepinSoftwareCenter(object):
         self.window.show_all()
 
         # Select software update page if add "show-update" option.
-        if len(sys.argv) == 2 and sys.argv[1] == "show-update":
-            self.selectPage(PAGE_UPGRADE)
+        if len(sys.argv) >= 2 and sys.argv[1] == "show-update":
+            self.defaultPageId = PAGE_UPGRADE
             
         # Listen socket message for select upgrade page.
         self.socketThread = SocketThread(self.showUpgrade, self.raiseToTop)
@@ -926,8 +927,8 @@ class DeepinSoftwareCenter(object):
     @postGUI
     def postInitThread(self):
         '''Execute after init thread finish.'''
-        # Default select recommend page.
-        self.selectPage(PAGE_RECOMMEND)
+        # Select default page.
+        self.selectPage(self.defaultPageId)
 
         # Update List.
         self.updateList.start()

@@ -3,6 +3,7 @@
 2011-11-18 Yong Wang <lazycat.manatee@gmail.com>
 	* Avoid comment area can't shrink window when main window shrink.
 	* Finish big screenshot.
+	* Hide popup window when switch page.
 
 2011-11-17 Yong Wang <lazycat.manatee@gmail.com>
 	* Enhance the effect of small screenshot switch.

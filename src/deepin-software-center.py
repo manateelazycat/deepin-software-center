@@ -942,6 +942,10 @@ class DeepinSoftwareCenter(object):
 
     def selectPage(self, pageId):
         '''Select recommend page.'''
+        # Hide popup window.
+        self.hidePopupWindow()
+        
+        # Clean content.
         utils.containerRemoveAll(self.contentBox)
 
         self.navigatebar.pageId = pageId

@@ -1244,20 +1244,32 @@ class BigScreenshot(object):
         drawPixbuf(cr, pixbuf, self.imgX, self.imgY)
         
         # Draw cursor.
-        if self.cursorType == self.CURSOR_BROWSE_PREV:
+        if self.cursorType == self.CURSOR_BROWSE_PREV and len(self.images) > 1:
             drawPixbuf(
                 cr, 
                 appTheme.getDynamicPixbuf("screenshot/prev.png").getPixbuf(),
                 self.imgX / 2,
                 self.imgHeight / 2,
                 )
-        elif self.cursorType == self.CURSOR_BROWSE_NEXT:
+        elif self.cursorType == self.CURSOR_BROWSE_NEXT and len(self.images) > 1:
             drawPixbuf(
                 cr, 
                 appTheme.getDynamicPixbuf("screenshot/next.png").getPixbuf(),
                 self.imgX * 3 / 2 + self.imgWidth,
                 self.imgHeight / 2,
                 )
+            
+        # Draw index.
+        fontSize = 20
+        height = 22
+        drawFont(
+            cr, 
+            "(%s/%s)" % (self.imageIndex + 1, len(self.images)),
+            fontSize,
+            "#FFFFFF",
+            self.imgX + self.imgWidth / 2 - 2 * fontSize,
+            getFontYCoordinate(self.imgY + self.imgHeight + height / 2, height, fontSize)
+            )
         
         if widget.get_child() != None:
             widget.propagate_expose(widget.get_child(), event)

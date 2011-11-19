@@ -8,6 +8,7 @@
 	* Change password prompt text and fix bug that update manager startup software center.
 	* Set minimum height for main window to avoid shrink too small.
 	* Show upgrade information in app's tooltip if it have.
+	* Show index when browse screenshots.
 
 2011-11-17 Yong Wang <lazycat.manatee@gmail.com>
 	* Enhance the effect of small screenshot switch.

@@ -580,6 +580,19 @@ def getDefaultLanguage():
     else:
         return "default"
 
+def showVersionTooltip(widget, pkg):
+    '''Show version tooltip.'''
+    newestVersion = getPkgNewestVersion(pkg)
+    currentVersion = getPkgVersion(pkg)
+    if newestVersion == currentVersion:
+        setHelpTooltip(
+            widget,
+            "点击查看详细信息\n当前版本: %s" % (currentVersion))
+    else:    
+        setHelpTooltip(
+            widget,
+            "点击查看详细信息\n当前版本: %s\n升级版本: %s" % (currentVersion, newestVersion))
+    
 def setHelpTooltip(widget, helpText):
     '''Set help tooltip.'''
     widget.connect("enter-notify-event", lambda w, e: showHelpTooltip(w, helpText))

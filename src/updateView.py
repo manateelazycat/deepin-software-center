@@ -96,7 +96,7 @@ class UpdateItem(DownloadItem):
         self.checkAlign.add(self.checkButton)
         self.itemBox.pack_start(self.checkAlign, False, False)
         
-        self.appBasicBox = createItemBasicBox(self.appInfo, 300, self.itemBox, self.entryDetailView, True) 
+        self.appBasicBox = createItemBasicBox(self.appInfo, 300, self.itemBox, self.entryDetailView) 
         self.itemBox.pack_start(self.appBasicBox, True, True)
         
         self.appAdditionBox = gtk.HBox()

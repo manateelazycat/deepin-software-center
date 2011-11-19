@@ -415,7 +415,7 @@ class DownloadItem(object):
                 
                 self.itemFrame.show_all()
                 
-def createItemBasicBox(appInfo, maxWidth, parent, entryDetailCallback, showUpgradeVersion=False):
+def createItemBasicBox(appInfo, maxWidth, parent, entryDetailCallback):
     '''Create item information.'''
     # Init.
     appBasicAlign = gtk.Alignment()
@@ -463,12 +463,7 @@ def createItemBasicBox(appInfo, maxWidth, parent, entryDetailCallback, showUpgra
         lambda w, e: entryDetailCallback())
     appBox.pack_start(appNameEventBox, False, False)
     
-    if showUpgradeVersion:
-        pkgVersion = utils.getPkgNewestVersion(pkg)
-    else:
-        pkgVersion = utils.getPkgVersion(pkg)
-        
-    utils.setHelpTooltip(appNameEventBox, "版本: %s\n点击查看详细信息" % (pkgVersion))
+    utils.showVersionTooltip(appNameEventBox, pkg)
     
     utils.setClickableDynamicLabel(
         appNameEventBox,

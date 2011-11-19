@@ -7,6 +7,7 @@
 	* Add search power, if match package name, sort at front.
 	* Change password prompt text and fix bug that update manager startup software center.
 	* Set minimum height for main window to avoid shrink too small.
+	* Show upgrade information in app's tooltip if it have.
 
 2011-11-17 Yong Wang <lazycat.manatee@gmail.com>
 	* Enhance the effect of small screenshot switch.

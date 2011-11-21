@@ -147,7 +147,7 @@ class TrayIcon(object):
         # Otherwise socket and other resources of current process will keep that 
         # make software center can't works correctly.
         if startup:
-            subprocess.Popen(["gksu", "./deepin-software-center.py", "show-update", "--message=" + __("Please enter the administrator password to enable deepin software center")])
+            subprocess.Popen(["gksu", "./deepin-software-center.py", "show-update", "--message=" + __("gksu message")])
             
     def exit(self):
         '''Exit'''

@@ -20,6 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from lang import __
 from constant import *
 import socket
 import subprocess
@@ -55,7 +56,7 @@ def startSoftwareCenter():
         s.close()
         
         # Show software center.
-        subprocess.Popen(["gksu", "./deepin-software-center.py", "--message=请输入管理员密码以启用深度Linux软件中心"])        
+        subprocess.Popen(["gksu", "./deepin-software-center.py", "--message=" + __("gksu message")])        
     except Exception, e:
         # Just need send show request if software center has running.
         s.sendto("show", SOCKET_SOFTWARECENTER_ADDRESS)  

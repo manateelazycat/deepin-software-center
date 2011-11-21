@@ -229,7 +229,7 @@ class DownloadManageView(appView.AppView):
             notifyLabel = gtk.Label()
             notifyLabel.set_markup(
                 "<span foreground='#1A38EE' size='%s'>%s</span>"
-                % (LABEL_FONT_XXX_LARGE_SIZE, "没有下载任务. :)"))
+                % (LABEL_FONT_XXX_LARGE_SIZE, __("No Downloads.")))
             notifyBox.pack_start(notifyLabel, False, False)
             
             self.box.show_all()

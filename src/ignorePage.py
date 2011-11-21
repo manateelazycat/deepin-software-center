@@ -148,7 +148,7 @@ class Topbar(object):
         if upgradeNum == 0:
             markup = ""
         else:
-            markup = ("<span size='%s'>有 </span>" % (LABEL_FONT_SIZE)) + ("<span foreground='%s' size='%s'>%s</span>" % (self.numColor, LABEL_FONT_SIZE, str(upgradeNum))) + ("<span size='%s'> 款软件不再提醒升级</span>" % (LABEL_FONT_SIZE))
+            markup = (__("Topbar IgnorePage") % (LABEL_FONT_SIZE, self.numColor, LABEL_FONT_SIZE, str(upgradeNum), LABEL_FONT_SIZE))
             
         self.numLabel.set_markup(markup)
 

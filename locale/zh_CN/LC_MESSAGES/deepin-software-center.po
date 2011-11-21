@@ -137,7 +137,7 @@ msgstr "您确定要卸载吗？"
 msgid "There are %s software packages can be upgraded"
 msgstr "有%s个软件包可以升级"
 
-msgid "Please enter the administrator password to enable deepin software center"
+msgid "gksu message"
 msgstr "请输入管理员密码以启用深度软件中心"
 
 msgid "About"
@@ -398,3 +398,29 @@ msgstr ""
 "* 优化启动速度。\n"
 "* 支持Ubuntu系统。\n"
 
+msgid "Topbar UpdatePage"
+msgstr "<span size='%s'>有 </span><span foreground='%s' size='%s'>%s</span><span size='%s'> 款软件可以升级</span>"
+
+msgid "Topbar DownloadManagePage"
+msgstr "<span size='%s'>有 </span><span foreground='%s' size='%s'>%s</span><span size='%s'> 款软件正在下载</span>"
+
+msgid "Topbar SearchPage"
+msgstr "<span size='%s'>搜到和 </span><span foreground='%s' size='%s'>%s</span><span size='%s'> 相关的软件共 </span><span foreground='%s' size='%s'>%s</span><span size='%s'> 款</span>"
+
+msgid "Topbar SearchUninstallPage"
+msgstr "<span size='%s'>搜到和 </span><span foreground='%s' size='%s'>%s</span><span size='%s'> 相关的软件共 </span><span foreground='%s' size='%s'>%s</span><span size='%s'> 款</span>"
+
+msgid "Topbar IgnorePage"
+msgstr "<span size='%s'>有 </span><span foreground='%s' size='%s'>%s</span><span size='%s'> 款软件不再提醒升级</span>"
+
+msgid "No Notify UpdatePage"
+msgstr "不再提醒升级%s款"
+
+msgid "Your system is up to date."
+msgstr "您的系统已经是最新的."
+
+msgid "No Downloads."
+msgstr "没有下载任务."
+
+msgid "No software needs to remind."
+msgstr "没有软件需要重新提醒."

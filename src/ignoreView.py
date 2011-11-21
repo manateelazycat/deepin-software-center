@@ -94,7 +94,7 @@ class IgnoreItem(object):
         self.checkAlign.add(self.checkButton)
         self.itemBox.pack_start(self.checkAlign, False, False)
         
-        self.appBasicBox = createItemBasicBox(self.appInfo, 300, self.itemBox, self.entryDetailView, True) 
+        self.appBasicBox = createItemBasicBox(self.appInfo, 300, self.itemBox, self.entryDetailView) 
         self.itemBox.pack_start(self.appBasicBox, True, True)
         
         self.appAdditionBox = gtk.HBox()
@@ -270,7 +270,7 @@ class IgnoreView(appView.AppView):
             notifyLabel = gtk.Label()
             notifyLabel.set_markup(
                 "<span foreground='#1A38EE' size='%s'>%s</span>"
-                % (LABEL_FONT_XXX_LARGE_SIZE, "没有软件需要重新提醒."))
+                % (LABEL_FONT_XXX_LARGE_SIZE, __("No software needs to remind.")))
             notifyBox.pack_start(notifyLabel, False, False)
             
             self.box.show_all()

@@ -152,7 +152,7 @@ class Topbar(object):
         
         if ignoreNum > 0:
             (ignoreLabel, ignoreEventBox) = setDefaultClickableDynamicLabel(
-                "不再提醒升级%s款" % (ignoreNum),
+                __("No Notify UpdatePage") % (ignoreNum),
                 "topbarButton",
                 )
             ignoreEventBox.connect("button-press-event", lambda w, e: self.showIgnorePageCallback())
@@ -164,7 +164,7 @@ class Topbar(object):
         if upgradeNum == 0:
             markup = ""
         else:
-            markup = ("<span size='%s'>有 </span>" % (LABEL_FONT_SIZE)) + ("<span foreground='%s' size='%s'>%s</span>" % (self.numColor, LABEL_FONT_SIZE, str(upgradeNum))) + ("<span size='%s'> 个更新包可以升级</span>" % (LABEL_FONT_SIZE))
+            markup = (__("Topbar UpdatePage") % (LABEL_FONT_SIZE, self.numColor, LABEL_FONT_SIZE, str(upgradeNum), LABEL_FONT_SIZE))
         self.numLabel.set_markup(markup)
 
 #  LocalWords:  efe

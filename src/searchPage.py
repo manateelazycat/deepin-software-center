@@ -103,6 +103,8 @@ class Topbar(object):
                  exitSearchPageCallback, searchCallback, clickCandidateCallback):
         '''Init for top bar.'''
         self.paddingX = 5
+        self.keywordColor = '#006efe'
+        self.numColor = '#006efe'
         self.box = gtk.HBox()
         self.boxAlign = gtk.Alignment()
         self.boxAlign.set(0.0, 0.5, 1.0, 1.0)
@@ -116,7 +118,6 @@ class Topbar(object):
         drawTopbar(self.eventbox)
         self.eventbox.add(self.boxAlign)
         self.keywordLabel = gtk.Label()
-        self.numLabel = gtk.Label()
         self.updateTopbar(keyword, itemNum)
 
         # Add search entry and label.
@@ -134,20 +135,15 @@ class Topbar(object):
         returnButton.connect("button-release-event", lambda widget, event: exitSearchPageCallback(pageId))
         
         # Connect widgets.
-        self.box.pack_start(self.keywordLabel, False, False, self.paddingX)
-        self.box.pack_start(self.numLabel, False, False, self.paddingX)
+        self.box.pack_start(self.keywordLabel, False, False)
         self.box.pack_start(searchAlign, True, True, self.paddingX)
         self.box.pack_start(returnButtonAlign, False, False)
         
     def updateTopbar(self, keyword, itemNum):
         '''Set number label.'''
+        
         self.keywordLabel.set_markup(
-            ("<span size='%s'>搜到和 </span>" % (LABEL_FONT_SIZE))
-            + ("<span foreground='#00BBBB' size='%s'><b>%s</b></span>" % (LABEL_FONT_SIZE, keyword)))
-        self.numLabel.set_markup(
-            ("<span size='%s'>相关的软件共</span>" % (LABEL_FONT_SIZE))
-            + "<span foreground='#00BB00' size='%s'>%s</span>" % (LABEL_FONT_SIZE, str(itemNum)) 
-            + ("<span size='%s'>款</span>" % (LABEL_FONT_SIZE)))
+            __("Topbar SearchPage") % (LABEL_FONT_SIZE, self.keywordColor, LABEL_FONT_SIZE, keyword.strip(), LABEL_FONT_SIZE, self.numColor, LABEL_FONT_SIZE, str(itemNum), LABEL_FONT_SIZE))
     
 
 #  LocalWords:  BBBB

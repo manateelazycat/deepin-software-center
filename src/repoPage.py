@@ -88,10 +88,10 @@ class RepoPage(object):
         self.categorybar.box.queue_draw()
         
         # Redraw sub-categorybar bar.
-        self.topbar.updateTopbar(
-            categoryName,
-            self.repoCache.getCategoryNumber(categoryName)
-            )
+        # self.topbar.updateTopbar(
+        #     categoryName,
+        #     self.repoCache.getCategoryNumber(categoryName)
+        #     )
         
         # Update application view.
         self.repoView.update(
@@ -121,21 +121,22 @@ class Topbar(object):
         self.eventbox = gtk.EventBox()
         self.eventbox.add(self.boxAlign)
         drawTopbar(self.eventbox)
-        self.categoryLabel = gtk.Label()
+        # self.categoryLabel = gtk.Label()
         self.numLabel = gtk.Label()
-        self.updateTopbar(category, itemNum)
+        # self.updateTopbar(category, itemNum)
         self.entrySearchCallback = entrySearchCallback
         self.updateCategoryCallback = updateCategoryCallback
         
         # Add classify number.
-        self.box.pack_start(self.categoryLabel, False, False, self.paddingX)
-        self.box.pack_start(self.numLabel, False, False, self.paddingX)
+        # self.box.pack_start(self.categoryLabel, False, False, self.paddingX)
+        # self.box.pack_start(self.numLabel, False, False, self.paddingX)
+        self.box.pack_start(self.numLabel)
         
         # Add sort buttons.
         self.sortBox = gtk.HBox()
         self.sortAlign = gtk.Alignment()
         self.sortAlign.set(0.5, 0.5, 1.0, 1.0)
-        self.sortAlign.set_padding(0, 0, self.SORT_BOX_PADDING_X, self.SORT_BOX_PADDING_X)
+        # self.sortAlign.set_padding(0, 0, self.SORT_BOX_PADDING_X, self.SORT_BOX_PADDING_X)
         self.sortAlign.add(self.sortBox)
         
         self.sortRecommendId = "sortRecommend"
@@ -217,13 +218,13 @@ class Topbar(object):
         keyword = self.searchEntry.get_chars(0, -1)
         self.entrySearchCallback(PAGE_REPO, keyword, [candidate])
         
-    def updateTopbar(self, category, itemNum):
-        '''Set number label.'''
-        self.categoryLabel.set_markup("<span foreground='#1A3E88' size='%s'><b>%s</b></span>" % (LABEL_FONT_SIZE, category))
-        self.numLabel.set_markup(
-            ("<span size='%s'>共</span>" % (LABEL_FONT_SIZE))
-            + "<span foreground='#006efe' size='%s'> %s</span>" % (LABEL_FONT_SIZE, str(itemNum))
-            + ("<span size='%s'> 款软件</span>" % (LABEL_FONT_SIZE)))
+    # def updateTopbar(self, category, itemNum):
+    #     '''Set number label.'''
+    #     self.categoryLabel.set_markup("<span foreground='#1A3E88' size='%s'><b>%s</b></span>" % (LABEL_FONT_SIZE, category))
+    #     self.numLabel.set_markup(
+    #         ("<span size='%s'>共</span>" % (LABEL_FONT_SIZE))
+    #         + "<span foreground='#006efe' size='%s'> %s</span>" % (LABEL_FONT_SIZE, str(itemNum))
+    #         + ("<span size='%s'> 款软件</span>" % (LABEL_FONT_SIZE)))
     
 
 #  LocalWords:  categorybar repoView's sortAlign efe

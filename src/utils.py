@@ -577,8 +577,8 @@ def getDefaultLanguage():
     '''Get default language.'''
     (lang, _) = locale.getdefaultlocale()
     if lang in ["zh_CN", "zh_TW"]:
-        # return lang
-        return "default"
+        return lang
+        # return "default"
     else:
         return "default"
 

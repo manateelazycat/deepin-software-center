@@ -410,6 +410,9 @@ msgstr "<span size='%s'>搜到和 </span><span foreground='%s' size='%s'>%s</spa
 msgid "Topbar SearchUninstallPage"
 msgstr "<span size='%s'>搜到和 </span><span foreground='%s' size='%s'>%s</span><span size='%s'> 相關的軟件共 </span><span foreground='%s' size='%s'>%s</span><span size='%s'> 款</span>"
 
+msgid "Topbar UninstallPage"
+msgstr "<span size='%s'>有 </span><span foreground='%s' size='%s'>%s</span><span size='%s'> 款軟件可以卸載</span>"
+
 msgid "Topbar IgnorePage"
 msgstr "<span size='%s'>有 </span><span foreground='%s' size='%s'>%s</span><span size='%s'> 款軟件不再提醒升級</span>"
 

@@ -23,4 +23,5 @@
 import gettext
 
 # __ = gettext.translation('deepin-software-center', '../locale', languages=['zh_CN']).gettext
-__ = gettext.translation('deepin-software-center', '../locale', languages=['zh_TW']).gettext
+# __ = gettext.translation('deepin-software-center', '../locale', languages=['zh_TW']).gettext
+__ = gettext.translation('deepin-software-center', '../locale', languages=['en']).gettext

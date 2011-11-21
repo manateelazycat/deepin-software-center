@@ -15,370 +15,370 @@ msgstr ""
 "Generated-By: pygettext.py 1.5\n"
 
 msgid "Action Install"
-msgstr "安装"
+msgstr "Install"
 
 msgid "Action Uninstall"
-msgstr "卸载"
+msgstr "Uninstall"
 
 msgid "Action Update"
-msgstr "升级"
+msgstr "Update"
 
 msgid "Action Wait Download"
-msgstr "等待下载"
+msgstr "Wait download"
 
 msgid "Action Wait Install"
-msgstr "等待安装"
+msgstr "Wait install"
 
 msgid "Action Wait Update"
-msgstr "等待升级"
+msgstr "Wait update"
 
 msgid "Action Wait Uninstall"
-msgstr "等待卸载"
+msgstr "Wait uninstall"
 
 msgid "Action Startup"
-msgstr "启动"
+msgstr "Startup"
 
 msgid "Action Installed"
-msgstr "已安装"
+msgstr "Installed"
 
 msgid "Action Install Start"
-msgstr "开始安装"
+msgstr "Start install"
 
 msgid "Action Update Start"
-msgstr "开始升级"
+msgstr "Start update"
 
 msgid "Action Uninstall Start"
-msgstr "开始卸载"
+msgstr "Start uninstall"
 
 msgid "Action Install Failed"
-msgstr "安装失败"
+msgstr "Install failed"
 
 msgid "Action Update Failed"
-msgstr "升级失败"
+msgstr "Update failed"
 
 msgid "Action Uninstall Failed"
-msgstr "卸载失败"
+msgstr "Uninstall failed"
 
 msgid "Action Install Finish"
-msgstr "安装完毕"
+msgstr "Install completed"
 
 msgid "Action Update Finish"
-msgstr "升级完毕"
+msgstr "Update completed"
 
 msgid "Action Uninstall Finish"
-msgstr "卸载完毕"
+msgstr "Uninstall completed"
 
 msgid "Action Cancel"
-msgstr "取消"
+msgstr "Cancel"
 
 msgid "Action Pause"
-msgstr "暂停"
+msgstr "Pause"
 
 msgid "Action Installing"
-msgstr "安装中"
+msgstr "Installing"
 
 msgid "Action Updating"
-msgstr "升级中"
+msgstr "Updating"
 
 msgid "Action Uninstalling"
-msgstr "卸载中"
+msgstr "Uninstalling"
 
 msgid "Nav Recommend"
-msgstr "精彩推荐"
+msgstr "Recommend"
 
 msgid "Nav Repository"
-msgstr "软件仓库"
+msgstr "Repository"
 
 msgid "Nav Update"
-msgstr "软件更新"
+msgstr "Update"
 
 msgid "Nav Uninstall"
-msgstr "软件卸载"
+msgstr "Uninstall"
 
 msgid "Nav Download Manage"
-msgstr "下载管理"
+msgstr "Download Manage"
 
 msgid "Click Show Detail"
-msgstr "点击查看详细信息"
+msgstr "Click to show detail"
 
 msgid "Click Vote"
-msgstr "点击评分"
+msgstr "Click to vote"
 
 msgid "Click Zoom In"
-msgstr "点击放大"
+msgstr "Click to zoom in"
 
 msgid "Vote"
-msgstr "评分"
+msgstr "Vote"
 
 msgid "Comment"
-msgstr "评论"
+msgstr "Comment"
 
 msgid "First Comment"
-msgstr "抢沙发!"
+msgstr "Say something!"
 
 msgid "Jump To"
-msgstr "跳到第"
+msgstr "Jump to"
 
 msgid "Page"
-msgstr "页"
+msgstr "Page"
 
 msgid "Jump"
-msgstr "跳转"
+msgstr "Jump"
 
 msgid "Current Version"
-msgstr "当前版本"
+msgstr "Current version"
 
 msgid "Upgrade Version"
-msgstr "升级版本"
+msgstr "Upgrade version"
 
 msgid "Are you sure uninstall?"
-msgstr "您确定要卸载吗？"
+msgstr "Are you sure uninstall？"
 
 msgid "There are %s software packages can be upgraded"
-msgstr "有%s个软件包可以升级"
+msgstr "There are %s software packages can be upgraded"
 
 msgid "gksu message"
-msgstr "请输入管理员密码以启用深度软件中心"
+msgstr "Please enter the administrator password to enable the Deepin Software Center"
 
 msgid "About"
-msgstr "关于"
+msgstr "About"
 
 msgid "Exit"
-msgstr "退出"
+msgstr "Exit"
 
 msgid "Deepin Update Manager"
-msgstr "深度更新管理器"
+msgstr "Deepin Update Manager"
 
 msgid "Classify News"
-msgstr "最近更新"
+msgstr "Recently"
 
 msgid "Classify Recommend"
-msgstr "编辑推荐"
+msgstr "Recommend"
 
 msgid "Classify Web"
-msgstr "网络应用"     
+msgstr "Web"     
 
 msgid "Classify Multimedia"
-msgstr "影音播放"
+msgstr "Multimedia"
 
 msgid "Classify Game"
-msgstr "游戏娱乐"     
+msgstr "Game"     
 
 msgid "Classify Graphics"
-msgstr "图形图像"
+msgstr "Graphics"
 
 msgid "Classify Word"
-msgstr "文字处理"   
+msgstr "Word"   
 
 msgid "Classify Professional"
-msgstr "行业软件"
+msgstr "Professional"
 
 msgid "Classify Programming"
-msgstr "编程开发"
+msgstr "Programming"
 
 msgid "Classify Driver"
-msgstr "硬件驱动"    
+msgstr "Driver"    
 
 msgid "Classify Windows"
-msgstr "Win 软件" 
+msgstr "Windows" 
 
 msgid "Classify Others"
-msgstr "其他软件"  
+msgstr "Others"  
 
 msgid "Deepin Software Center"
-msgstr "深度软件中心"
+msgstr "Deepin Software Center"
 
 msgid " Loading, please wait ..."
-msgstr " 加载中， 请稍候 ..."
+msgstr " Loading, please wait ..."
 
 msgid "Send request to start %s"
-msgstr "向 %s 发送启动请求"
+msgstr "Send request to start %s"
 
 msgid "Congratulations, your system is clean."
-msgstr "恭喜您， 您的系统非常干净."
+msgstr "Congratulations, your system is clean."
 
 msgid "Software Center is using the downloaded package, please wait clearing."
-msgstr "软件中心正在使用下载的软件包，请稍候清理。"
+msgstr "Software Center is using the downloaded package, please wait clearing."
 
 msgid "Cleaned up %s package, release %s space."
-msgstr "清理了%s个软件包， 释放了%s空间."
+msgstr "Cleaned up %s package, release %s space."
 
 msgid "To ensure fairness, only a day to %s score once."
-msgstr "为保证公正, 每天只能对%s评分一次."
+msgstr "To ensure fairness, only a day to %s score once."
 
 msgid "%s vote success, thanks!"
-msgstr "%s 评分成功, 感谢参与!"
+msgstr "%s vote success, thanks!"
 
 msgid "%s vote failed, please check your network link."
-msgstr "%s 评分失败, 请检查您的网络链接."
+msgstr "%s vote failed, please check your network link."
 
 msgid "Return"
-msgstr "返回"
+msgstr "Return"
 
 msgid "Long Description"
-msgstr "详细介绍"
+msgstr "Long Description"
 
 msgid "Homepage"
-msgstr "访问首页"
+msgstr "Homgepage"
 
 msgid "Translate description"
-msgstr "协助翻译"
+msgstr "Translate description"
 
 msgid "Screenshot"
-msgstr "软件截图"
+msgstr "Screenshot"
 
 msgid "Version: "
-msgstr "版本: "
+msgstr "Version: "
 
 msgid "Uninstall to release %s space"
-msgstr "卸载后释放%s空间"
+msgstr "Uninstall to release %s space"
 
 msgid "Download to eat %s space"
-msgstr "%s后占用 %s 空间 需要下载 %s"
+msgstr "Download to eat %s space"
 
 msgid "Query Screenshot ..."
-msgstr "查询截图"
+msgstr "Query Screenshot ..."
 
 msgid "Downloading screenshot ..."
-msgstr "正在下载截图 ..."
+msgstr "Downloading screenshot ..."
 
 msgid "Query fails, check your network and click refresh and try again."
-msgstr "查询失败, 请检查你的网络并点击刷新重试."
+msgstr "Query fails, check your network and click refresh and try again."
 
 msgid "Download fails, check your network and click refresh and try again."
-msgstr "下载失败, 请检查你的网络并点击刷新重试."
+msgstr "Download fails, check your network and click refresh and try again."
 
 msgid "The software does not screenshot"
-msgstr "这个软件不需要截图"
+msgstr "The software does not screenshot"
 
 msgid "Upload screenshot"
-msgstr "上传新图"
+msgstr "Upload screenshot"
 
 msgid "% s: Download failed, please check your network link."
-msgstr "%s: 下载失败, 请检查您的网络链接."
+msgstr "% s: Download failed, please check your network link."
 
 msgid "Download Failed"
-msgstr "下载失败"
+msgstr "Download Failed"
 
 msgid "Download Finish"
-msgstr "下载完毕"
+msgstr "Download Finish"
 
 msgid "Start Download"
-msgstr "开始下载"
+msgstr "Start Download"
 
 msgid "% s: Download timeout, please check your network link."
-msgstr "%s: 下载超时, 请检查您的网络链接."
+msgstr "% s: Download timeout, please check your network link."
 
 msgid "Download Timeout"
-msgstr "下载超时"
+msgstr "Download Timeout"
 
 msgid "Download Pause"
-msgstr "下载暂停"
+msgstr "Download Pause"
 
 msgid "%s checkout failed."
-msgstr "%s: 校验失败."
+msgstr "%s checkout failed."
 
 msgid "Open download directory"
-msgstr "打开下载目录"
+msgstr "Open download directory"
 
 msgid "Clean download cache"
-msgstr "智能清理下载缓存"
+msgstr "Clean download cache"
 
 msgid "Clean download cache, save your disk space!"
-msgstr "清理下载缓存， 节省您的硬盘空间！"
+msgstr "Clean download cache, save your disk space!"
 
 msgid "Select All"
-msgstr "全选"
+msgstr "Select All"
 
 msgid "Unselect All"
-msgstr "全不选"
+msgstr "Unselect All"
 
 msgid "Update select software"
-msgstr "升级选中的软件"
+msgstr "Update select software"
 
 msgid "Notify select software"
-msgstr "提示选中的软件"
+msgstr "Notify select software"
 
 msgid "Notify again"
-msgstr "重新提醒"
+msgstr "Notify again"
 
 msgid "Don't Notify"
-msgstr "不再提醒"
+msgstr "Don't Notify"
 
 msgid "New Feature"
-msgstr "新版功能"
+msgstr "New Feature"
 
 msgid "Proxy Setup"
-msgstr "代理设置"
+msgstr "Proxy Setup"
 
 msgid "Forum Help"
-msgstr "论坛求助"
+msgstr "Forum Help"
 
 msgid "Join Us"
-msgstr "加入我们"
+msgstr "Join Us"
 
 msgid "Report Problem"
-msgstr "问题反馈"
+msgstr "Report Problem"
 
 msgid "Software Center 2.0 New Feature"
-msgstr "软件中心2.0新功能"
+msgstr "Software Center 2.0 New Feature"
 
 msgid "Proxy rule: [http://][USER:PASSWORD@]HOST[:PORT]"
-msgstr "代理规则:  [http://][USER:PASSWORD@]HOST[:PORT]"
+msgstr "Proxy rule: [http://][USER:PASSWORD@]HOST[:PORT]"
 
 msgid "Setup"
-msgstr "设定"
+msgstr "Setup"
 
 msgid "Cancel proxy!"
-msgstr "取消代理成功！"
+msgstr "Cancel proxy!"
 
 msgid "Setup proxy!"
-msgstr "代理设置成功!"
+msgstr "Setup proxy!"
 
 msgid "Pause"
-msgstr "暂停"
+msgstr "Pause"
 
 msgid "More >>"
-msgstr "更多 >>"
+msgstr "More >>"
 
 msgid "Sort By Recommend"
-msgstr "按推荐排序"
+msgstr "Sort By Recommend"
 
 msgid "Sort By Download"
-msgstr "按下载排序"
+msgstr "Sort By Download"
 
 msgid "Sort By Vote"
-msgstr "按评分排序"
+msgstr "Sort By Vote"
 
 msgid "Please enter the name you want to search for software, version or other information"
-msgstr "请输入您要搜索的软件名称、版本或其他信息"
+msgstr "Please enter the name you want to search for software, version or other information"
 
 msgid "Please enter the name you want to uninstall the software, version or other information"
-msgstr "请输入您要卸载的软件名称、版本或其他信息"
+msgstr "Please enter the name you want to uninstall the software, version or other information"
 
 msgid "Files are indexed for the search ..."
-msgstr "正在为搜索建立索引文件 ..."
+msgstr "Files are indexed for the search ..."
 
 msgid "Build the search index file is completed."
-msgstr "搜索索引文件建立完毕."
+msgstr "Build the search index file is completed."
 
 msgid "Indexing, search capabilities please try again later."
-msgstr "正在建立索引， 请稍候再试搜索功能."
+msgstr "Indexing, search capabilities please try again later."
 
 msgid "No search packages related %s"
-msgstr "没有搜索到和 %s 相关的包"
+msgstr "No search packages related %s"
 
 msgid "Global Search"
-msgstr "全文搜索"
+msgstr "Global Search"
 
 msgid "Change Theme"
-msgstr "更换皮肤"
+msgstr "Change Theme"
 
 msgid "Updating souces list ..."
-msgstr "正在更新软件列表 ..."
+msgstr "Updating souces list ..."
 
 msgid "Update sources list completed."
-msgstr "更新软件列表完毕。"
+msgstr "Update sources list completed."
 
 msgid "News\n"
 msgstr ""
@@ -399,31 +399,31 @@ msgstr ""
 "* 支持Ubuntu系统。\n"
 
 msgid "Topbar UpdatePage"
-msgstr "<span size='%s'>有 </span><span foreground='%s' size='%s'>%s</span><span size='%s'> 款软件可以升级</span>"
+msgstr "<span size='%s'>There are </span><span foreground='%s' size='%s'>%s</span><span size='%s'> software can be upgraded</span>"
 
 msgid "Topbar DownloadManagePage"
-msgstr "<span size='%s'>有 </span><span foreground='%s' size='%s'>%s</span><span size='%s'> 款软件正在下载</span>"
+msgstr "<span size='%s'>There are </span><span foreground='%s' size='%s'>%s</span><span size='%s'> software downloading</span>"
 
 msgid "Topbar SearchPage"
-msgstr "<span size='%s'>搜到和 </span><span foreground='%s' size='%s'>%s</span><span size='%s'> 相关的软件共 </span><span foreground='%s' size='%s'>%s</span><span size='%s'> 款</span>"
+msgstr "<span size='%s'>Search </span><span foreground='%s' size='%s'>%s</span><span size='%s'> related software </span><span foreground='%s' size='%s'>%s</span><span size='%s'> </span>"
 
 msgid "Topbar SearchUninstallPage"
-msgstr "<span size='%s'>搜到和 </span><span foreground='%s' size='%s'>%s</span><span size='%s'> 相关的软件共 </span><span foreground='%s' size='%s'>%s</span><span size='%s'> 款</span>"
+msgstr "<span size='%s'>Search </span><span foreground='%s' size='%s'>%s</span><span size='%s'> related software </span><span foreground='%s' size='%s'>%s</span><span size='%s'> </span>"
 
 msgid "Topbar UninstallPage"
-msgstr "<span size='%s'>有 </span><span foreground='%s' size='%s'>%s</span><span size='%s'> 款软件可以卸载</span>"
+msgstr "<span size='%s'>There are </span><span foreground='%s' size='%s'>%s</span><span size='%s'> software can be uninstalled</span>"
 
 msgid "Topbar IgnorePage"
-msgstr "<span size='%s'>有 </span><span foreground='%s' size='%s'>%s</span><span size='%s'> 款软件不再提醒升级</span>"
+msgstr "<span size='%s'>There are </span><span foreground='%s' size='%s'>%s</span><span size='%s'> software upgrade is no longer reminds</span>"
 
 msgid "No Notify UpdatePage"
-msgstr "不再提醒升级%s款"
+msgstr "Don't notify update %s"
 
 msgid "Your system is up to date."
-msgstr "您的系统已经是最新的."
+msgstr "Your system is up to date."
 
 msgid "No Downloads."
-msgstr "没有下载任务."
+msgstr "No Downloads."
 
 msgid "No software needs to remind."
-msgstr "没有软件需要重新提醒."
+msgstr "No software needs to remind."

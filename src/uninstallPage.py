@@ -103,9 +103,7 @@ class Topbar(object):
     def updateNum(self, upgradeNum):
         '''Update number.'''
         self.numLabel.set_markup(
-            ("<span size='%s'>有 </span>" % (LABEL_FONT_SIZE))
-            + ("<span foreground='%s' size='%s'>%s</span>" % (self.numColor, LABEL_FONT_SIZE, str(upgradeNum)))
-            + ("<span size='%s'> 款软件可以卸载</span>" % (LABEL_FONT_SIZE)))
+            __("Topbar UninstallPage") % (LABEL_FONT_SIZE, self.numColor, LABEL_FONT_SIZE, str(upgradeNum), LABEL_FONT_SIZE))
 
     def search(self, editable):
         '''Search'''

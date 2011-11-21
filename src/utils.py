@@ -20,7 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from lang import __
+from lang import __, DEFAULT_LANG
 from constant import *
 from math import pi
 import cairo
@@ -577,8 +577,10 @@ def getDefaultLanguage():
     '''Get default language.'''
     (lang, _) = locale.getdefaultlocale()
     if lang in ["zh_CN", "zh_TW"]:
-        return lang
-        # return "default"
+        if DEFAULT_LANG == None:
+            return lang
+        else:
+            return DEFAULT_LANG
     else:
         return "default"
 

@@ -21,7 +21,18 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import gettext
+import locale
 
-# __ = gettext.translation('deepin-software-center', '../locale', languages=['zh_CN']).gettext
-__ = gettext.translation('deepin-software-center', '../locale', languages=['zh_TW']).gettext
-# __ = gettext.translation('deepin-software-center', '../locale', languages=['en']).gettext
+# DEFAULT_LANG = None
+DEFAULT_LANG = "default"
+# DEFAULT_LANG = "zh_CN"
+# DEFAULT_LANG = "zh_TW"
+
+if DEFAULT_LANG == None:
+    (lang, _) = locale.getdefaultlocale()
+    if lang in ["zh_CN", "zh_TW"]:
+        __ = gettext.translation('deepin-software-center', '../locale', languages=[lang]).gettext
+    else:
+        __ = gettext.translation('deepin-software-center', '../locale', languages=["default"]).gettext
+else:    
+    __ = gettext.translation('deepin-software-center', '../locale', languages=[DEFAULT_LANG]).gettext

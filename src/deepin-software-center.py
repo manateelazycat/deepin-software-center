@@ -1395,7 +1395,7 @@ class SendVote(td.Thread):
                     data=urllib.urlencode(args),
                     timeout=POST_TIMEOUT
                     )
-                self.messageCallback(__("%s Ratings success, thanks!") % (self.name))
+                self.messageCallback(__("%s vote success, thanks!") % (self.name))
                 utils.touchFile(voteFile)
         except Exception, e:
             self.messageCallback(__("%s vote failed, please check your network link.") % (self.name))

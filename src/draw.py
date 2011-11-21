@@ -452,13 +452,17 @@ def sideButtonSetBackground(widget,
                             normalImg, hoverImg, pressImg,
                             pageId, getPageId):
     '''Set event box's background.'''
+    (navTextWidth, _) = gtk.Label(navName).get_layout().get_pixel_size()
+    middlePadding = 14
+    navPixbufWidth = appTheme.getDynamicPixbuf(navImg).getPixbuf().get_width()
     widget.set_size_request(
-        appTheme.getDynamicPixbuf(hoverImg).getPixbuf().get_width(),
+        navTextWidth + middlePadding * 4 + navPixbufWidth,
         appTheme.getDynamicPixbuf(hoverImg).getPixbuf().get_height())
     
     widget.connect("expose-event", lambda w, e: sideButtonOnExpose(
             w, e,
             navName, 
+            navTextWidth,
             appTheme.getDynamicColor("sideButton"),
             appTheme.getDynamicPixbuf(navImg),
             appTheme.getDynamicPixbuf(normalImg),
@@ -467,10 +471,14 @@ def sideButtonSetBackground(widget,
             pageId, getPageId))
         
 def sideButtonOnExpose(widget, event, 
-                       navName, dColor,
+                       navName, navTextWidth, dColor,
                        navDPixbuf, normalDPixbuf, hoverDPixbuf, pressDPixbuf,
                        pageId, getPageId):
     '''Expose function to replace event box's image.'''
+    # Init.
+    fontSize = 14
+    middlePadding = 14
+    
     navPixbuf = navDPixbuf.getPixbuf()
     normalPixbuf = normalDPixbuf.getPixbuf()
     hoverPixbuf = hoverDPixbuf.getPixbuf()
@@ -478,7 +486,7 @@ def sideButtonOnExpose(widget, event,
     
     selectPageId = getPageId()
     
-    backgroundWidth = pressPixbuf.get_width()
+    backgroundWidth = widget.allocation.width
     backgroundHeight = widget.allocation.height
     
     if widget.state == gtk.STATE_NORMAL:
@@ -497,8 +505,6 @@ def sideButtonOnExpose(widget, event,
     pixbuf = image.scale_simple(backgroundWidth, backgroundHeight, gtk.gdk.INTERP_BILINEAR)
     
     x, y = widget.allocation.x, widget.allocation.y
-    fontSize = 14
-    middlePadding = 14
     
     cr = widget.window.cairo_create()
     
@@ -509,12 +515,12 @@ def sideButtonOnExpose(widget, event,
     navHeight = navPixbuf.get_height()
     drawPixbuf(cr,
                navPixbuf, 
-               x + (backgroundWidth - navWidth - fontSize * 2 - middlePadding) / 2 - offset,
+               x + middlePadding,
                y + (backgroundHeight - navHeight) / 2)
 
     color = dColor.getColor()
     drawFont(cr, navName, fontSize, color,
-             x + (backgroundWidth - navWidth - fontSize * 2 - middlePadding) / 2 + navWidth + middlePadding - offset,
+             x + navWidth + middlePadding * 2,
              getFontYCoordinate(y, backgroundHeight, fontSize))
 
     if widget.get_child() != None:

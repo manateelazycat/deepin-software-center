@@ -129,6 +129,7 @@ class MoreWindow(object):
             appTheme.getDynamicColor("menuItem"),
             LABEL_FONT_SIZE,
             ).getLabel()
+        label.set_alignment(0.0, 0.0)
         button.add(label)
         self.mainBox.pack_start(button)
     

@@ -163,14 +163,14 @@ class DetailView(object):
         titleBox.pack_start(returnButtonAlign, False, False)
 
         # Add top information.
-        self.appInfoItem = AppInfoItem(self.aptCache, appInfo, switchStatus, downloadQueue, actionQueue)
+        # self.appInfoItem = AppInfoItem(self.aptCache, appInfo, switchStatus, downloadQueue, actionQueue)
         
-        topAlign = gtk.Alignment()
-        topAlign.set(0.0, 0.0, 1.0, 1.0)
-        topAlign.set_padding(self.PADDING, self.PADDING, 0, 0)
-        topAlign.add(self.appInfoItem.itemFrame)
+        # topAlign = gtk.Alignment()
+        # topAlign.set(0.0, 0.0, 1.0, 1.0)
+        # topAlign.set_padding(self.PADDING, self.PADDING, 0, 0)
+        # topAlign.add(self.appInfoItem.itemFrame)
         
-        self.box.pack_start(topAlign, False, False)
+        # self.box.pack_start(topAlign, False, False)
         
         # Add body box.
         self.bodyBox = gtk.VBox()

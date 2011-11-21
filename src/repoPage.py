@@ -47,7 +47,11 @@ class RepoPage(object):
         # Init.
         self.repoCache = repoCache
         self.box = gtk.VBox()
-        self.categorybar = categorybar.CategoryBar(self.repoCache.getCategorys(), self.selectCategory)
+        self.categorybar = categorybar.CategoryBar(
+            self.repoCache.getCategorys(), 
+            self.repoCache.getCategoryNumber,
+            self.selectCategory,
+            )
         self.contentBox = gtk.HBox()
         self.topbar = Topbar(
             searchQuery,

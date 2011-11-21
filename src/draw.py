@@ -450,7 +450,7 @@ def updateButtonOnExpose(
 def sideButtonSetBackground(widget, 
                             navName, navImg,
                             normalImg, hoverImg, pressImg,
-                            pageId, getPageId):
+                            getCategoryNumCallback, pageId, getPageId):
     '''Set event box's background.'''
     (navTextWidth, _) = gtk.Label(navName).get_layout().get_pixel_size()
     middlePadding = 14
@@ -468,11 +468,13 @@ def sideButtonSetBackground(widget,
             appTheme.getDynamicPixbuf(normalImg),
             appTheme.getDynamicPixbuf(hoverImg),
             appTheme.getDynamicPixbuf(pressImg),
+            getCategoryNumCallback,
             pageId, getPageId))
         
 def sideButtonOnExpose(widget, event, 
                        navName, navTextWidth, dColor,
                        navDPixbuf, normalDPixbuf, hoverDPixbuf, pressDPixbuf,
+                       getCategoryNumCallback,
                        pageId, getPageId):
     '''Expose function to replace event box's image.'''
     # Init.
@@ -508,16 +510,51 @@ def sideButtonOnExpose(widget, event,
     
     cr = widget.window.cairo_create()
     
+    # Draw background.
     drawPixbuf(cr, pixbuf, x, y)
     offset = 20
 
+    # Draw nav icon.
     navWidth = navPixbuf.get_width()
     navHeight = navPixbuf.get_height()
     drawPixbuf(cr,
                navPixbuf, 
                x + middlePadding,
                y + (backgroundHeight - navHeight) / 2)
+    
+    
+    # Init.
+    if selectPageId == pageId:
+        offsetX = 1
+        numBgLeftPixbuf = appTheme.getDynamicPixbuf("navigate/notify_bg_left.png").getPixbuf()
+        numBgMiddlePixbuf = appTheme.getDynamicPixbuf("navigate/notify_bg_middle.png").getPixbuf()
+        numBgRightPixbuf = appTheme.getDynamicPixbuf("navigate/notify_bg_right.png").getPixbuf()
+        upgradableNum = getCategoryNumCallback(navName)
+        numPixbuf = appTheme.getDynamicPixbuf("navigate/0.png").getPixbuf()
+        numBgLeftWidth = numBgLeftPixbuf.get_width()
+        numBgLeftHeight = numBgLeftPixbuf.get_height()    
+        numWidth = numPixbuf.get_width()                  
+        numHeight = numPixbuf.get_height()                
+        numLen = len(str(upgradableNum))        
+        numX = x + middlePadding + offsetX
+        numY = y + (backgroundHeight + navHeight) / 2 - numBgLeftHeight
+        
+        # Draw number background.
+        drawPixbuf(cr, numBgLeftPixbuf, 
+                   numX, numY)
+        drawPixbuf(cr, numBgMiddlePixbuf.scale_simple(navWidth - (numBgLeftWidth + offsetX) * 2, numBgLeftHeight, gtk.gdk.INTERP_BILINEAR), 
+                   numX + numBgLeftWidth, numY)
+        drawPixbuf(cr, numBgRightPixbuf, 
+                   numX + navWidth - numBgLeftWidth - offsetX * 2, numY)
+        
+        # Draw number.
+        for (i, c) in enumerate(str(upgradableNum)):
+            numPixbuf = appTheme.getDynamicPixbuf("navigate/%s.png" % c).getPixbuf()
+            drawPixbuf(cr, numPixbuf,
+                       numX + (navWidth - numLen * numWidth) / 2 + i * numWidth,
+                       numY + (numBgLeftHeight - numHeight) / 2)
 
+    # Draw font.
     color = dColor.getColor()
     drawFont(cr, navName, fontSize, color,
              x + navWidth + middlePadding * 2,

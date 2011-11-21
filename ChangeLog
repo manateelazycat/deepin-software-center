@@ -6,6 +6,7 @@
 	* Finish zh_TW/deepin-software-center.po.
 	* Finish en/deepin-software-center.po.
 	* Make category widget size automatically.
+	* Display number at categorybar.
 
 2011-11-18 Yong Wang <lazycat.manatee@gmail.com>
 	* Avoid comment area can't shrink window when main window shrink.

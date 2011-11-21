@@ -31,9 +31,10 @@ pygtk.require('2.0')
 class CategoryBar(object):
     '''Category bar to list software.'''
 	
-    def __init__(self, categoryList, func):
+    def __init__(self, categoryList, getCategoryNumCallback, func):
         '''Init for category bar.'''
         # Init.
+        self.getCategoryNumCallback = getCategoryNumCallback
         self.box = gtk.VBox()
         self.callback = func
         self.paddingTop = 5
@@ -63,6 +64,7 @@ class CategoryBar(object):
             "category/sidebar_normal.png",
             "category/sidebar_hover.png",
             "category/sidebar_press.png",
+            self.getCategoryNumCallback,
             categoryId,
             self.getCategoryId
             )

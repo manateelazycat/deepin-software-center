@@ -65,7 +65,7 @@ class MoreWindow(object):
         self.createListItem(2, __("Proxy Setup"), self.setProxy)
         self.createListItem(3, __("Forum Help"), self.forumHelp)
         self.createListItem(4, __("Join Us"), self.joinUs)
-        self.createListItem(5, __("Report problem"), self.reportProblem)
+        self.createListItem(5, __("Report Problem"), self.reportProblem)
 
         # Set shape.
         self.window.connect("size-allocate", lambda w, a: updateShape(w, a, POPUP_WINDOW_RADIUS))
@@ -204,7 +204,7 @@ class NewFeature(object):
         self.textView.set_editable(False)
         self.textView.set_wrap_mode(gtk.WRAP_CHAR)
         self.mainBox.pack_start(self.textViewAlign, True, True)
-        self.textView.get_buffer().set_text(readFile("../news/%s.txt" % (getDefaultLanguage())))
+        self.textView.get_buffer().set_text(__("News\n"))
         
         self.window.set_size_request(self.WINDOW_WIDTH, self.WINDOW_HEIGHT)
         

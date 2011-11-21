@@ -20,6 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from lang import __
 from appItem import *
 import gtk
 import pygtk
@@ -77,7 +78,7 @@ class Topbar(object):
         self.numLabel = gtk.Label()
         
         (self.openDirLabel, self.openDirEventBox) = setDefaultClickableDynamicLabel(
-            "打开下载目录",
+            __("Open download directory"),
             "topbarButton",
             )
         self.openDirAlign = gtk.Alignment()
@@ -86,14 +87,14 @@ class Topbar(object):
         self.openDirEventBox.connect("button-press-event", lambda w, e: utils.sendCommand("xdg-open /var/cache/apt/archives/"))
         
         (self.cleanLabel, self.cleanEventBox) = setDefaultClickableDynamicLabel(
-            "智能清理下载缓存",
+            __("Clean download cache"),
             "topbarButton",
             )
         self.cleanEventBox.connect("button-press-event", lambda w, e: cleanDownloadCacheCallback())
         self.cleanAlign = gtk.Alignment()
         self.cleanAlign.set(1.0, 0.5, 0.0, 0.0)
         self.cleanAlign.add(self.cleanEventBox)
-        utils.setHelpTooltip(self.cleanEventBox, "清理下载缓存， 节省您的硬盘空间！")
+        utils.setHelpTooltip(self.cleanEventBox, __("Clean download cache, save your disk space!"))
         
         # Connect.
         self.updateNum(itemNum)

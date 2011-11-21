@@ -20,6 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from lang import __
 from constant import *
 from utils import *
 import apt_pkg
@@ -50,18 +51,18 @@ class AppInfo(object):
         
     def initStatus(self):
         '''Init status.'''
-        self.downloadingFeedback = '等待下载'
+        self.downloadingFeedback = __("Action Wait Download")
         self.downloadingProgress = 0
         
         self.downloadPauseFeedback = ''
         
-        self.installingFeedback = '等待安装'
+        self.installingFeedback = __("Action Wait Install")
         self.installingProgress = 0
         
-        self.upgradingFeedback = '等待升级'
+        self.upgradingFeedback = __("Action Wait Update")
         self.upgradingProgress = 0
         
-        self.uninstallingFeedback = '等待卸载'
+        self.uninstallingFeedback = __("Action Wait Uninstall")
         self.uninstallingProgress = 0
         
     def switchStatus(self, appStatus):
@@ -72,18 +73,18 @@ class AppInfo(object):
             self.initStatus()
         elif appStatus == APP_STATE_DOWNLOADING:
             self.downloadingProgress = 0
-            self.downloadingFeedback = "等待下载"
+            self.downloadingFeedback = __("Action Wait Download")
         elif appStatus == APP_STATE_DOWNLOAD_PAUSE:
-            self.downloadPauseFeedback = "暂停"
+            self.downloadPauseFeedback = __("Pause")
         elif appStatus == APP_STATE_INSTALLING:
             self.installingProgress = 0
-            self.installingFeedback = "等待安装"
+            self.installingFeedback = __("Action Wait Download")
         elif appStatus == APP_STATE_UPGRADING:
             self.upgradingProgress = 0
-            self.upgradingFeedback = "等待升级"
+            self.upgradingFeedback = __("Action Wait Update")
         elif appStatus == APP_STATE_UNINSTALLING:
             self.uninstallingProgress = 0
-            self.uninstallingFeedback = "等待卸载"
+            self.uninstallingFeedback = __("Action Wait Uninstall")
         
     def updateDownloadStatus(self, progress, feedback, status):
         '''Update download status'''

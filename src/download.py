@@ -20,6 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from lang import __
 from utils import *
 from constant import *
 from pprint import pprint
@@ -119,8 +120,8 @@ class Download(td.Thread):
             result = self.download([self.pkgName])
             self.server.aria2.shutdown()
         except Exception, e:
-            self.messageCallback("%s: 下载失败, 请检查您的网络链接." % self.pkgName)
-            self.updateCallback(self.pkgName, self.progress, "下载失败")
+            self.messageCallback((_("% s: Download failed, please check your network link.") % self.pkgName))
+            self.updateCallback(self.pkgName, self.progress, _("Download failed"))
             result = DOWNLOAD_STATUS_FAILED
             print "Download error: ", e
         
@@ -157,7 +158,7 @@ class Download(td.Thread):
             
             # Return DOWNLOAD_STATUS_DONT_NEED haven't packages need download,  
             if len(pkgs) == 0:
-                self.updateCallback(self.pkgName, 100, "下载完毕")
+                self.updateCallback(self.pkgName, 100, __("Download Finish"))
                 return DOWNLOAD_STATUS_DONT_NEED
             # Otherwise download.
             else:
@@ -193,7 +194,7 @@ class Download(td.Thread):
 
     def _download(self, pkgs):
         # Update status.
-        self.updateCallback(self.pkgName, 0, "开始下载")
+        self.updateCallback(self.pkgName, 0, __("Start Download"))
         
         # Make metalink.
         self.server.aria2.addMetalink(xmlrpclib.Binary(self.make_metalink(pkgs)))
@@ -206,8 +207,8 @@ class Download(td.Thread):
             
             # Stop download if reach retry times.
             if self.retryTicker > DOWNLOAD_TIMEOUT:
-                self.messageCallback("%s: 下载超时, 请检查您的网络链接." % (self.pkgName))
-                self.updateCallback(self.pkgName, self.progress, "下载超时")
+                self.messageCallback((__("% s: Download timeout, please check your network link.") % (self.pkgName)))
+                self.updateCallback(self.pkgName, self.progress, __("Download Timeout"))
                 return DOWNLOAD_STATUS_TIMEOUT
             elif self.retryTicker > 0:
                 print "Retry (%s/%s)" % (self.retryTicker, DOWNLOAD_TIMEOUT)
@@ -218,7 +219,7 @@ class Download(td.Thread):
                 if signal == "STOP":
                     return DOWNLOAD_STATUS_STOP
                 elif signal == "PAUSE":
-                    self.updateCallback(self.pkgName, self.progress, "下载暂停", APP_STATE_DOWNLOAD_PAUSE)
+                    self.updateCallback(self.pkgName, self.progress, __("Download Pause"), APP_STATE_DOWNLOAD_PAUSE)
                     return DOWNLOAD_STATUS_PAUSE
             # Otherwise wait download complete.
             else:
@@ -285,7 +286,7 @@ class Download(td.Thread):
                 
         # Return DOWNLOAD_STATUS_COMPLETE if link success.
         if link_success:
-            self.updateCallback(self.pkgName, 100, "下载完毕")
+            self.updateCallback(self.pkgName, 100, __("Download Finish"))
             
             # Send download count to server.
             SendDownloadCount(self.pkgName).start()
@@ -309,7 +310,7 @@ class Download(td.Thread):
         except IOError, e:
             if e.errno != errno.ENOENT:
                 print "Failed to check hash", e
-                self.messageCallback("%s: 校验失败." % self.pkgName)
+                self.messageCallback((__("%s checkout failed.") % self.pkgName))
             return False
         
 class SendDownloadCount(td.Thread):

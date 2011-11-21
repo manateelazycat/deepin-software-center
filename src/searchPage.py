@@ -20,6 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from lang import __
 from appItem import *
 from draw import *
 import appView
@@ -120,14 +121,14 @@ class Topbar(object):
 
         # Add search entry and label.
         (self.searchEntry, searchAlign, self.searchCompletion) = newSearchUI(
-            "请输入您要搜索的软件名称、版本或其他信息",
+            __("Please enter the name you want to search for software, version or other information"),
             lambda text: getCandidates(map (lambda appInfo: appInfo.pkg.name, appInfos), text),
             clickCandidateCallback,
             searchCallback)
         
         # Add return button.
         (returnButton, returnButtonAlign) = newActionButton(
-            "search", 1.0, 0.5, "cell", False, "返回", BUTTON_FONT_SIZE_MEDIUM, "bigButtonFont",
+            "search", 1.0, 0.5, "cell", False, __("Return"), BUTTON_FONT_SIZE_MEDIUM, "bigButtonFont",
             0, 10
             )
         returnButton.connect("button-release-event", lambda widget, event: exitSearchPageCallback(pageId))

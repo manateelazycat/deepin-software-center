@@ -20,6 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from lang import __
 from searchEntry import *
 from constant import *
 from draw import *
@@ -150,7 +151,7 @@ class UninstallItem(object):
         
         if self.confirmUninstall:
             appUninstallLabel = gtk.Label()
-            appUninstallLabel.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, "您确定要卸载吗？"))
+            appUninstallLabel.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, __("Are you sure uninstall?")))
             actionButtonBox.pack_start(appUninstallLabel, False, False)
             
             appUninstallBox = gtk.HBox()
@@ -162,13 +163,13 @@ class UninstallItem(object):
             
             (appConfirmButton, appConfirmAlign) = newActionButton(
                 "uninstall_confirm", 0.0, 0.5, 
-                "cell", False, "卸载", BUTTON_FONT_SIZE_SMALL, "buttonFont"
+                "cell", False, __("Action Uninstall"), BUTTON_FONT_SIZE_SMALL, "buttonFont"
                 )
             appConfirmButton.connect("button-release-event", lambda widget, event: self.switchToUninstalling())
             
             (appCancelButton, appCancelAlign) = newActionButton(
                 "uninstall_confirm", 1.0, 0.5, 
-                "cell", False, "取消", BUTTON_FONT_SIZE_SMALL, "buttonFont"
+                "cell", False, __("Action Cancel"), BUTTON_FONT_SIZE_SMALL, "buttonFont"
                 )
             appCancelButton.connect("button-release-event", lambda widget, event: self.switchToNormal(False))
             
@@ -177,7 +178,7 @@ class UninstallItem(object):
         else:
             (appUninstallBox, appUninstallAlign) = newActionButton(
                 "uninstall", 0.5, 0.5,
-                "cell", False, "卸载", BUTTON_FONT_SIZE_SMALL, "buttonFont"
+                "cell", False, __("Action Uninstall"), BUTTON_FONT_SIZE_SMALL, "buttonFont"
                 )
             appUninstallBox.connect("button-release-event", lambda widget, event: self.switchToNormal(True))
             actionButtonBox.pack_start(appUninstallAlign)
@@ -210,7 +211,7 @@ class UninstallItem(object):
         if self.appInfo.status == APP_STATE_UNINSTALLING:
             if self.uninstallingProgressbar != None and self.uninstallingFeedbackLabel != None:
                 self.uninstallingProgressbar.setProgress(progress)
-                self.uninstallingFeedbackLabel.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, "卸载中"))
+                self.uninstallingFeedbackLabel.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, __("Action Uninstalling")))
                 
                 self.itemFrame.show_all()
                 
@@ -333,7 +334,7 @@ class DownloadItem(object):
         
         # Add pause label.
         pauseLabel = gtk.Label()
-        pauseLabel.set_markup("<span foreground='%s' size='%s'>%s</span>" % (fontColor, LABEL_FONT_SIZE, "暂停"))
+        pauseLabel.set_markup("<span foreground='%s' size='%s'>%s</span>" % (fontColor, LABEL_FONT_SIZE, __("Action Pause")))
         pauseLabel.set_width_chars(self.PROGRESS_LABEL_WIDTH_CHARS)
         pauseLabel.set_ellipsize(pango.ELLIPSIZE_END)
         pauseLabel.set_alignment(0.5, 0.5)
@@ -400,7 +401,7 @@ class DownloadItem(object):
                 self.installingProgressbar.setProgress(progress)
                 self.installingFeedbackLabel.set_markup(
                     "<span foreground='%s' size='%s'>%s</span>"
-                    % (color, LABEL_FONT_SIZE, "安装中"))
+                    % (color, LABEL_FONT_SIZE, __("Action Installing")))
                 
                 self.itemFrame.show_all()
                 
@@ -411,7 +412,7 @@ class DownloadItem(object):
                 self.upgradingProgressbar.setProgress(progress)
                 self.upgradingFeedbackLabel.set_markup(
                     "<span foreground='%s' size='%s'>%s</span>"
-                    % (color, LABEL_FONT_SIZE, "升级中"))
+                    % (color, LABEL_FONT_SIZE, __("Action Updating")))
                 
                 self.itemFrame.show_all()
                 
@@ -591,7 +592,7 @@ class VoteView(object):
         self.starView.eventbox.connect("button-press-event", lambda w, e: self.switchFocusStatus(self.FOCUS_NORMAL))
         
         # Show help.
-        utils.setHelpTooltip(self.starView.eventbox, "点击评分")
+        utils.setHelpTooltip(self.starView.eventbox, __("Click Vote"))
         
     def drawFocusNormal(self):
         '''Draw focus normal status.'''
@@ -605,7 +606,7 @@ class VoteView(object):
         self.starBox.pack_start(starBox)
         
         (self.voteLabel, self.voteEventBox) = setDefaultClickableDynamicLabel(
-            "评分",
+            __("Vote"),
             "appVote",
             )
         self.voteEventBox.connect("button-press-event", lambda w, e: self.switchFocusStatus(self.FOCUS_STAR))
@@ -613,12 +614,12 @@ class VoteView(object):
         
         if self.voteNum == 0:
             (self.rate, self.rateEventBox) = setDefaultClickableDynamicLabel(
-                "抢沙发!",
+                __("First Comment"),
                 "appVote",
                 )
         else:
             (self.rate, self.rateEventBox) = setDefaultClickableDynamicLabel(
-                "%s 评论" % (self.voteNum),
+                "%s %s" % (self.voteNum, __("Comment")),
                 "appVote",
                 )
         

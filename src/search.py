@@ -20,6 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from lang import __
 from ConfigParser import RawConfigParser
 from utils import *
 import glib
@@ -256,7 +257,7 @@ class Search(object):
         else:
             # Init.
             self.database = None
-            self.statusbar.setStatus("正在为搜索建立索引文件...")
+            self.statusbar.setStatus((__("Files are indexed for the search ...")))
             
             # Start rebuild thread.
             rebuildSearchIndex = RebuildSearchIndex(self.initDB)
@@ -266,7 +267,7 @@ class Search(object):
     def initDB(self):
         '''Init DB.'''
         self.database = DB()
-        self.statusbar.setStatus("搜索索引文件建立完毕.")
+        self.statusbar.setStatus((__("Build the search index file is completed.")))
         
         # Touch lock file.
         if not os.path.exists(self.lockFile):
@@ -283,7 +284,7 @@ class Search(object):
     def query(self, args):
         '''Query.'''
         if self.database == None:
-            self.messageCallback("正在建立索引， 请稍候再试搜索功能. :)")
+            self.messageCallback((__("Indexing, search capabilities please try again later.")))
             return []
         else:
             self.database.set_query_args(args)
@@ -293,7 +294,7 @@ class Search(object):
             results = map(lambda m: m.document.get_data(), matches)
             
             if results == []:
-                self.messageCallback("没有搜索到和 %s 相关的包" % (" ".join(args)))
+                self.messageCallback((__("No search packages related %s") % (" ".join(args))))
             
             return self.repoCache.sortPackages(results, " ".join(args))
     

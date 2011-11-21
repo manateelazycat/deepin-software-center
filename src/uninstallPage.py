@@ -20,6 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from lang import __
 from appItem import *
 from constant import *
 from draw import *
@@ -87,7 +88,7 @@ class Topbar(object):
         
         # Add search entry and label.
         (self.searchEntry, searchAlign, self.searchCompletion) = newSearchUI(
-            "请输入您要卸载的软件名称、版本或其他信息",
+            __("Please enter the name you want to uninstall the software, version or other information"),
             lambda text: getCandidates(self.repoCache.uninstallablePkgs, text),
             self.clickCandidate,
             self.search)

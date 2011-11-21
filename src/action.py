@@ -20,6 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from lang import __
 from constant import *
 import apt
 import apt.progress.base as apb
@@ -53,11 +54,11 @@ class InstallProgress(apb.InstallProgress):
     def start_update(self):
         '''Start update.'''
         if self.actionType == ACTION_INSTALL:
-            self.updateCallback(self.actionType, self.pkgName, 0, "开始安装")
+            self.updateCallback(self.actionType, self.pkgName, 0, __("Action Install Start"))
         elif self.actionType == ACTION_UPGRADE:
-            self.updateCallback(self.actionType, self.pkgName, 0, "开始升级")
+            self.updateCallback(self.actionType, self.pkgName, 0, __("Action Update Start"))
         elif self.actionType == ACTION_UNINSTALL:
-            self.updateCallback(self.actionType, self.pkgName, 0, "开始卸载")
+            self.updateCallback(self.actionType, self.pkgName, 0, __("Action Uninstall Start"))
 
     def status_change(self, pkg, percent, status):
         '''Progress status change.'''
@@ -110,7 +111,7 @@ class Action(td.Thread):
         except Exception, e:
             print "Got error `%s` when commit apt action." % (str(e))
             
-            self.messageCallback("%s: 安装失败" % self.pkgName)
+            self.messageCallback("%s: %s" % (self.pkgName, __("Action Install Failed")))
             
             # Call failed callback.
             self.failed()
@@ -125,11 +126,11 @@ class Action(td.Thread):
     def finish(self):
         '''Progress finish update.'''
         if self.actionType == ACTION_INSTALL:
-            self.updateCallback(self.actionType, self.pkgName, 100, "安装完毕")
+            self.updateCallback(self.actionType, self.pkgName, 100, __("Action Install Finish"))
         elif self.actionType == ACTION_UPGRADE:
-            self.updateCallback(self.actionType, self.pkgName, 100, "升级完毕")
+            self.updateCallback(self.actionType, self.pkgName, 100, __("Action Update Finish"))
         elif self.actionType == ACTION_UNINSTALL:
-            self.updateCallback(self.actionType, self.pkgName, 100, "卸载完毕")
+            self.updateCallback(self.actionType, self.pkgName, 100, __("Action Uninstall Finish"))
         
         self.scanCallback(self.pkgName, self.actionType)
         self.finishCallback(self.actionType, self.pkgList)
@@ -137,11 +138,11 @@ class Action(td.Thread):
     def failed(self):
         '''Action failed.'''
         if self.actionType == ACTION_INSTALL:
-            self.updateCallback(self.actionType, self.pkgName, 100, "安装失败")
+            self.updateCallback(self.actionType, self.pkgName, 100, __("Action Install Failed"))
         elif self.actionType == ACTION_UPGRADE:
-            self.updateCallback(self.actionType, self.pkgName, 100, "升级失败")
+            self.updateCallback(self.actionType, self.pkgName, 100, __("Action Update Failed"))
         elif self.actionType == ACTION_UNINSTALL:
-            self.updateCallback(self.actionType, self.pkgName, 100, "卸载失败")
+            self.updateCallback(self.actionType, self.pkgName, 100, __("Action Uninstall Failed"))
         
         self.scanCallback(self.pkgName, self.actionType)
         self.failedCallback(self.actionType, self.pkgName)

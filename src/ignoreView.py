@@ -20,6 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from lang import __
 from theme import *
 from appItem import *
 from constant import *
@@ -156,7 +157,7 @@ class IgnoreItem(object):
         
         # Add ignore button.
         (ignoreLabel, ignoreEventBox) = setDefaultClickableDynamicLabel(
-            "重新提醒",
+            __("Notify again"),
             "appIgnore",
             )
         ignoreEventBox.connect("button-press-event", 

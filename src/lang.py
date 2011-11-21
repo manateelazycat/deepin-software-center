@@ -20,21 +20,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from lang import __
-import gtk
-import pygtk
-pygtk.require('2.0')
+import gettext
 
-class MorePage(object):
-    '''Interface for more page.'''
-	
-    def __init__(self):
-        '''Init for more page.'''
-        # Init.
-        self.box = gtk.VBox()
-        self.view = gtk.TextView()
-        self.view.get_buffer().set_text('更多功能')
-        
-        # Connect components.
-        self.box.add(self.view)
-        self.box.show_all()
+__ = gettext.translation('deepin-software-center', '../locale', languages=['zh_CN']).gettext

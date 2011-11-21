@@ -20,6 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from lang import __
 from constant import *
 from draw import *
 from theme import *
@@ -52,7 +53,7 @@ class ThemeSelect(object):
         self.titleAlign = gtk.Alignment()
         dLabel = DynamicSimpleLabel(
             self.titleAlign,
-            "更换皮肤",
+            __("Change Theme"),
             appTheme.getDynamicColor("themeSelectTitleText"),
             LABEL_FONT_LARGE_SIZE,
             )

@@ -20,6 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from lang import __
 from theme import *
 from constant import *
 from draw import *
@@ -63,7 +64,7 @@ class Statusbar(object):
         
     def initStatus(self):
         '''Init status.'''
-        self.name.set_markup("<span foreground='#FFFFFF' size='%s'>深度Linux软件中心 %s</span>" % (LABEL_FONT_SIZE, VERSION))
+        self.name.set_markup("<span foreground='#FFFFFF' size='%s'>%s %s</span>" % (LABEL_FONT_SIZE, __("Deepin Software Center"), VERSION))
 
     def setStatus(self, status):
         '''Set status.'''

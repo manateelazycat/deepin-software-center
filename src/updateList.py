@@ -20,6 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from lang import __
 from utils import *
 from apt.progress.old import FetchProgress
 import sys
@@ -62,13 +63,13 @@ class UpdateList(td.Thread):
     @postGUI
     def updateCallback(self, percent):
         '''Update callback for progress.'''
-        self.statusbar.setStatus("正在更新软件列表...")
+        self.statusbar.setStatus(__("Updating souces list ..."))
         
     @postGUI
     def finishCallback(self):
         '''Finish callback for progress.'''
         # Update status.
-        self.statusbar.setStatus("更新软件列表完毕。")
+        self.statusbar.setStatus(__("Update sources list completed."))
         
         # Reset statusbar after 2 seconds.
         glib.timeout_add_seconds(2, self.resetStatus)

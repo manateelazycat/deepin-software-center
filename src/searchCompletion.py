@@ -20,6 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from lang import __
 from utils import *
 from draw import *
 import appView
@@ -140,7 +141,7 @@ class SearchCompletion(object):
         textColor = appTheme.getDynamicColor("completionText").getColor()
         keywordColor = appTheme.getDynamicColor("completionKeyword").getColor()
         self.listStore.append(
-            ["<span foreground='%s'>%s</span>" % (textColor, "全文搜索") + " <span foreground='%s'>%s</span>" % (keywordColor, content), content])
+            ["<span foreground='%s'>%s</span>" % (textColor, __("Global Search")) + " <span foreground='%s'>%s</span>" % (keywordColor, content), content])
             
         for candidate in candidates:
             self.listStore.append(candidate)

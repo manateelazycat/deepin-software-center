@@ -20,6 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from lang import __
 class SortedDict(dict):
     """
     A dictionary that keeps its keys in the order in which they're inserted.

@@ -20,6 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from lang import __
 from theme import *
 from constant import *
 from copy import deepcopy
@@ -794,7 +795,7 @@ class DeepinSoftwareCenter(object):
         window.set_decorated(False)
 
         # Init.
-        window.set_title('深度Linux软件中心')
+        window.set_title(__("Deepin Software Center"))
         window.set_position(gtk.WIN_POS_CENTER_ALWAYS)
         (width, height) = utils.getScreenSize(window)
         window.set_default_size(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT)
@@ -916,7 +917,8 @@ class DeepinSoftwareCenter(object):
         waitBox.pack_start(waitAnimation)
         
         waitLabel = gtk.Label()
-        waitLabel.set_markup("<span foreground='#1A3E88' size='%s'>%s</span>" % (LABEL_FONT_LARGE_SIZE, "  加载中， 请稍候..."))
+        waitLabel.set_markup(
+            "<span foreground='#1A3E88' size='%s'>%s</span>" % (LABEL_FONT_LARGE_SIZE, __(" Loading, please wait ...")))
         waitAlign = gtk.Alignment()
         waitAlign.set(0.5, 0.3, 0.0, 0.0)
         waitAlign.add(waitLabel)
@@ -1154,7 +1156,7 @@ class DeepinSoftwareCenter(object):
     
     def launchApplication(self, command):
         '''Launch application.'''
-        self.message("发送启动请求 (%s)" % (command))
+        self.message(__("Send startup request (%s)") % (command))
         sendCommand(command)
         
     def cleanDownloadCache(self):
@@ -1222,11 +1224,11 @@ class DeepinSoftwareCenter(object):
         # Notify clean size.
         if cleanSize == 0:
             if pkgs == []:
-                self.message("恭喜您， 您的系统非常干净. :)")
+                self.message(__("Congratulations, your system is clean."))
             else:
-                self.message("软件中心正在使用下载的软件包， 请稍候清理。:)")
+                self.message(__("Software Center is using the downloaded package, please wait clearing."))
         else:
-            self.message("清理了%s个软件包， 释放了%s空间." % (packageNum, utils.formatFileSize(cleanSize)))            
+            self.message(__("Cleaned up %s package, release %s space.") % (packageNum, utils.formatFileSize(cleanSize)))            
         
 class InitThread(td.Thread):
     '''Add long time calculate in init thread to make startup faster.'''
@@ -1385,7 +1387,7 @@ class SendVote(td.Thread):
             voteFile = "../voteBlacklist/%s" % (self.name)
             if os.path.exists(voteFile) and getLastUpdateHours(voteFile) <= 24:
             # if False:
-                self.messageCallback("为保证公正, 每天只能对%s评分一次." % (self.name))
+                self.messageCallback(__("To ensure fairness, only a day to %s score once.") % (self.name))
             else:
                 args = {'n' : self.name, 'm' : self.vote}
                 connection = urllib2.urlopen(
@@ -1393,10 +1395,10 @@ class SendVote(td.Thread):
                     data=urllib.urlencode(args),
                     timeout=POST_TIMEOUT
                     )
-                self.messageCallback("%s 评分成功, 感谢参与!" % (self.name))
+                self.messageCallback(__("%s Ratings success, thanks!") % (self.name))
                 utils.touchFile(voteFile)
         except Exception, e:
-            self.messageCallback("%s 评分失败, 请检查您的网络链接." % (self.name))
+            self.messageCallback(__("%s vote failed, please check your network link.") % (self.name))
             print "Error: ", e
 
 class SocketThread(td.Thread):

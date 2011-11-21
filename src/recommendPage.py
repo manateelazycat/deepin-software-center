@@ -20,6 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from lang import __
 from theme import *
 from appItem import *
 from constant import *
@@ -162,14 +163,14 @@ class SlideItem(DownloadItem):
         if self.appInfo.status == APP_STATE_NORMAL:
             (appButton, appButtonAlign) = newActionButton(
                 "search", 0.5, 0.5, 
-                "cell", False, "安装", BUTTON_FONT_SIZE_LARGE, "bigButtonFont"
+                "cell", False, __("Action Install"), BUTTON_FONT_SIZE_LARGE, "bigButtonFont"
                 )
             appButton.connect("button-release-event", lambda widget, event: self.switchToDownloading())
             actionButtonBox.pack_start(appButtonAlign)
         elif self.appInfo.status == APP_STATE_UPGRADE:
             (appButton, appButtonAlign) = newActionButton(
                 "search", 0.5, 0.5, 
-                "cell", False, "升级", BUTTON_FONT_SIZE_LARGE, "bigButtonFont"
+                "cell", False, __("Action Update"), BUTTON_FONT_SIZE_LARGE, "bigButtonFont"
                 )
             appButton.connect("button-release-event", lambda widget, event: self.switchToDownloading())
             actionButtonBox.pack_start(appButtonAlign)
@@ -178,14 +179,14 @@ class SlideItem(DownloadItem):
             if execPath:
                 (appButton, appButtonAlign) = newActionButton(
                     "search", 0.5, 0.5, 
-                    "cell", False, "启动", BUTTON_FONT_SIZE_LARGE, "bigButtonFont"
+                    "cell", False, __("Action Startup"), BUTTON_FONT_SIZE_LARGE, "bigButtonFont"
                     )
                 appButton.connect("button-release-event", lambda widget, event: self.launchApplicationCallback(execPath))
                 actionButtonBox.pack_start(appButtonAlign)
             else:
                 appInstalledDynamicLabel = DynamicSimpleLabel(
                     actionButtonBox,
-                    "已安装",
+                    __("Action Installed"),
                     appTheme.getDynamicColor("installed"),
                     LABEL_FONT_SIZE,
                     )

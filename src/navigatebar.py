@@ -20,6 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from lang import __
 from utils import *
 from constant import *
 from draw import *
@@ -57,37 +58,32 @@ class NavigateBar(object):
         self.box.pack_start(self.navAlign, True, True)
         
         self.recommendIcon = self.createNavIcon(
-            "精选推荐", 
-            # "Recommend",
+            __("Nav Recommend"),
             "navigate/nav_recommend.png", 
             PAGE_RECOMMEND)
         self.navBox.pack_start(self.recommendIcon, False, False, self.iconPadding)
         
         self.repositoryIcon = self.createNavIcon(
-            "软件仓库", 
-            # "Repository",
+            __("Nav Repository"),
             "navigate/nav_repo.png", 
             PAGE_REPO)
         self.navBox.pack_start(self.repositoryIcon, False, False, self.iconPadding)
         
         self.updateIcon = self.createUpdateIcon(
-            "软件更新", 
-            # "Update",
+            __("Nav Update"),
             "navigate/nav_update.png", 
             PAGE_UPGRADE,
             self.getUpgradableNum)
         self.navBox.pack_start(self.updateIcon, False, False, self.iconPadding)
         
         self.uninstallIcon = self.createNavIcon(
-            "软件卸载",
-            # "Uninstall",
+            __("Nav Uninstall"),
             "navigate/nav_uninstall.png", 
             PAGE_UNINSTALL)
         self.navBox.pack_start(self.uninstallIcon, False, False, self.iconPadding)
 
         self.downloadIcon = self.createUpdateIcon(
-            "下载管理", 
-            # "Download",
+            __("Nav Download Manage"),
             "navigate/nav_download.png", 
             PAGE_DOWNLOAD_MANAGE, 
             self.getRunningNum)

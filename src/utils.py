@@ -20,6 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from lang import __
 from constant import *
 from math import pi
 import cairo
@@ -587,11 +588,15 @@ def showVersionTooltip(widget, pkg):
     if newestVersion == currentVersion:
         setHelpTooltip(
             widget,
-            "点击查看详细信息\n当前版本: %s" % (currentVersion))
+            "%s\n%s: %s" % (__("Click Show Detail"), __("Current Version"), currentVersion))
     else:    
         setHelpTooltip(
             widget,
-            "点击查看详细信息\n当前版本: %s\n升级版本: %s" % (currentVersion, newestVersion))
+            "%s\n%s: %s\n%s: %s" % (__("Click Show Detail"), 
+                                    __("Current Version"), 
+                                    currentVersion, 
+                                    __("Upgrade Version"),
+                                    newestVersion))
     
 def setHelpTooltip(widget, helpText):
     '''Set help tooltip.'''

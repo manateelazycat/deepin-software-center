@@ -20,6 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from lang import __
 from theme import *
 from constant import *
 from draw import *
@@ -213,12 +214,12 @@ class AppView(object):
             
             # Add jump label.
             jumpBeforeLabel = gtk.Label()
-            jumpBeforeLabel.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_MEDIUM_SIZE, "跳到第"))
+            jumpBeforeLabel.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_MEDIUM_SIZE, __("Jump To")))
             jumpAfterLabel = gtk.Label()
-            jumpAfterLabel.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_MEDIUM_SIZE, "页"))
+            jumpAfterLabel.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_MEDIUM_SIZE, __("Page")))
             jumpButton = utils.newButtonWithoutPadding()
             jumpButton.connect("button-release-event", lambda widget, event: self.jumpPage(int(self.jumpButton.get_text())))
-            drawButton(jumpButton, "confirm", "index", False, "确定", BUTTON_FONT_SIZE_SMALL, "buttonFont")
+            drawButton(jumpButton, "confirm", "index", False, __("Jump"), BUTTON_FONT_SIZE_SMALL, "buttonFont")
             
             # Connect widget.
             box.pack_start(jumpBeforeLabel, False, False, paddingX)

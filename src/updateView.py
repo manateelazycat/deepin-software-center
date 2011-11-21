@@ -20,6 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from lang import __
 from theme import *
 from appItem import *
 from constant import *
@@ -175,7 +176,7 @@ class UpdateItem(DownloadItem):
         
         # Add ignore button.
         (ignoreLabel, ignoreEventBox) = setDefaultClickableDynamicLabel(
-            "不再提醒",
+            __("Don't Notify"),
             "appIgnore",
             )
         self.appAdditionBox.pack_start(ignoreEventBox, False, False)
@@ -187,7 +188,7 @@ class UpdateItem(DownloadItem):
         self.appAdditionBox.pack_start(actionButtonAlign, False, False)
         
         (appButton, appButtonAlign) = newActionButton(
-            "update", 0.5, 0.5, "cell", False, "升级", BUTTON_FONT_SIZE_SMALL, "buttonFont")
+            "update", 0.5, 0.5, "cell", False, __("Action Update"), BUTTON_FONT_SIZE_SMALL, "buttonFont")
         appButton.connect("button-release-event", lambda widget, event: self.switchToDownloading())
         actionButtonBox.pack_start(appButtonAlign)
         

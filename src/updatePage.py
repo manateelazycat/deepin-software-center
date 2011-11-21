@@ -20,6 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from lang import __
 from appItem import *
 from draw import *
 import gtk
@@ -102,17 +103,17 @@ class Topbar(object):
         self.labelId = self.selectAllId
         
         (self.selectAllLabel, self.selectAllEventBox) = utils.setDefaultToggleLabel(
-            "全选", self.selectAllId, self.setLabelId, self.getLabelId, True)
+            __("Select All"), self.selectAllId, self.setLabelId, self.getLabelId, True)
         self.selectAllEventBox.connect("button-press-event", lambda w, e: selectAllPkgCallback())
         upgradeBox.pack_start(self.selectAllEventBox, False, False, self.paddingX)
         
         (self.unselectAllLabel, self.unselectAllEventBox) = utils.setDefaultToggleLabel(
-            "全不选", self.unselectAllId, self.setLabelId, self.getLabelId, False)
+            __("Unselect All"), self.unselectAllId, self.setLabelId, self.getLabelId, False)
         self.unselectAllEventBox.connect("button-press-event", lambda w, e: unselectAllPkgCallback())
         upgradeBox.pack_start(self.unselectAllEventBox, False, False, self.paddingX)
         
         (self.upgradeButton, upgradeButtonAlign) = newActionButton(
-             "update_selected", 0.0, 0.5, "cell", True, "升级选中的软件", BUTTON_FONT_SIZE_MEDIUM, "bigButtonFont")
+             "update_selected", 0.0, 0.5, "cell", True, __("Update select software"), BUTTON_FONT_SIZE_MEDIUM, "bigButtonFont")
         upgradeBox.pack_start(upgradeButtonAlign, False, False, self.paddingX)
         self.upgradeButton.connect("button-press-event", lambda w, e: upgradeSelectedPkgsCallback(getSelectListCallback()))
         
@@ -132,14 +133,14 @@ class Topbar(object):
         
         if self.labelId == self.selectAllId:
             self.selectAllLabel.set_markup(
-                "<span foreground='%s' size='%s' underline='single'>%s</span>" % (self.selectColor, LABEL_FONT_SIZE, "全选"))
+                "<span foreground='%s' size='%s' underline='single'>%s</span>" % (self.selectColor, LABEL_FONT_SIZE, __("Select All")))
             self.unselectAllLabel.set_markup(
-                "<span foreground='%s' size='%s'>%s</span>" % (self.normalColor, LABEL_FONT_SIZE, "全不选"))
+                "<span foreground='%s' size='%s'>%s</span>" % (self.normalColor, LABEL_FONT_SIZE, __("Unselect All")))
         else:
             self.selectAllLabel.set_markup(
-                "<span foreground='%s' size='%s'>%s</span>" % (self.normalColor, LABEL_FONT_SIZE, "全选"))
+                "<span foreground='%s' size='%s'>%s</span>" % (self.normalColor, LABEL_FONT_SIZE, __("Select All")))
             self.unselectAllLabel.set_markup(
-                "<span foreground='%s' size='%s' underline='single'>%s</span>" % (self.selectColor, LABEL_FONT_SIZE, "全不选"))
+                "<span foreground='%s' size='%s' underline='single'>%s</span>" % (self.selectColor, LABEL_FONT_SIZE, __("Unselect All")))
         
     def getLabelId(self):
         '''Get label id.'''

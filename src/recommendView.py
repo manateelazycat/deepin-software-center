@@ -20,6 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from lang import __
 from appItem import *
 from constant import *
 from draw import *
@@ -160,14 +161,14 @@ class RecommendItem(DownloadItem):
         if self.appInfo.status == APP_STATE_NORMAL:
             (appButton, appButtonAlign) = newActionButton(
                 "install", 0.5, 0.5, 
-                "cell", False, "安装", BUTTON_FONT_SIZE_SMALL, "buttonFont"
+                "cell", False, __("Action Install"), BUTTON_FONT_SIZE_SMALL, "buttonFont"
                 )
             appButton.connect("button-release-event", lambda widget, event: self.switchToDownloading())
             appButtonBox.pack_start(appButtonAlign)
         elif self.appInfo.status == APP_STATE_UPGRADE:
             (appButton, appButtonAlign) = newActionButton(
                 "update", 0.5, 0.5, 
-                "cell", False, "升级", BUTTON_FONT_SIZE_SMALL, "buttonFont"
+                "cell", False, __("Action Update"), BUTTON_FONT_SIZE_SMALL, "buttonFont"
                 )
             appButton.connect("button-release-event", lambda widget, event: self.switchToDownloading())
             appButtonBox.pack_start(appButtonAlign)
@@ -176,14 +177,14 @@ class RecommendItem(DownloadItem):
             if execPath:
                 (appButton, appButtonAlign) = newActionButton(
                     "update", 0.5, 0.5, 
-                    "cell", False, "启动", BUTTON_FONT_SIZE_SMALL, "buttonFont"
+                    "cell", False, __("Action Startup"), BUTTON_FONT_SIZE_SMALL, "buttonFont"
                     )
                 appButton.connect("button-release-event", lambda widget, event: self.launchApplicationCallback(execPath))
                 appButtonBox.pack_start(appButtonAlign)
             else:
                 appInstalledDynamicLabel = DynamicSimpleLabel(
                     appButtonBox,
-                    "已安装",
+                    __("Action Installed"),
                     appTheme.getDynamicColor("installed"),
                     LABEL_FONT_SIZE,
                     )
@@ -406,7 +407,7 @@ class RecommendItem(DownloadItem):
             if self.downloadingProgressbar != None and self.downloadingFeedbackLabel != None:
                 self.downloadingProgressbar.setProgress(progress)
                 if self.appInfo.status == APP_STATE_DOWNLOAD_PAUSE:
-                    self.downloadingFeedbackLabel.set_markup("<span size='%s'>暂停</span>" % (LABEL_FONT_SIZE))
+                    self.downloadingFeedbackLabel.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, __("Pause")))
                 else:
                     self.downloadingFeedbackLabel.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, feedback))
                 
@@ -559,7 +560,7 @@ class RecommendView(object):
         # Show more label.
         if showMore:
             (moreLabel, moreLabelEventBox) = setDefaultClickableDynamicLabel(
-                "更多 >>",
+                __("More >>"),
                 "recommendMore",
                 LABEL_FONT_MEDIUM_SIZE,
                 )

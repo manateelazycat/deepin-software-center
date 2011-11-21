@@ -20,6 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from lang import __
 from appItem import *
 from constant import *
 from draw import *
@@ -147,15 +148,15 @@ class Topbar(object):
         self.selectColor = '#000000'
         
         (self.sortRecommendLabel, self.sortRecommendEventBox) = utils.setDefaultToggleLabel(
-            "按推荐排序", self.sortRecommendId, self.setSortType, self.getSortType, True)
+            __("Sort By Recommend"), self.sortRecommendId, self.setSortType, self.getSortType, True)
         self.sortRecommendEventBox.connect("button-press-event", lambda w, e: self.updateCategoryCallback())
         
         (self.sortDownloadLabel, self.sortDownloadEventBox) = utils.setDefaultToggleLabel(
-            "按下载排序", self.sortDownloadId, self.setSortType, self.getSortType, False)
+            __("Sort By Download"), self.sortDownloadId, self.setSortType, self.getSortType, False)
         self.sortDownloadEventBox.connect("button-press-event", lambda w, e: self.updateCategoryCallback())
 
         (self.sortVoteLabel, self.sortVoteEventBox) = utils.setDefaultToggleLabel(
-            "按评分排序", self.sortVoteId, self.setSortType, self.getSortType, False)
+            __("Sort By Vote"), self.sortVoteId, self.setSortType, self.getSortType, False)
         self.sortVoteEventBox.connect("button-press-event", lambda w, e: self.updateCategoryCallback())
         
         self.sortButtonPaddingX = 5
@@ -166,7 +167,7 @@ class Topbar(object):
         
         # Add search entry and label.
         (self.searchEntry, searchAlign, self.searchCompletion) = newSearchUI(
-            "请输入您要搜索的软件名称、版本或其他信息",
+            __("Please enter the name you want to search for software, version or other information"),
             lambda text: getCandidates(map (lambda appInfo: appInfo.pkg.name, appInfos), text),
             self.clickCandidate,
             self.search)
@@ -178,25 +179,25 @@ class Topbar(object):
         
         if self.sortType == self.sortRecommendId:
             self.sortRecommendLabel.set_markup(
-                "<span foreground='%s' size='%s' underline='single'>%s</span>" % (self.selectColor, LABEL_FONT_SIZE, "按推荐排序"))
+                "<span foreground='%s' size='%s' underline='single'>%s</span>" % (self.selectColor, LABEL_FONT_SIZE, __("Sort By Recommend")))
             self.sortDownloadLabel.set_markup(
-                "<span foreground='%s' size='%s' >%s</span>" % (self.normalColor, LABEL_FONT_SIZE, "按下载排序"))
+                "<span foreground='%s' size='%s' >%s</span>" % (self.normalColor, LABEL_FONT_SIZE, __("Sort By Download")))
             self.sortVoteLabel.set_markup(
-                "<span foreground='%s' size='%s' >%s</span>" % (self.normalColor, LABEL_FONT_SIZE, "按评分排序"))
+                "<span foreground='%s' size='%s' >%s</span>" % (self.normalColor, LABEL_FONT_SIZE, __("Sort By Vote")))
         elif self.sortType == self.sortDownloadId:
             self.sortRecommendLabel.set_markup(
-                "<span foreground='%s' size='%s' >%s</span>" % (self.normalColor, LABEL_FONT_SIZE, "按推荐排序"))
+                "<span foreground='%s' size='%s' >%s</span>" % (self.normalColor, LABEL_FONT_SIZE, __("Sort By Recommend")))
             self.sortDownloadLabel.set_markup(
-                "<span foreground='%s' size='%s' underline='single'>%s</span>" % (self.selectColor, LABEL_FONT_SIZE, "按下载排序"))
+                "<span foreground='%s' size='%s' underline='single'>%s</span>" % (self.selectColor, LABEL_FONT_SIZE, __("Sort By Download")))
             self.sortVoteLabel.set_markup(
-                "<span foreground='%s' size='%s' >%s</span>" % (self.normalColor, LABEL_FONT_SIZE, "按评分排序"))
+                "<span foreground='%s' size='%s' >%s</span>" % (self.normalColor, LABEL_FONT_SIZE, __("Sort By Vote")))
         else:
             self.sortRecommendLabel.set_markup(
-                "<span foreground='%s' size='%s' >%s</span>" % (self.normalColor, LABEL_FONT_SIZE, "按推荐排序"))
+                "<span foreground='%s' size='%s' >%s</span>" % (self.normalColor, LABEL_FONT_SIZE, __("Sort By Recommend")))
             self.sortDownloadLabel.set_markup(
-                "<span foreground='%s' size='%s' >%s</span>" % (self.normalColor, LABEL_FONT_SIZE, "按下载排序"))
+                "<span foreground='%s' size='%s' >%s</span>" % (self.normalColor, LABEL_FONT_SIZE, __("Sort By Download")))
             self.sortVoteLabel.set_markup(
-                "<span foreground='%s' size='%s' underline='single'>%s</span>" % (self.selectColor, LABEL_FONT_SIZE, "按评分排序"))
+                "<span foreground='%s' size='%s' underline='single'>%s</span>" % (self.selectColor, LABEL_FONT_SIZE, __("Sort By Vote")))
         
     def getSortType(self):
         '''Get sort type.'''

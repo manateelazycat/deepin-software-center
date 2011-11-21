@@ -20,6 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from lang import __
 from searchEntry import *
 from utils import *
 from draw import *
@@ -60,11 +61,11 @@ class MoreWindow(object):
         self.window.add(self.mainAlign)
         
         # Create list item.
-        self.createListItem(1, "新版功能", self.newFeature)
-        self.createListItem(2, "代理设置", self.setProxy)
-        self.createListItem(3, "论坛求助", self.forumHelp)
-        self.createListItem(4, "加入我们", self.joinUs)
-        self.createListItem(5, "问题反馈", self.reportProblem)
+        self.createListItem(1, __("New Feature"), self.newFeature)
+        self.createListItem(2, __("Proxy Setup"), self.setProxy)
+        self.createListItem(3, __("Forum Help"), self.forumHelp)
+        self.createListItem(4, __("Join Us"), self.joinUs)
+        self.createListItem(5, __("Report problem"), self.reportProblem)
 
         # Set shape.
         self.window.connect("size-allocate", lambda w, a: updateShape(w, a, POPUP_WINDOW_RADIUS))
@@ -168,7 +169,7 @@ class NewFeature(object):
         self.titleAlign = gtk.Alignment()
         dLabel = DynamicSimpleLabel(
             self.titleAlign,
-            "软件中心2.0新功能",
+            __("Software Center 2.0 New Feature"),
             appTheme.getDynamicColor("themeSelectTitleText"),
             LABEL_FONT_LARGE_SIZE,
             )
@@ -264,7 +265,7 @@ class ProxySetup(object):
         self.titleAlign = gtk.Alignment()
         dLabel = DynamicSimpleLabel(
             self.titleAlign,
-            "设置代理",
+            __("Proxy Setup"),
             appTheme.getDynamicColor("themeSelectTitleText"),
             LABEL_FONT_LARGE_SIZE,
             )
@@ -290,7 +291,7 @@ class ProxySetup(object):
         
         self.proxyRuleLabel = DynamicSimpleLabel(
             self.setupBox,
-            "代理规则:  [http://][USER:PASSWORD@]HOST[:PORT]",
+            __("Proxy rule: [http://][USER:PASSWORD@]HOST[:PORT]"),
             appTheme.getDynamicColor("background"),
             ).getLabel()
         self.proxyRuleLabel.set_alignment(0.0, 0.0)
@@ -316,7 +317,7 @@ class ProxySetup(object):
         
         self.setupButton = utils.newButtonWithoutPadding()
         self.setupButton.connect("button-press-event", lambda w, e: self.setProxy())
-        drawButton(self.setupButton, "confirm", "index", False, "设定", BUTTON_FONT_SIZE_SMALL, "buttonFont")
+        drawButton(self.setupButton, "confirm", "index", False, __("Setup"), BUTTON_FONT_SIZE_SMALL, "buttonFont")
         self.inputBox.pack_start(self.setupButton, False, False, self.SETUP_BUTTON_PADDING_X)
             
         # Hide window if user click on main window.
@@ -335,9 +336,9 @@ class ProxySetup(object):
         
         # Display message.
         if proxyString == "":
-            self.messageCallback("取消代理成功！")
+            self.messageCallback(__("Cancel proxy!"))
         else:
-            self.messageCallback("代理设置成功!")
+            self.messageCallback(__("Setup proxy!"))
         
     def show(self):
         '''Show.'''

@@ -20,6 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from lang import __
 from utils import *
 from theme import *
 from appItem import *
@@ -151,7 +152,7 @@ class DetailView(object):
         # Add return button.
         self.returnButton = utils.newButtonWithoutPadding()
         self.returnButton.connect("button-release-event", lambda widget, event: exitCallback(pageId, utils.getPkgName(pkg)))
-        drawButton(self.returnButton, "return", "cell", False, "返回", BUTTON_FONT_SIZE_MEDIUM, "bigButtonFont")
+        drawButton(self.returnButton, "return", "cell", False, __("Return"), BUTTON_FONT_SIZE_MEDIUM, "bigButtonFont")
         
         buttonPaddingTop = 20
         buttonPaddingRight = 20
@@ -228,7 +229,7 @@ class DetailView(object):
         summaryAlignTop = 10
         summaryDLabel = DynamicSimpleLabel(
             detailBox,
-            "<b>详细介绍</b>",
+            "<b>%s</b>" % (__("Long Description")),
             appTheme.getDynamicColor("detailTitle"),
             LABEL_FONT_LARGE_SIZE,
             )
@@ -247,7 +248,7 @@ class DetailView(object):
         if homepage != "":
             homepageAlignY = 20
             (homepageLabel, homepageEventBox) = setDefaultClickableDynamicLabel(
-                "访问首页",
+                __("Homepage"),
                 "link",
                 )
             homepageLabel.set_alignment(0.0, 0.0)
@@ -262,7 +263,7 @@ class DetailView(object):
         if lang == "zh_CN":
             translationAlignY = 20
             (translationLabel, translationEventBox) = setDefaultClickableDynamicLabel(
-                "协助翻译",
+                __("Translate description"),
                 "link"
                 )
             translationLabel.set_alignment(0.0, 0.0)
@@ -272,14 +273,14 @@ class DetailView(object):
             detailBox.pack_start(translationEventBox, False, False)
             
             # Show translation  when hover link.
-            utils.setHelpTooltip(translationEventBox, "协助翻译")
+            utils.setHelpTooltip(translationEventBox, __("Translate description"))
         
         # Add screenshot.
         screenshotBox = gtk.VBox()
         
         screenshotDLabel = DynamicSimpleLabel(
             screenshotBox,
-            "<b>软件截图</b>",
+            "<b>%s</b>" % (__("Screenshot")),
             appTheme.getDynamicColor("detailTitle"),
             LABEL_FONT_LARGE_SIZE,
             )
@@ -420,7 +421,7 @@ class AppInfoItem(DownloadItem):
         # Add application version.
         appVersionLabel = DynamicSimpleLabel(
             self.appExtraBox,
-            "版本: " + utils.getPkgVersion(pkg),
+            __("Version: ") + utils.getPkgVersion(pkg),
             appTheme.getDynamicColor("detailAction"),
             LABEL_FONT_MEDIUM_SIZE,
             )
@@ -435,7 +436,7 @@ class AppInfoItem(DownloadItem):
             (_, rSize) = utils.getPkgDependSize(self.aptCache, pkg, ACTION_UNINSTALL)
             uninstallSizeLabel = DynamicSimpleLabel(
                 appSizeBox,
-                "卸载后释放%s空间" % (utils.formatFileSize(rSize)),
+                (__("Uninstall to release %s space") % (utils.formatFileSize(rSize))),
                 appTheme.getDynamicColor("detailAction"),
                 LABEL_FONT_MEDIUM_SIZE,
                 )
@@ -447,15 +448,15 @@ class AppInfoItem(DownloadItem):
             useSizeLabel.set_alignment(0.0, 0.5)
             
             if self.appInfo.status == APP_STATE_UPGRADE:
-                actionLabel = "升级"
+                actionLabel = __("Action Update")
                 (downloadSize, useSize) = utils.getPkgDependSize(self.aptCache, pkg, ACTION_UPGRADE)
             else:
-                actionLabel = "安装"
+                actionLabel = __("Action Install")
                 (downloadSize, useSize) = utils.getPkgDependSize(self.aptCache, pkg, ACTION_INSTALL)
 
             updateSizeLabel = DynamicSimpleLabel(
                 appSizeBox,
-                "%s后占用 %s 空间 需要下载 %s" % (actionLabel, utils.formatFileSize(useSize), utils.formatFileSize(downloadSize)),
+                (__("Download to eat %s space") % (actionLabel, utils.formatFileSize(useSize), utils.formatFileSize(downloadSize))),
                 appTheme.getDynamicColor("detailAction"),
                 LABEL_FONT_MEDIUM_SIZE,
                 )
@@ -493,15 +494,15 @@ class AppInfoItem(DownloadItem):
         if self.appInfo.status == APP_STATE_INSTALLED:
             appActionButton = utils.newButtonWithoutPadding()
             appActionButton.connect("button-release-event", lambda widget, event: self.switchToUninstalling())
-            drawButton(appActionButton, "uninstall", "cell", False, "卸载", BUTTON_FONT_SIZE_SMALL, "buttonFont")
+            drawButton(appActionButton, "uninstall", "cell", False, __("Action Uninstall"), BUTTON_FONT_SIZE_SMALL, "buttonFont")
         elif self.appInfo.status == APP_STATE_UPGRADE:
             appActionButton = utils.newButtonWithoutPadding()
             appActionButton.connect("button-release-event", lambda widget, event: self.switchToDownloading())
-            drawButton(appActionButton, "update", "cell", False, "升级", BUTTON_FONT_SIZE_SMALL, "buttonFont")
+            drawButton(appActionButton, "update", "cell", False, __("Action Update"), BUTTON_FONT_SIZE_SMALL, "buttonFont")
         else:
             appActionButton = utils.newButtonWithoutPadding()
             appActionButton.connect("button-release-event", lambda widget, event: self.switchToDownloading())
-            drawButton(appActionButton, "install", "cell", False, "安装", BUTTON_FONT_SIZE_SMALL, "buttonFont")
+            drawButton(appActionButton, "install", "cell", False, __("Action Install"), BUTTON_FONT_SIZE_SMALL, "buttonFont")
         appActionBox.pack_start(appActionButton, False, False)
         self.appAdditionBox.pack_start(appActionBox, False, False, self.EXTRA_PADDING_X)
         
@@ -546,7 +547,7 @@ class AppInfoItem(DownloadItem):
         if self.appInfo.status == APP_STATE_INSTALLING:
             if self.installingProgressbar != None and self.installingFeedbackLabel != None:
                 self.installingProgressbar.setProgress(progress)
-                self.installingFeedbackLabel.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, "安装中"))
+                self.installingFeedbackLabel.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, __("Action Installing")))
                 
                 self.itemFrame.show_all()
                 
@@ -555,7 +556,7 @@ class AppInfoItem(DownloadItem):
         if self.appInfo.status == APP_STATE_UPGRADING:
             if self.upgradingProgressbar != None and self.upgradingFeedbackLabel != None:
                 self.upgradingProgressbar.setProgress(progress)
-                self.upgradingFeedbackLabel.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, "升级中"))
+                self.upgradingFeedbackLabel.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, __("Action Updating")))
                 
                 self.itemFrame.show_all()
                 
@@ -564,7 +565,7 @@ class AppInfoItem(DownloadItem):
         if self.appInfo.status == APP_STATE_UNINSTALLING:
             if self.uninstallingProgressbar != None and self.uninstallingFeedbackLabel != None:
                 self.uninstallingProgressbar.setProgress(progress)
-                self.uninstallingFeedbackLabel.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, "卸载中"))
+                self.uninstallingFeedbackLabel.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, __("Action Uninstalling")))
                 
                 self.itemFrame.show_all()
                 
@@ -646,7 +647,7 @@ class FetchScreenshot(td.Thread):
                 self.imageBox, 
                 self.image, 
                 appTheme.getDynamicPixbuf("screenshot/zoom_in.png"))
-            utils.setHelpTooltip(self.imageBox, "点击放大")
+            utils.setHelpTooltip(self.imageBox, __("Click Zoom In"))
         else:
             if self.killed:
                 pkgName = utils.getPkgName(self.appInfo.pkg)
@@ -727,7 +728,7 @@ class SmallScreenshot(td.Thread):
         # Add wait message.
         waitMessage = DynamicSimpleLabel(
             waitBox,
-            "查询截图...",
+            __("Query screenshot ..."),
             appTheme.getDynamicColor("detailTitle"),
             LABEL_FONT_SIZE,
             ).getLabel()
@@ -756,7 +757,7 @@ class SmallScreenshot(td.Thread):
         # Add downloading message.
         downloadingMessage = DynamicSimpleLabel(
             downloadingBox,
-            "正在下载截图...",
+            __("Downloading screenshot ..."),
             appTheme.getDynamicColor("detailTitle"),
             LABEL_FONT_SIZE,
             ).getLabel()
@@ -778,7 +779,7 @@ class SmallScreenshot(td.Thread):
         # Add query message.
         queryMessage = DynamicSimpleLabel(
             queryBox,
-            "查询失败, 请检查你的网络并点击刷新重试.",
+            __("Query fails, check your network and click refresh and try again."),
             appTheme.getDynamicColor("detailTitle"),
             LABEL_FONT_SIZE,
             ).getLabel()
@@ -800,7 +801,7 @@ class SmallScreenshot(td.Thread):
         # Add download message.
         downloadMessage = DynamicSimpleLabel(
             downloadBox,
-            "下载失败, 请检查你的网络并点击刷新重试.",
+            __("Download fails, check your network and click refresh and try again."),
             appTheme.getDynamicColor("detailTitle"),
             LABEL_FONT_SIZE,
             ).getLabel()
@@ -822,7 +823,7 @@ class SmallScreenshot(td.Thread):
         # Add noneed message.
         noneedMessage = DynamicSimpleLabel(
             noneedBox,
-            "这个软件不需要截图",
+            __("The software does not screenshot"),
             appTheme.getDynamicColor("detailTitle"),
             LABEL_FONT_SIZE,
             ).getLabel()
@@ -844,7 +845,7 @@ class SmallScreenshot(td.Thread):
         # Add upload message.
         uploadMessage = DynamicSimpleLabel(
             uploadBox,
-            "上传新图",
+            __("Upload screenshot"),
             appTheme.getDynamicColor("detailTitle"),
             LABEL_FONT_SIZE,
             ).getLabel()
@@ -920,7 +921,7 @@ class SmallScreenshot(td.Thread):
             eventbox,
             self.bigScreenshotImage,
             appTheme.getDynamicPixbuf("screenshot/zoom_in.png"))
-        utils.setHelpTooltip(eventbox, "点击放大")
+        utils.setHelpTooltip(eventbox, __("Click Zoom In"))
         
         self.box.show_all()
         

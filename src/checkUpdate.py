@@ -20,6 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from lang import __
 from constant import *
 from draw import *
 from utils import *
@@ -101,7 +102,8 @@ class TrayIcon(object):
         
         # Draw.
         label = gtk.Label()
-        label.set_markup("<span size='%s'>有%s个软件包可以升级</span>" % (LABEL_FONT_SIZE, self.updateNum))
+        label.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, 
+                                                        (__("There are %s software packages can be upgraded") % (self.updateNum))))
         
         self.tooltipEventBox.add(label)
         self.tooltipWindow.show_all()
@@ -145,7 +147,7 @@ class TrayIcon(object):
         # Otherwise socket and other resources of current process will keep that 
         # make software center can't works correctly.
         if startup:
-            subprocess.Popen(["gksu", "./deepin-software-center.py", "show-update", "--message=请输入管理员密码以启用深度Linux软件中心"])
+            subprocess.Popen(["gksu", "./deepin-software-center.py", "show-update", "--message=" + __("Please enter the administrator password to enable deepin software center")])
             
     def exit(self):
         '''Exit'''
@@ -204,7 +206,7 @@ class TrayIcon(object):
         aboutIcon = gtk.Image()
         aboutIcon.set_from_file("../icon/about.png")
         aboutItem = gtk.ImageMenuItem()
-        aboutItem.set_label("关于")
+        aboutItem.set_label(__("About"))
         aboutItem.set_image(aboutIcon)
         aboutItem.connect("activate", self.showAboutDialog)
         menu.append(aboutItem)
@@ -212,7 +214,7 @@ class TrayIcon(object):
         quitIcon = gtk.Image()
         quitIcon.set_from_file("../icon/quit.png")
         quitItem = gtk.ImageMenuItem()
-        quitItem.set_label("退出")
+        quitItem.set_label(__("Exit"))
         quitItem.set_image(quitIcon)
         quitItem.connect("activate", lambda w: self.exit())
         menu.append(quitItem)
@@ -225,7 +227,7 @@ class TrayIcon(object):
         aboutDialog = gtk.AboutDialog()
 
         aboutDialog.set_destroy_with_parent(True)
-        aboutDialog.set_name("深度Linux更新管理器")
+        aboutDialog.set_name(__("Deepin Update Manager"))
         aboutDialog.set_version(VERSION)
         aboutDialog.set_authors(AUTHOR)
         aboutDialog.set_artists(ARTISTS)

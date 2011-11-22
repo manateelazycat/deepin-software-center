@@ -196,6 +196,7 @@ class DetailView(object):
         self.commentAreaAlign.set(0.0, 0.0, 1.0, 1.0)
         self.commentAreaAlign.set_padding(self.ALIGN_Y, 0, self.ALIGN_X, self.ALIGN_X)
         self.commentAreaAlign.add(self.commentArea)
+        self.commentArea.connect("console-message", lambda view, message, line, sourceId: self.scrollCommentAreaToTop(message))
         
         # Set small width to avoid comment area can't shrink window when main window shrink.
         self.commentArea.set_size_request(DEFAULT_WINDOW_WIDTH / 2, -1) 
@@ -205,6 +206,14 @@ class DetailView(object):
         self.contentBox.show_all()
         
         self.scrolledWindow.show_all()
+        
+    def scrollCommentAreaToTop(self, message):
+        '''Scroll comment area to top.'''
+        if message in ["home", "end", "next", "prev"]:
+            vadj = self.scrolledWindow.get_vadjustment()
+            (_, offsetY) = self.commentArea.translate_coordinates(self.scrolledWindow, 0, 0)
+            currentY = vadj.get_value()
+            vadj.set_value(currentY + offsetY)
         
     def createInfoTab(self, appInfo, pkg):
         '''Select information tab.'''

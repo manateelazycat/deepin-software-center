@@ -8,6 +8,7 @@
 	* Adjust comment detail.
 	* Adjust names, and apply Zhang Cheng's patch, thanks!
 	* Fix crash problem when setup proxy in webkit.
+	* Scroll comment area to right place when change page.
 
 2011-11-21 Yong Wang <lazycat.manatee@gmail.com>
 	* Move news document to deepin-software-center.po.

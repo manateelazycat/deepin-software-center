@@ -1099,8 +1099,8 @@ class DeepinSoftwareCenter(object):
         if view != None:
             for vote in voteJson.items():
                 try:
-                    (pkgName, [starLevel, voteNum]) = vote
-                    view.updateVoteView(pkgName, float(starLevel), voteNum)
+                    (pkgName, [starLevel, commentNum]) = vote
+                    view.updateVoteView(pkgName, float(starLevel), commentNum)
                 except Exception, e:
                     print "updateVote Error: %s" % (e)
                 

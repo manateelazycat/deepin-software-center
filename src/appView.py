@@ -301,11 +301,11 @@ class AppView(object):
             appItem = self.itemDict[pkgName]
             appItem.updateUninstallingStatus(progress, feedback)
             
-    def updateVoteView(self, pkgName, starLevel, voteNum):
+    def updateVoteView(self, pkgName, starLevel, commentNum):
         '''Update vote view.'''
         if self.itemDict.has_key(pkgName):
             appItem = self.itemDict[pkgName]
-            appItem.updateVoteView(starLevel, voteNum)
+            appItem.updateVoteView(starLevel, commentNum)
 
 #  LocalWords:  FFFFFF eventbox GtkEventBox ScrolledWindow numBox EventBox
 #  LocalWords:  numLabel pageIndex numColor

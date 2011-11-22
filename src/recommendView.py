@@ -86,17 +86,17 @@ class RecommendItem(DownloadItem):
         self.appLeftAlign.add(self.appLeftBox)
         self.itemBox.pack_start(self.appLeftAlign)
         
-        self.appBasicBox = gtk.HBox()
-        self.appLeftBox.pack_start(self.appBasicBox, False, False)
+        self.appBasicView = gtk.HBox()
+        self.appLeftBox.pack_start(self.appBasicView, False, False)
         
         self.appIconBox = gtk.VBox()
-        self.appBasicBox.pack_start(self.appIconBox, False, False)
+        self.appBasicView.pack_start(self.appIconBox, False, False)
         
         self.appAdditionBox = gtk.VBox()
         self.appAdditionAlign = gtk.Alignment()
         self.appAdditionAlign.set(0.5, 0.5, 0.0, 0.0)
         self.appAdditionAlign.add(self.appAdditionBox)
-        self.appBasicBox.pack_start(self.appAdditionAlign, False, False)
+        self.appBasicView.pack_start(self.appAdditionAlign, False, False)
         
         self.appTopBox = gtk.HBox()
         self.appAdditionBox.pack_start(self.appTopBox, False, False)

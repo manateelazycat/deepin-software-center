@@ -82,8 +82,8 @@ class UninstallItem(object):
         self.itemFrame.set(0.0, 0.5, 1.0, 1.0)
         self.itemFrame.add(self.itemEventBox)
         
-        self.appBasicBox = createItemBasicBox(self.appInfo, 200, self.itemBox, self.entryDetailView)
-        self.itemBox.pack_start(self.appBasicBox, True, True, self.APP_LEFT_PADDING_X)
+        self.appBasicView = AppBasicView(self.appInfo, 200, self.itemBox, self.entryDetailView)
+        self.itemBox.pack_start(self.appBasicView.align, True, True, self.APP_LEFT_PADDING_X)
         
         self.appAdditionBox = gtk.HBox()
         self.appAdditionAlign = gtk.Alignment()
@@ -126,7 +126,6 @@ class UninstallItem(object):
         # Add application vote information.
         self.appVoteView = VoteView(
             self.appInfo, PAGE_UNINSTALL, 
-            self.entryDetailCallback, 
             self.sendVoteCallback)
         self.appAdditionBox.pack_start(self.appVoteView.eventbox, False, False)
         
@@ -215,10 +214,11 @@ class UninstallItem(object):
                 
                 self.itemFrame.show_all()
                 
-    def updateVoteView(self, starLevel, voteNum):
+    def updateVoteView(self, starLevel, commentNum):
         '''Update vote view.'''
         if not self.appInfo.status == APP_STATE_UNINSTALLING and self.appVoteView != None:
-            self.appVoteView.updateVote(starLevel, voteNum)
+            self.appVoteView.updateVote(starLevel, commentNum)
+            self.appBasicView.updateCommentNum(commentNum)
                 
 def createActionButton(alignX=0.5, alignY=0.5):
     '''Create action button.'''
@@ -416,84 +416,103 @@ class DownloadItem(object):
                 
                 self.itemFrame.show_all()
                 
-def createItemBasicBox(appInfo, maxWidth, parent, entryDetailCallback):
-    '''Create item information.'''
-    # Init.
-    appBasicAlign = gtk.Alignment()
-    appBasicAlign.set(0.0, 0.5, 1.0, 1.0)
-    
-    appBasicBox = gtk.HBox()
-    appBasicAlign.add(appBasicBox)
-    pkg = appInfo.pkg
-    
-    # Add application icon.
-    appIcon = createAppIcon(pkg)
-    appBasicBox.pack_start(appIcon, False, False)
-    
-    # Add application left box.
-    appBox = gtk.VBox()
-    appAlign = gtk.Alignment()
-    appAlign.set(0.0, 0.5, 0.0, 0.0)
-    appAlign.add(appBox)
-    appBasicBox.pack_start(appAlign)
-    
-    # Add application name.
-    pkgName = utils.getPkgName(pkg)
-    
-    appNameLabel = DynamicLabel(
-        parent,
-        pkgName,
-        appTheme.getDynamicLabelColor("appName"), 
-        LABEL_FONT_SIZE)
-    appName = appNameLabel.getLabel()
-    
-    parent.connect("size-allocate", 
-                   lambda w, e: adjustLabelWidth(parent, 
-                                                 appName,
-                                                 LABEL_FONT_SIZE / 1000,
-                                                 maxWidth))
-    
-    appName.set_single_line_mode(True)
-    appName.set_ellipsize(pango.ELLIPSIZE_END)
-    appName.set_alignment(0.0, 0.5)
-    appNameEventBox = gtk.EventBox()
-    appNameEventBox.add(appName)
-    appNameEventBox.set_visible_window(False)
-    appNameEventBox.connect(
-        "button-press-event",
-        lambda w, e: entryDetailCallback())
-    appBox.pack_start(appNameEventBox, False, False)
-    
-    utils.showVersionTooltip(appNameEventBox, pkg)
-    
-    utils.setClickableDynamicLabel(
-        appNameEventBox,
-        appNameLabel,
-        )
-    
-    # Add application summary.
-    summary = utils.getPkgShortDesc(pkg)
-    appSummaryBox = gtk.HBox()
-    appSummaryLabel = DynamicSimpleLabel(
-        parent,
-        summary,
-        appTheme.getDynamicColor("appSummary"),
-        LABEL_FONT_SIZE
-        )
-    appSummary = appSummaryLabel.getLabel()
-    parent.connect("size-allocate", 
-                   lambda w, e: adjustLabelWidth(parent, 
-                                                 appSummary,
-                                                 LABEL_FONT_SIZE / 1000,
-                                                 maxWidth))
-    
-    appSummary.set_single_line_mode(True)
-    appSummary.set_ellipsize(pango.ELLIPSIZE_END)
-    appSummary.set_alignment(0.0, 0.5)
-    appSummaryBox.pack_start(appSummary, False, False)
-    appBox.pack_start(appSummaryBox, False, False)
-    
-    return appBasicAlign
+class AppBasicView(object):
+    '''Application basic view.'''
+	
+    def __init__(self, appInfo, maxWidth, parent, entryDetailCallback):
+        '''Init application basic view.'''
+        # Init.
+        self.align = gtk.Alignment()
+        self.align.set(0.0, 0.5, 1.0, 1.0)
+        self.commentNum = 0
+        
+        appBasicBox = gtk.HBox()
+        self.align.add(appBasicBox)
+        pkg = appInfo.pkg
+        
+        # Add application icon.
+        appIcon = createAppIcon(pkg)
+        appBasicBox.pack_start(appIcon, False, False)
+        
+        # Add application left box.
+        appBox = gtk.VBox()
+        appAlign = gtk.Alignment()
+        appAlign.set(0.0, 0.5, 0.0, 0.0)
+        appAlign.add(appBox)
+        appBasicBox.pack_start(appAlign)
+        
+        # Add application name.
+        pkgName = utils.getPkgName(pkg)
+        
+        appNameLabel = DynamicLabel(
+            parent,
+            pkgName,
+            appTheme.getDynamicLabelColor("appName"), 
+            LABEL_FONT_SIZE)
+        appName = appNameLabel.getLabel()
+        
+        appName.set_single_line_mode(True)
+        appName.set_alignment(0.0, 0.0)
+        
+        self.appNameBox = gtk.HBox()
+        self.appNameBox.pack_start(appName, False, False)
+        
+        self.appCommentNumBox = gtk.VBox()
+        self.appNameBox.pack_start(self.appCommentNumBox, True, True)
+        
+        appNameEventBox = gtk.EventBox()
+        appNameEventBox.add(self.appNameBox)
+        appNameEventBox.set_visible_window(False)
+        appNameEventBox.connect(
+            "button-press-event",
+            lambda w, e: entryDetailCallback())
+        appBox.pack_start(appNameEventBox, False, False)
+        
+        utils.showVersionTooltip(appNameEventBox, pkg)
+        
+        utils.setClickableDynamicLabel(
+            appNameEventBox,
+            appNameLabel,
+            )
+        
+        # Add application summary.
+        summary = utils.getPkgShortDesc(pkg)
+        appSummaryBox = gtk.HBox()
+        appSummaryLabel = DynamicSimpleLabel(
+            parent,
+            summary,
+            appTheme.getDynamicColor("appSummary"),
+            LABEL_FONT_SIZE
+            )
+        appSummary = appSummaryLabel.getLabel()
+        parent.connect("size-allocate", 
+                       lambda w, e: adjustLabelWidth(parent, 
+                                                     appSummary,
+                                                     LABEL_FONT_SIZE / 1000,
+                                                     maxWidth))
+        
+        appSummary.set_single_line_mode(True)
+        appSummary.set_ellipsize(pango.ELLIPSIZE_END)
+        appSummary.set_alignment(0.0, 0.5)
+        appSummaryBox.pack_start(appSummary, False, False)
+        appBox.pack_start(appSummaryBox, False, False)
+        
+    def updateCommentNum(self, commentNum):
+        '''Update comment num.'''
+        if commentNum > 0:
+            utils.containerRemoveAll(self.appCommentNumBox)
+            appCommentLabel = DynamicSimpleLabel(
+                self.appCommentNumBox,
+                __("Comment") % commentNum,
+                appTheme.getDynamicColor("appSummary"),
+                LABEL_FONT_SMALL_SIZE,
+                ).getLabel()
+            appCommentLabel.set_single_line_mode(True)
+            appCommentLabel.set_alignment(0.0, 1.0)
+            
+            self.appCommentNumBox.pack_start(appCommentLabel, True, True)
+            
+            self.align.show_all()
 
 def adjustLabelWidth(parent, label, fontWidth, adjustWidth):
     '''Adjust label width.'''
@@ -520,15 +539,13 @@ class VoteView(object):
     FOCUS_NORMAL = 1
     FOCUS_INIT = 2
 	
-    def __init__(self, appInfo, pageId,
-                 entryDetailCallback, sendVoteCallback):
+    def __init__(self, appInfo, pageId, sendVoteCallback):
         '''Init for vote view.'''
         self.appInfo = appInfo
         self.pageId = pageId
         self.starLevel = 0
         self.voteNum   = 0
         self.sendVoteCallback = sendVoteCallback
-        self.entryDetailCallback = entryDetailCallback
         
         self.focusStatus = self.FOCUS_INIT
         self.starSize = 16

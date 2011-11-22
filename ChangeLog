@@ -4,6 +4,7 @@
 	* Finish proxy setup interface.
 	* Update translation.
 	* Change vote view interface, more friendly to English version.
+	* Move comment area to app name area.
 
 2011-11-21 Yong Wang <lazycat.manatee@gmail.com>
 	* Move news document to deepin-software-center.po.

@@ -110,11 +110,8 @@ msgstr "點擊完成評分"
 msgid "Click Zoom In"
 msgstr "點擊放大"
 
-msgid "Vote"
-msgstr "評分"
-
 msgid "Comment"
-msgstr "評論"
+msgstr " (評論: %s)"
 
 msgid "First Comment"
 msgstr "搶沙發!"

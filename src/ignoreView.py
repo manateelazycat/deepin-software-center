@@ -94,8 +94,8 @@ class IgnoreItem(object):
         self.checkAlign.add(self.checkButton)
         self.itemBox.pack_start(self.checkAlign, False, False)
         
-        self.appBasicBox = createItemBasicBox(self.appInfo, 300, self.itemBox, self.entryDetailView) 
-        self.itemBox.pack_start(self.appBasicBox, True, True)
+        self.appBasicView = AppBasicView(self.appInfo, 300, self.itemBox, self.entryDetailView) 
+        self.itemBox.pack_start(self.appBasicView.align, True, True)
         
         self.appAdditionBox = gtk.HBox()
         self.appAdditionAlign = gtk.Alignment()
@@ -143,7 +143,6 @@ class IgnoreItem(object):
         # Add application vote information.
         self.appVoteView = VoteView(
             self.appInfo, PAGE_UPGRADE, 
-            self.entryDetailCallback,
             self.sendVoteCallback)
         self.appAdditionBox.pack_start(self.appVoteView.eventbox, False, False)
         
@@ -170,10 +169,11 @@ class IgnoreItem(object):
         ignoreAlign.add(ignoreEventBox)
         self.appAdditionBox.pack_start(ignoreAlign, False, False)
         
-    def updateVoteView(self, starLevel, voteNum):
+    def updateVoteView(self, starLevel, commentNum):
         '''Update vote view.'''
         if self.appInfo.status == APP_STATE_UPGRADE and self.appVoteView != None:
-            self.appVoteView.updateVote(starLevel, voteNum)
+            self.appVoteView.updateVote(starLevel, commentNum)
+            self.appBasicView.updateCommentNum(commentNum)
                 
 class IgnoreView(appView.AppView):
     '''Application view.'''

@@ -68,7 +68,7 @@ class DownloadManageItem(DownloadItem):
         self.itemFrame = gtk.Alignment()
         self.itemFrame.set(0.0, 0.5, 1.0, 1.0)
         
-        self.appBasicBox = createItemBasicBox(self.appInfo, 200, self.itemBox, self.entryDetailView)
+        self.appBasicView = AppBasicView(self.appInfo, 200, self.itemBox, self.entryDetailView)
         
         # Widget that status will change.
         self.installingProgressbar = None
@@ -78,7 +78,7 @@ class DownloadManageItem(DownloadItem):
         self.upgradingFeedbackLabel = None
 
         # Connect components.
-        self.itemBox.pack_start(self.appBasicBox, True, True, self.APP_LEFT_PADDING_X)
+        self.itemBox.pack_start(self.appBasicView.align, True, True, self.APP_LEFT_PADDING_X)
         
         self.appAdditionBox = gtk.HBox()
         self.appAdditionAlign = gtk.Alignment()
@@ -129,7 +129,6 @@ class DownloadManageItem(DownloadItem):
         # Add application vote information.
         self.appVoteView = VoteView(
             self.appInfo, PAGE_DOWNLOAD_MANAGE, 
-            self.entryDetailCallback,
             self.sendVoteCallback)
         self.appAdditionBox.pack_start(self.appVoteView.eventbox, False, False)
         
@@ -169,10 +168,11 @@ class DownloadManageItem(DownloadItem):
             appInstalledLabel.set_size_request(buttonImage.get_width(), buttonImage.get_height())
             actionButtonBox.pack_start(appInstalledLabel)
     
-    def updateVoteView(self, starLevel, voteNum):
+    def updateVoteView(self, starLevel, commentNum):
         '''Update vote view.'''
         if self.appInfo.status in [APP_STATE_NORMAL, APP_STATE_UPGRADE, APP_STATE_INSTALLED] and self.appVoteView != None:
-            self.appVoteView.updateVote(starLevel, voteNum)
+            self.appVoteView.updateVote(starLevel, commentNum)
+            self.appBasicView.updateCommentNum(commentNum)
                 
 class DownloadManageView(appView.AppView):
     '''Application view.'''

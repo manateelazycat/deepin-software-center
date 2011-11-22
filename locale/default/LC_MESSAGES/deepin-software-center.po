@@ -323,9 +323,6 @@ msgstr "Report Problem"
 msgid "Software Center 2.0 New Feature"
 msgstr "Software Center 2.0 New Feature"
 
-msgid "Proxy rule: [http://][USER:PASSWORD@]HOST[:PORT]"
-msgstr "Proxy rule: [http://][USER:PASSWORD@]HOST[:PORT]"
-
 msgid "Setup"
 msgstr "Setup"
 

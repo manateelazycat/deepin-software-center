@@ -323,9 +323,6 @@ msgstr "問題反饋"
 msgid "Software Center 2.0 New Feature"
 msgstr "軟件中心2.0新功能"
 
-msgid "Proxy rule: [http://][USER:PASSWORD@]HOST[:PORT]"
-msgstr "代理規則:  [http://][USER:PASSWORD@]HOST[:PORT]"
-
 msgid "Setup"
 msgstr "設定"
 

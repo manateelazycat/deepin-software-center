@@ -101,8 +101,11 @@ msgstr "下载管理"
 msgid "Click Show Detail"
 msgstr "点击查看详细信息"
 
-msgid "Click Vote"
-msgstr "点击评分"
+msgid "Click Start Vote"
+msgstr "点击开始评分"
+
+msgid "Click Finish Vote"
+msgstr "点击完成评分"
 
 msgid "Click Zoom In"
 msgstr "点击放大"

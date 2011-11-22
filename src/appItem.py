@@ -531,7 +531,6 @@ class VoteView(object):
         self.entryDetailCallback = entryDetailCallback
         
         self.focusStatus = self.FOCUS_INIT
-        # self.focusStatus = self.FOCUS_NORMAL
         self.starSize = 16
         self.starView = None
         
@@ -546,9 +545,6 @@ class VoteView(object):
         
         self.starBox = gtk.HBox()
         self.box.pack_start(self.starBox, False, False, self.VOTE_PADDING_Y)
-        
-        self.voteBox = gtk.HBox()
-        self.box.pack_start(self.voteBox)
         
         self.init()
         
@@ -583,7 +579,6 @@ class VoteView(object):
         '''Draw focus star status.'''
         # Remove child first.
         utils.containerRemoveAll(self.starBox)
-        utils.containerRemoveAll(self.voteBox)
         
         # Add application vote star.
         self.starView = StarView()
@@ -592,49 +587,28 @@ class VoteView(object):
         self.starView.eventbox.connect("button-press-event", lambda w, e: self.switchFocusStatus(self.FOCUS_NORMAL))
         
         # Show help.
-        utils.setHelpTooltip(self.starView.eventbox, __("Click Vote"))
+        utils.setHelpTooltip(self.starView.eventbox, __("Click Finish Vote"))
+        utils.setClickableCursor(self.starView.eventbox)
         
     def drawFocusNormal(self):
         '''Draw focus normal status.'''
         # Remove child first.
         utils.containerRemoveAll(self.starBox)
-        utils.containerRemoveAll(self.voteBox)
+        # utils.containerRemoveAll(self.voteBox)
         
         # Add application vote star.
         starBox = createStarBox(self.starLevel, self.starSize)
-        
         self.starBox.pack_start(starBox)
         
-        (self.voteLabel, self.voteEventBox) = setDefaultClickableDynamicLabel(
-            __("Vote"),
-            "appVote",
-            )
-        self.voteEventBox.connect("button-press-event", lambda w, e: self.switchFocusStatus(self.FOCUS_STAR))
-        self.voteBox.pack_start(self.voteEventBox)
+        starBox.connect("button-press-event", lambda w, e: self.switchFocusStatus(self.FOCUS_STAR))
         
-        if self.voteNum == 0:
-            (self.rate, self.rateEventBox) = setDefaultClickableDynamicLabel(
-                __("First Comment"),
-                "appVote",
-                )
-        else:
-            (self.rate, self.rateEventBox) = setDefaultClickableDynamicLabel(
-                "%s %s" % (self.voteNum, __("Comment")),
-                "appVote",
-                )
+        utils.setHelpTooltip(starBox, __("Click Start Vote"))
+        utils.setClickableCursor(starBox)
         
-        self.rateEventBox.connect("button-press-event", 
-                                  lambda w, e: self.entryDetailCallback(self.pageId, self.appInfo))
-        rateAlign = gtk.Alignment()
-        rateAlign.set(1.0, 0.5, 0.0, 0.0)
-        rateAlign.add(self.rateEventBox)
-        self.voteBox.pack_start(rateAlign)
-
     def drawFocusInit(self):
         '''Draw focus out.'''
         # Remove child first.
         utils.containerRemoveAll(self.starBox)
-        utils.containerRemoveAll(self.voteBox)
         
         # Add waiting label.
         waitingVoteLabel = gtk.Label()

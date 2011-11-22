@@ -3,6 +3,7 @@
 2011-11-22 Yong Wang <lazycat.manatee@gmail.com>
 	* Finish proxy setup interface.
 	* Update translation.
+	* Change vote view interface, more friendly to English version.
 
 2011-11-21 Yong Wang <lazycat.manatee@gmail.com>
 	* Move news document to deepin-software-center.po.

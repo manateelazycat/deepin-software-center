@@ -101,11 +101,11 @@ msgstr "Download Manage"
 msgid "Click Show Detail"
 msgstr "Click to show detail"
 
-msgid "Click Vote"
-msgstr "Click to vote"
+msgid "Click Start Vote"
+msgstr "Click to start vote"
 
-msgid "Click Zoom In"
-msgstr "Click to zoom in"
+msgid "Click Finish Vote"
+msgstr "Click to finish vote"
 
 msgid "Vote"
 msgstr "Vote"

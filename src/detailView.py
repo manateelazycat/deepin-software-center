@@ -209,7 +209,7 @@ class DetailView(object):
         
     def scrollCommentAreaToTop(self, message):
         '''Scroll comment area to top.'''
-        if message in ["home", "end", "next", "prev"]:
+        if message == "scroll":
             vadj = self.scrolledWindow.get_vadjustment()
             (_, offsetY) = self.commentArea.translate_coordinates(self.scrolledWindow, 0, 0)
             currentY = vadj.get_value()

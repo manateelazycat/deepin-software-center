@@ -20,6 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import getopt
 from lang import __
 from theme import *
 from constant import *
@@ -931,7 +932,7 @@ class DeepinSoftwareCenter(object):
     def postInitThread(self):
         '''Execute after init thread finish.'''
         # Select default page.
-        self.selectPage(self.defaultPageId)
+        self.selectPage(self.defaultPageId, False)
 
         # Update List.
         self.updateList.start()
@@ -944,10 +945,11 @@ class DeepinSoftwareCenter(object):
         self.window.set_keep_above(True)
         self.window.set_keep_above(False)
 
-    def selectPage(self, pageId):
+    def selectPage(self, pageId, hideWindow=True):
         '''Select recommend page.'''
         # Hide popup window.
-        self.hidePopupWindow()
+        if hideWindow:
+            self.hidePopupWindow()
         
         # Clean content.
         utils.containerRemoveAll(self.contentBox)

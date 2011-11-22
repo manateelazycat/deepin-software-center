@@ -230,9 +230,10 @@ class ProxySetup(object):
     '''Proxy setup..'''
     
     WINDOW_WIDTH = 360
-    WINDOW_HEIGHT = 90
+    WINDOW_HEIGHT = 185
     ALIGN_X = 10
     ALIGN_Y = 4
+    ACTION_ALIGN_Y = 10
     SETUP_BUTTON_PADDING_X = 5
 	
     def __init__(self, widget, messageCallback):
@@ -290,56 +291,126 @@ class ProxySetup(object):
         self.setupAlign.add(self.setupBox)
         self.mainBox.pack_start(self.setupAlign, False, False)
         
-        self.proxyRuleLabel = DynamicSimpleLabel(
-            self.setupBox,
-            __("Proxy rule: [http://][USER:PASSWORD@]HOST[:PORT]"),
+        self.itemLabelWidth = 8
+        
+        (self.addressBox, self.addressLabel, self.addressEntry) = self.createInputItem(__("Proxy Address"))
+        (self.portBox, self.portLabel, self.portEntry) = self.createInputItem(__("Proxy Port"))
+        (self.userBox, self.userLabel, self.userEntry) = self.createInputItem(__("Proxy User"))
+        (self.passwordBox, self.passwordLabel, self.passwordEntry) = self.createInputItem(__("Proxy Password"), True)
+        
+        self.setupBox.pack_start(self.addressBox)
+        self.setupBox.pack_start(self.portBox)
+        self.setupBox.pack_start(self.userBox)
+        self.setupBox.pack_start(self.passwordBox)
+        
+        self.actionBox = gtk.HBox()
+        self.actionAlign = gtk.Alignment()
+        self.actionAlign.set(0.0, 0.0, 1.0, 1.0)
+        self.actionAlign.set_padding(self.ACTION_ALIGN_Y, self.ACTION_ALIGN_Y, 0, 0)
+        self.actionAlign.add(self.actionBox)
+        self.setupBox.pack_start(self.actionAlign)
+        
+        self.setupButton = utils.newButtonWithoutPadding()
+        self.setupButton.connect("button-press-event", lambda w, e: self.setProxy())
+        drawButton(self.setupButton, "search", "cell", False, __("Proxy OK"), BUTTON_FONT_SIZE_SMALL, "buttonFont")
+        self.actionBox.pack_start(self.setupButton, True, False)
+
+        self.cancelButton = utils.newButtonWithoutPadding()
+        self.cancelButton.connect("button-press-event", lambda w, e: self.cancelProxy())
+        drawButton(self.cancelButton, "search", "cell", False, __("Proxy Cancel"), BUTTON_FONT_SIZE_SMALL, "buttonFont")
+        self.actionBox.pack_start(self.cancelButton, True, False)
+        
+        # Read proxy setup.
+        self.readProxySetup()
+            
+        # Hide window if user click on main window.
+        widget.connect("button-press-event", lambda w, e: self.hide())
+        
+    def readProxySetup(self):
+        '''Read proxy setup.'''
+        proxyString = evalFile("./proxy", True)
+        if proxyString != None:
+            proxyDict = proxyString
+        else:
+            proxyDict = {}
+            
+        if proxyDict.has_key("address"):
+            self.addressEntry.set_text(proxyDict["address"])
+        else:
+            self.addressEntry.set_text("")
+        if proxyDict.has_key("port"):
+            self.portEntry.set_text(proxyDict["port"])
+        else:
+            self.portEntry.set_text("")
+        if proxyDict.has_key("user"):
+            self.userEntry.set_text(proxyDict["user"])
+        else:
+            self.userEntry.set_text("")
+        if proxyDict.has_key("password"):
+            self.passwordEntry.set_text(proxyDict["password"])
+        else:
+            self.passwordEntry.set_text("")
+        
+    def createInputItem(self, labelName, isPassword=False):
+        '''Create input item.'''
+        itemBox = gtk.HBox()
+        itemLabel = DynamicSimpleLabel(
+            itemBox,
+            labelName,
             appTheme.getDynamicColor("background"),
             ).getLabel()
-        self.proxyRuleLabel.set_alignment(0.0, 0.0)
-        self.proxyRuleAlign = gtk.Alignment()
-        self.proxyRuleAlign.set(0.0, 0.0, 1.0, 1.0)
-        self.proxyRuleAlign.set_padding(0, self.ALIGN_Y, 0, 0)
-        self.proxyRuleAlign.add(self.proxyRuleLabel)
-        self.setupBox.pack_start(self.proxyRuleAlign, False, False)
         
-        self.inputBox = gtk.HBox()
-        self.setupBox.pack_start(self.inputBox, False, False)
+        itemLabel.set_alignment(0.0, 0.5)
+        itemLabel.set_width_chars(self.itemLabelWidth)
         
-        proxyString = readFirstLine("./proxy", True)
-        self.inputEntry = SearchEntry(
-            self.inputBox,
-            proxyString,
+        itemBox.pack_start(itemLabel, False, False)
+        itemEntry = SearchEntry(
+            itemBox,
+            "",
             appTheme.getDynamicColor("entryHint"),
             appTheme.getDynamicColor("entryBackground"),
             appTheme.getDynamicColor("entryForeground"),
             True,
             )
-        self.inputBox.pack_start(self.inputEntry, True, True)
-        
-        self.setupButton = utils.newButtonWithoutPadding()
-        self.setupButton.connect("button-press-event", lambda w, e: self.setProxy())
-        drawButton(self.setupButton, "confirm", "index", False, __("Setup"), BUTTON_FONT_SIZE_SMALL, "buttonFont")
-        self.inputBox.pack_start(self.setupButton, False, False, self.SETUP_BUTTON_PADDING_X)
+        if isPassword:
+            itemEntry.set_visibility(False)
             
-        # Hide window if user click on main window.
-        widget.connect("button-press-event", lambda w, e: self.hide())
+        itemBox.pack_start(itemEntry, True, True)
+        
+        return (itemBox, itemLabel, itemEntry)
         
     def setProxy(self):
         '''Set proxy.'''
         # Read proxy string.
-        proxyString = self.inputEntry.get_text().split(" ")[0]
+        address = utils.getEntryText(self.addressEntry)
+        port = utils.getEntryText(self.portEntry)
+        user = utils.getEntryText(self.userEntry)
+        password = utils.getEntryText(self.passwordEntry)
         
         # Save proxy setup.
-        writeFile("./proxy", proxyString)
+        writeFile(
+            "./proxy", 
+            str({"address" : address,
+                 "port" : port,
+                 "user" : user,
+                 "password" : password}))
         
         # Hide window.
         self.hide()
         
         # Display message.
-        if proxyString == "":
-            self.messageCallback(__("Cancel proxy!"))
-        else:
-            self.messageCallback(__("Setup proxy!"))
+        self.messageCallback(__("Setup proxy!"))
+            
+    def cancelProxy(self):
+        '''Cancel proxy.'''
+        # Save proxy setup.
+        writeFile("./proxy", "{}")
+        
+        # Hide window.
+        self.hide()
+        
+        # Display message.
+        self.messageCallback(__("Cancel proxy!"))
         
     def show(self):
         '''Show.'''
@@ -350,6 +421,8 @@ class ProxySetup(object):
             wy + rect.y + (rect.height - self.WINDOW_HEIGHT) / 2,
             )
         self.window.show_all()
+        
+        self.readProxySetup()
         
     def hide(self):
         '''Hide.'''

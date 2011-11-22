@@ -427,3 +427,21 @@ msgstr "冇有下載任務."
 
 msgid "No software needs to remind."
 msgstr "冇有軟件需要重新提醒."
+
+msgid "Proxy Address"
+msgstr "地址: "
+
+msgid "Proxy Port"
+msgstr "端口: "
+
+msgid "Proxy User"
+msgstr "用戶名: "
+
+msgid "Proxy Password"
+msgstr "密碼: "
+
+msgid "Proxy OK"
+msgstr "設置代理"
+
+msgid "Proxy Cancel"
+msgstr "取消代理"

@@ -28,6 +28,7 @@ import os, webkit, webbrowser
 import gobject
 import gtk
 import pygtk
+import utils
 pygtk.require('2.0')
 
 libgobject = cdll.LoadLibrary('libgobject-2.0.so.0')
@@ -42,14 +43,14 @@ class Browser(webkit.WebView):
         # Init.
         webkit.WebView.__init__(self)
         
-        # Init cookie.
-        self.initCookie()
-        
-        # Init proxy.
-        self.initProxy()
-
-        # Load uri.
         try:
+            # Init cookie.
+            self.initCookie()
+        
+            # Init proxy.
+            self.initProxy()
+
+            # Load uri.
             self.load_uri(uri)
         except Exception, e:
             print "Got error when loading %s: %s" % (uri, e)
@@ -63,7 +64,7 @@ class Browser(webkit.WebView):
         
     def initProxy(self):
         '''Init proxy.'''
-        proxyString = readFirstLine("./proxy", True)
-        if proxyString != "":
+        proxyString = utils.parseProxyString()
+        if proxyString != None:
             session = libwebkit.webkit_get_default_session()
             libgobject.g_object_set(session, 'proxy-uri', proxyString, None)

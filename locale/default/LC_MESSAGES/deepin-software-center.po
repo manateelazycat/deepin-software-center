@@ -427,3 +427,21 @@ msgstr "No Downloads."
 
 msgid "No software needs to remind."
 msgstr "No software needs to remind."
+
+msgid "Proxy Address"
+msgstr "Address: "
+
+msgid "Proxy Port"
+msgstr "Port: "
+
+msgid "Proxy User"
+msgstr "User: "
+
+msgid "Proxy Password"
+msgstr "Password: "
+
+msgid "Proxy OK"
+msgstr "Setup"
+
+msgid "Proxy Cancel"
+msgstr "Cancel"

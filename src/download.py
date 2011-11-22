@@ -107,8 +107,8 @@ class Download(td.Thread):
             cmdline.append("--continue=true")
 
         # Append proxy configuration.
-        proxyString = readFirstLine("./proxy", True)
-        if proxyString != "":
+        proxyString = utils.parseProxyString()
+        if proxyString != None:
             cmdline.append("=".join(["--all-proxy", proxyString]))
 
         # Start child process.

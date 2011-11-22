@@ -139,11 +139,16 @@ def evalFile(filepath, checkExists=False):
     if checkExists and not os.path.exists(filepath):
         return None
     else:
-        readFile = open(filepath, "r")
-        content = eval(readFile.read())
-        readFile.close()
-        
-        return content
+        try:
+            readFile = open(filepath, "r")
+            content = eval(readFile.read())
+            readFile.close()
+            
+            return content
+        except Exception, e:
+            print e
+            
+            return None
 
 def writeFile(filepath, content):
     '''Write file.'''
@@ -798,6 +803,37 @@ def getDirSize(dirname):
             totalSize += os.path.getsize(os.path.join(root, filepath))
             
     return totalSize
+
+def getEntryText(entry):
+    '''Get entry text.'''
+    return entry.get_text().split(" ")[0]
+
+def parseProxyString():
+    '''Parse proxy string.'''
+    proxyDict = evalFile("./proxy", True)
+    if proxyDict != None and proxyDict.has_key("address") and "://" in proxyDict["address"]:
+        [addressPre, addressPost] = proxyDict["address"].split("://")
+        if proxyDict.has_key("port"):
+            port = ":" + proxyDict["port"]
+        else:
+            port = ""
+        if proxyDict.has_key("user"):
+            user = proxyDict["user"]
+        else:
+            user = ""
+        if proxyDict.has_key("password"):
+            password = ":" + proxyDict["password"]
+        else:
+            password = ""
+            
+        if user == "" and password == "":
+            proxyString = addressPre + "://" + user + password + addressPost + port
+        else:
+            proxyString = addressPre + "://" + user + password + "@" + addressPost + port
+            
+        return proxyString
+    else:
+        return None
 
 #  LocalWords:  halfstar AppIcon pkgInfo shortDesc zh TW longDesc downloadSize
 #  LocalWords:  getPkgInstalledSize getPkgDependSize useSize uname libdevel ZB

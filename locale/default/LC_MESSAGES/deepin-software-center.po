@@ -108,7 +108,7 @@ msgid "Click Finish Vote"
 msgstr "Click to finish vote"
 
 msgid "Comment"
-msgstr " (Comment: %s)"
+msgstr "  (Comment: %s)"
 
 msgid "First Comment"
 msgstr "Say something!"

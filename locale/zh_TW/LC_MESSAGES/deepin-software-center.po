@@ -111,7 +111,7 @@ msgid "Click Zoom In"
 msgstr "點擊放大"
 
 msgid "Comment"
-msgstr " (評論: %s)"
+msgstr "  (評論: %s)"
 
 msgid "First Comment"
 msgstr "搶沙發!"

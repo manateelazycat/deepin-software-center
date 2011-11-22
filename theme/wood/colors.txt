@@ -3,6 +3,7 @@
      "foreground" : "#000000", 
      "appSize" : "#000000",
      "appSummary" : "#000000",
+	 "appComment" : "#555555",
      "buttonFont" : "#000000",
      "bigButtonFont" : "#FFFFFF",
      "installed" : "#1A3E88",

@@ -426,7 +426,8 @@ class RecommendItem(DownloadItem):
         pkgName = utils.getPkgName(pkg)
         (appName, appNameEventBox) = setDefaultClickableDynamicLabel(
             pkgName,
-            "appName"
+            "appName",
+            LABEL_FONT_SIZE,
             )
         appName.set_size_request(self.NAME_WIDTH, -1)
         appName.set_single_line_mode(True)

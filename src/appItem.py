@@ -448,7 +448,8 @@ class AppBasicView(object):
             parent,
             pkgName,
             appTheme.getDynamicLabelColor("appName"), 
-            LABEL_FONT_SIZE)
+            LABEL_FONT_SIZE,
+            )
         appName = appNameLabel.getLabel()
         
         appName.set_single_line_mode(True)
@@ -504,8 +505,8 @@ class AppBasicView(object):
             appCommentLabel = DynamicSimpleLabel(
                 self.appCommentNumBox,
                 __("Comment") % commentNum,
-                appTheme.getDynamicColor("appSummary"),
-                LABEL_FONT_SMALL_SIZE,
+                appTheme.getDynamicColor("appComment"),
+                LABEL_FONT_SIZE,
                 ).getLabel()
             appCommentLabel.set_single_line_mode(True)
             appCommentLabel.set_alignment(0.0, 1.0)

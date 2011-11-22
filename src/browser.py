@@ -67,4 +67,5 @@ class Browser(webkit.WebView):
         proxyString = utils.parseProxyString()
         if proxyString != None:
             session = libwebkit.webkit_get_default_session()
-            libgobject.g_object_set(session, 'proxy-uri', proxyString, None)
+            libgobject.g_object_set(session, 'proxy-uri', libsoup.soup_uri_new(proxyString), None)
+

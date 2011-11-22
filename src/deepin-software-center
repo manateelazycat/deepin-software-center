@@ -1,11 +1,11 @@
-#!/bin/sh
+#!/bin/bash
 # -*- coding: utf-8 -*-
 
 # Copyright (C) 2011 Deepin, Inc.
-#               2011 Yong Wang
+#               2011 Zhang Cheng
 # 
-# Author:     Yong Wang <lazycat.manatee@gmail.com>
-# Maintainer: Yong Wang <lazycat.manatee@gmail.com>
+# Author:     Zhang Cheng <zhangcheng@linuxdeepin.com>
+# Maintainer: Zhang Cheng <zhangcheng@linuxdeepin.com>
 # 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,5 +20,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-cd /usr/share/deepin-software-center/src
-./main
+REALNAME=$(which $0)
+
+## if it is a link, find the original file through recursively readlink
+while [[ -L "$REALNAME" ]]; do
+    LINKNAME=$(readlink $REALNAME)
+    [[ $LINKNAME == /* ]] \
+	&& REALNAME=$LINKNAME \
+	|| REALNAME="$(dirname $REALNAME)/$LINKNAME"
+done
+
+cd $(dirname $REALNAME) && ./main

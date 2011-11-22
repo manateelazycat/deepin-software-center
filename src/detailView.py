@@ -209,11 +209,17 @@ class DetailView(object):
         
     def scrollCommentAreaToTop(self, message):
         '''Scroll comment area to top.'''
-        if message == "scroll":
+        mList = message.split(",")
+        print mList
+        if len(mList) == 2 and mList[0] == "scroll":
+            # Update Y coordinate.
             vadj = self.scrolledWindow.get_vadjustment()
             (_, offsetY) = self.commentArea.translate_coordinates(self.scrolledWindow, 0, 0)
             currentY = vadj.get_value()
             vadj.set_value(currentY + offsetY)
+        
+            # Update height.
+            self.commentArea.set_size_request(DEFAULT_WINDOW_WIDTH / 2, int(mList[1]))
         
     def createInfoTab(self, appInfo, pkg):
         '''Select information tab.'''

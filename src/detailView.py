@@ -191,12 +191,14 @@ class DetailView(object):
         
         self.infoTab = self.createInfoTab(appInfo, pkg)
         
+        self.commentButtonFlag = False
         self.commentArea = browser.Browser("%s/softcenter/v1/comment?n=%s" % (SERVER_ADDRESS, pkgName))
         self.commentAreaAlign = gtk.Alignment()
         self.commentAreaAlign.set(0.0, 0.0, 1.0, 1.0)
         self.commentAreaAlign.set_padding(self.ALIGN_Y, 0, self.ALIGN_X, self.ALIGN_X)
         self.commentAreaAlign.add(self.commentArea)
-        self.commentArea.connect("console-message", lambda view, message, line, sourceId: self.scrollCommentAreaToTop(message))
+        self.commentArea.connect("console-message", lambda view, message, line, sourceId: self.handleConsoleMessage(message))
+        self.commentArea.connect("load-finished", lambda view, frame: self.scrollCommentAreaToTop())
         
         # Set small width to avoid comment area can't shrink window when main window shrink.
         self.commentArea.set_size_request(DEFAULT_WINDOW_WIDTH / 2, -1) 
@@ -207,11 +209,14 @@ class DetailView(object):
         
         self.scrolledWindow.show_all()
         
-    def scrollCommentAreaToTop(self, message):
+    def handleConsoleMessage(self, message):
+        '''Handle console message.'''
+        if message == "button":
+            self.commentButtonFlag = True
+        
+    def scrollCommentAreaToTop(self):
         '''Scroll comment area to top.'''
-        mList = message.split(",")
-        print mList
-        if len(mList) == 2 and mList[0] == "scroll":
+        if self.commentButtonFlag:
             # Update Y coordinate.
             vadj = self.scrolledWindow.get_vadjustment()
             (_, offsetY) = self.commentArea.translate_coordinates(self.scrolledWindow, 0, 0)
@@ -219,7 +224,17 @@ class DetailView(object):
             vadj.set_value(currentY + offsetY)
         
             # Update height.
-            self.commentArea.set_size_request(DEFAULT_WINDOW_WIDTH / 2, int(mList[1]))
+            self.commentArea.set_size_request(DEFAULT_WINDOW_WIDTH / 2, self.getCommentAreaHeight())
+            
+            # Update flag.
+            self.commentButtonFlag = False
+            
+    def getCommentAreaHeight(self):
+        '''Get comment area height.'''
+        self.commentArea.execute_script('oldtitle=document.title;document.title=document.body.offsetHeight;')
+        height = self.commentArea.get_main_frame().get_title()
+        self.commentArea.execute_script('document.title=oldtitle;')
+        return int(height) + 50
         
     def createInfoTab(self, appInfo, pkg):
         '''Select information tab.'''

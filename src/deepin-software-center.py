@@ -1242,6 +1242,7 @@ class InitThread(td.Thread):
         
         self.softwareCenter = softwareCenter
 
+    # @printExecTime            
     def run(self):
         '''Run.'''
         # Execute operation before init start.

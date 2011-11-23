@@ -99,6 +99,15 @@ def getPkgName(pkg):
     '''Get package name.'''
     return pkg.name
 
+def printExecTime(func):
+    '''Print execute time.'''
+    def wrap(*a, **kw):
+        startTime = time.time()
+        ret = func(*a, **kw)
+        print "%s time: %s" % (str(func), time.time() - startTime)
+        return ret
+    return wrap
+
 def getPkgExecPath(pkg):
     '''Get path of execute file.'''
     execPath = "../pkgData/pkgPath/%s" % (pkg.name)
@@ -314,15 +323,6 @@ def postGUI(func):
         gtk.gdk.threads_enter()
         ret = func(*a, **kw)
         gtk.gdk.threads_leave()
-        return ret
-    return wrap
-
-def printExecTime(func):
-    '''Print execute time.'''
-    def wrap(*a, **kw):
-        startTime = time.time()
-        ret = func(*a, **kw)
-        print "%s time: %s" % (str(func), time.time() - startTime)
         return ret
     return wrap
 

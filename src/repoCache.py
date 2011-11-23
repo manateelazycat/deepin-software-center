@@ -113,6 +113,7 @@ class AppInfo(object):
 class RepoCache(object):
     '''Repository cache.'''
 
+    # @printExecTime
     def __init__(self, cache):
         '''Init for repository cache.'''
         # Init.

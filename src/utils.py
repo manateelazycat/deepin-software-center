@@ -834,6 +834,14 @@ def parseProxyString():
         return proxyString
     else:
         return None
+    
+def killProcess(proc):
+    '''Kill process.'''
+    try:
+        if proc != None:
+            proc.kill()
+    except Exception, e:
+        pass
 
 #  LocalWords:  halfstar AppIcon pkgInfo shortDesc zh TW longDesc downloadSize
 #  LocalWords:  getPkgInstalledSize getPkgDependSize useSize uname libdevel ZB

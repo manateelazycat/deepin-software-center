@@ -233,17 +233,17 @@ msgstr "Uninstall to release %s space"
 msgid "Download to eat %s space"
 msgstr "Download to eat %s space"
 
-msgid "Query Screenshot ..."
-msgstr "Query Screenshot ..."
+msgid "Query screenshot ..."
+msgstr "Query screenshot ..."
 
 msgid "Downloading screenshot ..."
 msgstr "Downloading screenshot ..."
 
 msgid "Query fails, check your network and click refresh and try again."
-msgstr "Query fails, check your network and click refresh and try again."
+msgstr "Query fails, refresh and try again."
 
 msgid "Download fails, check your network and click refresh and try again."
-msgstr "Download fails, check your network and click refresh and try again."
+msgstr "Download fails, click refresh and try again."
 
 msgid "The software does not screenshot"
 msgstr "The software does not screenshot"
@@ -253,6 +253,12 @@ msgstr "Upload screenshot"
 
 msgid "% s: Download failed, please check your network link."
 msgstr "% s: Download failed, please check your network link."
+
+msgid "Query failed, use screenshot cache."
+msgstr "Query failed, use screenshot cache."
+
+msgid "Download failed, use screenshot cache."
+msgstr "Download failed, use screenshot cache."
 
 msgid "Download Failed"
 msgstr "Download Failed"

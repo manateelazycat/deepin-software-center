@@ -79,9 +79,9 @@ class Download(td.Thread):
         '''Run'''
         # Build command line.
         cmdline = ['aria2c',
+                   '--dir=%s' % (self.partialDir),
                    '--file-allocation=none',
                    '--auto-file-renaming=false',
-                   '--dir=%s' % (self.partialDir),
                    '--summary-interval=0',
                    '--remote-time=true',
                    '--auto-save-interval=%s' % (self.autoSaveInterval),
@@ -126,7 +126,7 @@ class Download(td.Thread):
             print "Download error: ", e
         
         # Kill child process.
-        proc.kill()
+        killProcess(proc)
         
         print proc.returncode
         

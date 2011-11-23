@@ -698,6 +698,29 @@ def listItemOnExpose(widget, event,
 
     return True
 
+def drawSmallScreenshotBackground(widget, width, height, dPixbuf):
+    '''Draw small screenshot background.'''
+    widget.set_size_request(width, height)
+    
+    widget.connect("expose-event", lambda w, e: exposeSmallScreenshotBackground(w, e, dPixbuf))
+
+def exposeSmallScreenshotBackground(widget, event, dPixbuf):
+    '''Expose small screenshot background.'''
+    cr = widget.window.cairo_create()
+    rect = widget.allocation
+    pixbuf = dPixbuf.getPixbuf()
+    
+    drawPixbuf(
+        cr, pixbuf, 
+        rect.x + (rect.width - pixbuf.get_width()) / 2, 
+        rect.y + (rect.height - pixbuf.get_height()) / 2,
+        )
+        
+    if widget.get_child() != None:
+        widget.propagate_expose(widget.get_child(), event)
+        
+    return True
+
 def drawBackground(widget, event, dColor, borderColor=None, borderWidth=3):
     '''Draw background.'''
     color = dColor.getColor()

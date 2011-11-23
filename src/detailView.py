@@ -71,6 +71,7 @@ class DetailView(object):
         self.pageId = pageId
         self.appInfo = appInfo
         pkg = appInfo.pkg
+        self.pkgName = utils.getPkgName(pkg)
         self.readMoreBox = gtk.HBox()
         self.readMoreAlign = None
         self.messageCallback = messageCallback
@@ -306,10 +307,10 @@ class DetailView(object):
             utils.setHelpTooltip(translationEventBox, __("Translate description"))
         
         # Add screenshot.
-        screenshotBox = gtk.VBox()
+        self.screenshotBox = gtk.VBox()
         
         screenshotDLabel = DynamicSimpleLabel(
-            screenshotBox,
+            self.screenshotBox,
             "<b>%s</b>" % (__("Screenshot")),
             appTheme.getDynamicColor("detailTitle"),
             LABEL_FONT_LARGE_SIZE,
@@ -317,13 +318,13 @@ class DetailView(object):
         screenshotLabel = screenshotDLabel.getLabel()
         
         screenshotLabel.set_alignment(0.0, 0.5)
-        screenshotBox.pack_start(screenshotLabel, False, False)
+        self.screenshotBox.pack_start(screenshotLabel, False, False)
         
-        self.smallScreenshot = SmallScreenshot(pkgName, self.scrolledWindow)
-        screenshotBox.pack_start(self.smallScreenshot.box, False, False)
+        self.smallScreenshot = SmallScreenshot(pkgName, self.scrolledWindow, self.messageCallback, self.refreshScreenshot)
+        self.screenshotBox.pack_start(self.smallScreenshot.box, False, False)
         self.smallScreenshot.start()
         
-        infoBox.pack_start(screenshotBox, False, False, self.DETAIL_PADDING_X)
+        infoBox.pack_start(self.screenshotBox, False, False, self.DETAIL_PADDING_X)
             
         # Make sure download thread stop when detail view destroy.
         self.returnButton.connect(
@@ -335,6 +336,15 @@ class DetailView(object):
         self.returnButton.connect("destroy", lambda widget: self.smallScreenshot.stop())
 
         return align
+    
+    def refreshScreenshot(self):
+        '''Refresh screenshot.'''
+        if self.smallScreenshot != None:
+            self.screenshotBox.remove(self.smallScreenshot.box)
+            
+        self.smallScreenshot = SmallScreenshot(self.pkgName, self.scrolledWindow, self.messageCallback, self.refreshScreenshot)
+        self.screenshotBox.pack_start(self.smallScreenshot.box, False, False)
+        self.smallScreenshot.start()
     
     def updateDownloadingStatus(self, pkgName, progress, feedback):
         '''Update downloading status.'''
@@ -598,99 +608,6 @@ class AppInfoItem(DownloadItem):
                 self.uninstallingFeedbackLabel.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, __("Action Uninstalling")))
                 
                 self.itemFrame.show_all()
-                
-class FetchScreenshot(td.Thread):
-    '''Fetch screenshot.'''
-	
-    def __init__(self, appInfo, imageBox, image, width, height):
-        '''Init for fetch screenshot.'''
-        td.Thread.__init__(self)
-        self.setDaemon(True) # make thread exit when main program exit 
-        
-        self.appInfo = appInfo
-        self.imageBox = imageBox
-        self.image = image
-        self.proc = None
-        self.returnCode = DOWNLOAD_FAILED
-        self.width = width
-        self.height = height
-        self.killed = False
-        
-    def stop(self):
-        '''Stop download.'''
-        if self.proc != None and self.returnCode == DOWNLOAD_FAILED:
-            self.killed = True
-            self.proc.kill()
-            
-    def run(self):
-        '''Run'''
-        # Add wait widget.
-        utils.containerRemoveAll(self.imageBox)
-        waitAlign = gtk.Alignment()
-        waitAnimation = DynamicImage(
-            waitAlign,
-            appTheme.getDynamicPixbufAnimation("wait.gif"),
-            ).image
-        waitAlign.set(0.5, 0.5, 1.0, 1.0)
-        waitAlign.add(waitAnimation)
-        self.imageBox.add(waitAlign)
-        
-        # Download screenshot.
-        pkgName = utils.getPkgName(self.appInfo.pkg)
-        screenshotPath = SCREENSHOT_DOWNLOAD_DIR + pkgName
-        
-        cmdline = [
-            'aria2c',
-            "--dir=" + SCREENSHOT_DOWNLOAD_DIR,
-            "http://screenshots.debian.net/screenshot/" + pkgName,
-            '--auto-file-renaming=false',
-            '--summary-interval=0',
-            '--remote-time=true',
-            '--auto-save-interval=0',
-            ]
-        
-        # Make software center can work with aria2c 1.9.x.
-        if ARIA2_MAJOR_VERSION >= 1 and ARIA2_MINOR_VERSION <= 9:
-            cmdline.append("--no-conf")
-            cmdline.append("--continue")
-        else:
-            cmdline.append("--no-conf=true")
-            cmdline.append("--continue=true")
-            
-        # Append proxy configuration.
-        proxyString = readFirstLine("./proxy", True)
-        if proxyString != "":
-            cmdline.append("=".join(["--all-proxy", proxyString]))
-        
-        self.proc = subprocess.Popen(cmdline)
-        self.returnCode = self.proc.wait()
-        
-        # Stop waiting widget.
-        utils.containerRemoveAll(self.imageBox)
-        self.imageBox.add(self.image)
-        self.imageBox.show_all()
-        
-        # Set screenshot.
-        if self.returnCode == DOWNLOAD_SUCCESS:
-            self.image.set_from_pixbuf(gtk.gdk.pixbuf_new_from_file_at_size(screenshotPath, self.width, self.height))
-            utils.setCustomizeClickableCursor(
-                self.imageBox, 
-                self.image, 
-                appTheme.getDynamicPixbuf("screenshot/zoom_in.png"))
-            utils.setHelpTooltip(self.imageBox, __("Click Zoom In"))
-        else:
-            if self.killed:
-                pkgName = utils.getPkgName(self.appInfo.pkg)
-                screenshotPath = SCREENSHOT_DOWNLOAD_DIR + pkgName
-                if os.path.exists (screenshotPath):
-                    os.remove(screenshotPath)
-                    
-                print "Download process stop."
-            else:
-                # Set upload image.
-                self.image.set_from_pixbuf(gtk.gdk.pixbuf_new_from_file("../theme/default/image/screenshot/upload.png"))
-            
-                print "Haven't screenshot for %s !" % (pkgName)
 
 class SmallScreenshot(td.Thread):
     '''Small screenshot.'''
@@ -705,13 +622,15 @@ class SmallScreenshot(td.Thread):
     SMALL_SCREENSHOT_PADDING_Y = 10
     SCREENSHOT_MAX_NUM = 9
     
-    def __init__(self, pkgName, scrolledWindow):
+    def __init__(self, pkgName, scrolledWindow, messageCallback, refreshScreenshotCallback):
         '''Init small screenshot.'''
         # Init.
         td.Thread.__init__(self)
         self.setDaemon(True) # make thread exit when main program exit 
         
         self.scrolledWindow = scrolledWindow
+        self.messageCallback = messageCallback
+        self.refreshScreenshotCallback = refreshScreenshotCallback
         self.images = []
         self.imageIndex = 0
         self.pkgName = pkgName
@@ -722,6 +641,7 @@ class SmallScreenshot(td.Thread):
         self.bottomBox = gtk.VBox()
         self.bigScreenshotImage = None
         self.bigScreenshot = None
+        self.autoSaveInterval = 10       # time to auto save progress, in seconds
         
         self.box.pack_start(self.topBox, False, False)
         self.box.pack_start(self.bottomBox, False, False)
@@ -741,57 +661,25 @@ class SmallScreenshot(td.Thread):
         # Clean top box.
         utils.containerRemoveAll(self.topBox)
         
-        # Init wait box.
-        waitBox = gtk.HBox()
-        waitAlign = gtk.Alignment()
-        waitAlign.set(0.5, 0.5, 0.0, 0.0)
-        waitAlign.add(waitBox)
-        self.topBox.add(waitAlign)
-
+        # Init background.
+        background = gtk.EventBox()
+        background.set_visible_window(False)
+        self.topBox.add(background)
+        drawSmallScreenshotBackground(
+            background,
+            self.SCREENSHOT_WIDTH,
+            self.SCREENSHOT_HEIGHT,
+            appTheme.getDynamicPixbuf("screenshot/background_wait.png")
+            )
+        
         # Add wait animation.
         waitAnimation = DynamicImage(
-            waitBox,
+            background,
             appTheme.getDynamicPixbufAnimation("wait.gif"),
             ).image
-        waitBox.pack_start(waitAnimation, False, False)
-
-        # Add wait message.
-        waitMessage = DynamicSimpleLabel(
-            waitBox,
-            __("Query screenshot ..."),
-            appTheme.getDynamicColor("detailTitle"),
-            LABEL_FONT_SIZE,
-            ).getLabel()
-        waitBox.pack_start(waitMessage, False, False)
+        background.add(waitAnimation)
         
-    @postGUI
-    def initDownloadingStatus(self):
-        '''Init downloading status.'''
-        # Clean top box.
-        utils.containerRemoveAll(self.topBox)
-        
-        # Init downloading box.
-        downloadingBox = gtk.HBox()
-        downloadingAlign = gtk.Alignment()
-        downloadingAlign.set(0.5, 0.5, 0.0, 0.0)
-        downloadingAlign.add(downloadingBox)
-        self.topBox.add(downloadingAlign)
-
-        # Add downloading animation.
-        downloadingAnimation = DynamicImage(
-            downloadingBox,
-            appTheme.getDynamicPixbufAnimation("wait.gif"),
-            ).image
-        downloadingBox.pack_start(downloadingAnimation, False, False)
-
-        # Add downloading message.
-        downloadingMessage = DynamicSimpleLabel(
-            downloadingBox,
-            __("Downloading screenshot ..."),
-            appTheme.getDynamicColor("detailTitle"),
-            LABEL_FONT_SIZE,
-            ).getLabel()
-        downloadingBox.pack_start(downloadingMessage, False, False)
+        self.box.show_all()
         
     @postGUI
     def initQueryErrorStatus(self):
@@ -799,21 +687,21 @@ class SmallScreenshot(td.Thread):
         # Clean top box.
         utils.containerRemoveAll(self.topBox)
         
-        # Init query box.
-        queryBox = gtk.HBox()
-        queryAlign = gtk.Alignment()
-        queryAlign.set(0.5, 0.5, 0.0, 0.0)
-        queryAlign.add(queryBox)
-        self.topBox.add(queryAlign)
+        # Init background.
+        background = gtk.EventBox()
+        background.set_visible_window(False)
+        self.topBox.add(background)
+        drawSmallScreenshotBackground(
+            background,
+            self.SCREENSHOT_WIDTH,
+            self.SCREENSHOT_HEIGHT,
+            appTheme.getDynamicPixbuf("screenshot/background_failed.png")
+            )
+        background.connect("button-press-event", lambda w, e: self.refreshScreenshotCallback())
         
-        # Add query message.
-        queryMessage = DynamicSimpleLabel(
-            queryBox,
-            __("Query fails, check your network and click refresh and try again."),
-            appTheme.getDynamicColor("detailTitle"),
-            LABEL_FONT_SIZE,
-            ).getLabel()
-        queryBox.pack_start(queryMessage, False, False)
+        utils.setHelpTooltip(background, __("Query fails, check your network and click refresh and try again."))
+        
+        self.box.show_all()
         
     @postGUI
     def initDownloadErrorStatus(self):
@@ -821,21 +709,21 @@ class SmallScreenshot(td.Thread):
         # Clean top box.
         utils.containerRemoveAll(self.topBox)
         
-        # Init download box.
-        downloadBox = gtk.HBox()
-        downloadAlign = gtk.Alignment()
-        downloadAlign.set(0.5, 0.5, 0.0, 0.0)
-        downloadAlign.add(downloadBox)
-        self.topBox.add(downloadAlign)
+        # Init background.
+        background = gtk.EventBox()
+        background.set_visible_window(False)
+        self.topBox.add(background)
+        drawSmallScreenshotBackground(
+            background,
+            self.SCREENSHOT_WIDTH,
+            self.SCREENSHOT_HEIGHT,
+            appTheme.getDynamicPixbuf("screenshot/background_failed.png")
+            )
+        background.connect("button-press-event", lambda w, e: self.refreshScreenshotCallback())
         
-        # Add download message.
-        downloadMessage = DynamicSimpleLabel(
-            downloadBox,
-            __("Download fails, check your network and click refresh and try again."),
-            appTheme.getDynamicColor("detailTitle"),
-            LABEL_FONT_SIZE,
-            ).getLabel()
-        downloadBox.pack_start(downloadMessage, False, False)
+        utils.setHelpTooltip(background, __("Download fails, check your network and click refresh and try again."))
+        
+        self.box.show_all()
         
     @postGUI
     def initNoneedStatus(self):
@@ -843,21 +731,19 @@ class SmallScreenshot(td.Thread):
         # Clean top box.
         utils.containerRemoveAll(self.topBox)
         
-        # Init noneed box.
-        noneedBox = gtk.HBox()
-        noneedAlign = gtk.Alignment()
-        noneedAlign.set(0.5, 0.5, 0.0, 0.0)
-        noneedAlign.add(noneedBox)
-        self.topBox.add(noneedAlign)
+        # Init background.
+        background = gtk.EventBox()
+        background.set_visible_window(False)
+        self.topBox.add(background)
+        drawSmallScreenshotBackground(
+            background,
+            self.SCREENSHOT_WIDTH,
+            self.SCREENSHOT_HEIGHT,
+            appTheme.getDynamicPixbuf("screenshot/background_noneed.png")
+            )
+        utils.setHelpTooltip(background, __("The software does not screenshot"))
         
-        # Add noneed message.
-        noneedMessage = DynamicSimpleLabel(
-            noneedBox,
-            __("The software does not screenshot"),
-            appTheme.getDynamicColor("detailTitle"),
-            LABEL_FONT_SIZE,
-            ).getLabel()
-        noneedBox.pack_start(noneedMessage, False, False)
+        self.box.show_all()
     
     @postGUI
     def initUploadStatus(self):
@@ -865,22 +751,23 @@ class SmallScreenshot(td.Thread):
         # Clean top box.
         utils.containerRemoveAll(self.topBox)
         
-        # Init upload box.
-        uploadBox = gtk.HBox()
-        uploadAlign = gtk.Alignment()
-        uploadAlign.set(0.5, 0.5, 0.0, 0.0)
-        uploadAlign.add(uploadBox)
-        self.topBox.add(uploadAlign)
+        # Init background.
+        background = gtk.EventBox()
+        background.set_visible_window(False)
+        self.topBox.add(background)
+        drawSmallScreenshotBackground(
+            background,
+            self.SCREENSHOT_WIDTH,
+            self.SCREENSHOT_HEIGHT,
+            appTheme.getDynamicPixbuf("screenshot/background_upload.png")
+            )
+        background.connect(
+            "button-press-event", 
+            lambda w, e: sendCommand("xdg-open %s/screenshot/upload?n=%s" % (SERVER_ADDRESS, self.pkgName)))
         
-        # Add upload message.
-        uploadMessage = DynamicSimpleLabel(
-            uploadBox,
-            __("Upload screenshot"),
-            appTheme.getDynamicColor("detailTitle"),
-            LABEL_FONT_SIZE,
-            ).getLabel()
-        uploadBox.pack_start(uploadMessage, False, False)
+        utils.setHelpTooltip(background, __("Upload screenshot"))
         
+        self.box.show_all()
         
     def getTimestamp(self):
         '''Get timestamp of screenshot.'''
@@ -910,9 +797,7 @@ class SmallScreenshot(td.Thread):
         
     def stop(self):
         '''Stop download.'''
-        if self.proc != None:
-            self.killed = True
-            self.proc.kill()
+        killProcess(self.proc)
             
     @postGUI
     def show(self):
@@ -930,7 +815,6 @@ class SmallScreenshot(td.Thread):
 
     def showBigScreenshotArea(self, index):
         '''Show big screenshot.'''
-        
         # Update image index.
         self.imageIndex = index
         
@@ -1029,12 +913,15 @@ class SmallScreenshot(td.Thread):
         '''Download screenshot.'''
         cmdline = [
             'aria2c',
-            "--dir=" + SCREENSHOT_DOWNLOAD_DIR,
             "%s/screenshots/package?n=" % (SERVER_ADDRESS) + self.pkgName,
+            "--dir=" + SCREENSHOT_DOWNLOAD_DIR,
+            '--file-allocation=none',
             '--auto-file-renaming=false',
             '--summary-interval=0',
             '--remote-time=true',
-            '--auto-save-interval=0',
+            '--auto-save-interval=%s' % (self.autoSaveInterval),
+            # '--max-overall-download-limit=10K', # for debug
+            '--check-integrity=true',
             ]
         
         # Make software center can work with aria2c 1.9.x.
@@ -1046,24 +933,33 @@ class SmallScreenshot(td.Thread):
             cmdline.append("--continue=true")
             
         # Append proxy configuration.
-        proxyString = readFirstLine("./proxy", True)
-        if proxyString != "":
+        proxyString = utils.parseProxyString()
+        if proxyString != None:
             cmdline.append("=".join(["--all-proxy", proxyString]))
         
         self.proc = subprocess.Popen(cmdline)
         self.proc.wait()
         
-        # Extract file.
-        f = zipfile.ZipFile(os.path.join(SCREENSHOT_DOWNLOAD_DIR, self.pkgName) + ".zip")
-        f.extractall(os.path.join(SCREENSHOT_DOWNLOAD_DIR, self.pkgName))
-        f.close()
-        
+        # Extract zip file after download finish.
+        if self.proc.returncode == 0:
+            print "Download finish."
+            
+            # Extract zip file.
+            f = zipfile.ZipFile(os.path.join(SCREENSHOT_DOWNLOAD_DIR, self.pkgName) + ".zip")
+            f.extractall(os.path.join(SCREENSHOT_DOWNLOAD_DIR, self.pkgName))
+            f.close()
+            
         # Delete zip file.
         removeFile(os.path.join(SCREENSHOT_DOWNLOAD_DIR, self.pkgName) + ".zip")
         
     def run(self):
         '''Run'''
         self.fetchScreenshot()
+        
+        # self.initWaitStatus()
+        # self.initUploadStatus()
+        # self.initDownloadErrorStatus()
+        # self.initQueryErrorStatus()
         
     def fetchScreenshot(self):
         '''Update.'''
@@ -1085,16 +981,10 @@ class SmallScreenshot(td.Thread):
                 currentTimestamp = self.getTimestamp()
                 if timestamp == currentTimestamp and self.hasScreenshot():
                     self.show()
-                    
-                    print "Tell user screenshot has newest."
                 else:
                     try:
-                        # Init downloading status.
-                        self.initDownloadingStatus()
-                        
                         # Downloading.
                         self.downloadScreenshot()
-                        print "Download finish."
                         
                         # Update timestamp.
                         self.updateTimestamp(timestamp)
@@ -1107,7 +997,7 @@ class SmallScreenshot(td.Thread):
                         if self.hasScreenshot():
                             self.show()
                             
-                            print "Tell user use old screenshot."
+                            self.messageCallback(__("Download failed, use screenshot cache."))
                         else:
                             self.initDownloadErrorStatus()
         except Exception, e:
@@ -1115,8 +1005,8 @@ class SmallScreenshot(td.Thread):
             
             if self.hasScreenshot():
                 self.show()
-                
-                print "Tell user use old screenshot."
+
+                self.messageCallback(__("Query failed, use screenshot cache."))
             else:
                 self.initQueryErrorStatus()
                 

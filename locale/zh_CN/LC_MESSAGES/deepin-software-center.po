@@ -236,26 +236,32 @@ msgstr "卸载后释放%s空间"
 msgid "Download to eat %s space"
 msgstr "%s后占用 %s 空间 需要下载 %s"
 
-msgid "Query Screenshot ..."
+msgid "Query screenshot ..."
 msgstr "查询截图"
 
 msgid "Downloading screenshot ..."
 msgstr "正在下载截图 ..."
 
 msgid "Query fails, check your network and click refresh and try again."
-msgstr "查询失败, 请检查你的网络并点击刷新重试."
+msgstr "查询失败, 点击刷新重试."
 
 msgid "Download fails, check your network and click refresh and try again."
-msgstr "下载失败, 请检查你的网络并点击刷新重试."
+msgstr "下载失败, 点击刷新重试."
 
 msgid "The software does not screenshot"
 msgstr "这个软件不需要截图"
 
 msgid "Upload screenshot"
-msgstr "上传新图"
+msgstr "上传截图"
 
 msgid "% s: Download failed, please check your network link."
 msgstr "%s: 下载失败, 请检查您的网络链接."
+
+msgid "Query failed, use screenshot cache."
+msgstr "查询失败， 使用截图缓存."
+
+msgid "Download failed, use screenshot cache."
+msgstr "下载失败， 使用截图缓存."
 
 msgid "Download Failed"
 msgstr "下载失败"

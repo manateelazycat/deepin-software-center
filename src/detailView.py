@@ -835,7 +835,7 @@ class SmallScreenshot(td.Thread):
         eventbox.add(self.bigScreenshotImage)
         
         eventbox.connect("button-press-event", lambda w, e: self.popupBigScreenshotWindow())
-        utils.setCustomizeClickableCursor(
+        setCustomizeClickableCursor(
             eventbox,
             self.bigScreenshotImage,
             appTheme.getDynamicPixbuf("screenshot/zoom_in.png"))

@@ -163,7 +163,7 @@ class AppView(object):
                 prevAlign.set(0.5, 0.5, 0.0, 0.0)
                 prevAlign.add(prevBox)
                 box.pack_start(prevAlign, False, False, paddingX)
-                utils.setClickableCursor(prevBox)
+                setClickableCursor(prevBox)
                 
                 first = gtk.Label()
                 first.set_markup("<span foreground='#1A3E88' size='%s'>1 ... </span>" % (LABEL_FONT_LARGE_SIZE))
@@ -172,7 +172,7 @@ class AppView(object):
                 firstBox.connect("button-press-event", lambda widget, event: self.jumpPage(1))
                 firstBox.connect("expose-event", lambda w, e: drawBackground(w, e, appTheme.getDynamicColor("background")))
                 box.pack_start(firstBox, False, False, paddingX)
-                utils.setClickableCursor(firstBox)
+                setClickableCursor(firstBox)
             
             # Add index number icon.
             for i in range(startIndex, endIndex):
@@ -187,7 +187,7 @@ class AppView(object):
                 lastBox.connect("button-press-event", lambda widget, event: self.jumpPage(self.maxPageIndex))
                 lastBox.connect("expose-event", lambda w, e: drawBackground(w, e, appTheme.getDynamicColor("background")))
                 box.pack_start(lastBox, False, False, paddingX)
-                utils.setClickableCursor(lastBox)
+                setClickableCursor(lastBox)
                 
                 # Add next icon.
                 nextBox = gtk.EventBox()
@@ -202,7 +202,7 @@ class AppView(object):
                 nextAlign.set(0.5, 0.5, 0.0, 0.0)
                 nextAlign.add(nextBox)
                 box.pack_start(nextAlign, False, False, paddingX)
-                utils.setClickableCursor(nextBox)
+                setClickableCursor(nextBox)
             
             # Add jump button.
             spinButton = gtk.SpinButton()
@@ -256,7 +256,7 @@ class AppView(object):
         numBox.add(numLabel)
         numBox.connect("button-press-event", lambda widget, event: self.jumpPage(index))
         numBox.connect("expose-event", lambda w, e: drawBackground(w, e, appTheme.getDynamicColor("background")))
-        utils.setClickableCursor(numBox)
+        setClickableCursor(numBox)
         
         return numBox
 

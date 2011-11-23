@@ -119,7 +119,7 @@ class SlideItem(DownloadItem):
         self.itemNameBox.set_visible_window(False)
         self.itemNameBox.add(self.itemNameLabel)
         self.itemBox.pack_start(self.itemNameBox)
-        utils.setClickableCursor(self.itemNameBox)
+        setClickableCursor(self.itemNameBox)
         
         self.appAdditionBox = gtk.HBox()
         self.appAdditionAlign = gtk.Alignment()
@@ -245,7 +245,7 @@ class SlideBar(object):
         self.drawingArea.connect(
             "button-press-event",
             lambda w, e: self.entryDetailView())
-        utils.setClickableCursor(self.drawingArea)
+        setClickableCursor(self.drawingArea)
         self.drawingArea.queue_draw()
         
         self.slideItemBox = gtk.VBox()
@@ -327,7 +327,7 @@ class SlideBar(object):
                                (self.imageHeight - self.smallImagePaddingY * 2) / 3)
         image.connect("expose_event", lambda w, e: self.exposeSmallArea(w, e, index))
         image.queue_draw()
-        utils.setClickableCursor(image)
+        setClickableCursor(image)
         
         imageAlign = gtk.Alignment()
         if index == 1:

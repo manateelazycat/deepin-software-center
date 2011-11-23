@@ -1592,6 +1592,118 @@ def exposeSmallScreenshot(widget, event, pixbuf, index, getIndex):
 
     return True
     
+def setClickableCursor(widget):
+    '''Set click-able cursor.'''
+    # Use widget in lambda, and not widget pass in function.
+    # Otherwise, if widget free before callback, you will got error:
+    # free variable referenced before assignment in enclosing scope, 
+    widget.connect("enter-notify-event", lambda w, e: setCursor(w, gtk.gdk.HAND2))
+    widget.connect("leave-notify-event", lambda w, e: setDefaultCursor(w))
+        
+def setCursor(widget, cursorType):
+    '''Set cursor.'''
+    widget.window.set_cursor(gtk.gdk.Cursor(cursorType))
+    
+    return False
+
+def setDefaultCursor(widget):
+    '''Set default cursor.'''
+    widget.window.set_cursor(None)
+    
+    return False
+
+def setDefaultToggleLabel(content, status, setStatus, getStatus, selectDefault=True):
+    '''Set default toggle label, return label and eventbox.'''
+    normalColor = '#1A3E88'
+    hoverColor = '#0084FF'
+    selectColor = '#000000'
+    
+    label = gtk.Label()
+    eventbox = gtk.EventBox()
+    if selectDefault:
+        initMarkup = "<span foreground='%s' size='%s' underline='single'>%s</span>" % (selectColor, LABEL_FONT_SIZE, content)
+    else:
+        initMarkup = "<span foreground='%s' size='%s'>%s</span>" % (normalColor, LABEL_FONT_SIZE, content)
+    setToggleLabel(
+        eventbox,
+        label,
+        initMarkup,
+        "<span foreground='%s' size='%s' >%s</span>" % (normalColor, LABEL_FONT_SIZE, content),
+        "<span foreground='%s' size='%s' >%s</span>" % (hoverColor, LABEL_FONT_SIZE, content),
+        "<span foreground='%s' size='%s' underline='single'>%s</span>" % (selectColor, LABEL_FONT_SIZE, content),
+        status,
+        setStatus,
+        getStatus
+        )
+    
+    return (label, eventbox)
+
+def setToggleLabel(widget, label, initMarkup, normalMarkup, hoverMarkup, selectMarkup, labelId, setLabelId, getCurrentId):
+    '''Set toggle label.'''
+    # Init.
+    widget.set_visible_window(False)
+    widget.add(label)
+    label.set_markup(initMarkup)
+    
+    # Set label id.
+    widget.connect("button-press-event", lambda w, e: setLabelId(labelId))
+    
+    # Set label markup.
+    widget.connect("enter-notify-event", 
+                   lambda w, e: setLabelEntryMarkup(label, hoverMarkup, selectMarkup, labelId, getCurrentId))
+    widget.connect("leave-notify-event", 
+                   lambda w, e: setLabelLeaveMarkup(label, normalMarkup, selectMarkup, labelId, getCurrentId))
+    
+    # Set label cursor.
+    widget.connect("enter-notify-event", lambda w, e: setCursor(w, gtk.gdk.HAND2))
+    widget.connect("leave-notify-event", lambda w, e: setDefaultCursor(w))
+    
+def setLabelEntryMarkup(label, hoverMarkup, selectMarkup, labelId, getCurrentId):
+    '''Set label markup color.'''
+    if labelId == getCurrentId():
+        setMarkup(label, selectMarkup)
+    else:
+        setMarkup(label, hoverMarkup)    
+        
+def setLabelLeaveMarkup(label, normalMarkup, selectMarkup, labelId, getCurrentId):
+    '''Set label markup color.'''
+    if labelId == getCurrentId():
+        setMarkup(label, selectMarkup)
+    else:
+        setMarkup(label, normalMarkup)    
+
+def setClickableDynamicLabel(widget, dLabel, resetAfterClick=True):
+    '''Set click-able label.'''
+    # Set label markup.
+    widget.connect("enter-notify-event", lambda w, e: dLabel.hoverLabel())
+    widget.connect("leave-notify-event", lambda w, e: dLabel.normalLabel())
+    
+    # Set label cursor.
+    widget.connect("enter-notify-event", lambda w, e: setCursor(w, gtk.gdk.HAND2))
+    widget.connect("leave-notify-event", lambda w, e: setDefaultCursor(w))
+    
+    # Reset color when click widget.
+    if resetAfterClick:
+        widget.connect("button-press-event", lambda w, e: dLabel.normalLabel())
+        
+def setCustomizeClickableCursor(eventbox, widget, cursorDPixbuf):
+    '''Set click-able cursor.'''
+    eventbox.connect("enter-notify-event", lambda w, e: setCustomizeCursor(widget, cursorDPixbuf))
+    eventbox.connect("leave-notify-event", lambda w, e: setDefaultCursor(widget))
+        
+def setCustomizeCursor(widget, cursorDPixbuf, x=0, y=0):
+    '''Set cursor.'''
+    widget.window.set_cursor(gtk.gdk.Cursor(gtk.gdk.display_get_default(),
+                                            cursorDPixbuf.getPixbuf(),
+                                            x, y))
+    return False
+    
+def setMarkup(label, markup):
+    '''Set markup.'''
+    label.set_markup(markup)
+    
+    return False
+
 #  LocalWords:  scaleX imageWidth scaleY imageHeight pixbuf cr drawPixbuf
 #  LocalWords:  buttonSetBackground normalImg hoverImg pressImg buttonLabel
 #  LocalWords:  fontSize labelColor normalPixbuf hoverPixbuf pressPixbuf

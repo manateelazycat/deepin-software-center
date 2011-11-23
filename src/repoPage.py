@@ -152,15 +152,15 @@ class Topbar(object):
         self.hoverColor = '#0084FF'
         self.selectColor = '#000000'
         
-        (self.sortRecommendLabel, self.sortRecommendEventBox) = utils.setDefaultToggleLabel(
+        (self.sortRecommendLabel, self.sortRecommendEventBox) = setDefaultToggleLabel(
             __("Sort By Recommend"), self.sortRecommendId, self.setSortType, self.getSortType, True)
         self.sortRecommendEventBox.connect("button-press-event", lambda w, e: self.updateCategoryCallback())
         
-        (self.sortDownloadLabel, self.sortDownloadEventBox) = utils.setDefaultToggleLabel(
+        (self.sortDownloadLabel, self.sortDownloadEventBox) = setDefaultToggleLabel(
             __("Sort By Download"), self.sortDownloadId, self.setSortType, self.getSortType, False)
         self.sortDownloadEventBox.connect("button-press-event", lambda w, e: self.updateCategoryCallback())
 
-        (self.sortVoteLabel, self.sortVoteEventBox) = utils.setDefaultToggleLabel(
+        (self.sortVoteLabel, self.sortVoteEventBox) = setDefaultToggleLabel(
             __("Sort By Vote"), self.sortVoteId, self.setSortType, self.getSortType, False)
         self.sortVoteEventBox.connect("button-press-event", lambda w, e: self.updateCategoryCallback())
         

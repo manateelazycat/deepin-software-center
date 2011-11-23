@@ -102,12 +102,12 @@ class Topbar(object):
         self.unselectAllId = "unselectAll"
         self.labelId = self.selectAllId
         
-        (self.selectAllLabel, self.selectAllEventBox) = utils.setDefaultToggleLabel(
+        (self.selectAllLabel, self.selectAllEventBox) = setDefaultToggleLabel(
             __("Select All"), self.selectAllId, self.setLabelId, self.getLabelId, True)
         self.selectAllEventBox.connect("button-press-event", lambda w, e: selectAllPkgCallback())
         upgradeBox.pack_start(self.selectAllEventBox, False, False, self.paddingX)
         
-        (self.unselectAllLabel, self.unselectAllEventBox) = utils.setDefaultToggleLabel(
+        (self.unselectAllLabel, self.unselectAllEventBox) = setDefaultToggleLabel(
             __("Unselect All"), self.unselectAllId, self.setLabelId, self.getLabelId, False)
         self.unselectAllEventBox.connect("button-press-event", lambda w, e: unselectAllPkgCallback())
         upgradeBox.pack_start(self.unselectAllEventBox, False, False, self.paddingX)

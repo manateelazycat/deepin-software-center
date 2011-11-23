@@ -1,5 +1,8 @@
 * News in 2.0
 
+2011-11-24 Yong Wang <lazycat.manatee@gmail.com>
+	* Move some functions to draw.py.
+
 2011-11-23 Yong Wang <lazycat.manatee@gmail.com>
 	* Change comment area algorithm to get comment area height.
 	* Change fetch screenshot.

@@ -471,7 +471,7 @@ class AppBasicView(object):
         
         utils.showVersionTooltip(appNameEventBox, pkg)
         
-        utils.setClickableDynamicLabel(
+        setClickableDynamicLabel(
             appNameEventBox,
             appNameLabel,
             )
@@ -606,7 +606,7 @@ class VoteView(object):
         
         # Show help.
         utils.setHelpTooltip(self.starView.eventbox, __("Click Finish Vote"))
-        utils.setClickableCursor(self.starView.eventbox)
+        setClickableCursor(self.starView.eventbox)
         
     def drawFocusNormal(self):
         '''Draw focus normal status.'''
@@ -621,7 +621,7 @@ class VoteView(object):
         starBox.connect("button-press-event", lambda w, e: self.switchFocusStatus(self.FOCUS_STAR))
         
         utils.setHelpTooltip(starBox, __("Click Start Vote"))
-        utils.setClickableCursor(starBox)
+        setClickableCursor(starBox)
         
     def drawFocusInit(self):
         '''Draw focus out.'''

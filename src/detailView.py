@@ -214,6 +214,10 @@ class DetailView(object):
         '''Handle console message.'''
         if message == "button":
             self.commentButtonFlag = True
+        else:
+            commands = message.split(",", 1)
+            if len(commands) == 2 and commands[0] == "open":
+                sendCommand("xdg-open " + commands[1])
         
     def scrollCommentAreaToTop(self):
         '''Scroll comment area to top.'''

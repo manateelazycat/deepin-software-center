@@ -418,7 +418,7 @@ class DownloadQueue(object):
         '''Finish download, start new download if have download in queue.'''
         # Remove pkgName from download list.
         utils.removeFromList(self.downloadingQueue, pkgName)
-        self.downloadingSignalChannel.pop(pkgName)
+        del self.downloadingSignalChannel[pkgName]
                 
         # Call back if download success.
         if downloadStatus in [DOWNLOAD_STATUS_COMPLETE, DOWNLOAD_STATUS_DONT_NEED]:

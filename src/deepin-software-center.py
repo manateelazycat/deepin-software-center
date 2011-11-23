@@ -990,10 +990,10 @@ class DeepinSoftwareCenter(object):
         '''Select category.'''
         # Delete PAGE_REPO value from detailViewDict and searchViewDict.
         if self.detailViewDict.has_key(PAGE_REPO):
-            self.detailViewDict.pop(PAGE_REPO)
+            del self.detailViewDict[PAGE_REPO]
 
         if self.searchViewDict.has_key(PAGE_REPO):
-            self.searchViewDict.pop(PAGE_REPO)
+            del self.searchViewDict[PAGE_REPO]
 
         # Select repository page.
         self.selectPage(PAGE_REPO)
@@ -1006,10 +1006,10 @@ class DeepinSoftwareCenter(object):
         '''Show upgrade page.'''
         # Delete PAGE_UPGRADE value from detailViewDict and searchViewDict.
         if self.detailViewDict.has_key(PAGE_UPGRADE):
-            self.detailViewDict.pop(PAGE_UPGRADE)
+            del self.detailViewDict[PAGE_UPGRADE]
 
         if self.searchViewDict.has_key(PAGE_UPGRADE):
-            self.searchViewDict.pop(PAGE_UPGRADE)
+            del self.searchViewDict[PAGE_UPGRADE]
 
         # Select upgrade page.
         self.selectPage(PAGE_UPGRADE)
@@ -1032,7 +1032,7 @@ class DeepinSoftwareCenter(object):
         '''Exit detail view.'''
         # Remove detail view first.
         if self.detailViewDict.has_key(pageId):
-            self.detailViewDict.pop(pageId)
+            del self.detailViewDict[pageId]
 
         # Back page.
         self.selectPage(pageId)
@@ -1063,7 +1063,7 @@ class DeepinSoftwareCenter(object):
         '''Exit search view.'''
         # Remove search view first.
         if self.searchViewDict.has_key(pageId):
-            self.searchViewDict.pop(pageId)
+            del self.searchViewDict[pageId]
 
         # Select page.
         self.selectPage(pageId)

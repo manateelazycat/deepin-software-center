@@ -3,6 +3,7 @@
 2011-11-23 Yong Wang <lazycat.manatee@gmail.com>
 	* Change comment area algorithm to get comment area height.
 	* Change fetch screenshot.
+	* Update .desktop files.
 
 2011-11-22 Yong Wang <lazycat.manatee@gmail.com>
 	* Finish proxy setup interface.

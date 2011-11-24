@@ -193,6 +193,17 @@ class DetailView(object):
         self.infoTab = self.createInfoTab(appInfo, pkg)
         
         self.commentButtonFlag = False
+        
+        (self.commentErrorLabel, self.commentErrorBox) = setDefaultClickableDynamicLabel(
+            "评论加载失败， 请刷新重试.",
+            "link",
+            )
+        self.commentErrorAlign = gtk.Alignment()
+        self.commentErrorAlign.set(0.0, 0.0, 1.0, 1.0)
+        self.commentErrorAlign.set_padding(self.ALIGN_Y, self.ALIGN_Y, 0, 0)
+        self.commentErrorAlign.add(self.commentErrorBox)
+        self.commentErrorBox.connect("button-press-event", lambda w, e: self.refreshComment())
+        
         self.commentArea = browser.Browser("%s/softcenter/v1/comment?n=%s" % (SERVER_ADDRESS, pkgName))
         self.commentAreaAlign = gtk.Alignment()
         self.commentAreaAlign.set(0.0, 0.0, 1.0, 1.0)
@@ -200,6 +211,7 @@ class DetailView(object):
         self.commentAreaAlign.add(self.commentArea)
         self.commentArea.connect("console-message", lambda view, message, line, sourceId: self.handleConsoleMessage(message))
         self.commentArea.connect("load-finished", lambda view, frame: self.scrollCommentAreaToTop())
+        self.commentArea.connect("load-error", lambda v, f, u, e: self.handleLoadError())
         
         # Set small width to avoid comment area can't shrink window when main window shrink.
         self.commentArea.set_size_request(DEFAULT_WINDOW_WIDTH / 2, -1) 
@@ -209,6 +221,26 @@ class DetailView(object):
         self.contentBox.show_all()
         
         self.scrolledWindow.show_all()
+        
+    def refreshComment(self):
+        '''Refresh comment.'''
+        if self.commentErrorAlign.get_parent() != None:
+            self.contentBox.remove(self.commentErrorAlign)
+            
+        self.contentBox.show_all()
+        
+        self.commentArea.reload_bypass_cache()
+        
+    def handleLoadError(self):
+        '''Handle load error signal.'''
+        if self.commentErrorAlign.get_parent() != None:
+            self.contentBox.remove(self.commentErrorAlign)
+            
+        self.contentBox.pack_start(self.commentErrorAlign)
+        
+        self.contentBox.show_all()
+        
+        self.commentAreaAlign.hide_all()
         
     def handleConsoleMessage(self, message):
         '''Handle console message.'''

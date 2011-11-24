@@ -2,6 +2,7 @@
 
 2011-11-24 Yong Wang <lazycat.manatee@gmail.com>
 	* Move some functions to draw.py.
+	* Make comment error notify more friendly.
 
 2011-11-23 Yong Wang <lazycat.manatee@gmail.com>
 	* Change comment area algorithm to get comment area height.

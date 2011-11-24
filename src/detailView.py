@@ -1009,6 +1009,7 @@ class SmallScreenshot(td.Thread):
             
             # Get timestamp.
             timestamp = voteJson["timestamp"]
+            # print "***: %s" % (timestamp)
             if timestamp == SCREENSHOT_NONEED:
                 self.initNoneedStatus()
             elif timestamp == SCREENSHOT_UPLOAD:

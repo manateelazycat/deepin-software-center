@@ -231,7 +231,7 @@ msgid "Uninstall to release %s space"
 msgstr "Uninstall to release %s space"
 
 msgid "Download to eat %s space"
-msgstr "Download to eat %s space"
+msgstr "%s to eat %s space"
 
 msgid "Query screenshot ..."
 msgstr "Query screenshot ..."

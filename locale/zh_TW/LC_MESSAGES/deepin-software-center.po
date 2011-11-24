@@ -234,7 +234,7 @@ msgid "Uninstall to release %s space"
 msgstr "卸載後釋放%s空間"
 
 msgid "Download to eat %s space"
-msgstr "%s後占用 %s 空間 需要下載 %s"
+msgstr "%s需要下載%s"
 
 msgid "Query screenshot ..."
 msgstr "查詢截圖"

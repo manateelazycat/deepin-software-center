@@ -532,7 +532,7 @@ class AppInfoItem(DownloadItem):
 
             updateSizeLabel = DynamicSimpleLabel(
                 appSizeBox,
-                (__("Download to eat %s space") % (actionLabel, utils.formatFileSize(useSize), utils.formatFileSize(downloadSize))),
+                (__("Download to eat %s space") % (actionLabel, utils.formatFileSize(downloadSize))),
                 appTheme.getDynamicColor("detailAction"),
                 LABEL_FONT_MEDIUM_SIZE,
                 )

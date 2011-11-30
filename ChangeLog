@@ -1,5 +1,8 @@
 * News in 2.0
 
+2011-11-30 Yong Wang <lazycat.manatee@gmail.com>
+	* Add pickPkgDocs.py.
+
 2011-11-24 Yong Wang <lazycat.manatee@gmail.com>
 	* Move some functions to draw.py.
 	* Make comment error notify more friendly.

@@ -87,13 +87,13 @@ msgid "Nav Recommend"
 msgstr "精彩推薦"
 
 msgid "Nav Repository"
-msgstr "軟件倉庫"
+msgstr "軟體倉庫"
 
 msgid "Nav Update"
-msgstr "軟件更新"
+msgstr "軟體更新"
 
 msgid "Nav Uninstall"
-msgstr "軟件卸載"
+msgstr "軟體卸載"
 
 msgid "Nav Download Manage"
 msgstr "下載管理"
@@ -135,10 +135,10 @@ msgid "Are you sure uninstall?"
 msgstr "您確定要卸載嗎？"
 
 msgid "There are %s software packages can be upgraded"
-msgstr "有%s個軟件包可以升級"
+msgstr "有%s個軟體包可以升級"
 
 msgid "gksu message"
-msgstr "請輸入管理員密碼以啟用深度軟件中心"
+msgstr "請輸入管理員密碼以啟用深度軟體中心"
 
 msgid "About"
 msgstr "關於"
@@ -171,7 +171,7 @@ msgid "Classify Word"
 msgstr "文字處理"   
 
 msgid "Classify Professional"
-msgstr "行業軟件"
+msgstr "行業軟體"
 
 msgid "Classify Programming"
 msgstr "編程開發"
@@ -180,13 +180,13 @@ msgid "Classify Driver"
 msgstr "硬件驅動"    
 
 msgid "Classify Windows"
-msgstr "Win 軟件" 
+msgstr "Win 軟體" 
 
 msgid "Classify Others"
-msgstr "其他軟件"  
+msgstr "其他軟體"  
 
 msgid "Deepin Software Center"
-msgstr "深度軟件中心"
+msgstr "深度軟體中心"
 
 msgid " Loading, please wait ..."
 msgstr " 加載中， 請稍候 ..."
@@ -198,10 +198,10 @@ msgid "Congratulations, your system is clean."
 msgstr "恭喜您， 您的係統非常乾淨."
 
 msgid "Software Center is using the downloaded package, please wait clearing."
-msgstr "軟件中心正在使用下載的軟件包，請稍候清理。"
+msgstr "軟體中心正在使用下載的軟體包，請稍候清理。"
 
 msgid "Cleaned up %s package, release %s space."
-msgstr "清理了%s個軟件包， 釋放了%s空間."
+msgstr "清理了%s個軟體包， 釋放了%s空間."
 
 msgid "To ensure fairness, only a day to %s score once."
 msgstr "為保證公正, 每天隻能對%s評分一次."
@@ -225,7 +225,7 @@ msgid "Translate description"
 msgstr "協助翻譯"
 
 msgid "Screenshot"
-msgstr "軟件截圖"
+msgstr "軟體截圖"
 
 msgid "Version: "
 msgstr "版本: "
@@ -249,10 +249,10 @@ msgid "Download fails, check your network and click refresh and try again."
 msgstr "下載失敗, 點擊刷新重試."
 
 msgid "The software does not screenshot"
-msgstr "這個軟件不需要截圖"
+msgstr "這個軟體不需要截圖"
 
 msgid "Upload screenshot"
-msgstr "上传截圖"
+msgstr "上傳截圖"
 
 msgid "% s: Download failed, please check your network link."
 msgstr "%s: 下載失敗, 請檢查您的網絡鏈接."
@@ -300,10 +300,10 @@ msgid "Unselect All"
 msgstr "全不選"
 
 msgid "Update select software"
-msgstr "升級選中的軟件"
+msgstr "升級選中的軟體"
 
 msgid "Notify select software"
-msgstr "提示選中的軟件"
+msgstr "提示選中的軟體"
 
 msgid "Notify again"
 msgstr "重新提醒"
@@ -327,7 +327,7 @@ msgid "Report Problem"
 msgstr "問題反饋"
 
 msgid "Software Center 2.0 New Feature"
-msgstr "軟件中心2.0新功能"
+msgstr "軟體中心2.0新功能"
 
 msgid "Setup"
 msgstr "設定"
@@ -354,10 +354,10 @@ msgid "Sort By Vote"
 msgstr "按評分排序"
 
 msgid "Please enter the name you want to search for software, version or other information"
-msgstr "請輸入您要搜索的軟件名稱、版本或其他信息"
+msgstr "請輸入您要搜索的軟體名稱、版本或其他信息"
 
 msgid "Please enter the name you want to uninstall the software, version or other information"
-msgstr "請輸入您要卸載的軟件名稱、版本或其他信息"
+msgstr "請輸入您要卸載的軟體名稱、版本或其他信息"
 
 msgid "Files are indexed for the search ..."
 msgstr "正在為搜索建立索引文件 ..."
@@ -378,21 +378,21 @@ msgid "Change Theme"
 msgstr "更換皮膚"
 
 msgid "Updating souces list ..."
-msgstr "正在更新軟件列表 ..."
+msgstr "正在更新軟體列表 ..."
 
 msgid "Update sources list completed."
-msgstr "更新軟件列表完畢。"
+msgstr "更新軟體列表完畢。"
 
 msgid "News\n"
 msgstr ""
-"* 解決更新管理器衝突導致軟件中心安裝失敗的問題。\n"
+"* 解決更新管理器衝突導致軟體中心安裝失敗的問題。\n"
 "* 添加‘下載管理’頁面。\n"
 "* 添加‘智能清理下載緩存’的功能。\n"
-"* 可以選擇不更新指定的軟件。\n"
+"* 可以選擇不更新指定的軟體。\n"
 "* 更快的推薦更新。\n"
 "* 社區評論功能。\n"
-"* 安裝後直接在軟件中心啟動。\n"
-"* 支持多個軟件並行下載。\n"
+"* 安裝後直接在軟體中心啟動。\n"
+"* 支持多個軟體並行下載。\n"
 "* 支持動態換膚功能。\n"
 "* 支持英文和繁體中文。\n"
 "* 優化內存占用。\n"
@@ -402,22 +402,22 @@ msgstr ""
 "* 支持Ubuntu係統。\n"
 
 msgid "Topbar UpdatePage"
-msgstr "<span size='%s'>有 </span><span foreground='%s' size='%s'>%s</span><span size='%s'> 款軟件可以升級</span>"
+msgstr "<span size='%s'>有 </span><span foreground='%s' size='%s'>%s</span><span size='%s'> 款軟體可以升級</span>"
 
 msgid "Topbar DownloadManagePage"
-msgstr "<span size='%s'>有 </span><span foreground='%s' size='%s'>%s</span><span size='%s'> 款軟件正在下載</span>"
+msgstr "<span size='%s'>有 </span><span foreground='%s' size='%s'>%s</span><span size='%s'> 款軟體正在下載</span>"
 
 msgid "Topbar SearchPage"
-msgstr "<span size='%s'>搜到和 </span><span foreground='%s' size='%s'>%s</span><span size='%s'> 相關的軟件共 </span><span foreground='%s' size='%s'>%s</span><span size='%s'> 款</span>"
+msgstr "<span size='%s'>搜到和 </span><span foreground='%s' size='%s'>%s</span><span size='%s'> 相關的軟體共 </span><span foreground='%s' size='%s'>%s</span><span size='%s'> 款</span>"
 
 msgid "Topbar SearchUninstallPage"
-msgstr "<span size='%s'>搜到和 </span><span foreground='%s' size='%s'>%s</span><span size='%s'> 相關的軟件共 </span><span foreground='%s' size='%s'>%s</span><span size='%s'> 款</span>"
+msgstr "<span size='%s'>搜到和 </span><span foreground='%s' size='%s'>%s</span><span size='%s'> 相關的軟體共 </span><span foreground='%s' size='%s'>%s</span><span size='%s'> 款</span>"
 
 msgid "Topbar UninstallPage"
-msgstr "<span size='%s'>有 </span><span foreground='%s' size='%s'>%s</span><span size='%s'> 款軟件可以卸載</span>"
+msgstr "<span size='%s'>有 </span><span foreground='%s' size='%s'>%s</span><span size='%s'> 款軟體可以卸載</span>"
 
 msgid "Topbar IgnorePage"
-msgstr "<span size='%s'>有 </span><span foreground='%s' size='%s'>%s</span><span size='%s'> 款軟件不再提醒升級</span>"
+msgstr "<span size='%s'>有 </span><span foreground='%s' size='%s'>%s</span><span size='%s'> 款軟體不再提醒升級</span>"
 
 msgid "No Notify UpdatePage"
 msgstr "不再提醒升級%s款"
@@ -429,7 +429,7 @@ msgid "No Downloads."
 msgstr "冇有下載任務."
 
 msgid "No software needs to remind."
-msgstr "冇有軟件需要重新提醒."
+msgstr "冇有軟體需要重新提醒."
 
 msgid "Proxy Address"
 msgstr "地址: "

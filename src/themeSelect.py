@@ -35,7 +35,12 @@ class ThemeSelect(object):
     def __init__(self, widget, changeThemeCallback):
         '''Init theme select.'''
         # Init.
+        dirs = evalFile("../theme/list.txt")
+        themeName = readFile("./defaultTheme", True)
         self.index = 0
+        for (index, dirname) in enumerate(dirs):
+            if themeName == dirname:
+                self.index = index
         self.dirnames = []
         self.changeThemeCallback = changeThemeCallback
         self.window = gtk.Window()
@@ -94,7 +99,6 @@ class ThemeSelect(object):
         '''Show.'''
         # Scan theme directory.
         containerRemoveAll(self.themeIconBox)
-        # dirs = os.listdir("../theme/")
         dirs = evalFile("../theme/list.txt")
         self.dirnames = dirs
         boxs = map (lambda n: gtk.HBox(), range(0, len(dirs) / 3 + len(dirs) % 3))

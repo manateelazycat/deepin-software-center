@@ -7,6 +7,7 @@
 	* Update notify tip code.
 	* Update contine/stop/pause icons.
 	* Update select/selected icons.
+	* Adjust uninstall confirm text color.
 
 2011-11-30 Yong Wang <lazycat.manatee@gmail.com>
 	* Add pickPkgDocs.py.

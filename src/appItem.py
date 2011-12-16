@@ -150,7 +150,11 @@ class UninstallItem(object):
         
         if self.confirmUninstall:
             appUninstallLabel = gtk.Label()
-            appUninstallLabel.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, __("Are you sure uninstall?")))
+            appUninstallLabel.set_markup(
+                "<span foreground='%s' size='%s'>%s</span>" % (
+                    appTheme.getDynamicColor("uninstallConfirm").getColor(),
+                    LABEL_FONT_SIZE, 
+                    __("Are you sure uninstall?")))
             actionButtonBox.pack_start(appUninstallLabel, False, False)
             
             appUninstallBox = gtk.HBox()

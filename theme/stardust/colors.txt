@@ -29,6 +29,7 @@
 	 "themeIconPress" : "#FFFFFF",
 	 "menuItem" : "#FFFFFF",
 	 "newFeatureText" : "#FFFFFF",
+	 "uninstallConfirm" : "#CBC9CE",
     },
  "labelColors" : 
     {"appName" : ("#1A3E88", "#0084FF", "#1A3E88"),

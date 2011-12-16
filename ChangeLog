@@ -1,6 +1,9 @@
 * News in 2.0
 
-2011-12-16 Yong Wang <lazycat.manatee@gmail.com>
+2011-12-17 Wang Yong <lazycat.manatee@gmail.com>
+	* Use icon render radio group.
+
+2011-12-16 Wang Yong <lazycat.manatee@gmail.com>
 	* Change default icons.
 	* Update translation docs and download tip images.
 	* Update update tip code.
@@ -9,20 +12,20 @@
 	* Update select/selected icons.
 	* Adjust uninstall confirm text color.
 
-2011-11-30 Yong Wang <lazycat.manatee@gmail.com>
+2011-11-30 Wang Yong <lazycat.manatee@gmail.com>
 	* Add pickPkgDocs.py.
 
-2011-11-24 Yong Wang <lazycat.manatee@gmail.com>
+2011-11-24 Wang Yong <lazycat.manatee@gmail.com>
 	* Move some functions to draw.py.
 	* Make comment error notify more friendly.
 	* Change detail view information.
 
-2011-11-23 Yong Wang <lazycat.manatee@gmail.com>
+2011-11-23 Wang Yong <lazycat.manatee@gmail.com>
 	* Change comment area algorithm to get comment area height.
 	* Change fetch screenshot.
 	* Update .desktop files.
 
-2011-11-22 Yong Wang <lazycat.manatee@gmail.com>
+2011-11-22 Wang Yong <lazycat.manatee@gmail.com>
 	* Finish proxy setup interface.
 	* Update translation.
 	* Change vote view interface, more friendly to English version.
@@ -32,7 +35,7 @@
 	* Fix crash problem when setup proxy in webkit.
 	* Scroll comment area to right place when change page.
 
-2011-11-21 Yong Wang <lazycat.manatee@gmail.com>
+2011-11-21 Wang Yong <lazycat.manatee@gmail.com>
 	* Move news document to deepin-software-center.po.
 	* Finish deepin-software-center.po.
 	* Finish zh_TW/deepin-software-center.po.
@@ -40,7 +43,7 @@
 	* Make category widget size automatically.
 	* Display number at categorybar.
 
-2011-11-18 Yong Wang <lazycat.manatee@gmail.com>
+2011-11-18 Wang Yong <lazycat.manatee@gmail.com>
 	* Avoid comment area can't shrink window when main window shrink.
 	* Finish big screenshot.
 	* Hide popup window when switch page.
@@ -50,13 +53,13 @@
 	* Show upgrade information in app's tooltip if it have.
 	* Show index when browse screenshots.
 
-2011-11-17 Yong Wang <lazycat.manatee@gmail.com>
+2011-11-17 Wang Yong <lazycat.manatee@gmail.com>
 	* Enhance the effect of small screenshot switch.
 	* Finish comment code.
 	* Finish backend test.
 	* Use commandProxy.py fix root permission hole.
 
-2011-11-16 Yong Wang <lazycat.manatee@gmail.com>
+2011-11-16 Wang Yong <lazycat.manatee@gmail.com>
 	* Clean departed comment code, use web technology implement user comment.
 	* Remove noscreenshotList, new backend technology, yay!
 	* Support multiple small screenshot.
@@ -66,7 +69,7 @@
 	* Remember theme setup.
 	* Add checkExists option in read file functions.
 
-2011-11-15 Yong Wang <lazycat.manatee@gmail.com>
+2011-11-15 Wang Yong <lazycat.manatee@gmail.com>
 	* Fix aria2c version bug.
 	* Update theme stuff.
 	* Delete pink theme.
@@ -75,14 +78,14 @@
 	* Change behavior of homepage recommend slide.
 	* Give user message why don't allowed uninstall system module.
 
-2011-11-14 Yong Wang <lazycat.manatee@gmail.com>
+2011-11-14 Wang Yong <lazycat.manatee@gmail.com>
 	* Fix bug that cause by language code.
 	* Compatible with aria2c 1.9.x.
 
-2011-11-12 Yong Wang <lazycat.manatee@gmail.com>
+2011-11-12 Wang Yong <lazycat.manatee@gmail.com>
 	* Close popup window when resize main window.
 
-2011-11-11 Yong Wang <lazycat.manatee@gmail.com>
+2011-11-11 Wang Yong <lazycat.manatee@gmail.com>
 	* Fix more window and theme select window show at the same time.
 	* Fix new feature window don't hide when other window show.
 	* Add close button on new feature window.
@@ -93,55 +96,55 @@
 	* Finish progressbar.
 	* Fix theme icon frame draw bug.
 
-2011-11-10 Yong Wang <lazycat.manatee@gmail.com>
+2011-11-10 Wang Yong <lazycat.manatee@gmail.com>
 	* Add menu for more features.
 	* Add new feature window.
 	* Refactory code.
 	* Adjust bar background code.
 	* Simple draw type.
 
-2011-11-09 Yong Wang <lazycat.manatee@gmail.com>
+2011-11-09 Wang Yong <lazycat.manatee@gmail.com>
 	* Support fill color of navigatebar background from middle.
 
-2011-11-08 Yong Wang <lazycat.manatee@gmail.com>
+2011-11-08 Wang Yong <lazycat.manatee@gmail.com>
 	* Finish download cache clean feature.
 
-2011-11-07 Yong Wang <lazycat.manatee@gmail.com>
+2011-11-07 Wang Yong <lazycat.manatee@gmail.com>
 	* Support multiple theme format.
 	* Finish select theme code.
 
-2011-11-04 Yong Wang <lazycat.manatee@gmail.com>
+2011-11-04 Wang Yong <lazycat.manatee@gmail.com>
 	* Finish window graphics code.
 
-2011-11-03 Yong Wang <lazycat.manatee@gmail.com>
+2011-11-03 Wang Yong <lazycat.manatee@gmail.com>
 	* Add new render code for window.
 
-2011-11-02 Yong Wang <lazycat.manatee@gmail.com>
+2011-11-02 Wang Yong <lazycat.manatee@gmail.com>
 	* Update theme code.
 	* Make search completion window response PageUp/PageDown.
 	* Improve the algorithm of window shape, save memory, yay!
 
-2011-11-01 Yong Wang <lazycat.manatee@gmail.com>
+2011-11-01 Wang Yong <lazycat.manatee@gmail.com>
 	* Update dynamic theme code.
 	* Update vote information when back from detail view.
 
-2011-10-31 Yong Wang <lazycat.manatee@gmail.com>
+2011-10-31 Wang Yong <lazycat.manatee@gmail.com>
 	* Use dynamic theme replace button font.
 	* Use dynamic theme replace side button font.
 	* Update dynamic theme code.
 
-2011-10-25 Yong Wang <lazycat.manatee@gmail.com>
+2011-10-25 Wang Yong <lazycat.manatee@gmail.com>
 	* Adjust package's exec path.
 	* Re-implement vote black list module.
 	* Add dynamic label and dynamic color code.
 
-2011-10-20 Yong Wang <lazycat.manatee@gmail.com>
+2011-10-20 Wang Yong <lazycat.manatee@gmail.com>
 	* Add change theme code.
 
-2011-10-14 Yong Wang <lazycat.manatee@gmail.com>
+2011-10-14 Wang Yong <lazycat.manatee@gmail.com>
 	* Customize progressbar.
 
-2011-10-13 Yong Wang <lazycat.manatee@gmail.com>
+2011-10-13 Wang Yong <lazycat.manatee@gmail.com>
 	* updateList.py: enable time check tag.
 	* download.py/action.py: adjust the order of return list.
 	* Remove more page (more features add in 3.0).
@@ -149,17 +152,17 @@
 	* Make application can launch directly after install complete.
         * Make application at slide bar can launch directly after install complete.
 
-2011-10-12 Yong Wang <lazycat.manatee@gmail.com>
+2011-10-12 Wang Yong <lazycat.manatee@gmail.com>
 	* Refactory code: ready for multi-package concurrent download.
 	* Add new features that software center can download package concurrently.
 
-2011-10-11 Yong Wang <lazycat.manatee@gmail.com>
+2011-10-11 Wang Yong <lazycat.manatee@gmail.com>
 	* Pick server address for test.
 	* Avoid user send vote more than one time.
 	* Fix bug.
 	* search.py: improve sort algorthim of search view, make it clearer to user.
 
-2011-10-10 Yong Wang <lazycat.manatee@gmail.com>
+2011-10-10 Wang Yong <lazycat.manatee@gmail.com>
 	* Finish download manage page.
 	* utils.py: add new utils functions: `addInList', 'removeFromList'.
 	* updatePage.py/downloadManagePage.py:
@@ -168,7 +171,7 @@
 	* repoCache.py: improve sort algorthim of upgrade view, make it clearer to user.
 	* ignorePage.py: Set label's markup with blank if nothing to ignore.
 
-2011-10-07 Yong Wang <lazycat.manatee@gmail.com>
+2011-10-07 Wang Yong <lazycat.manatee@gmail.com>
 	* repoCache.py: refactory functions `getIgnoreNum' and `getUpgradableNum'.
 	* utils.py: add new function `printEnv'.
 	* utils.py: add new function `printExecTime'.
@@ -181,25 +184,25 @@
 	* searchCompletion.py:
 	  Improve search experience, default use "global search", below use "accurate search", remove "global search" button.
 
-2011-10-06 Yong Wang <lazycat.manatee@gmail.com>
+2011-10-06 Wang Yong <lazycat.manatee@gmail.com>
 	* Add page for download manage.
 
-2011-09-30 Yong Wang <lazycat.manatee@gmail.com>
+2011-09-30 Wang Yong <lazycat.manatee@gmail.com>
 	* Add ignore feature, now you can ignore some software to keep don't upgrade.
 
-2011-09-29 Yong Wang <lazycat.manatee@gmail.com>
+2011-09-29 Wang Yong <lazycat.manatee@gmail.com>
 	* Refactory code.
 
-2011-09-27 Yong Wang <lazycat.manatee@gmail.com>
+2011-09-27 Wang Yong <lazycat.manatee@gmail.com>
 	* Add running page and more page.
 
-2011-09-22 Yong Wang <lazycat.manatee@gmail.com>
+2011-09-22 Wang Yong <lazycat.manatee@gmail.com>
 	* Adjust icons directory.
 
 	* deepin-software-center.py/main/deepin-software-center:
 	  Use socket algorthim avoid user startup software center twice.
 
-2011-09-21 Yong Wang <lazycat.manatee@gmail.com>
+2011-09-21 Wang Yong <lazycat.manatee@gmail.com>
 	* updateList.py: Add new update package list module to instead update manager.
 
 	* Refresh update view after package list update complete.
@@ -211,19 +214,19 @@
 
 	* utils.py: Add new functions 'AnonymityThread' for build temp thread code.
 
-2011-09-20 Yong Wang <lazycat.manatee@gmail.com>
+2011-09-20 Wang Yong <lazycat.manatee@gmail.com>
 	* Add recommend list length to protected software center won't crash if some package not exist in local cache.
 
 	* Adjust package classify directory and algorthim make it update from server side.
 
-2011-09-19 Yong Wang <lazycat.manatee@gmail.com>
+2011-09-19 Wang Yong <lazycat.manatee@gmail.com>
 	* Move pkgClassify directory.
 
 	* Add sort button at software repository page.
 
 	* Adjust directory of update data for package at server side.
 
-2011-09-16 Yong Wang <lazycat.manatee@gmail.com>
+2011-09-16 Wang Yong <lazycat.manatee@gmail.com>
 	* recommendView.py: Adjust progressbar position to avoid hide software name.
 
 	* recommendPage.py: Adjust color of pause status in slide item.

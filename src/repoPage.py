@@ -91,12 +91,6 @@ class RepoPage(object):
         self.categorybar.categoryId = categoryId
         self.categorybar.box.queue_draw()
         
-        # Redraw sub-categorybar bar.
-        # self.topbar.updateTopbar(
-        #     categoryName,
-        #     self.repoCache.getCategoryNumber(categoryName)
-        #     )
-        
         # Update application view.
         self.repoView.update(
             categoryName, 
@@ -125,22 +119,17 @@ class Topbar(object):
         self.eventbox = gtk.EventBox()
         self.eventbox.add(self.boxAlign)
         drawTopbar(self.eventbox)
-        # self.categoryLabel = gtk.Label()
         self.numLabel = gtk.Label()
-        # self.updateTopbar(category, itemNum)
         self.entrySearchCallback = entrySearchCallback
         self.updateCategoryCallback = updateCategoryCallback
         
         # Add classify number.
-        # self.box.pack_start(self.categoryLabel, False, False, self.paddingX)
-        # self.box.pack_start(self.numLabel, False, False, self.paddingX)
         self.box.pack_start(self.numLabel)
         
         # Add sort buttons.
         self.sortBox = gtk.HBox()
         self.sortAlign = gtk.Alignment()
-        self.sortAlign.set(0.5, 0.5, 1.0, 1.0)
-        # self.sortAlign.set_padding(0, 0, self.SORT_BOX_PADDING_X, self.SORT_BOX_PADDING_X)
+        self.sortAlign.set(0.0, 0.5, 1.0, 1.0)
         self.sortAlign.add(self.sortBox)
         
         self.sortRecommendId = "sortRecommend"
@@ -148,26 +137,22 @@ class Topbar(object):
         self.sortVoteId = "sortVote"
         self.sortType = self.sortRecommendId
 
-        self.normalColor = '#1A3E88'
-        self.hoverColor = '#0084FF'
-        self.selectColor = '#000000'
-        
-        (self.sortRecommendLabel, self.sortRecommendEventBox) = setDefaultToggleLabel(
-            __("Sort By Recommend"), self.sortRecommendId, self.setSortType, self.getSortType, True)
-        self.sortRecommendEventBox.connect("button-press-event", lambda w, e: self.updateCategoryCallback())
-        
-        (self.sortDownloadLabel, self.sortDownloadEventBox) = setDefaultToggleLabel(
-            __("Sort By Download"), self.sortDownloadId, self.setSortType, self.getSortType, False)
-        self.sortDownloadEventBox.connect("button-press-event", lambda w, e: self.updateCategoryCallback())
+        (self.sortRecommendBox, self.sortRecommendEventBox) = setDefaultRadioButton(
+            __("Sort By Recommend"), self.sortRecommendId, self.setSortType, self.getSortType, self.updateRadioStatus
+            )
 
-        (self.sortVoteLabel, self.sortVoteEventBox) = setDefaultToggleLabel(
-            __("Sort By Vote"), self.sortVoteId, self.setSortType, self.getSortType, False)
-        self.sortVoteEventBox.connect("button-press-event", lambda w, e: self.updateCategoryCallback())
+        (self.sortDownloadBox, self.sortDownloadEventBox) = setDefaultRadioButton(
+            __("Sort By Download"), self.sortDownloadId, self.setSortType, self.getSortType, self.updateRadioStatus
+            )
         
-        self.sortButtonPaddingX = 5
-        self.sortBox.pack_start(self.sortRecommendEventBox, False, False, self.sortButtonPaddingX)
-        self.sortBox.pack_start(self.sortDownloadEventBox, False, False, self.sortButtonPaddingX)
-        self.sortBox.pack_start(self.sortVoteEventBox, False, False, self.sortButtonPaddingX)
+        (self.sortVoteBox, self.sortVoteEventBox) = setDefaultRadioButton(
+            __("Sort By Vote"), self.sortVoteId, self.setSortType, self.getSortType, self.updateRadioStatus
+            )
+        
+        self.sortButtonPaddingX = 10
+        self.sortBox.pack_start(self.sortRecommendBox, False, False, self.sortButtonPaddingX)
+        self.sortBox.pack_start(self.sortDownloadBox, False, False, self.sortButtonPaddingX)
+        self.sortBox.pack_start(self.sortVoteBox, False, False, self.sortButtonPaddingX)
         self.box.pack_start(self.sortAlign, False, False)
         
         # Add search entry and label.
@@ -178,31 +163,17 @@ class Topbar(object):
             self.search)
         self.box.pack_start(searchAlign)
         
+    def updateRadioStatus(self):
+        '''Update radio status.'''
+        self.sortRecommendEventBox.queue_draw()    
+        self.sortDownloadEventBox.queue_draw()    
+        self.sortVoteEventBox.queue_draw()    
+        
+        self.updateCategoryCallback()
+        
     def setSortType(self, sType):
         '''Set sort type.'''
         self.sortType = sType
-        
-        if self.sortType == self.sortRecommendId:
-            self.sortRecommendLabel.set_markup(
-                "<span foreground='%s' size='%s' underline='single'>%s</span>" % (self.selectColor, LABEL_FONT_SIZE, __("Sort By Recommend")))
-            self.sortDownloadLabel.set_markup(
-                "<span foreground='%s' size='%s' >%s</span>" % (self.normalColor, LABEL_FONT_SIZE, __("Sort By Download")))
-            self.sortVoteLabel.set_markup(
-                "<span foreground='%s' size='%s' >%s</span>" % (self.normalColor, LABEL_FONT_SIZE, __("Sort By Vote")))
-        elif self.sortType == self.sortDownloadId:
-            self.sortRecommendLabel.set_markup(
-                "<span foreground='%s' size='%s' >%s</span>" % (self.normalColor, LABEL_FONT_SIZE, __("Sort By Recommend")))
-            self.sortDownloadLabel.set_markup(
-                "<span foreground='%s' size='%s' underline='single'>%s</span>" % (self.selectColor, LABEL_FONT_SIZE, __("Sort By Download")))
-            self.sortVoteLabel.set_markup(
-                "<span foreground='%s' size='%s' >%s</span>" % (self.normalColor, LABEL_FONT_SIZE, __("Sort By Vote")))
-        else:
-            self.sortRecommendLabel.set_markup(
-                "<span foreground='%s' size='%s' >%s</span>" % (self.normalColor, LABEL_FONT_SIZE, __("Sort By Recommend")))
-            self.sortDownloadLabel.set_markup(
-                "<span foreground='%s' size='%s' >%s</span>" % (self.normalColor, LABEL_FONT_SIZE, __("Sort By Download")))
-            self.sortVoteLabel.set_markup(
-                "<span foreground='%s' size='%s' underline='single'>%s</span>" % (self.selectColor, LABEL_FONT_SIZE, __("Sort By Vote")))
         
     def getSortType(self):
         '''Get sort type.'''
@@ -221,14 +192,5 @@ class Topbar(object):
         '''Click candidate.'''
         keyword = self.searchEntry.get_chars(0, -1)
         self.entrySearchCallback(PAGE_REPO, keyword, [candidate])
-        
-    # def updateTopbar(self, category, itemNum):
-    #     '''Set number label.'''
-    #     self.categoryLabel.set_markup("<span foreground='#1A3E88' size='%s'><b>%s</b></span>" % (LABEL_FONT_SIZE, category))
-    #     self.numLabel.set_markup(
-    #         ("<span size='%s'>共</span>" % (LABEL_FONT_SIZE))
-    #         + "<span foreground='#006efe' size='%s'> %s</span>" % (LABEL_FONT_SIZE, str(itemNum))
-    #         + ("<span size='%s'> 款软件</span>" % (LABEL_FONT_SIZE)))
-    
 
 #  LocalWords:  categorybar repoView's sortAlign efe

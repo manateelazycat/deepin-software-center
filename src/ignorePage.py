@@ -73,15 +73,14 @@ class Topbar(object):
         self.repoCache = repoCache
         self.paddingX = 5
         self.numColor = '#006efe'
-        self.normalColor = '#1A3E88'
-        self.hoverColor = '#0084FF'
-        self.selectColor = '#000000'
         self.box = gtk.HBox()
         self.boxAlign = gtk.Alignment()
         self.boxAlign.set(0.0, 0.5, 1.0, 1.0)
         self.boxAlign.set_padding(0, 0, TOPBAR_PADDING_LEFT, TOPBAR_PADDING_UPDATE_RIGHT)
         self.boxAlign.add(self.box)
         self.eventbox = gtk.EventBox()
+        self.selectAllPkgCallback = selectAllPkgCallback
+        self.unselectAllPkgCallback = unselectAllPkgCallback
         drawTopbar(self.eventbox)
         
         upgradeBox = gtk.HBox()
@@ -95,16 +94,16 @@ class Topbar(object):
         self.unselectAllId = "unselectAll"
         self.labelId = self.selectAllId
         
-        (self.selectAllLabel, self.selectAllEventBox) = setDefaultToggleLabel(
-            __("Select All"), self.selectAllId, self.setLabelId, self.getLabelId, True)
-        self.selectAllEventBox.connect("button-press-event", lambda w, e: selectAllPkgCallback())
-        upgradeBox.pack_start(self.selectAllEventBox, False, False, self.paddingX)
+        (self.selectAllBox, self.selectAllEventBox) = setDefaultRadioButton(
+            __("Select All"), self.selectAllId, self.setLabelId, self.getLabelId, self.selectAllPkgStatus
+            )
+        upgradeBox.pack_start(self.selectAllBox, False, False, self.paddingX)
         
-        (self.unselectAllLabel, self.unselectAllEventBox) = setDefaultToggleLabel(
-            __("Unselect All"), self.unselectAllId, self.setLabelId, self.getLabelId, False)
-        self.unselectAllEventBox.connect("button-press-event", lambda w, e: unselectAllPkgCallback())
-        upgradeBox.pack_start(self.unselectAllEventBox, False, False, self.paddingX)
-        
+        (self.unselectAllBox, self.unselectAllEventBox) = setDefaultRadioButton(
+            __("Unselect All"), self.unselectAllId, self.setLabelId, self.getLabelId, self.unselectAllPkgStatus
+            )
+        upgradeBox.pack_start(self.unselectAllBox, False, False, self.paddingX)
+
         (self.upgradeButton, upgradeButtonAlign) = newActionButton(
              "update_selected", 0.0, 0.5, "cell", True, __("Notify select software"), BUTTON_FONT_SIZE_MEDIUM, "bigButtonFont")
         upgradeBox.pack_start(upgradeButtonAlign, False, False, self.paddingX)
@@ -123,20 +122,23 @@ class Topbar(object):
         self.box.pack_start(returnButtonAlign, False, False)
         self.eventbox.add(self.boxAlign)
         
+    def selectAllPkgStatus(self):
+        '''Select all pkg status.'''
+        self.selectAllEventBox.queue_draw()
+        self.unselectAllEventBox.queue_draw()
+    
+        self.selectAllPkgCallback()
+
+    def unselectAllPkgStatus(self):
+        '''Select all pkg status.'''
+        self.selectAllEventBox.queue_draw()
+        self.unselectAllEventBox.queue_draw()
+    
+        self.unselectAllPkgCallback()
+        
     def setLabelId(self, lId):
         '''Set label id.'''
         self.labelId = lId
-        
-        if self.labelId == self.selectAllId:
-            self.selectAllLabel.set_markup(
-                "<span foreground='%s' size='%s' underline='single'>%s</span>" % (self.selectColor, LABEL_FONT_SIZE, __("Select All")))
-            self.unselectAllLabel.set_markup(
-                "<span foreground='%s' size='%s'>%s</span>" % (self.normalColor, LABEL_FONT_SIZE, __("Unselect All")))
-        else:
-            self.selectAllLabel.set_markup(
-                "<span foreground='%s' size='%s'>%s</span>" % (self.normalColor, LABEL_FONT_SIZE, __("Select All")))
-            self.unselectAllLabel.set_markup(
-                "<span foreground='%s' size='%s' underline='single'>%s</span>" % (self.selectColor, LABEL_FONT_SIZE, __("Unselect All")))
         
     def getLabelId(self):
         '''Get label id.'''

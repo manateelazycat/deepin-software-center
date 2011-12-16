@@ -1704,6 +1704,57 @@ def setMarkup(label, markup):
     
     return False
 
+def setDefaultRadioButton(content, status, setStatus, getStatus, updateRadioStatus):
+    '''Set default toggle button.'''
+    box = gtk.HBox()
+    
+    padding = 5
+    radioEventBox = gtk.EventBox()
+    radioEventBox.set_visible_window(False)
+    selectDPixbuf = appTheme.getDynamicPixbuf("topbar/select.png")
+    unselectDPixbuf = appTheme.getDynamicPixbuf("topbar/unselect.png")
+    radioEventBox.set_size_request(selectDPixbuf.getPixbuf().get_width(), selectDPixbuf.getPixbuf().get_height())
+    radioEventBox.connect("expose-event", lambda w, e: radioButtonOnExpose(
+            w, e,
+            selectDPixbuf, unselectDPixbuf,
+            status, getStatus))
+    radioEventBoxAlign = gtk.Alignment()
+    radioEventBoxAlign.set(0.5, 0.5, 0.0, 0.0)
+    radioEventBoxAlign.set_padding(padding, padding, padding, padding)
+    radioEventBoxAlign.add(radioEventBox)
+    box.pack_start(radioEventBoxAlign, True, True)
+    
+    label = gtk.Label(content)
+    label.set_alignment(0.0, 0.5)
+    box.pack_start(label, False, False)
+
+    eventbox = gtk.EventBox()
+    eventbox.add(box)
+    eventbox.set_visible_window(False)
+    eventbox.connect("button-press-event", lambda w, e: setStatus(status))
+    eventbox.connect("button-press-event", lambda w, e: updateRadioStatus())
+    eventbox.connect("enter-notify-event", lambda w, e: setCursor(w, gtk.gdk.HAND2))
+    eventbox.connect("leave-notify-event", lambda w, e: setDefaultCursor(w))
+
+    return (eventbox, radioEventBox)
+
+def radioButtonOnExpose(widget, event, selectDPixbuf, unselectDPixbuf, status, getStatus):
+    '''Expose toggle button.'''
+    cr = widget.window.cairo_create()
+    rect = widget.allocation
+    
+    if (status == getStatus()):
+        pixbuf = selectDPixbuf.getPixbuf()
+    else:
+        pixbuf = unselectDPixbuf.getPixbuf()
+        
+    drawPixbuf(cr, pixbuf, rect.x, rect.y)
+    
+    if widget.get_child() != None:
+        widget.propagate_expose(widget.get_child(), event)
+
+    return True
+
 #  LocalWords:  scaleX imageWidth scaleY imageHeight pixbuf cr drawPixbuf
 #  LocalWords:  buttonSetBackground normalImg hoverImg pressImg buttonLabel
 #  LocalWords:  fontSize labelColor normalPixbuf hoverPixbuf pressPixbuf

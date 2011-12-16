@@ -46,7 +46,7 @@ class NavigateBar(object):
         
         self.logoIcon = self.createLogoIcon()
         self.logoAlign = gtk.Alignment()
-        self.logoAlign.set_padding(0, 0, 60, 10)
+        self.logoAlign.set_padding(0, 0, 13, 25)
         self.logoAlign.add(self.logoIcon)
         self.box.pack_start(self.logoAlign, False, False)
 

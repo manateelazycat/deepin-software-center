@@ -23,10 +23,10 @@
 import gettext
 import locale
 
-# DEFAULT_LANG = None
-DEFAULT_LANG = "default"
-# DEFAULT_LANG = "zh_CN"
-# DEFAULT_LANG = "zh_TW"
+DEFAULT_LANG = None             # automatically
+# DEFAULT_LANG = "default"        # english
+# DEFAULT_LANG = "zh_CN"          # simple chinese
+# DEFAULT_LANG = "zh_TW"          # transitional chinese
 
 if DEFAULT_LANG == None:
     (lang, _) = locale.getdefaultlocale()

@@ -4,6 +4,7 @@
 	* Change default icons.
 	* Update translation docs and download tip images.
 	* Update update tip code.
+	* Update notify tip code.
 
 2011-11-30 Yong Wang <lazycat.manatee@gmail.com>
 	* Add pickPkgDocs.py.

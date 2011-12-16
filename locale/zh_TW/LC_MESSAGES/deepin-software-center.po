@@ -84,7 +84,7 @@ msgid "Action Uninstalling"
 msgstr "卸載中"
 
 msgid "Nav Recommend"
-msgstr "精彩推薦"
+msgstr "精彩首頁"
 
 msgid "Nav Repository"
 msgstr "軟體倉庫"

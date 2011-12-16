@@ -84,7 +84,7 @@ msgid "Action Uninstalling"
 msgstr "卸载中"
 
 msgid "Nav Recommend"
-msgstr "精彩推荐"
+msgstr "精彩首页"
 
 msgid "Nav Repository"
 msgstr "软件仓库"

@@ -96,7 +96,7 @@ msgid "Nav Uninstall"
 msgstr "Uninstall"
 
 msgid "Nav Download Manage"
-msgstr "Download Manage"
+msgstr "Download"
 
 msgid "Click Show Detail"
 msgstr "Click to show detail"

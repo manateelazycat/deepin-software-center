@@ -210,27 +210,30 @@ class DownloadManageView(appView.AppView):
         self.itemDict.clear()
         
         if self.appNum == 0:
-            notifyBox = gtk.HBox()
+            if (getDefaultLanguage() == "default"):
+                paddingX = 10
+            else:
+                paddingX = 45
+            
+            notifyBox = gtk.VBox()
             notifyAlign = gtk.Alignment()
             notifyAlign.set(0.5, 0.5, 0.0, 0.0)
             notifyAlign.add(notifyBox)
             self.box.pack_start(notifyAlign)
             
-            notifyIconAlignX = 5
-            notifyIcon = gtk.EventBox()
-            notifyIcon.set_visible_window(False)
-            simpleButtonSetBackground(notifyIcon, False, False, appTheme.getDynamicPixbuf("update/smile.gif"))
-            notifyIconAlign = gtk.Alignment()
-            notifyIconAlign.set(0.5, 1.0, 0.0, 0.0)
-            notifyIconAlign.set_padding(0, 0, notifyIconAlignX, notifyIconAlignX)
-            notifyIconAlign.add(notifyIcon)
-            notifyBox.pack_start(notifyIconAlign)
+            tipImage = gtk.image_new_from_pixbuf(
+                gtk.gdk.pixbuf_new_from_file("../icon/tips/%s/downloadTip.png" % (getDefaultLanguage())))
+            tipAlign = gtk.Alignment()
+            tipAlign.set_padding(0, 0, paddingX, 0)
+            tipAlign.add(tipImage)
+            notifyBox.pack_start(tipAlign)
             
-            notifyLabel = gtk.Label()
-            notifyLabel.set_markup(
-                "<span foreground='#1A38EE' size='%s'>%s</span>"
-                % (LABEL_FONT_XXX_LARGE_SIZE, __("No Downloads.")))
-            notifyBox.pack_start(notifyLabel, False, False)
+            penguinImage = gtk.image_new_from_pixbuf(
+                gtk.gdk.pixbuf_new_from_file("../icon/tips/penguin.png"))
+            penguinAlign = gtk.Alignment()
+            penguinAlign.set_padding(0, 0, 0, paddingX)
+            penguinAlign.add(penguinImage)
+            notifyBox.pack_start(penguinAlign)
             
             self.box.show_all()
         else:

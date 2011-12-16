@@ -78,7 +78,9 @@ class IgnoreItem(object):
         self.itemFrame.add(self.itemEventBox)
         
         # Add check box.
-        checkPadding = 10
+        checkPaddingLeft = 20
+        checkPaddingRight = 15
+        checkPaddingY = 10
         self.checkButton = gtk.CheckButton()
         self.checkButton.set_active(self.getSelectStatusCallback(utils.getPkgName(self.appInfo.pkg)))
         self.checkButton.connect("toggled", lambda w: self.toggleSelectStatus())
@@ -90,7 +92,7 @@ class IgnoreItem(object):
             )
         self.checkAlign = gtk.Alignment()
         self.checkAlign.set(0.5, 0.5, 0.0, 0.0)
-        self.checkAlign.set_padding(checkPadding, checkPadding, checkPadding, checkPadding)
+        self.checkAlign.set_padding(checkPaddingY, checkPaddingY, checkPaddingLeft, checkPaddingRight)
         self.checkAlign.add(self.checkButton)
         self.itemBox.pack_start(self.checkAlign, False, False)
         

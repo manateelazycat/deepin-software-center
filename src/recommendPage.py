@@ -210,6 +210,8 @@ class SlideBar(object):
         self.times = 10
         self.interval = 300 / self.times
         self.smallImagePaddingY = 10
+        self.hoverTimeoutIds = {}
+        self.hoverTimeout = 100
 
         self.repoCache = repoCache
         self.slideDir = "../updateData/slide/%s" % (getDefaultLanguage())
@@ -340,8 +342,23 @@ class SlideBar(object):
         labelBox = gtk.EventBox()
         labelBox.add(imageAlign)
         labelBox.connect("button-press-event", lambda widget, event: self.start(index))
+        labelBox.connect("enter-notify-event", lambda w, e: self.onSlideLabelEnter(index))
+        labelBox.connect("leave-notify-event", lambda w, e: self.onSlideLabelLeave(index))
         labelBox.connect("expose-event", lambda w, e: drawBackground(w, e, appTheme.getDynamicColor("background")))
         self.labelBox.pack_start(labelBox, True, True)
+        
+    def onSlideLabelEnter(self, index):
+        '''On slide label enter.'''
+        # Start slide when 100 milliseconds after hover.
+        if not self.hoverTimeoutIds.has_key(index):
+            self.hoverTimeoutIds[index] = glib.timeout_add(self.hoverTimeout, lambda : self.start(index))
+        
+    def onSlideLabelLeave(self, index):
+        '''On slide label leave.'''
+        # Remove hover timeout handler.
+        if self.hoverTimeoutIds.has_key(index):
+            glib.source_remove(self.hoverTimeoutIds[index])
+            del self.hoverTimeoutIds[index]
         
     def exposeSmallArea(self, drawArea, event, index):
         '''Expose small area.'''
@@ -402,7 +419,7 @@ class SlideBar(object):
         '''Start show slide.'''
         # Stop if index same as current one.
         if self.index == index:
-            return
+            return False
         # Just start slide when stop.
         elif self.stop:
             # Get path.
@@ -424,6 +441,8 @@ class SlideBar(object):
                         
             # Start slide.
             glib.timeout_add(self.interval, self.slide)
+            
+            return False
             
     def updateSlideItem(self):
         '''Update slide item.'''

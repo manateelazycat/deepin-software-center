@@ -10,6 +10,7 @@
 	* Add icon in search entry.
 	* Press Esc to hide search completion window.
 	* Fix scrollbar render algorithm.
+	* Improve the experience of home recommend slide.
 
 2011-12-16 Wang Yong <lazycat.manatee@gmail.com>
 	* Change default icons.

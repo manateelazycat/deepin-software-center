@@ -781,7 +781,16 @@ def newSearchUI(helpString, getCandidatesCallback, clickCandidateCallback, searc
         )
     searchEntry.set_size_request(SEARCH_ENTRY_WIDTH, -1)
     searchEntry.connect("activate", searchCallback)
+    searchEntry.connect("icon-press", lambda entry, icon, event: searchCallback(entry))
+    # searchEntry.set_property("inner-border", gtk.Border(0, 0, 0, 0))
     searchBox.pack_start(searchEntry, False, False, entryPaddingX)
+    
+    searchEntry.set_icon_from_pixbuf(
+    # searchEntry.set_icon_from_stock(
+        gtk.ENTRY_ICON_SECONDARY, 
+        appTheme.getDynamicPixbuf("topbar/search.png").getPixbuf()
+        # gtk.STOCK_FIND
+        )
 
     searchCompletion = sc.SearchCompletion(
         searchEntry,

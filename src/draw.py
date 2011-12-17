@@ -1219,7 +1219,8 @@ def drawVScrollbarOnExpose(
     upper = adjust.get_upper()
     value = adjust.get_value()
     pageSize = adjust.get_page_size()
-    progressHeight = int(rect.height / (upper - lower) * rect.height)
+    minHeight = fgTopPixbuf.get_height() + fgMiddlePixbuf.get_height() + fgBottomPixbuf.get_height()
+    progressHeight = max(int(rect.height / (upper - lower) * rect.height), minHeight)    
     
     # Get cairo.
     cr = widget.window.cairo_create()

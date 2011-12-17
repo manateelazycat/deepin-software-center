@@ -1724,7 +1724,8 @@ def setDefaultRadioButton(content, status, setStatus, getStatus, updateRadioStat
     radioEventBoxAlign.add(radioEventBox)
     box.pack_start(radioEventBoxAlign, True, True)
     
-    label = gtk.Label(content)
+    label = gtk.Label()
+    label.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, content))
     label.set_alignment(0.0, 0.5)
     box.pack_start(label, False, False)
 

@@ -8,6 +8,7 @@
 	* Move "Join Us" to right of statusbar.
 	* Change radio button font size.
 	* Add icon in search entry.
+	* Press Esc to hide search completion window.
 
 2011-12-16 Wang Yong <lazycat.manatee@gmail.com>
 	* Change default icons.

@@ -184,10 +184,12 @@ class SearchCompletion(object):
                 utils.treeViewScrollVertical(self.treeView, True)
             elif eventName == "Page_Down":
                 utils.treeViewScrollVertical(self.treeView, False)
+            elif eventName == "Escape":
+                self.hide()
             else:
                 self.entry.event(keyPressEvent)
             self.propagateLock = False
-        
+            
             return True
         else:
             return False

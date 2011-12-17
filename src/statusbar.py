@@ -58,6 +58,19 @@ class Statusbar(object):
         self.nameAlignment.add(self.name)
         self.box.pack_start(self.nameAlignment)
         
+        self.joinUs = gtk.Label()
+        self.joinUs.set_markup("<span foreground='#FFFFFF' size='%s'>%s</span>" % (LABEL_FONT_SIZE, __("Join Us")))
+        self.joinUsEventBox = gtk.EventBox()
+        self.joinUsEventBox.set_visible_window(False)
+        self.joinUsEventBox.add(self.joinUs)
+        self.joinUsEventBox.connect("button-press-event", lambda w, e: sendCommand("xdg-open http://www.linuxdeepin.com/recruitment"))
+        setClickableCursor(self.joinUsEventBox)
+        self.joinUsAlign = gtk.Alignment()
+        self.joinUsAlign.set_padding(0, 0, 0, self.paddingX)
+        self.joinUsAlign.set(1.0, 0.5, 0.0, 0.0)
+        self.joinUsAlign.add(self.joinUsEventBox)
+        self.box.pack_start(self.joinUsAlign)
+        
         # Connect components.
         self.eventbox.add(self.box)
         self.eventbox.show_all()

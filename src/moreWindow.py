@@ -64,8 +64,7 @@ class MoreWindow(object):
         self.createListItem(1, __("New Feature"), self.newFeature)
         self.createListItem(2, __("Proxy Setup"), self.setProxy)
         self.createListItem(3, __("Forum Help"), self.forumHelp)
-        self.createListItem(4, __("Join Us"), self.joinUs)
-        self.createListItem(5, __("Report Problem"), self.reportProblem)
+        self.createListItem(4, __("Report Problem"), self.reportProblem)
 
         # Set shape.
         self.window.connect("size-allocate", lambda w, a: updateShape(w, a, POPUP_WINDOW_RADIUS))
@@ -84,10 +83,6 @@ class MoreWindow(object):
     def forumHelp(self):
         '''Forum help.'''
         sendCommand("xdg-open http://www.linuxdeepin.com/forum")
-    
-    def joinUs(self):
-        '''Join us.'''
-        sendCommand("xdg-open http://www.linuxdeepin.com/recruitment")
     
     def reportProblem(self,):
         '''Report problem.'''

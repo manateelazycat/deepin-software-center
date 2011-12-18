@@ -417,7 +417,7 @@ msgid "Topbar IgnorePage"
 msgstr "<span size='%s'>There are </span><span foreground='%s' size='%s'>%s</span><span size='%s'> software upgrade is no longer reminds</span>"
 
 msgid "No Notify UpdatePage"
-msgstr "Don't notify update %s"
+msgstr "(Don't notify update %s)"
 
 msgid "Your system is up to date."
 msgstr "Your system is up to date."

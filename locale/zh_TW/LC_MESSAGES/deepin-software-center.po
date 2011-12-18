@@ -420,7 +420,7 @@ msgid "Topbar IgnorePage"
 msgstr "<span size='%s'>有 </span><span foreground='%s' size='%s'>%s</span><span size='%s'> 款軟體不再提醒升級</span>"
 
 msgid "No Notify UpdatePage"
-msgstr "不再提醒升級%s款"
+msgstr "(有%s款軟體不再提醒升級)"
 
 msgid "Your system is up to date."
 msgstr "您的係統已經是最新的."

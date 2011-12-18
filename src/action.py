@@ -20,14 +20,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from lang import __
 from constant import *
+from lang import __
 import apt
 import apt.progress.base as apb
+import os
+import subprocess
 import threading as td
 import utils
-import subprocess
-import os
 
 class InstallProgress(apb.InstallProgress):
     '''Install progress.'''

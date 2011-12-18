@@ -20,9 +20,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from lang import __
 from constant import *
 from draw import *
+from lang import __
 from utils import *
 import apt
 import apt_pkg
@@ -37,8 +37,8 @@ import stat
 import subprocess
 import sys
 import threading as td
-import urllib2
 import urllib
+import urllib2
 
 def sendStatistics():
     '''Send statistics.'''

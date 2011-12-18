@@ -20,10 +20,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from lang import __
-from searchEntry import *
 from constant import *
 from draw import *
+from lang import __
+from searchEntry import *
 from theme import *
 import appView
 import gobject

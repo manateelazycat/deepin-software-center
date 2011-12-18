@@ -20,8 +20,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from lang import __, DEFAULT_LANG
 from constant import *
+from lang import __, DEFAULT_LANG
 from math import pi
 import cairo
 import gtk
@@ -32,10 +32,10 @@ import os
 import pango
 import pangocairo
 import pygtk
+import socket
 import stat
 import subprocess
 import threading as td
-import socket
 import time
 import uuid
 pygtk.require('2.0')

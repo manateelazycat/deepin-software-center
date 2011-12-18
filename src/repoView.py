@@ -20,18 +20,17 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from lang import __
 from appItem import *
 from constant import *
 from draw import *
+from lang import __
 import appView
 import gtk
 import pango
 import pygtk
+import urllib2
 import utils
 pygtk.require('2.0')
-
-import urllib2
 
 class RepoItem(DownloadItem):
     '''Application item.'''

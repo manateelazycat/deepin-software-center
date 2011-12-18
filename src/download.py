@@ -20,10 +20,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from lang import __
-from utils import *
 from constant import *
+from lang import __
 from pprint import pprint
+from utils import *
 import Queue as Q
 import apt
 import apt_pkg
@@ -37,9 +37,9 @@ import sys
 import textwrap
 import threading as td
 import time
-import utils
-import urllib2
 import urllib
+import urllib2
+import utils
 import xmlrpclib
 
 (ARIA2_MAJOR_VERSION, ARIA2_MINOR_VERSION, _) = utils.getAria2Version()

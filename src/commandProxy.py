@@ -20,9 +20,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from constant import *
 from lang import __
 from utils import *
-from constant import *
 import socket
 import subprocess
 import sys

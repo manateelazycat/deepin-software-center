@@ -20,31 +20,31 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from lang import __
-from utils import *
-from theme import *
 from appItem import *
-from draw import *
 from constant import *
 from draw import *
+from draw import *
+from lang import __
 from math import pi
+from theme import *
+from utils import *
+import appView
+import base64
 import browser
 import copy
-import zipfile
-import appView
 import gtk
+import json
 import os
 import pango
 import pygtk
 import subprocess
 import threading as td
 import time
-import utils
-import urllib2
-import urllib
-import json
 import time
-import base64
+import urllib
+import urllib2
+import utils
+import zipfile
 pygtk.require('2.0')
 
 (ARIA2_MAJOR_VERSION, ARIA2_MINOR_VERSION, _) = utils.getAria2Version()

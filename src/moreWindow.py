@@ -20,10 +20,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from draw import *
 from lang import __
 from searchEntry import *
 from utils import *
-from draw import *
 import gtk
 import pygtk
 import utils

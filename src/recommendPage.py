@@ -20,18 +20,18 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from lang import __
-from theme import *
 from appItem import *
 from constant import *
 from draw import *
+from lang import __
+from theme import *
 import glib
 import gtk
 import pygtk
 import recommendView
+import sortedDict
 import utils
 pygtk.require('2.0')
-import sortedDict
 
 class RecommendPage(object):
     '''Interface for recommend page.'''

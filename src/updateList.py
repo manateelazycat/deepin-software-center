@@ -20,15 +20,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from apt.progress.old import FetchProgress
 from lang import __
 from utils import *
-from apt.progress.old import FetchProgress
-import sys
-import os
 import glib
+import os
 import stat
-import time
+import sys
 import threading as td
+import time
 
 class UpdateList(td.Thread):
     '''Update package list.'''

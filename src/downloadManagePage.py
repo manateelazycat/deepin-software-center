@@ -20,11 +20,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from lang import __
 from appItem import *
+from lang import __
+import downloadManageView
 import gtk
 import pygtk
-import downloadManageView
 pygtk.require('2.0')
 
 class DownloadManagePage(object):

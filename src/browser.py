@@ -20,13 +20,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from lang import __
-from utils import *
 from constant import *
 from ctypes import *
-import os, webkit, webbrowser
+from lang import __
+from utils import *
 import gobject
 import gtk
+import os, webkit, webbrowser
 import pygtk
 import utils
 pygtk.require('2.0')

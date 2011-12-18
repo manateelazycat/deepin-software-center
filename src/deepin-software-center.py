@@ -20,31 +20,31 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import getopt
-from lang import __
-from theme import *
 from constant import *
 from copy import deepcopy
 from draw import *
+from lang import __
+from theme import *
 from tooltips import *
 from utils import postGUI
-import themeSelect
-import moreWindow
-import math
-import cairo
-import checkUpdate
 import action
 import apt
 import apt_pkg
-import downloadManagePage
+import cairo
+import checkUpdate
 import detailView
 import download
+import downloadManagePage
+import getopt
 import glib
-import subprocess
 import gobject
 import gtk
+import ignorePage
 import json
+import math
+import moreWindow
 import navigatebar
+import os
 import pango
 import pangocairo
 import pygtk
@@ -54,21 +54,20 @@ import repoPage
 import search
 import searchPage
 import searchUninstallPage as sp
+import socket
 import statusbar
+import subprocess
 import sys
+import themeSelect
 import threading as td
 import titlebar
 import uninstallPage
 import updateList
 import updatePage
-import ignorePage
-import urllib2
 import urllib
+import urllib2
 import utils
 pygtk.require('2.0')
-
-import socket
-import os
 
 class DeepinSoftwareCenter(object):
     '''Interface for software center.'''

@@ -20,16 +20,16 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from lang import __
 from ConfigParser import RawConfigParser
+from lang import __
 from utils import *
-import glib
 import axi
+import glib
 import os, re
-import sys
-import xapian
-import threading as td
 import subprocess
+import sys
+import threading as td
+import xapian
 
 XDG_CACHE_HOME = os.environ.get("XDG_CACHE_HOME", os.path.expanduser("~/.cache"))
 CACHEFILE = os.path.join(XDG_CACHE_HOME, "axi-cache.state")

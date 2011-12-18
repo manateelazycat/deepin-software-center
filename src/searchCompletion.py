@@ -20,16 +20,16 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from draw import *
 from lang import __
 from utils import *
-from draw import *
 import appView
-import gtk
 import glib
+import gtk
 import pango
 import pygtk
-import utils
 import time
+import utils
 pygtk.require('2.0')
 
 class SearchCompletion(object):

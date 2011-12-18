@@ -20,14 +20,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from lang import __
 from constant import *
 from draw import *
+from lang import __
 from theme import *
 import gtk
+import os
 import pygtk
 import utils
-import os
 pygtk.require('2.0')
 
 class ThemeSelect(object):

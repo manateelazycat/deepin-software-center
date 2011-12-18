@@ -1,5 +1,8 @@
 * News in 2.0
 
+2011-12-18 Wang Yong <lazycat.manatee@gmail.com>
+	* Fix bug that AppView wider than scroll window.
+
 2011-12-17 Wang Yong <lazycat.manatee@gmail.com>
 	* Use icon render radio group.
 	* Fix bug that theme select cursor not at right position.

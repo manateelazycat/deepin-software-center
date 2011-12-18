@@ -57,6 +57,9 @@ class AppView(object):
         drawVScrollbar(self.scrolledwindow)
         utils.addInScrolledWindow(self.scrolledwindow, self.eventbox)
         
+        # Avoid eventbox wider than scroll view.
+        self.eventbox.set_size_request(DEFAULT_WINDOW_WIDTH / 2, -1) 
+        
     def calculateMaxPageIndex(self):
         '''Calculate max page index.'''
         if self.appNum % self.defaultRows == 0:

@@ -84,7 +84,7 @@ msgid "Action Uninstalling"
 msgstr "Uninstalling"
 
 msgid "Nav Recommend"
-msgstr "Recommend"
+msgstr "Home"
 
 msgid "Nav Repository"
 msgstr "Repository"

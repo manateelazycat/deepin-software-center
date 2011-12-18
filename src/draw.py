@@ -238,7 +238,7 @@ def navButtonSetBackground(widget,
     hoverDPixbuf = appTheme.getDynamicPixbuf(hoverImg)
     
     requestWidth = hoverDPixbuf.getPixbuf().get_width()
-    requestHeight = hoverDPixbuf.getPixbuf().get_height()
+    requestHeight = hoverDPixbuf.getPixbuf().get_height() 
     widget.set_size_request(requestWidth, requestHeight)
     
     widget.connect("expose-event", lambda w, e: navButtonOnExpose(
@@ -288,14 +288,7 @@ def navButtonOnExpose(widget, event,
     drawPixbuf(cr, navPixbuf, 
                x + (backgroundWidth - navWidth) / 2, 
                y)
-
-    # Draw font.
-    fontSize = 16
     
-    drawFont(cr, navName, fontSize, "#FFFFFF",
-             x + backgroundWidth / 2 - fontSize * 2, 
-             y + (backgroundHeight + navHeight) / 2)
-
     if widget.get_child() != None:
         widget.propagate_expose(widget.get_child(), event)
 
@@ -435,13 +428,6 @@ def updateButtonOnExpose(
     elif upgradableNum != 0:
         print "Upgradable number out of bound (1 ~ 100000): %s" % (upgradableNum)
     
-    # Draw font.
-    fontSize = 16
-
-    drawFont(cr, navName, fontSize, "#FFFFFF",
-             x + backgroundWidth / 2 - fontSize * 2, 
-             y + (backgroundHeight + navHeight) / 2)
-
     if widget.get_child() != None:
         widget.propagate_expose(widget.get_child(), event)
 

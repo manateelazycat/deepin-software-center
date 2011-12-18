@@ -120,6 +120,17 @@ class NavigateBar(object):
             callback
             )
         
+        box = gtk.VBox()
+        
+        label = gtk.Label()
+        label.set_markup("<span foreground='#FFFFFF'>%s</span>" % (iconName))
+        labelAlign = gtk.Alignment()
+        labelAlign.set(0.5, 1.0, 0.0, 0.0)
+        labelAlign.add(label)
+        box.pack_start(labelAlign)
+        
+        eventButton.add(box)
+        
         return eventButton
     
     def createNavIcon(self, iconName, iconPath, pageId):
@@ -137,6 +148,17 @@ class NavigateBar(object):
             pageId,
             self.getPageId
             )
+        
+        box = gtk.VBox()
+        
+        label = gtk.Label()
+        label.set_markup("<span foreground='#FFFFFF'>%s</span>" % (iconName))
+        labelAlign = gtk.Alignment()
+        labelAlign.set(0.5, 1.0, 0.0, 0.0)
+        labelAlign.add(label)
+        box.pack_start(labelAlign)
+        
+        eventButton.add(box)
         
         return eventButton
     

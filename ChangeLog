@@ -4,6 +4,7 @@
 	* Fix bug that AppView wider than scroll window.
 	* Update docs about notify software.
 	* Fix align bug of recommend button.
+	* Adjust recommend button color and size.
 
 2011-12-17 Wang Yong <lazycat.manatee@gmail.com>
 	* Use icon render radio group.

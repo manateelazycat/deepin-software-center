@@ -187,7 +187,7 @@ class SlideItem(DownloadItem):
                     actionButtonBox,
                     __("Action Installed"),
                     appTheme.getDynamicColor("installed"),
-                    LABEL_FONT_MEDIUM_SIZE,
+                    LABEL_FONT_LARGE_SIZE,
                     )
                 appInstalledLabel = appInstalledDynamicLabel.getLabel()
                 buttonImage = appTheme.getDynamicPixbuf("cell/update_hover.png").getPixbuf()

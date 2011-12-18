@@ -6,7 +6,7 @@
 	 "appComment" : "#555555",
      "buttonFont" : "#000000",
      "bigButtonFont" : "#FFFFFF",
-     "installed" : "#004e98",
+     "installed" : "#FFFFFF",
      "sideButton" : "#505050",
      "detailName" : "#000000",
      "detailSummary" : "#333333",

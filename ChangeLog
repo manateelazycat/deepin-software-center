@@ -3,6 +3,7 @@
 2011-12-18 Wang Yong <lazycat.manatee@gmail.com>
 	* Fix bug that AppView wider than scroll window.
 	* Update docs about notify software.
+	* Fix align bug of recommend button.
 
 2011-12-17 Wang Yong <lazycat.manatee@gmail.com>
 	* Use icon render radio group.

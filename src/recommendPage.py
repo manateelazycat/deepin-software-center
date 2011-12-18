@@ -125,7 +125,7 @@ class SlideItem(DownloadItem):
         self.appAdditionAlign = gtk.Alignment()
         self.appAdditionAlign.set(1.0, 0.5, 0.0, 0.0)
         self.appAdditionAlign.add(self.appAdditionBox)
-        self.itemBox.pack_start(self.appAdditionAlign)
+        self.itemBox.pack_start(self.appAdditionAlign, False, False)
         
         self.initAdditionStatus()
         
@@ -158,12 +158,11 @@ class SlideItem(DownloadItem):
         utils.containerRemoveAll(self.appAdditionBox)
         
         # Add action button.
-        (actionButtonBox, actionButtonAlign) = createActionButton(1.0, 0.5)
-        self.appAdditionBox.pack_start(actionButtonAlign)
+        (actionButtonBox, actionButtonAlign) = createActionButton()
+        self.appAdditionBox.pack_start(actionButtonAlign, False, False)
         if self.appInfo.status == APP_STATE_NORMAL:
             (appButton, appButtonAlign) = newActionButton(
-                "search", 0.5, 0.5, 
-                "cell", False, __("Action Install"), BUTTON_FONT_SIZE_LARGE, "bigButtonFont"
+                "search", 0.5, 0.5,  "cell", False, __("Action Install"), BUTTON_FONT_SIZE_LARGE, "bigButtonFont"
                 )
             appButton.connect("button-release-event", lambda widget, event: self.switchToDownloading())
             actionButtonBox.pack_start(appButtonAlign)

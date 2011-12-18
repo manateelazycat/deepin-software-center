@@ -1369,6 +1369,7 @@ class FetchVote(td.Thread):
         try:
             connection = urllib2.urlopen("%s/softcenter/v1/mark?n=%s" % (SERVER_ADDRESS, self.pkgArguments), timeout=GET_TIMEOUT)
             voteJson = json.loads(connection.read())
+            # print voteJson
             self.updateVoteCallback(voteJson, self.pageId, self.isSearchPage)
         except Exception, e:
             print "Fetch vote data failed: %s." % (e)

@@ -24,10 +24,8 @@ from appItem import *
 from draw import *
 from lang import __
 import gtk
-import pygtk
 import updateView
 import utils
-pygtk.require('2.0')
 
 class UpdatePage(object):
     '''Interface for update page.'''

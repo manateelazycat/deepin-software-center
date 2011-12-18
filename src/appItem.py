@@ -30,10 +30,8 @@ import gobject
 import gtk
 import pango
 import progressbar as pb
-import pygtk
 import searchCompletion as sc
 import utils
-pygtk.require('2.0')
 
 class UninstallItem(object):
     '''Application item.'''

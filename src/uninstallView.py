@@ -27,9 +27,7 @@ from lang import __
 import appView
 import gtk
 import pango
-import pygtk
 import utils
-pygtk.require('2.0')
 
 class UninstallView(appView.AppView):
     '''Application view.'''

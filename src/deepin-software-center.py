@@ -47,7 +47,6 @@ import navigatebar
 import os
 import pango
 import pangocairo
-import pygtk
 import recommendPage
 import repoCache
 import repoPage
@@ -67,7 +66,6 @@ import updatePage
 import urllib
 import urllib2
 import utils
-pygtk.require('2.0')
 
 class DeepinSoftwareCenter(object):
     '''Interface for software center.'''

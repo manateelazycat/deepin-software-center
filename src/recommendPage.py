@@ -27,11 +27,9 @@ from lang import __
 from theme import *
 import glib
 import gtk
-import pygtk
 import recommendView
 import sortedDict
 import utils
-pygtk.require('2.0')
 
 class RecommendPage(object):
     '''Interface for recommend page.'''

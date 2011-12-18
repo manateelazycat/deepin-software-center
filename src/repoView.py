@@ -27,10 +27,8 @@ from lang import __
 import appView
 import gtk
 import pango
-import pygtk
 import urllib2
 import utils
-pygtk.require('2.0')
 
 class RepoItem(DownloadItem):
     '''Application item.'''

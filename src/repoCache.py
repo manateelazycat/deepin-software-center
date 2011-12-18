@@ -26,11 +26,9 @@ from utils import *
 import apt_pkg
 import categorybar
 import gtk
-import pygtk
 import sortedDict
 import subCategorybar
 import utils
-pygtk.require('2.0')
 
 class AppInfo(object):
     '''Application information.'''

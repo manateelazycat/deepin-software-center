@@ -26,9 +26,7 @@ from lang import __
 from theme import *
 import gtk
 import pango
-import pygtk
 import utils
-pygtk.require('2.0')
 
 class AppView(object):
     '''Application view.'''

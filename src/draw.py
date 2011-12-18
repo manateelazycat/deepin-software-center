@@ -32,8 +32,6 @@ import os
 import pango
 import pangocairo
 import progressbar as pb
-import pygtk
-pygtk.require('2.0')
 
 def eventBoxSetBackground(widget, scaleX, scaleY, dPixbuf):
     '''Set event box's background.'''

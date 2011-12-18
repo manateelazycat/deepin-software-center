@@ -29,13 +29,11 @@ import apt_pkg
 import categorybar
 import gobject
 import gtk
-import pygtk
 import repoView
 import search
 import searchCompletion as sc
 import sortedDict
 import utils
-pygtk.require('2.0')
 
 class RepoPage(object):
     '''Interface for repository page.'''

@@ -36,7 +36,6 @@ import gtk
 import json
 import os
 import pango
-import pygtk
 import subprocess
 import threading as td
 import time
@@ -45,7 +44,6 @@ import urllib
 import urllib2
 import utils
 import zipfile
-pygtk.require('2.0')
 
 (ARIA2_MAJOR_VERSION, ARIA2_MINOR_VERSION, _) = utils.getAria2Version()
 

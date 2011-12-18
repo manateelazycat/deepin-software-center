@@ -27,10 +27,8 @@ import appView
 import glib
 import gtk
 import pango
-import pygtk
 import time
 import utils
-pygtk.require('2.0')
 
 class SearchCompletion(object):
     '''Search completion.'''

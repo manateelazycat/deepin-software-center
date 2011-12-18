@@ -28,9 +28,7 @@ from theme import *
 import appView
 import gtk
 import pango
-import pygtk
 import utils
-pygtk.require('2.0')
 
 class IgnoreItem(object):
     '''Application item.'''

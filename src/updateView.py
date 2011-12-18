@@ -29,9 +29,7 @@ import appView
 import glib
 import gtk
 import pango
-import pygtk
 import utils
-pygtk.require('2.0')
 
 class UpdateItem(DownloadItem):
     '''Application item.'''

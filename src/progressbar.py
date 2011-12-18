@@ -24,8 +24,6 @@ from draw import *
 from lang import __
 import gobject
 import gtk
-import pygtk
-pygtk.require('2.0')
 
 class Progressbar(object):
     '''Progress bar.'''

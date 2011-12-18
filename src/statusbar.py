@@ -26,9 +26,7 @@ from lang import __
 from theme import *
 import cairo
 import gtk
-import pygtk
 import utils
-pygtk.require('2.0')
 
 class Statusbar(object):
     '''Status bar.'''

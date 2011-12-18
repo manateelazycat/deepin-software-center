@@ -31,14 +31,12 @@ import math
 import os
 import pango
 import pangocairo
-import pygtk
 import socket
 import stat
 import subprocess
 import threading as td
 import time
 import uuid
-pygtk.require('2.0')
 
 def isDoubleClick(event):
     '''Whether an event is double click?'''

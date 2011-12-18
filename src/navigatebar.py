@@ -25,9 +25,7 @@ from draw import *
 from lang import __
 from utils import *
 import gtk
-import pygtk
 import utils
-pygtk.require('2.0')
 
 class NavigateBar(object):
     '''Interface for navigate bar.'''

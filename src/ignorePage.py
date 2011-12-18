@@ -26,9 +26,7 @@ from draw import *
 from lang import __
 import gtk
 import ignoreView
-import pygtk
 import utils
-pygtk.require('2.0')
 
 class IgnorePage(object):
     '''Ignore page.'''

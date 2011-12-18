@@ -24,9 +24,7 @@ from constant import *
 from draw import *
 from lang import __
 import gtk
-import pygtk
 import utils
-pygtk.require('2.0')
 
 class CategoryBar(object):
     '''Category bar to list software.'''

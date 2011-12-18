@@ -25,9 +25,7 @@ from lang import __
 from searchEntry import *
 from utils import *
 import gtk
-import pygtk
 import utils
-pygtk.require('2.0')
 
 class MoreWindow(object):
     '''More window.'''

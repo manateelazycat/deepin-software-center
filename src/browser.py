@@ -27,9 +27,7 @@ from utils import *
 import gobject
 import gtk
 import os, webkit, webbrowser
-import pygtk
 import utils
-pygtk.require('2.0')
 
 libgobject = cdll.LoadLibrary('libgobject-2.0.so.0')
 libwebkit = cdll.LoadLibrary('libwebkitgtk-1.0.so.0')

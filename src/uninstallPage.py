@@ -25,12 +25,10 @@ from constant import *
 from draw import *
 from lang import __
 import gtk
-import pygtk
 import search
 import searchCompletion as sc
 import uninstallView
 import utils
-pygtk.require('2.0')
 
 class UninstallPage(object):
     '''Interface for uninstall page.'''

@@ -26,9 +26,7 @@ from lang import __
 from theme import *
 import gtk
 import os
-import pygtk
 import utils
-pygtk.require('2.0')
 
 class ThemeSelect(object):
     '''Theme select.'''

@@ -2,7 +2,7 @@
     {"background" : "#FFFFFF",
      "foreground" : "#000000", 
      "appSize" : "#000000",
-     "appSummary" : "#626262",
+     "appSummary" : "#565656",
 	 "appComment" : "#555555",
      "buttonFont" : "#000000",
      "bigButtonFont" : "#FFFFFF",

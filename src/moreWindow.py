@@ -306,12 +306,12 @@ class ProxySetup(object):
         buttonPaddingX = 10
         self.setupButton = utils.newButtonWithoutPadding()
         self.setupButton.connect("button-press-event", lambda w, e: self.setProxy())
-        drawButton(self.setupButton, "button", "proxy", True, __("Proxy OK"), BUTTON_FONT_SIZE_SMALL, "buttonFont")
+        drawButton(self.setupButton, "button", "proxySetup", True, __("Proxy OK"), BUTTON_FONT_SIZE_SMALL, "buttonFont")
         self.actionBox.pack_start(self.setupButton, False, False, buttonPaddingX)
 
         self.cancelButton = utils.newButtonWithoutPadding()
         self.cancelButton.connect("button-press-event", lambda w, e: self.cancelProxy())
-        drawButton(self.cancelButton, "button", "proxy", True, __("Proxy Cancel"), BUTTON_FONT_SIZE_SMALL, "buttonFont")
+        drawButton(self.cancelButton, "button", "proxySetup", True, __("Proxy Cancel"), BUTTON_FONT_SIZE_SMALL, "buttonFont")
         self.actionBox.pack_start(self.cancelButton, False, False)
         
         # Read proxy setup.

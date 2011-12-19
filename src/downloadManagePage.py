@@ -74,20 +74,23 @@ class Topbar(object):
         drawTopbar(self.eventbox)
         
         self.numLabel = gtk.Label()
+        self.iconPadding = 5
         
-        (self.openDirLabel, self.openDirEventBox) = setDefaultClickableDynamicLabel(
-            __("Open download directory"),
-            "topbarButton",
-            )
+        self.openDirEventBox = setIconLabelButton(
+            __("Open download directory"), 
+            appTheme.getDynamicPixbuf("topbar/open.png"),
+            self.iconPadding)
+        
         self.openDirAlign = gtk.Alignment()
         self.openDirAlign.set(0.0, 0.5, 0.0, 0.0)
         self.openDirAlign.add(self.openDirEventBox)
         self.openDirEventBox.connect("button-press-event", lambda w, e: utils.sendCommand("xdg-open /var/cache/apt/archives/"))
         
-        (self.cleanLabel, self.cleanEventBox) = setDefaultClickableDynamicLabel(
-            __("Clean download cache"),
-            "topbarButton",
-            )
+        self.cleanEventBox = setIconLabelButton(
+            __("Clean download cache"), 
+            appTheme.getDynamicPixbuf("topbar/clean.png"),
+            self.iconPadding)
+        
         self.cleanEventBox.connect("button-press-event", lambda w, e: cleanDownloadCacheCallback())
         self.cleanAlign = gtk.Alignment()
         self.cleanAlign.set(1.0, 0.5, 0.0, 0.0)

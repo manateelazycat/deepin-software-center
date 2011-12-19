@@ -1741,6 +1741,47 @@ def radioButtonOnExpose(widget, event, selectDPixbuf, unselectDPixbuf, status, g
 
     return True
 
+def setIconLabelButton(content, dPixbuf, iconPadding):
+    '''Set icon label button.'''
+    
+    eventbox = gtk.EventBox()
+    eventbox.set_visible_window(False)
+    eventbox.connect("enter-notify-event", lambda w, e: setCursor(w, gtk.gdk.HAND2))
+    eventbox.connect("leave-notify-event", lambda w, e: setDefaultCursor(w))
+    
+    box = gtk.HBox()
+    eventbox.add(box)
+    
+    iconBox = gtk.EventBox()
+    iconBox.set_visible_window(False)
+    pixbuf = dPixbuf.getPixbuf()
+    iconBox.set_size_request(pixbuf.get_width(), pixbuf.get_height())
+    iconBox.connect("expose-event", lambda w, e: iconLabelButtonOnExpose(w, e, dPixbuf))
+    iconAlign = gtk.Alignment()
+    iconAlign.set(0.5, 0.5, 0.0, 0.0)
+    iconAlign.set_padding(0, 0, iconPadding, iconPadding)
+    iconAlign.add(iconBox)
+    box.pack_start(iconAlign)
+    
+    label = gtk.Label()
+    label.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, content))
+    box.pack_start(label)
+    
+    return eventbox
+
+def iconLabelButtonOnExpose(widget, event, dPixbuf):
+    '''Icon label button on expose.'''
+    cr = widget.window.cairo_create()
+    rect = widget.allocation
+    
+    pixbuf = dPixbuf.getPixbuf()
+    drawPixbuf(cr, pixbuf, rect.x, rect.y)
+    
+    if widget.get_child() != None:
+        widget.propagate_expose(widget.get_child(), event)
+
+    return True
+
 #  LocalWords:  scaleX imageWidth scaleY imageHeight pixbuf cr drawPixbuf
 #  LocalWords:  buttonSetBackground normalImg hoverImg pressImg buttonLabel
 #  LocalWords:  fontSize labelColor normalPixbuf hoverPixbuf pressPixbuf

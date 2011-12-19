@@ -224,7 +224,7 @@ class ProxySetup(object):
     
     WINDOW_WIDTH = 360
     WINDOW_HEIGHT = 185
-    ALIGN_X = 10
+    ALIGN_X = 30
     ALIGN_Y = 4
     ACTION_ALIGN_Y = 10
     SETUP_BUTTON_PADDING_X = 5
@@ -280,7 +280,7 @@ class ProxySetup(object):
         self.setupBox = gtk.VBox()
         self.setupAlign = gtk.Alignment()
         self.setupAlign.set(0.0, 0.0, 1.0, 1.0)
-        self.setupAlign.set_padding(self.ALIGN_Y, self.ALIGN_Y, self.ALIGN_X, self.ALIGN_X - self.SETUP_BUTTON_PADDING_X)
+        self.setupAlign.set_padding(self.ALIGN_Y, self.ALIGN_Y, self.ALIGN_X, self.ALIGN_X + 10)
         self.setupAlign.add(self.setupBox)
         self.mainBox.pack_start(self.setupAlign, False, False)
         
@@ -298,20 +298,21 @@ class ProxySetup(object):
         
         self.actionBox = gtk.HBox()
         self.actionAlign = gtk.Alignment()
-        self.actionAlign.set(0.0, 0.0, 1.0, 1.0)
+        self.actionAlign.set(1.0, 0.5, 0.0, 0.0)
         self.actionAlign.set_padding(self.ACTION_ALIGN_Y, self.ACTION_ALIGN_Y, 0, 0)
         self.actionAlign.add(self.actionBox)
-        self.setupBox.pack_start(self.actionAlign)
+        self.setupBox.pack_start(self.actionAlign, True, True)
         
+        buttonPaddingX = 10
         self.setupButton = utils.newButtonWithoutPadding()
         self.setupButton.connect("button-press-event", lambda w, e: self.setProxy())
-        drawButton(self.setupButton, "search", "cell", False, __("Proxy OK"), BUTTON_FONT_SIZE_SMALL, "buttonFont")
-        self.actionBox.pack_start(self.setupButton, True, False)
+        drawButton(self.setupButton, "button", "proxy", True, __("Proxy OK"), BUTTON_FONT_SIZE_SMALL, "buttonFont")
+        self.actionBox.pack_start(self.setupButton, False, False, buttonPaddingX)
 
         self.cancelButton = utils.newButtonWithoutPadding()
         self.cancelButton.connect("button-press-event", lambda w, e: self.cancelProxy())
-        drawButton(self.cancelButton, "search", "cell", False, __("Proxy Cancel"), BUTTON_FONT_SIZE_SMALL, "buttonFont")
-        self.actionBox.pack_start(self.cancelButton, True, False)
+        drawButton(self.cancelButton, "button", "proxy", True, __("Proxy Cancel"), BUTTON_FONT_SIZE_SMALL, "buttonFont")
+        self.actionBox.pack_start(self.cancelButton, False, False)
         
         # Read proxy setup.
         self.readProxySetup()

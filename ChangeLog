@@ -3,6 +3,7 @@
 2011-12-19 Wang Yong <lazycat.manatee@gmail.com>
 	* Adjust navigatebar text size to make english can render with give width.
 	* Finish proxy setup interface.
+	* Update logo icons.
 
 2011-12-18 Wang Yong <lazycat.manatee@gmail.com>
 	* Fix bug that AppView wider than scroll window.

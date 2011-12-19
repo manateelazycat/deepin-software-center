@@ -151,7 +151,7 @@ class Topbar(object):
         self.sortBox.pack_start(self.sortRecommendBox, False, False, self.sortButtonPaddingX)
         self.sortBox.pack_start(self.sortDownloadBox, False, False, self.sortButtonPaddingX)
         self.sortBox.pack_start(self.sortVoteBox, False, False, self.sortButtonPaddingX)
-        self.box.pack_start(self.sortAlign, False, False)
+        self.box.pack_start(self.sortAlign)
         
         # Add search entry and label.
         (self.searchEntry, searchAlign, self.searchCompletion) = newSearchUI(

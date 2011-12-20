@@ -341,7 +341,7 @@ class DetailView(object):
             summaryBox.pack_start(vLineRight, False, False, vLinePaddingX)
             
             # Show translation  when hover link.
-            utils.setHelpTooltip(translationEventBox, __("Translate description"))
+            utils.setHelpTooltip(translationEventBox, "http://pootle.linuxdeepin.com/zh_CN/ddtp-done/%s.po/translate/" % (pkgName))
         
         summaryAlign = gtk.Alignment()
         summaryView = createContentView(summaryAlign, utils.getPkgLongDesc(pkg), False)
@@ -664,7 +664,7 @@ class SmallScreenshot(td.Thread):
     SMALL_SCREENSHOT_COLUMN = 3
     SCREENSHOT_WIDTH = 280
     SCREENSHOT_HEIGHT = 210
-    SMALL_SCREENSHOT_WIDTH = 80
+    SMALL_SCREENSHOT_WIDTH = 88
     SMALL_SCREENSHOT_HEIGHT = 60 
     SMALL_SCREENSHOT_PADDING_X = 10
     SMALL_SCREENSHOT_PADDING_Y = 10

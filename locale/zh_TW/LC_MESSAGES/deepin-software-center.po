@@ -448,3 +448,6 @@ msgstr "設置代理"
 
 msgid "Proxy Cancel"
 msgstr "取消代理"
+
+msgid "Comment load failed, please try again!"
+msgstr "評論加載失敗， 請刷新重試!"

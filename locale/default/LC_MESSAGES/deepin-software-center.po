@@ -445,3 +445,6 @@ msgstr "Setup"
 
 msgid "Proxy Cancel"
 msgstr "Cancel"
+
+msgid "Comment load failed, please try again!"
+msgstr "Comment load failed, please try again!"

@@ -193,7 +193,7 @@ class DetailView(object):
         self.commentButtonFlag = False
         
         (self.commentErrorLabel, self.commentErrorBox) = setDefaultClickableDynamicLabel(
-            "评论加载失败， 请刷新重试.",
+            __("Comment load failed, please try again!"),
             "link",
             )
         self.commentErrorAlign = gtk.Alignment()

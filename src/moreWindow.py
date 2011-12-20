@@ -169,8 +169,8 @@ class NewFeature(object):
             )
         self.titleLabel = dLabel.getLabel()
         alignY = 4
-        alignX = 10
-        self.titleAlign.set(0.0, 0.0, 1.0, 1.0)
+        alignX = 20
+        self.titleAlign.set(0.0, 0.0, 0.0, 0.0)
         self.titleAlign.set_padding(alignY, alignY, alignX, alignX)
         self.titleAlign.add(self.titleLabel)
         self.titleBox.pack_start(self.titleAlign, True, True)
@@ -193,7 +193,7 @@ class NewFeature(object):
         utils.addInScrolledWindow(self.scrolledwindow, self.textView)
         self.textViewAlign = gtk.Alignment()
         self.textViewAlign.set(0.5, 0.5, 1.0, 1.0)
-        self.textViewAlign.set_padding(20, 20, 20, 20)
+        self.textViewAlign.set_padding(10, 20, 20, 20)
         self.textViewAlign.add(self.scrolledwindow)
         self.textView.set_editable(False)
         self.textView.set_wrap_mode(gtk.WRAP_CHAR)
@@ -223,9 +223,9 @@ class ProxySetup(object):
     '''Proxy setup..'''
     
     WINDOW_WIDTH = 360
-    WINDOW_HEIGHT = 185
-    ALIGN_X = 30
-    ALIGN_Y = 4
+    WINDOW_HEIGHT = 193
+    ALIGN_X = 20
+    ALIGN_Y = 10
     ACTION_ALIGN_Y = 10
     SETUP_BUTTON_PADDING_X = 5
 	
@@ -266,8 +266,8 @@ class ProxySetup(object):
             )
         self.titleLabel = dLabel.getLabel()
         alignY = 4
-        alignX = 10
-        self.titleAlign.set(0.0, 0.0, 1.0, 1.0)
+        alignX = 20
+        self.titleAlign.set(0.0, 0.0, 0.0, 0.0)
         self.titleAlign.set_padding(alignY, alignY, alignX, alignX)
         self.titleAlign.add(self.titleLabel)
         self.titleBox.pack_start(self.titleAlign, True, True)

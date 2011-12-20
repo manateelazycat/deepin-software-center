@@ -145,9 +145,6 @@ class AppView(object):
                                           min((int(self.pageIndex / self.pageSize) + 1) * self.pageSize + 1,
                                               self.maxPageIndex + 1))
             
-            # Add index box.
-            iconSize = 24
-                
             # Don't add first icon if at first *page*.
             if startIndex != 1:
                 # Add previous icon.
@@ -166,14 +163,11 @@ class AppView(object):
                 box.pack_start(prevAlign, False, False, paddingX)
                 setClickableCursor(prevBox)
                 
-                first = gtk.Label()
-                first.set_markup("<span foreground='#1A3E88' size='%s'>1 ... </span>" % (LABEL_FONT_LARGE_SIZE))
-                firstBox = gtk.EventBox()
-                firstBox.add(first)
-                firstBox.connect("button-press-event", lambda widget, event: self.jumpPage(1))
-                firstBox.connect("expose-event", lambda w, e: drawBackground(w, e, appTheme.getDynamicColor("background")))
-                box.pack_start(firstBox, False, False, paddingX)
-                setClickableCursor(firstBox)
+                firstBox = self.createNumIcon(1)
+                firstLabel = gtk.Label()
+                firstLabel.set_markup("<span foreground='#565656' size='%s'> ... </span>" % (LABEL_FONT_MEDIUM_SIZE))
+                box.pack_start(firstBox)
+                box.pack_start(firstLabel)
             
             # Add index number icon.
             for i in range(startIndex, endIndex):
@@ -181,14 +175,11 @@ class AppView(object):
             
             # Don't add last icon if at last *page*.
             if endIndex - 1 != self.maxPageIndex:
-                last = gtk.Label()
-                last.set_markup("<span foreground='#1A3E88' size='%s'> ... %s</span>" % (LABEL_FONT_LARGE_SIZE, str(self.maxPageIndex)))
-                lastBox = gtk.EventBox()
-                lastBox.add(last)
-                lastBox.connect("button-press-event", lambda widget, event: self.jumpPage(self.maxPageIndex))
-                lastBox.connect("expose-event", lambda w, e: drawBackground(w, e, appTheme.getDynamicColor("background")))
-                box.pack_start(lastBox, False, False, paddingX)
-                setClickableCursor(lastBox)
+                lastBox = self.createNumIcon(self.maxPageIndex)
+                lastLabel = gtk.Label()
+                lastLabel.set_markup("<span foreground='#565656' size='%s'> ... </span>" % (LABEL_FONT_MEDIUM_SIZE))
+                box.pack_start(lastLabel)
+                box.pack_start(lastBox)
                 
                 # Add next icon.
                 nextBox = gtk.EventBox()
@@ -247,17 +238,13 @@ class AppView(object):
         
     def createNumIcon(self, index):
         '''Create number icon.'''
-        numBox = gtk.EventBox()
-        numLabel = gtk.Label()
-        if self.pageIndex == index:
-            numColor = '#BB00BB'
-        else:
-            numColor = '#1A3E88'
-        numLabel.set_markup(("<span foreground='%s' size='%s'>%s</span>" % (numColor, LABEL_FONT_LARGE_SIZE, str(index))))
-        numBox.add(numLabel)
+        numBox = setNumButton(
+            self.pageIndex,
+            index, 
+            appTheme.getDynamicPixbuf("index/hover.png"),
+            appTheme.getDynamicPixbuf("index/press.png")
+            )
         numBox.connect("button-press-event", lambda widget, event: self.jumpPage(index))
-        numBox.connect("expose-event", lambda w, e: drawBackground(w, e, appTheme.getDynamicColor("background")))
-        setClickableCursor(numBox)
         
         return numBox
 

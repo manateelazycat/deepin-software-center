@@ -68,7 +68,7 @@ class Topbar(object):
         self.box = gtk.HBox()
         self.boxAlign = gtk.Alignment()
         self.boxAlign.set(0.0, 0.5, 1.0, 1.0)
-        self.boxAlign.set_padding(0, 0, TOPBAR_PADDING_LEFT, TOPBAR_PADDING_UPDATE_RIGHT)
+        self.boxAlign.set_padding(0, 0, TOPBAR_PADDING_LEFT - 10, TOPBAR_PADDING_UPDATE_RIGHT + 5)
         self.boxAlign.add(self.box)
         self.eventbox = gtk.EventBox()
         drawTopbar(self.eventbox)

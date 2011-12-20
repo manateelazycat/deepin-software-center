@@ -1782,6 +1782,46 @@ def iconLabelButtonOnExpose(widget, event, dPixbuf):
 
     return True
 
+def setNumButton(pageIndex, index, hoverDPixbuf, pressDPixbuf):
+    '''Set num icon.'''
+    numButton = gtk.Button()
+    pixbuf = hoverDPixbuf.getPixbuf()
+    numButton.connect("expose-event", lambda w, e: numButtonOnExpose(w, e, pageIndex, index, hoverDPixbuf, pressDPixbuf))
+    numButton.connect("enter-notify-event", lambda w, e: setCursor(w, gtk.gdk.HAND2))
+    numButton.connect("leave-notify-event", lambda w, e: setDefaultCursor(w))
+    
+    numLabel = gtk.Label()
+    numLabel.set_markup("<span foreground='%s' size='%s'><b>%s</b></span>" % ("#565656", LABEL_FONT_MEDIUM_SIZE, index))
+    numButton.add(numLabel)
+
+    return numButton
+
+def numButtonOnExpose(widget, event, pageIndex, index, hoverDPixbuf, pressDPixbuf):
+    '''Num button on expose.'''
+    cr = widget.window.cairo_create()
+    rect = widget.allocation
+    
+    if widget.state == gtk.STATE_NORMAL:
+        if pageIndex == index:
+            image = pressDPixbuf.getPixbuf()
+        else:
+            image = None
+    elif widget.state == gtk.STATE_PRELIGHT:
+        image = hoverDPixbuf.getPixbuf()
+    elif widget.state == gtk.STATE_ACTIVE:
+        image = pressDPixbuf.getPixbuf()
+        
+    if (image):
+        if (index >= 10):
+            drawPixbuf(cr, image, rect.x + 4, rect.y + 4)
+        else:
+            drawPixbuf(cr, image, rect.x, rect.y + 4)
+    
+    if widget.get_child() != None:
+        widget.propagate_expose(widget.get_child(), event)
+
+    return True
+
 #  LocalWords:  scaleX imageWidth scaleY imageHeight pixbuf cr drawPixbuf
 #  LocalWords:  buttonSetBackground normalImg hoverImg pressImg buttonLabel
 #  LocalWords:  fontSize labelColor normalPixbuf hoverPixbuf pressPixbuf

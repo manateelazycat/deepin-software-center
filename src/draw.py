@@ -592,6 +592,27 @@ def drawVerticalLineExpose(widget, event):
     
     return True
 
+def drawHLine(widget, dColor):
+    '''Draw horizontal line.'''
+    widget.connect("expose-event", 
+                   lambda w, e: drawHLineExpose(w, e, dColor))
+    
+def drawHLineExpose(widget, event, dColor):
+    '''Draw horizontal line expose.'''
+    color = dColor.getColor()
+    rect = widget.allocation
+    
+    cr = widget.window.cairo_create()
+    cr.set_line_width(0.3)
+    cr.set_source_rgb(*colorHexToCairo(color))
+
+    cr.move_to(rect.x, rect.y)
+    cr.line_to(rect.x + rect.width, rect.y)
+    
+    cr.stroke()
+
+    return True
+
 def drawLine(widget, dColor,
              lineWidth, vertical=True, lineType=None):
     '''Draw line.'''
@@ -610,17 +631,16 @@ def drawLineExpose(widget, event, dColor, lineWidth, vertical, lineType):
     cr = widget.window.cairo_create()
     cr.set_line_width(lineWidth)
     cr.set_source_rgb(*colorHexToCairo(color))
-    cr.set_operator(cairo.OPERATOR_SOURCE)
-    
-    if lineType in [LINE_TOP, LINE_BOTTOM]:
-        xAdjust = 0
-        yAdjust = 1
-    elif lineType in [LINE_LEFT, LINE_RIGHT]:
+
+    if lineType == LINE_LEFT:
         xAdjust = 1
+        yAdjust = 0
+    elif lineType == LINE_RIGHT:
+        xAdjust = 0
         yAdjust = 0
     else:
         xAdjust = 0
-        yAdjust = 0
+        yAdjust = -1
     
     if vertical:
         cr.move_to(rect.x + xAdjust, rect.y)

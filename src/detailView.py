@@ -360,9 +360,11 @@ class DetailView(object):
             LABEL_FONT_LARGE_SIZE,
             )
         screenshotLabel = screenshotDLabel.getLabel()
-        
-        screenshotLabel.set_alignment(0.0, 0.5)
-        self.screenshotBox.pack_start(screenshotLabel, False, False)
+        screenshotAlign = gtk.Alignment()
+        screenshotAlign.set(0.0, 0.5, 0.0, 0.0)
+        screenshotAlign.set_padding(0, 0, 11, 0)
+        screenshotAlign.add(screenshotLabel)
+        self.screenshotBox.pack_start(screenshotAlign, False, False)
         
         self.smallScreenshot = SmallScreenshot(pkgName, self.scrolledWindow, self.messageCallback, self.refreshScreenshot)
         self.screenshotBox.pack_start(self.smallScreenshot.box, False, False, 8)
@@ -457,8 +459,8 @@ class AppInfoItem(DownloadItem):
         self.itemBox = gtk.HBox()
         self.itemTopLine = gtk.Image()
         self.itemBottomLine = gtk.Image()
-        drawLine(self.itemTopLine, appTheme.getDynamicColor("itemFrame"), 1, False)
-        drawLine(self.itemBottomLine, appTheme.getDynamicColor("itemFrame"), 1, False)
+        drawHLine(self.itemTopLine, appTheme.getDynamicColor("itemFrame"))
+        drawHLine(self.itemBottomLine, appTheme.getDynamicColor("itemFrame"))
         self.itemActionBox = gtk.VBox()
         self.itemActionBox.pack_start(self.itemTopLine, False, False)
         self.itemActionBox.pack_start(self.itemBox)

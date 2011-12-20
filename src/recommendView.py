@@ -581,14 +581,14 @@ class RecommendView(object):
         box.pack_start(contentBox, False, False)
         
         leftLine = gtk.Image()
-        drawLine(leftLine, appTheme.getDynamicColor("recommendFrame"), 2, True, LINE_LEFT)
+        drawLine(leftLine, appTheme.getDynamicColor("recommendFrame"), 1, True, LINE_LEFT)
         contentBox.pack_start(leftLine, False, False)
         
         middleBox = gtk.VBox()
         contentBox.pack_start(middleBox, False, False)
         
         rightLine = gtk.Image()
-        drawLine(rightLine, appTheme.getDynamicColor("recommendFrame"), 2, True, LINE_RIGHT)
+        drawLine(rightLine, appTheme.getDynamicColor("recommendFrame"), 1, True, LINE_RIGHT)
         contentBox.pack_start(rightLine, False, False)
         
         # Add application information's.
@@ -611,7 +611,7 @@ class RecommendView(object):
                 
         # Bottom line.
         bottomLine = gtk.Image()
-        drawLine(bottomLine, appTheme.getDynamicColor("recommendFrame"), 2, False, LINE_BOTTOM)
+        drawLine(bottomLine, appTheme.getDynamicColor("recommendFrame"), 1, False, LINE_BOTTOM)
         box.pack_start(bottomLine, False, False)
     
         return boxAlign

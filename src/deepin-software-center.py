@@ -1364,12 +1364,13 @@ class FetchVote(td.Thread):
     def run(self):
         '''Run.'''
         try:
-            print "***********************"
-            print self.pkgArguments
-            print "***********************"
-            connection = urllib2.urlopen("%s/softcenter/v1/mark?n=%s" % (SERVER_ADDRESS, self.pkgArguments), timeout=GET_TIMEOUT)
-            voteJson = json.loads(connection.read())
-            print voteJson
+            args = {'n' : self.pkgArguments}
+            connection = urllib2.urlopen(
+                "%s/softcenter/v1/mark" % (SERVER_ADDRESS),
+                data=urllib.urlencode(args),
+                timeout=POST_TIMEOUT
+                )
+            voteJson = json.loads(connection.read())            
             self.updateVoteCallback(voteJson, self.pageId, self.isSearchPage)
         except Exception, e:
             print "Fetch vote data failed: %s." % (e)

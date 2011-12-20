@@ -183,7 +183,7 @@ class RecommendItem(DownloadItem):
                 appInstalledDynamicLabel = DynamicSimpleLabel(
                     appButtonBox,
                     __("Action Installed"),
-                    appTheme.getDynamicColor("slideText"),
+                    appTheme.getDynamicColor("installed"),
                     LABEL_FONT_SIZE,
                     )
                 appInstalledLabel = appInstalledDynamicLabel.getLabel()

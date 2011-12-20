@@ -148,7 +148,7 @@ class Topbar(object):
             markup = ""
         else:
             markup = (__("Topbar IgnorePage") % (LABEL_FONT_SIZE, 
-                                                 appTheme.getDynamicColor("topbarNumColor").getColor(),
+                                                 appTheme.getDynamicColor("topbarNum").getColor(),
                                                  LABEL_FONT_SIZE, 
                                                  str(upgradeNum), 
                                                  LABEL_FONT_SIZE))

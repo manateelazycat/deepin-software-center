@@ -140,11 +140,11 @@ class Topbar(object):
         
         self.keywordLabel.set_markup(
             __("Topbar SearchPage") % (LABEL_FONT_SIZE, 
-                                       appTheme.getDynamicColor("topbarKeywordColor").getColor(),
+                                       appTheme.getDynamicColor("topbarKeyword").getColor(),
                                        LABEL_FONT_SIZE, 
                                        keyword.strip(), 
                                        LABEL_FONT_SIZE, 
-                                       appTheme.getDynamicColor("topbarNumColor").getColor(),
+                                       appTheme.getDynamicColor("topbarNum").getColor(),
                                        LABEL_FONT_SIZE, 
                                        str(itemNum), 
                                        LABEL_FONT_SIZE))

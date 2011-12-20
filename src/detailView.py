@@ -1222,7 +1222,7 @@ class BigScreenshot(object):
             cr, 
             "(%s/%s)" % (self.imageIndex + 1, len(self.images)),
             fontSize,
-            "#FFFFFF",
+            appTheme.getDynamicColor("screenshotIndex").getColor(),
             self.imgX + self.imgWidth / 2 - 2 * fontSize,
             getFontYCoordinate(self.imgY + self.imgHeight + height / 2, height, fontSize)
             )

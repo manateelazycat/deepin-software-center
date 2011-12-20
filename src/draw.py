@@ -510,13 +510,10 @@ def sideButtonOnExpose(widget, event,
     # Init.
     if selectPageId == pageId:
         offsetX = 1
-        numBgLeftPixbuf = appTheme.getDynamicPixbuf("navigate/notify_bg_left.png").getPixbuf()
-        numBgMiddlePixbuf = appTheme.getDynamicPixbuf("navigate/notify_bg_middle.png").getPixbuf()
-        numBgRightPixbuf = appTheme.getDynamicPixbuf("navigate/notify_bg_right.png").getPixbuf()
         upgradableNum = getCategoryNumCallback(navName)
         numPixbuf = appTheme.getDynamicPixbuf("navigate/0.png").getPixbuf()
-        numBgLeftWidth = numBgLeftPixbuf.get_width()
-        numBgLeftHeight = numBgLeftPixbuf.get_height()    
+        numbarPixbuf = appTheme.getDynamicPixbuf("category/numbar.png").getPixbuf()
+        numBgLeftHeight = numbarPixbuf.get_height()    
         numWidth = numPixbuf.get_width()                  
         numHeight = numPixbuf.get_height()                
         numLen = len(str(upgradableNum))        
@@ -524,12 +521,7 @@ def sideButtonOnExpose(widget, event,
         numY = y + (backgroundHeight + navHeight) / 2 - numBgLeftHeight
         
         # Draw number background.
-        drawPixbuf(cr, numBgLeftPixbuf, 
-                   numX, numY)
-        drawPixbuf(cr, numBgMiddlePixbuf.scale_simple(navWidth - (numBgLeftWidth + offsetX) * 2, numBgLeftHeight, gtk.gdk.INTERP_BILINEAR), 
-                   numX + numBgLeftWidth, numY)
-        drawPixbuf(cr, numBgRightPixbuf, 
-                   numX + navWidth - numBgLeftWidth - offsetX * 2, numY)
+        drawPixbuf(cr, numbarPixbuf, numX, numY)
         
         # Draw number.
         for (i, c) in enumerate(str(upgradableNum)):
@@ -1791,7 +1783,7 @@ def setNumButton(pageIndex, index, hoverDPixbuf, pressDPixbuf):
     
     numLabel = gtk.Label()
     numLabel.set_markup("<span foreground='%s' size='%s'><b>%s</b></span>" % (
-                        appTheme.getDynamicColor("indexColor").getColor(),
+                        appTheme.getDynamicColor("index").getColor(),
                         LABEL_FONT_MEDIUM_SIZE, index))
     numButton.add(numLabel)
 

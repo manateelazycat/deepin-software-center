@@ -27,7 +27,6 @@ import apt_pkg
 import categorybar
 import gtk
 import sortedDict
-import subCategorybar
 import utils
 
 class AppInfo(object):

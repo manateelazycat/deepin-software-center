@@ -100,7 +100,7 @@ class Topbar(object):
         '''Update number.'''
         self.numLabel.set_markup(
             __("Topbar UninstallPage") % (LABEL_FONT_SIZE, 
-                                          appTheme.getDynamicColor("topbarNumColor").getColor(),
+                                          appTheme.getDynamicColor("topbarNum").getColor(),
                                           LABEL_FONT_SIZE, 
                                           str(upgradeNum), 
                                           LABEL_FONT_SIZE))

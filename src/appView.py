@@ -166,7 +166,7 @@ class AppView(object):
                 firstBox = self.createNumIcon(1)
                 firstLabel = gtk.Label()
                 firstLabel.set_markup("<span foreground='%s' size='%s'> ... </span>" % (
-                        appTheme.getDynamicColor("indexColor").getColor(),
+                        appTheme.getDynamicColor("index").getColor(),
                         LABEL_FONT_MEDIUM_SIZE))
                 box.pack_start(firstBox)
                 box.pack_start(firstLabel)
@@ -180,7 +180,7 @@ class AppView(object):
                 lastBox = self.createNumIcon(self.maxPageIndex)
                 lastLabel = gtk.Label()
                 lastLabel.set_markup("<span foreground='%s' size='%s'> ... </span>" % (
-                        appTheme.getDynamicColor("indexColor").getColor(),
+                        appTheme.getDynamicColor("index").getColor(),
                         LABEL_FONT_MEDIUM_SIZE))
                 box.pack_start(lastLabel)
                 box.pack_start(lastBox)

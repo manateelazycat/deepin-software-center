@@ -916,7 +916,10 @@ class DeepinSoftwareCenter(object):
         
         waitLabel = gtk.Label()
         waitLabel.set_markup(
-            "<span foreground='#1A3E88' size='%s'>%s</span>" % (LABEL_FONT_LARGE_SIZE, __(" Loading, please wait ...")))
+            "<span foreground='%s' size='%s'>%s</span>" % (
+                appTheme.getDynamicColor("waiting").getColor(),
+                LABEL_FONT_LARGE_SIZE,
+                __(" Loading, please wait ...")))
         waitAlign = gtk.Alignment()
         waitAlign.set(0.5, 0.7, 0.0, 0.0)
         waitAlign.add(waitLabel)

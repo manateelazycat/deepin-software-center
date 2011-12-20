@@ -203,19 +203,8 @@ class TrayIcon(object):
     def handleRightClick(self, icon, button, time):
         menu = gtk.Menu()
         
-        aboutIcon = gtk.Image()
-        aboutIcon.set_from_file("../icon/about.png")
-        aboutItem = gtk.ImageMenuItem()
-        aboutItem.set_label(__("About"))
-        aboutItem.set_image(aboutIcon)
-        aboutItem.connect("activate", self.showAboutDialog)
-        menu.append(aboutItem)
-        
-        quitIcon = gtk.Image()
-        quitIcon.set_from_file("../icon/quit.png")
         quitItem = gtk.ImageMenuItem()
         quitItem.set_label(__("Exit"))
-        quitItem.set_image(quitIcon)
         quitItem.connect("activate", lambda w: self.exit())
         menu.append(quitItem)
         
@@ -223,18 +212,6 @@ class TrayIcon(object):
         
         menu.popup(None, None, gtk.status_icon_position_menu, button, time, self.trayIcon)
         
-    def showAboutDialog(self, widget):
-        aboutDialog = gtk.AboutDialog()
-
-        aboutDialog.set_destroy_with_parent(True)
-        aboutDialog.set_name(__("Deepin Update Manager"))
-        aboutDialog.set_version(VERSION)
-        aboutDialog.set_authors(AUTHOR)
-        aboutDialog.set_artists(ARTISTS)
-        		
-        aboutDialog.run()
-        aboutDialog.destroy()        
-
     def calculateUpdateNumber(self):
         '''Calculate update number.'''
         apt_pkg.init()

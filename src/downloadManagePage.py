@@ -61,9 +61,6 @@ class Topbar(object):
         # Init.
         self.paddingX = 5
         self.numColor = '#006efe'
-        self.normalColor = '#1A3E88'
-        self.hoverColor = '#0084FF'
-        self.selectColor = '#000000'
         
         self.box = gtk.HBox()
         self.boxAlign = gtk.Alignment()

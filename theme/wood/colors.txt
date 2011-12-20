@@ -12,12 +12,9 @@
      "detailName" : "#000000",
      "detailSummary" : "#333333",
      "detailAction" : "#000000",
-     "detailInfo" : "#000000",
      "detailTitle" : "#1A3E88", 
-     "frame" : "#000000",
      "recommendTitle" : "#000000",
      "recommendFrame" : "#D5D5D5",
-     "commentFrame" : "#DDDDDD",
      "entryBackground" : "#FFFFFF",
      "entryForeground" : "#000000",
      "entryHint" : "#999999",
@@ -35,7 +32,6 @@
  "labelColors" : 
     {"appName" : ("#1A3E88", "#0084FF", "#1A3E88"),
  	 "appIgnore" : ("#1A3E88", "#0084FF", "#1A3E88"),
- 	 "appVote" : ("#1A3E88", "#0084FF", "#1A3E88"),
  	 "recommendMore" : ("#000000", "#0084FF", "#000000"),
  	 "topbarButton" : ("#1A3E88", "#0084FF", "#1A3E88"),
  	 "link" : ("#1A3E88", "#0084FF", "#1A3E88"),
@@ -43,8 +39,6 @@
  "alphaColors" :
     {"topbarBottom" : ("#333333", 0.5),
      "statusbarTop" : ("#333333", 0.5),
-	 "bodyTop" : ("#FFFFFF", 0.5),
      "frameLigtht" : ("#FFFFFF", 0.8),
-	 "themeSelectTitleBackground" : ("#000000", 0.5), 
 	},
 }

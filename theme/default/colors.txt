@@ -26,7 +26,7 @@
 	 "themeIconHover" : "#1eb0f3",
 	 "themeIconPress" : "#FFFFFF",
 	 "menuItem" : "#FFFFFF",
-	 "newFeatureText" : "#FFFFFF",
+	 "newFeatureText" : "#000000",
 	 "uninstallConfirm" : "#CBC9CE",
      "topbarNum" : '#006efe',
      "topbarKeyword" : '#006efe',

@@ -188,12 +188,12 @@ class NewFeature(object):
             self.scrolledwindow,
             appTheme.getDynamicColor("background"),
             appTheme.getDynamicColor("newFeatureText"),
-            appTheme.getDynamicPixbuf("skin/background.png"),
+            None
             ).textView
         utils.addInScrolledWindow(self.scrolledwindow, self.textView)
         self.textViewAlign = gtk.Alignment()
         self.textViewAlign.set(0.5, 0.5, 1.0, 1.0)
-        self.textViewAlign.set_padding(10, 10, 10, 10)
+        self.textViewAlign.set_padding(20, 20, 20, 20)
         self.textViewAlign.add(self.scrolledwindow)
         self.textView.set_editable(False)
         self.textView.set_wrap_mode(gtk.WRAP_CHAR)

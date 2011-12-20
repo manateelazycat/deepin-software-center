@@ -963,78 +963,6 @@ def titlebarOnExpose(widget, event,
 
     return True
 
-def toggleTabSetBackground(widget, scaleX, scaleY, 
-                           activeImg, inactiveImg,
-                           activeContent, inactiveContent
-                           ):
-    '''Set event box's background.'''
-    if scaleX:
-        requestWidth = -1
-    else:
-        requestWidth = appTheme.getDynamicPixbuf(activeImg).getPixbuf().get_width()
-        
-    if scaleY:
-        requestHeight = -1
-    else:
-        requestHeight = appTheme.getDynamicPixbuf(activeImg).getPixbuf().get_height()
-    
-    widget.set_size_request(requestWidth, requestHeight)
-    
-    widget.connect("expose-event", lambda w, e: toggleTabOnExpose(
-            w, e,
-            scaleX, scaleY,
-            appTheme.getDynamicPixbuf(activeImg),
-            appTheme.getDynamicPixbuf(inactiveImg),
-            activeContent, inactiveContent))
-        
-def toggleTabOnExpose(widget, event, 
-                      scaleX, scaleY,
-                      activeDPixbuf, inactiveDPixbuf,
-                      activeContent, inactiveContent):
-    '''Expose function to replace event box's image.'''
-    activePixbuf = activeDPixbuf.getPixbuf()
-    inactivePixbuf = inactiveDPixbuf.getPixbuf()
-    
-    if widget.get_active():
-        image = activePixbuf
-        leftTabFontColor = "#FFFFFF"
-        rightTabFontColor = "#333333"
-    else:
-        image = inactivePixbuf
-        leftTabFontColor = "#333333"
-        rightTabFontColor = "#FFFFFF"
-    
-    if scaleX:
-        imageWidth = widget.allocation.width
-    else:
-        imageWidth = image.get_width()
-        
-    if scaleY:
-        imageHeight = widget.allocation.height
-    else:
-        imageHeight = image.get_height()
-    
-    x, y, width, height = widget.allocation.x, widget.allocation.y, widget.allocation.width, widget.allocation.height
-    pixbuf = image.scale_simple(imageWidth, imageHeight, gtk.gdk.INTERP_BILINEAR)
-    
-    cr = widget.window.cairo_create()
-    drawPixbuf(cr, pixbuf, widget.allocation.x, widget.allocation.y)
-    
-    fontSize = 14
-    
-    drawFont(cr, activeContent, fontSize, leftTabFontColor,
-             x + (width / 2 - fontSize * 4) / 2, 
-             getFontYCoordinate(y, height, fontSize))
-    
-    drawFont(cr, inactiveContent, fontSize, rightTabFontColor,
-             x + width / 2 + (width / 2 - fontSize * 4) / 2, 
-             getFontYCoordinate(y, height, fontSize))
-    
-    if widget.get_child() != None:
-        widget.propagate_expose(widget.get_child(), event)
-
-    return True
-
 def alphaColorHexToCairo((color, alpha)):
     '''Alpha color hext to cairo color.'''
     (r, g, b) = colorHexToCairo(color)
@@ -1278,54 +1206,6 @@ def updateShape(widget, allocation, radius):
         cr.fill()
         
         widget.shape_combine_mask(bitmap, 0, 0)
-        
-def drawExtendBackground(widget, dPixbuf):
-    '''Draw extend background.'''
-    widget.set_size_request(-1, dPixbuf.getPixbuf().get_height())
-    
-    widget.connect_after("expose-event", lambda w, e: exposeExtendBackground(w, e, dPixbuf))
-    
-def exposeExtendBackground(widget, event, dPixbuf):
-    '''Expose extend background.'''
-    w, h = widget.allocation.width, widget.allocation.height
-    cr = widget.window.cairo_create()
-    pixbuf = dPixbuf.getPixbuf()
-    pixbufWidth = pixbuf.get_width()
-    
-    cr.set_source_rgb(*colorHexToCairo("#2991DA"))
-    cr.rectangle(0, 0, w - pixbufWidth, h)
-    cr.fill()
-    
-    cr.set_source_pixbuf(pixbuf, w - pixbufWidth, 0)
-    cr.paint()
-    
-    if widget.get_child() != None:
-        widget.propagate_expose(widget.get_child(), event)
-
-    return True
-
-def drawLoopBackground(widget, dPixbuf):
-    '''Draw extend background.'''
-    widget.set_size_request(-1, dPixbuf.getPixbuf().get_height())
-    
-    widget.connect_after("expose-event", lambda w, e: exposeLoopBackground(w, e, dPixbuf))
-    
-def exposeLoopBackground(widget, event, dPixbuf):
-    '''Expose extend background.'''
-    w, h = widget.allocation.width, widget.allocation.height
-    cr = widget.window.cairo_create()
-    pixbuf = dPixbuf.getPixbuf()
-    pixbufWidth = pixbuf.get_width()
-    times = int(math.ceil(w / float(pixbufWidth)))
-    
-    for index in range(0, times):
-        cr.set_source_pixbuf(pixbuf, pixbufWidth * index, 0)
-        cr.paint()
-    
-    if widget.get_child() != None:
-        widget.propagate_expose(widget.get_child(), event)
-
-    return True
 
 def drawNavigateBackground(widget, dPixbuf, dType, frameLightColor, bottomColor):
     '''Draw extend background.'''
@@ -1588,52 +1468,6 @@ def setDefaultCursor(widget):
     
     return False
 
-def setDefaultToggleLabel(content, status, setStatus, getStatus, selectDefault=True):
-    '''Set default toggle label, return label and eventbox.'''
-    normalColor = '#1A3E88'
-    hoverColor = '#0084FF'
-    selectColor = '#000000'
-    
-    label = gtk.Label()
-    eventbox = gtk.EventBox()
-    if selectDefault:
-        initMarkup = "<span foreground='%s' size='%s' underline='single'>%s</span>" % (selectColor, LABEL_FONT_SIZE, content)
-    else:
-        initMarkup = "<span foreground='%s' size='%s'>%s</span>" % (normalColor, LABEL_FONT_SIZE, content)
-    setToggleLabel(
-        eventbox,
-        label,
-        initMarkup,
-        "<span foreground='%s' size='%s' >%s</span>" % (normalColor, LABEL_FONT_SIZE, content),
-        "<span foreground='%s' size='%s' >%s</span>" % (hoverColor, LABEL_FONT_SIZE, content),
-        "<span foreground='%s' size='%s' underline='single'>%s</span>" % (selectColor, LABEL_FONT_SIZE, content),
-        status,
-        setStatus,
-        getStatus
-        )
-    
-    return (label, eventbox)
-
-def setToggleLabel(widget, label, initMarkup, normalMarkup, hoverMarkup, selectMarkup, labelId, setLabelId, getCurrentId):
-    '''Set toggle label.'''
-    # Init.
-    widget.set_visible_window(False)
-    widget.add(label)
-    label.set_markup(initMarkup)
-    
-    # Set label id.
-    widget.connect("button-press-event", lambda w, e: setLabelId(labelId))
-    
-    # Set label markup.
-    widget.connect("enter-notify-event", 
-                   lambda w, e: setLabelEntryMarkup(label, hoverMarkup, selectMarkup, labelId, getCurrentId))
-    widget.connect("leave-notify-event", 
-                   lambda w, e: setLabelLeaveMarkup(label, normalMarkup, selectMarkup, labelId, getCurrentId))
-    
-    # Set label cursor.
-    widget.connect("enter-notify-event", lambda w, e: setCursor(w, gtk.gdk.HAND2))
-    widget.connect("leave-notify-event", lambda w, e: setDefaultCursor(w))
-    
 def setLabelEntryMarkup(label, hoverMarkup, selectMarkup, labelId, getCurrentId):
     '''Set label markup color.'''
     if labelId == getCurrentId():
@@ -1782,7 +1616,7 @@ def setNumButton(pageIndex, index, hoverDPixbuf, pressDPixbuf):
     numButton.connect("leave-notify-event", lambda w, e: setDefaultCursor(w))
     
     numLabel = gtk.Label()
-    numLabel.set_markup("<span foreground='%s' size='%s'><b>%s</b></span>" % (
+    numLabel.set_markup("<span foreground='%s' size='%s'>%s</span>" % (
                         appTheme.getDynamicColor("index").getColor(),
                         LABEL_FONT_MEDIUM_SIZE, index))
     numButton.add(numLabel)
@@ -1806,9 +1640,9 @@ def numButtonOnExpose(widget, event, pageIndex, index, hoverDPixbuf, pressDPixbu
         
     if (image):
         if (index >= 10):
-            drawPixbuf(cr, image, rect.x + 4, rect.y + 4)
+            drawPixbuf(cr, image, rect.x + 3, rect.y + 5)
         else:
-            drawPixbuf(cr, image, rect.x, rect.y + 4)
+            drawPixbuf(cr, image, rect.x, rect.y + 5)
     
     if widget.get_child() != None:
         widget.propagate_expose(widget.get_child(), event)

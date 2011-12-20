@@ -73,7 +73,10 @@ class Tooltips(object):
             glib.timeout_add(self.interval, self.redraw)
             
         self.ticker = 0
-        self.label.set_markup("<span foreground='#333333' size='%s'>%s</span>" % (LABEL_FONT_MEDIUM_SIZE, message))
+        self.label.set_markup("<span foreground='%s' size='%s'>%s</span>" % (
+                appTheme.getDynamicColor("tooltipForeground").getColor(),
+                LABEL_FONT_MEDIUM_SIZE, 
+                message))
         
     def redraw(self):
         '''Redraw.'''
@@ -95,7 +98,7 @@ class Tooltips(object):
         # Draw background.
         rect = widget.allocation
         cr = widget.window.cairo_create()
-        cr.set_source_rgb(*colorHexToCairo("#b8d2ff"))
+        cr.set_source_rgb(*colorHexToCairo(appTheme.getDynamicColor("tooltipBackground").getColor()))
         cr.rectangle(0, 0, rect.width, rect.height)
         cr.fill()
         

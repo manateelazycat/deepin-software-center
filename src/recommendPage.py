@@ -110,8 +110,10 @@ class SlideItem(DownloadItem):
         
         self.itemNameLabel = gtk.Label()
         self.itemNameLabel.set_markup(
-            "<span foreground='#FFFFFF' size='%s'>%s</span>"
-            % (LABEL_FONT_XXX_LARGE_SIZE, self.name))
+            "<span foreground='%s' size='%s'>%s</span>"
+            % (appTheme.getDynamicColor("slideText"),
+               LABEL_FONT_XXX_LARGE_SIZE, 
+               self.name))
         self.itemNameLabel.set_alignment(0.0, 0.5)
         self.itemNameBox = gtk.EventBox()
         self.itemNameBox.set_visible_window(False)
@@ -142,7 +144,7 @@ class SlideItem(DownloadItem):
         elif status == APP_STATE_DOWNLOADING:
             self.initDownloadingStatus(self.appAdditionBox, True)
         elif status == APP_STATE_DOWNLOAD_PAUSE:
-             self.initDownloadPauseStatus(self.appAdditionBox, True, "#FFFFFF")
+             self.initDownloadPauseStatus(self.appAdditionBox, True, appTheme.getDynamicColor("slideText"))
         elif status == APP_STATE_INSTALLING:
             self.initInstallingStatus(True)
         elif status == APP_STATE_UPGRADING:
@@ -295,19 +297,19 @@ class SlideBar(object):
         '''Update downloading status.'''
         if self.itemDict.has_key(pkgName):
             appItem = self.itemDict[pkgName]
-            appItem.updateDownloadingStatus(progress, feedback, "#FFFFFF")
+            appItem.updateDownloadingStatus(progress, feedback, appTheme.getDynamicColor("slideText"))
             
     def updateInstallingStatus(self, pkgName, progress, feedback):
         '''Update installing status.'''
         if self.itemDict.has_key(pkgName):
             appItem = self.itemDict[pkgName]
-            appItem.updateInstallingStatus(progress, feedback, "#FFFFFF")
+            appItem.updateInstallingStatus(progress, feedback, appTheme.getDynamicColor("slideText"))
             
     def updateUpgradingStatus(self, pkgName, progress, feedback):
         '''Update upgrading status.'''
         if self.itemDict.has_key(pkgName):
             appItem = self.itemDict[pkgName]
-            appItem.updateUpgradingStatus(progress, feedback, "#FFFFFF")
+            appItem.updateUpgradingStatus(progress, feedback, appTheme.getDynamicColor("slideText"))
             
     def getSlideItem(self, index):
         '''Get slide item.'''

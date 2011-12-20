@@ -297,7 +297,10 @@ class DownloadItem(object):
         self.downloadingFeedbackLabel = feedbackLabel
         actionBox.pack_start(feedbackLabel)
         
-    def initDownloadPauseStatus(self, appAdditionBox, withoutBorder=False, fontColor="#000000"):
+    def initDownloadPauseStatus(self, appAdditionBox, withoutBorder=False, color=None):
+        if (color == None):
+            color == appTheme.getDynamicColor("statusUpdate").getColor()
+        
         '''Init download pause status.'''
         # Clean right box first.
         utils.containerRemoveAll(appAdditionBox)
@@ -336,7 +339,7 @@ class DownloadItem(object):
         
         # Add pause label.
         pauseLabel = gtk.Label()
-        pauseLabel.set_markup("<span foreground='%s' size='%s'>%s</span>" % (fontColor, LABEL_FONT_SIZE, __("Action Pause")))
+        pauseLabel.set_markup("<span foreground='%s' size='%s'>%s</span>" % (color, LABEL_FONT_SIZE, __("Action Pause")))
         pauseLabel.set_width_chars(self.PROGRESS_LABEL_WIDTH_CHARS)
         pauseLabel.set_ellipsize(pango.ELLIPSIZE_END)
         pauseLabel.set_alignment(0.5, 0.5)
@@ -385,9 +388,12 @@ class DownloadItem(object):
         else:
             self.switchStatus(pkgName, APP_STATE_NORMAL)
 
-    def updateDownloadingStatus(self, progress, feedback, color="#000000"):
+    def updateDownloadingStatus(self, progress, feedback, color=None):
         '''Update downloading status.'''
         if self.appInfo.status == APP_STATE_DOWNLOADING:
+            if (color == None):
+                color == appTheme.getDynamicColor("statusUpdate").getColor()
+        
             if self.downloadingProgressbar != None and self.downloadingFeedbackLabel != None:
                 self.downloadingProgressbar.setProgress(progress)
                 self.downloadingFeedbackLabel.set_markup(
@@ -396,9 +402,12 @@ class DownloadItem(object):
                 
                 self.itemFrame.show_all()
                 
-    def updateInstallingStatus(self, progress, feedback, color="#000000"):
+    def updateInstallingStatus(self, progress, feedback, color=None):
         '''Update installing status.'''
         if self.appInfo.status == APP_STATE_INSTALLING:
+            if (color == None):
+                color == appTheme.getDynamicColor("statusUpdate").getColor()
+        
             if self.installingProgressbar != None and self.installingFeedbackLabel != None:
                 self.installingProgressbar.setProgress(progress)
                 self.installingFeedbackLabel.set_markup(
@@ -407,9 +416,12 @@ class DownloadItem(object):
                 
                 self.itemFrame.show_all()
                 
-    def updateUpgradingStatus(self, progress, feedback, color="#000000"):
+    def updateUpgradingStatus(self, progress, feedback, color=None):
         '''Update upgrading status.'''
         if self.appInfo.status == APP_STATE_UPGRADING:
+            if (color == None):
+                color = appTheme.getDynamicColor("statusUpdate").getColor()
+        
             if self.upgradingProgressbar != None and self.upgradingFeedbackLabel != None:
                 self.upgradingProgressbar.setProgress(progress)
                 self.upgradingFeedbackLabel.set_markup(

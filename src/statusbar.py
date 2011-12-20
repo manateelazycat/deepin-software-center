@@ -57,7 +57,9 @@ class Statusbar(object):
         self.box.pack_start(self.nameAlignment)
         
         self.joinUs = gtk.Label()
-        self.joinUs.set_markup("<span foreground='#FFFFFF' size='%s'>%s</span>" % (LABEL_FONT_SIZE, __("Join Us")))
+        self.joinUs.set_markup("<span foreground='%s' size='%s'>%s</span>" % (
+                appTheme.getDynamicColor("statusText").getColor(),
+                LABEL_FONT_SIZE, __("Join Us")))
         self.joinUsEventBox = gtk.EventBox()
         self.joinUsEventBox.set_visible_window(False)
         self.joinUsEventBox.add(self.joinUs)
@@ -75,8 +77,15 @@ class Statusbar(object):
         
     def initStatus(self):
         '''Init status.'''
-        self.name.set_markup("<span foreground='#FFFFFF' size='%s'>%s %s</span>" % (LABEL_FONT_SIZE, __("Deepin Software Center"), VERSION))
+        self.name.set_markup("<span foreground='%s' size='%s'>%s %s</span>" % (
+                appTheme.getDynamicColor("statusText").getColor(),
+                LABEL_FONT_SIZE,
+                __("Deepin Software Center"), 
+                VERSION))
 
     def setStatus(self, status):
         '''Set status.'''
-        self.name.set_markup("<span foreground='#FFFFFF' size='%s'>%s</span>" % (LABEL_FONT_SIZE, status))
+        self.name.set_markup("<span foreground='%s' size='%s'>%s</span>" % (
+                appTheme.getDynamicColor("statusText").getColor(),
+                LABEL_FONT_SIZE, 
+                status))

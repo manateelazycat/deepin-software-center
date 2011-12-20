@@ -121,7 +121,9 @@ class NavigateBar(object):
         box = gtk.VBox()
         
         label = gtk.Label()
-        label.set_markup("<span foreground='#FFFFFF'>%s</span>" % (iconName))
+        label.set_markup("<span foreground='%s'>%s</span>" % (
+                appTheme.getDynamicColor("navigateText").getColor(),
+                iconName))
         labelAlign = gtk.Alignment()
         labelAlign.set(0.5, 1.0, 0.0, 0.0)
         labelAlign.add(label)
@@ -150,7 +152,9 @@ class NavigateBar(object):
         box = gtk.VBox()
         
         label = gtk.Label()
-        label.set_markup("<span foreground='#FFFFFF'>%s</span>" % (iconName))
+        label.set_markup("<span foreground='%s'>%s</span>" % (
+                appTheme.getDynamicColor("navigateText").getColor(),
+                iconName))
         labelAlign = gtk.Alignment()
         labelAlign.set(0.5, 1.0, 0.0, 0.0)
         labelAlign.add(label)

@@ -15,7 +15,7 @@
 	* Update proxy interface and new feature interface.
 	* Adjust detail view.
 	* Make small screenshots' width same as big screenshot.
-	* Adjust detail view and draw line 
+	* Adjust detail view and draw line function.
 
 2011-12-19 Wang Yong <lazycat.manatee@gmail.com>
 	* Adjust navigatebar text size to make english can render with give width.

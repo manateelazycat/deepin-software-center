@@ -127,7 +127,7 @@ class DetailView(object):
             appNameAlign,
             "<b>%s</b>" % (pkgName),
             appTheme.getDynamicColor("detailName"),
-            LABEL_FONT_XXX_LARGE_SIZE,
+            LABEL_FONT_XX_LARGE_SIZE,
             )
         appName = appNameLabel.getLabel()
         

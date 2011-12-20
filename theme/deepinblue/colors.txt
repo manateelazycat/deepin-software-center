@@ -28,6 +28,9 @@
 	 "menuItem" : "#FFFFFF",
 	 "newFeatureText" : "#FFFFFF",
 	 "uninstallConfirm" : "#CBC9CE",
+     "topbarNumColor" : '#006efe',
+     "topbarKeywordColor" : '#006efe',
+	 "indexColor" : "#565656",
     },
  "labelColors" : 
     {"appName" : ("#1A3E88", "#0084FF", "#1A3E88"),

@@ -70,7 +70,6 @@ class Topbar(object):
         # Init.
         self.repoCache = repoCache
         self.paddingX = 5
-        self.numColor = '#006efe'
         self.box = gtk.HBox()
         self.boxAlign = gtk.Alignment()
         self.boxAlign.set(0.0, 0.5, 1.0, 1.0)
@@ -148,7 +147,11 @@ class Topbar(object):
         if upgradeNum == 0:
             markup = ""
         else:
-            markup = (__("Topbar IgnorePage") % (LABEL_FONT_SIZE, self.numColor, LABEL_FONT_SIZE, str(upgradeNum), LABEL_FONT_SIZE))
+            markup = (__("Topbar IgnorePage") % (LABEL_FONT_SIZE, 
+                                                 appTheme.getDynamicColor("topbarNumColor").getColor(),
+                                                 LABEL_FONT_SIZE, 
+                                                 str(upgradeNum), 
+                                                 LABEL_FONT_SIZE))
             
         self.numLabel.set_markup(markup)
 

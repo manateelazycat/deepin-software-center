@@ -69,8 +69,6 @@ class Topbar(object):
         # Init.
         self.searchQuery = searchQuery
         self.paddingX = 5
-        self.numColor = '#006efe'
-        self.textColor = '#1A3E88'
         self.repoCache = repoCache
         self.messageCallback = messageCallback
         self.entrySearchCallback = entrySearchCallback
@@ -101,7 +99,11 @@ class Topbar(object):
     def updateNum(self, upgradeNum):
         '''Update number.'''
         self.numLabel.set_markup(
-            __("Topbar UninstallPage") % (LABEL_FONT_SIZE, self.numColor, LABEL_FONT_SIZE, str(upgradeNum), LABEL_FONT_SIZE))
+            __("Topbar UninstallPage") % (LABEL_FONT_SIZE, 
+                                          appTheme.getDynamicColor("topbarNumColor").getColor(),
+                                          LABEL_FONT_SIZE, 
+                                          str(upgradeNum), 
+                                          LABEL_FONT_SIZE))
 
     def search(self, editable):
         '''Search'''

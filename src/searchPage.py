@@ -101,8 +101,6 @@ class Topbar(object):
                  exitSearchPageCallback, searchCallback, clickCandidateCallback):
         '''Init for top bar.'''
         self.paddingX = 5
-        self.keywordColor = '#006efe'
-        self.numColor = '#006efe'
         self.box = gtk.HBox()
         self.boxAlign = gtk.Alignment()
         self.boxAlign.set(0.0, 0.5, 1.0, 1.0)
@@ -141,7 +139,15 @@ class Topbar(object):
         '''Set number label.'''
         
         self.keywordLabel.set_markup(
-            __("Topbar SearchPage") % (LABEL_FONT_SIZE, self.keywordColor, LABEL_FONT_SIZE, keyword.strip(), LABEL_FONT_SIZE, self.numColor, LABEL_FONT_SIZE, str(itemNum), LABEL_FONT_SIZE))
+            __("Topbar SearchPage") % (LABEL_FONT_SIZE, 
+                                       appTheme.getDynamicColor("topbarKeywordColor").getColor(),
+                                       LABEL_FONT_SIZE, 
+                                       keyword.strip(), 
+                                       LABEL_FONT_SIZE, 
+                                       appTheme.getDynamicColor("topbarNumColor").getColor(),
+                                       LABEL_FONT_SIZE, 
+                                       str(itemNum), 
+                                       LABEL_FONT_SIZE))
     
 
 #  LocalWords:  BBBB

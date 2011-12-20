@@ -1300,7 +1300,6 @@ def exposeExtendBackground(widget, event, dPixbuf):
     pixbuf = dPixbuf.getPixbuf()
     pixbufWidth = pixbuf.get_width()
     
-    # cr.set_source_rgb(*colorHexToCairo("#FFF8E5"))
     cr.set_source_rgb(*colorHexToCairo("#2991DA"))
     cr.rectangle(0, 0, w - pixbufWidth, h)
     cr.fill()
@@ -1791,7 +1790,9 @@ def setNumButton(pageIndex, index, hoverDPixbuf, pressDPixbuf):
     numButton.connect("leave-notify-event", lambda w, e: setDefaultCursor(w))
     
     numLabel = gtk.Label()
-    numLabel.set_markup("<span foreground='%s' size='%s'><b>%s</b></span>" % ("#565656", LABEL_FONT_MEDIUM_SIZE, index))
+    numLabel.set_markup("<span foreground='%s' size='%s'><b>%s</b></span>" % (
+                        appTheme.getDynamicColor("indexColor").getColor(),
+                        LABEL_FONT_MEDIUM_SIZE, index))
     numButton.add(numLabel)
 
     return numButton

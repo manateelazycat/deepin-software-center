@@ -70,7 +70,6 @@ class Topbar(object):
         # Init.
         self.repoCache = repoCache
         self.paddingX = 5
-        self.numColor = '#006efe'
         self.selectAllPkgCallback = selectAllPkgCallback
         self.unselectAllPkgCallback = unselectAllPkgCallback
         self.showIgnorePageCallback = showIgnorePageCallback
@@ -164,7 +163,11 @@ class Topbar(object):
         if upgradeNum == 0:
             markup = ""
         else:
-            markup = (__("Topbar UpdatePage") % (LABEL_FONT_SIZE, self.numColor, LABEL_FONT_SIZE, str(upgradeNum), LABEL_FONT_SIZE))
+            markup = (__("Topbar UpdatePage") % (LABEL_FONT_SIZE, 
+                                                 appTheme.getDynamicColor("topbarNumColor").getColor(),
+                                                 LABEL_FONT_SIZE, 
+                                                 str(upgradeNum), 
+                                                 LABEL_FONT_SIZE))
         self.numLabel.set_markup(markup)
 
 #  LocalWords:  efe

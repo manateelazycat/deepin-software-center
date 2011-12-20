@@ -74,7 +74,8 @@ class Topbar(object):
         
         self.openDirEventBox = setIconLabelButton(
             __("Open download directory"), 
-            appTheme.getDynamicPixbuf("topbar/open.png"),
+            appTheme.getDynamicPixbuf("topbar/open_normal.png"),
+            appTheme.getDynamicPixbuf("topbar/open_hover.png"),
             self.iconPadding)
         
         self.openDirAlign = gtk.Alignment()
@@ -84,7 +85,8 @@ class Topbar(object):
         
         self.cleanEventBox = setIconLabelButton(
             __("Clean download cache"), 
-            appTheme.getDynamicPixbuf("topbar/clean.png"),
+            appTheme.getDynamicPixbuf("topbar/clean_normal.png"),
+            appTheme.getDynamicPixbuf("topbar/clean_hover.png"),
             self.iconPadding)
         
         self.cleanEventBox.connect("button-press-event", lambda w, e: cleanDownloadCacheCallback())

@@ -1566,41 +1566,35 @@ def radioButtonOnExpose(widget, event, selectDPixbuf, unselectDPixbuf, status, g
 
     return True
 
-def setIconLabelButton(content, dPixbuf, iconPadding):
+def setIconLabelButton(content, normalDPixbuf, hoverDPixbuf, iconPadding):
     '''Set icon label button.'''
+    iconBox = gtk.Button()
+    pixbuf = normalDPixbuf.getPixbuf()
+    (textWidth, _) = gtk.Label(content).get_layout().get_pixel_size()
+    iconBox.set_size_request(pixbuf.get_width() + textWidth + iconPadding * 2, pixbuf.get_height())
+    iconBox.connect("expose-event", 
+                    lambda w, e: iconLabelButtonOnExpose(w, e, content, textWidth, normalDPixbuf, hoverDPixbuf, iconPadding))
+    iconBox.connect("enter-notify-event", lambda w, e: setCursor(w, gtk.gdk.HAND2))
+    iconBox.connect("leave-notify-event", lambda w, e: setDefaultCursor(w))
     
-    eventbox = gtk.EventBox()
-    eventbox.set_visible_window(False)
-    eventbox.connect("enter-notify-event", lambda w, e: setCursor(w, gtk.gdk.HAND2))
-    eventbox.connect("leave-notify-event", lambda w, e: setDefaultCursor(w))
-    
-    box = gtk.HBox()
-    eventbox.add(box)
-    
-    iconBox = gtk.EventBox()
-    iconBox.set_visible_window(False)
-    pixbuf = dPixbuf.getPixbuf()
-    iconBox.set_size_request(pixbuf.get_width(), pixbuf.get_height())
-    iconBox.connect("expose-event", lambda w, e: iconLabelButtonOnExpose(w, e, dPixbuf))
-    iconAlign = gtk.Alignment()
-    iconAlign.set(0.5, 0.5, 0.0, 0.0)
-    iconAlign.set_padding(0, 0, iconPadding, iconPadding)
-    iconAlign.add(iconBox)
-    box.pack_start(iconAlign)
-    
-    label = gtk.Label()
-    label.set_markup("<span size='%s'>%s</span>" % (LABEL_FONT_SIZE, content))
-    box.pack_start(label)
-    
-    return eventbox
+    return iconBox
 
-def iconLabelButtonOnExpose(widget, event, dPixbuf):
+def iconLabelButtonOnExpose(widget, event, content, textWidth, normalDPixbuf, hoverDPixbuf, iconPadding):
     '''Icon label button on expose.'''
     cr = widget.window.cairo_create()
     rect = widget.allocation
     
-    pixbuf = dPixbuf.getPixbuf()
-    drawPixbuf(cr, pixbuf, rect.x, rect.y)
+    if widget.state == gtk.STATE_NORMAL:
+        pixbuf = normalDPixbuf.getPixbuf()
+    elif widget.state == gtk.STATE_PRELIGHT:
+        pixbuf = hoverDPixbuf.getPixbuf()
+    elif widget.state == gtk.STATE_ACTIVE:
+        pixbuf = hoverDPixbuf.getPixbuf()
+    drawPixbuf(cr, pixbuf, rect.x + iconPadding, rect.y)
+    
+    fontSize = 14
+    drawFont(cr, content, fontSize, appTheme.getDynamicColor("foreground").getColor(),
+             rect.x + pixbuf.get_width() + iconPadding * 2, getFontYCoordinate(rect.y, rect.height, fontSize))
     
     if widget.get_child() != None:
         widget.propagate_expose(widget.get_child(), event)

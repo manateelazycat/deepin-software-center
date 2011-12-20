@@ -148,20 +148,16 @@ class AppView(object):
             # Don't add first icon if at first *page*.
             if startIndex != 1:
                 # Add previous icon.
-                prevBox = gtk.EventBox()
-                prevBox.set_visible_window(False)
-                prevBox.connect(
-                    "expose-event", 
-                    lambda w, e: simpleButtonSetBackground(
-                        w, False, False, 
-                        appTheme.getDynamicPixbuf("index/backward.png")))
-                prevBox.connect("button-press-event", 
+                prevButton = setHoverButton(
+                    appTheme.getDynamicPixbuf("index/backward_normal.png"),
+                    appTheme.getDynamicPixbuf("index/backward_hover.png"),
+                    )
+                prevButton.connect("button-press-event", 
                                 lambda widget, event: self.jumpPage(max(1, (self.pageIndex - 1) / self.pageSize * self.pageSize)))
                 prevAlign = gtk.Alignment()
                 prevAlign.set(0.5, 0.5, 0.0, 0.0)
-                prevAlign.add(prevBox)
+                prevAlign.add(prevButton)
                 box.pack_start(prevAlign, False, False, paddingX)
-                setClickableCursor(prevBox)
                 
                 firstBox = self.createNumIcon(1)
                 firstLabel = gtk.Label()
@@ -186,19 +182,16 @@ class AppView(object):
                 box.pack_start(lastBox)
                 
                 # Add next icon.
-                nextBox = gtk.EventBox()
-                nextBox.set_visible_window(False)
-                nextBox.connect(
-                    "expose-event", 
-                    lambda w, e: simpleButtonSetBackground(
-                        w, False, False, appTheme.getDynamicPixbuf("index/forward.png")))
-                nextBox.connect("button-press-event", 
-                                lambda widget, event: self.jumpPage(min(self.maxPageIndex, ((self.pageIndex - 1) / self.pageSize + 1) * self.pageSize + 1)))
+                nextButton = setHoverButton(
+                    appTheme.getDynamicPixbuf("index/forward_normal.png"),
+                    appTheme.getDynamicPixbuf("index/forward_hover.png"),
+                    )
+                nextButton.connect("button-press-event", 
+                                   lambda widget, event: self.jumpPage(min(self.maxPageIndex, ((self.pageIndex - 1) / self.pageSize + 1) * self.pageSize + 1)))
                 nextAlign = gtk.Alignment()
                 nextAlign.set(0.5, 0.5, 0.0, 0.0)
-                nextAlign.add(nextBox)
+                nextAlign.add(nextButton)
                 box.pack_start(nextAlign, False, False, paddingX)
-                setClickableCursor(nextBox)
             
             # Add jump button.
             spinButton = gtk.SpinButton()

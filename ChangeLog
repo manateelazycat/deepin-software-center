@@ -6,6 +6,7 @@
 	* Update logo icons and colors.
 	* Change fetch vote with POST method.
 	* Adjust category numbar and colors.
+	* Update icons and colors.
 
 2011-12-19 Wang Yong <lazycat.manatee@gmail.com>
 	* Adjust navigatebar text size to make english can render with give width.
@@ -229,37 +230,27 @@
 
 2011-09-22 Wang Yong <lazycat.manatee@gmail.com>
 	* Adjust icons directory.
-
 	* deepin-software-center.py/main/deepin-software-center:
 	  Use socket algorthim avoid user startup software center twice.
 
 2011-09-21 Wang Yong <lazycat.manatee@gmail.com>
 	* updateList.py: Add new update package list module to instead update manager.
-
 	* Refresh update view after package list update complete.
-
 	* updateList.py/utils.py: Make function getLastUpdateHours more generic.
-
 	* checkUpdate.py: Remove aptdeamon module from checkUpdate.py
 	  Just notify user when have updatable packages, move update code to software center.
-
 	* utils.py: Add new functions 'AnonymityThread' for build temp thread code.
 
 2011-09-20 Wang Yong <lazycat.manatee@gmail.com>
 	* Add recommend list length to protected software center won't crash if some package not exist in local cache.
-
 	* Adjust package classify directory and algorthim make it update from server side.
 
 2011-09-19 Wang Yong <lazycat.manatee@gmail.com>
 	* Move pkgClassify directory.
-
 	* Add sort button at software repository page.
-
 	* Adjust directory of update data for package at server side.
 
 2011-09-16 Wang Yong <lazycat.manatee@gmail.com>
 	* recommendView.py: Adjust progressbar position to avoid hide software name.
-
 	* recommendPage.py: Adjust color of pause status in slide item.
-
 	* detailView.py: Show homepage tooltip when mouse hover homepage link.

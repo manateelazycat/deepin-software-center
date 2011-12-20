@@ -1815,6 +1815,35 @@ def numButtonOnExpose(widget, event, pageIndex, index, hoverDPixbuf, pressDPixbu
 
     return True
 
+def setHoverButton(normalDPixbuf, hoverDPixbuf):
+    '''Set hover icon.'''
+    hoverButton = gtk.Button()
+    pixbuf = hoverDPixbuf.getPixbuf()
+    hoverButton.connect("expose-event", lambda w, e: hoverButtonOnExpose(w, e, normalDPixbuf, hoverDPixbuf))
+    hoverButton.connect("enter-notify-event", lambda w, e: setCursor(w, gtk.gdk.HAND2))
+    hoverButton.connect("leave-notify-event", lambda w, e: setDefaultCursor(w))
+    
+    return hoverButton
+
+def hoverButtonOnExpose(widget, event, normalDPixbuf, hoverDPixbuf):
+    '''Hover button on expose.'''
+    cr = widget.window.cairo_create()
+    rect = widget.allocation
+    
+    if widget.state == gtk.STATE_NORMAL:
+        image = normalDPixbuf.getPixbuf()
+    elif widget.state == gtk.STATE_PRELIGHT:
+        image = hoverDPixbuf.getPixbuf()
+    elif widget.state == gtk.STATE_ACTIVE:
+        image = normalDPixbuf.getPixbuf()
+        
+    drawPixbuf(cr, image, rect.x, rect.y)
+    
+    if widget.get_child() != None:
+        widget.propagate_expose(widget.get_child(), event)
+
+    return True
+
 #  LocalWords:  scaleX imageWidth scaleY imageHeight pixbuf cr drawPixbuf
 #  LocalWords:  buttonSetBackground normalImg hoverImg pressImg buttonLabel
 #  LocalWords:  fontSize labelColor normalPixbuf hoverPixbuf pressPixbuf

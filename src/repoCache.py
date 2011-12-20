@@ -145,7 +145,8 @@ class RepoCache(object):
                     # Add in white list.
                     whiteList.append(pkgName)
                 else:
-                    print "Haven't found package '%s' in current system (%s). Make sure you use Linux Deepin or add deepin sourcelist." % (pkgName, sortRecommendDir + categoryFile)
+                    print pkgName
+                    # print "Haven't found package '%s' in current system (%s). Make sure you use Linux Deepin or add deepin sourcelist." % (pkgName, sortRecommendDir + categoryFile)
                     
             # Scan download sort list.
             for line in open(sortDownloadDir + categoryFile).readlines():
@@ -154,7 +155,8 @@ class RepoCache(object):
                     # Append in download sort list.
                     sortDownloadList.append(pkgName)
                 else:
-                    print "Haven't found package '%s' in current system (%s). Make sure you use Linux Deepin or add deepin sourcelist." % (pkgName, sortDownloadDir + categoryFile)
+                    print pkgName
+                    # print "Haven't found package '%s' in current system (%s). Make sure you use Linux Deepin or add deepin sourcelist." % (pkgName, sortDownloadDir + categoryFile)
                     
             # Scan vote sort list.
             for line in open(sortVoteDir + categoryFile).readlines():
@@ -163,7 +165,8 @@ class RepoCache(object):
                     # Append in vote sort list.
                     sortVoteList.append(pkgName)
                 else:
-                    print "Haven't found package '%s' in current system (%s). Make sure you use Linux Deepin or add deepin sourcelist." % (pkgName, sortVoteDir + categoryFile)
+                    print pkgName
+                    # print "Haven't found package '%s' in current system (%s). Make sure you use Linux Deepin or add deepin sourcelist." % (pkgName, sortVoteDir + categoryFile)
                     
             # Add sort list in category dict.
             (classifyIcon, _) = self.categoryDict[categoryType]

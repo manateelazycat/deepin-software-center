@@ -13,6 +13,7 @@
 	* Update checkUpdate interface and icon.
 	* Update translation.
 	* Update proxy interface and new feature interface.
+	* Adjust detail view.
 
 2011-12-19 Wang Yong <lazycat.manatee@gmail.com>
 	* Adjust navigatebar text size to make english can render with give width.

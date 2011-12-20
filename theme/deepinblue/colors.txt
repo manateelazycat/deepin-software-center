@@ -12,7 +12,7 @@
      "detailName" : "#000000",
      "detailSummary" : "#333333",
      "detailAction" : "#000000",
-     "detailTitle" : "#1A3E88", 
+     "detailTitle" : "#3b3b3b", 
      "recommendTitle" : "#000000",
      "recommendFrame" : "#D5D5D5",
      "entryBackground" : "#FFFFFF",
@@ -38,6 +38,7 @@
 	 "tooltipBackground" : "#b8d2ff",
 	 "tooltipForeground" : "#333333",
 	 "statusUpdate" : "#000000",
+	 "itemFrame" : "d6d3d6",
     },
  "labelColors" : 
     {"appName" : ("#1A3E88", "#0084FF", "#1A3E88"),

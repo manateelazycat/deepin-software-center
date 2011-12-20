@@ -290,6 +290,9 @@ class DetailView(object):
         infoBox.pack_start(detailBox)
         
         # Add summary.
+        summaryBox = gtk.HBox()
+        detailBox.pack_start(summaryBox, False, False)
+        
         summaryAlignRight = 30
         summaryAlignTop = 10
         summaryDLabel = DynamicSimpleLabel(
@@ -300,15 +303,9 @@ class DetailView(object):
             )
         summaryLabel = summaryDLabel.getLabel()
         summaryLabel.set_alignment(0.0, 0.5)
-        detailBox.pack_start(summaryLabel, False, False)
+        summaryBox.pack_start(summaryLabel, False, False)
         
-        summaryAlign = gtk.Alignment()
-        summaryView = createContentView(summaryAlign, utils.getPkgLongDesc(pkg), False)
-        summaryAlign.set(0.0, 0.0, 1.0, 1.0)
-        summaryAlign.set_padding(summaryAlignTop, 0, 0, summaryAlignRight)
-        summaryAlign.add(summaryView)
-        detailBox.pack_start(summaryAlign)
-        
+        vLinePaddingX = 10
         homepage = utils.getPkgHomepage(pkg)
         if homepage != "":
             homepageAlignY = 20
@@ -318,7 +315,11 @@ class DetailView(object):
                 )
             homepageLabel.set_alignment(0.0, 0.0)
             homepageEventBox.connect("button-press-event", lambda w, e: utils.sendCommand("xdg-open %s" % (homepage)))
-            detailBox.pack_start(homepageEventBox, False, False)
+            vLineLeft = gtk.image_new_from_pixbuf(appTheme.getDynamicPixbuf("detail/vLine.png").getPixbuf())
+            summaryBox.pack_start(vLineLeft, False, False, vLinePaddingX)
+            summaryBox.pack_start(homepageEventBox, False, False)
+            vLineRight = gtk.image_new_from_pixbuf(appTheme.getDynamicPixbuf("detail/vLine.png").getPixbuf())
+            summaryBox.pack_start(vLineRight, False, False, vLinePaddingX)
             
             # Show home page when hover link.
             utils.setHelpTooltip(homepageEventBox, homepage)
@@ -335,10 +336,19 @@ class DetailView(object):
             translationEventBox.connect(
                 "button-press-event", 
                 lambda w, e: utils.sendCommand("xdg-open http://pootle.linuxdeepin.com/zh_CN/ddtp-done/%s.po/translate/" % (pkgName)))
-            detailBox.pack_start(translationEventBox, False, False)
+            summaryBox.pack_start(translationEventBox, False, False)
+            vLineRight = gtk.image_new_from_pixbuf(appTheme.getDynamicPixbuf("detail/vLine.png").getPixbuf())
+            summaryBox.pack_start(vLineRight, False, False, vLinePaddingX)
             
             # Show translation  when hover link.
             utils.setHelpTooltip(translationEventBox, __("Translate description"))
+        
+        summaryAlign = gtk.Alignment()
+        summaryView = createContentView(summaryAlign, utils.getPkgLongDesc(pkg), False)
+        summaryAlign.set(0.0, 0.0, 1.0, 1.0)
+        summaryAlign.set_padding(summaryAlignTop, 0, 0, summaryAlignRight)
+        summaryAlign.add(summaryView)
+        detailBox.pack_start(summaryAlign)
         
         # Add screenshot.
         self.screenshotBox = gtk.VBox()
@@ -355,10 +365,10 @@ class DetailView(object):
         self.screenshotBox.pack_start(screenshotLabel, False, False)
         
         self.smallScreenshot = SmallScreenshot(pkgName, self.scrolledWindow, self.messageCallback, self.refreshScreenshot)
-        self.screenshotBox.pack_start(self.smallScreenshot.box, False, False)
+        self.screenshotBox.pack_start(self.smallScreenshot.box, False, False, 8)
         self.smallScreenshot.start()
         
-        infoBox.pack_start(self.screenshotBox, False, False, self.DETAIL_PADDING_X)
+        infoBox.pack_start(self.screenshotBox, False, False)
             
         # Make sure download thread stop when detail view destroy.
         self.returnButton.connect(
@@ -445,15 +455,19 @@ class AppInfoItem(DownloadItem):
         self.aptCache = aptCache
         self.itemFrame = gtk.VBox()
         self.itemBox = gtk.HBox()
-        itemEventBox = gtk.EventBox()
-        itemEventBox.set_visible_window(False)
-        itemEventBox.add(self.itemBox)
-        drawDetailItemBackground(itemEventBox)
-        itemAlign = gtk.Alignment()
-        itemAlign.set_padding(0, 0, self.ALIGN_X, self.ALIGN_X)
-        itemAlign.set(0.0, 0.5, 1.0, 1.0)
-        itemAlign.add(itemEventBox)
-        self.itemFrame.add(itemAlign)
+        self.itemTopLine = gtk.Image()
+        self.itemBottomLine = gtk.Image()
+        drawLine(self.itemTopLine, appTheme.getDynamicColor("itemFrame"), 1, False)
+        drawLine(self.itemBottomLine, appTheme.getDynamicColor("itemFrame"), 1, False)
+        self.itemActionBox = gtk.VBox()
+        self.itemActionBox.pack_start(self.itemTopLine, False, False)
+        self.itemActionBox.pack_start(self.itemBox)
+        self.itemActionBox.pack_start(self.itemBottomLine, False, False)
+        self.itemActionAlign = gtk.Alignment()
+        self.itemActionAlign.set(0.0, 0.5, 1.0, 1.0)
+        self.itemActionAlign.set_padding(0, 0, self.ALIGN_X, self.ALIGN_X)
+        self.itemActionAlign.add(self.itemActionBox)
+        self.itemFrame.add(self.itemActionAlign)
         self.actionQueue = actionQueue
         
         # Widget that status will change.
@@ -477,7 +491,7 @@ class AppInfoItem(DownloadItem):
 
         # Add application version.
         self.appExtraBox = gtk.VBox()
-        topLeftBox.pack_start(self.appExtraBox, False, False, self.EXTRA_PADDING_X)
+        topLeftBox.pack_start(self.appExtraBox)
         
         # Init basic status.
         self.initBasicStatus()
@@ -578,7 +592,7 @@ class AppInfoItem(DownloadItem):
             appActionButton.connect("button-release-event", lambda widget, event: self.switchToDownloading())
             drawButton(appActionButton, "install", "cell", False, __("Action Install"), BUTTON_FONT_SIZE_SMALL, "buttonFont")
         appActionBox.pack_start(appActionButton, False, False)
-        self.appAdditionBox.pack_start(appActionBox, False, False, self.EXTRA_PADDING_X)
+        self.appAdditionBox.pack_start(appActionBox)
         
     def initInstallingStatus(self):
         '''Init installing status.'''

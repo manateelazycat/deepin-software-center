@@ -1075,7 +1075,8 @@ class SmallScreenshot(td.Thread):
                         self.updateTimestamp(timestamp)
                         
                         # Show.
-                        self.show()
+                        if self.hasScreenshot():
+                            self.show()
                     except Exception, e:
                         print "Download screenshot error: %s" % (e)
                         

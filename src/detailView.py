@@ -149,7 +149,7 @@ class DetailView(object):
         appMiddleBox.pack_start(appIntroAlign, False, False)
         
         # Add return button.
-        buttonPaddingTop = 20
+        buttonPaddingTop = 29
         buttonPaddingRight = 20
         (self.returnButton, self.returnButtonAlign) = newActionButton("return", 0.0, 0.5, "detail")
         self.returnButton.connect("button-release-event", lambda w, e: exitCallback(pageId, utils.getPkgName(pkg)))

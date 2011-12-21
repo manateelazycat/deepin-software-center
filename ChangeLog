@@ -7,6 +7,7 @@
 	* Fix browser code and detail view.
 	* Add hl option in screenshot url.
 	* Add return icons and adjust update button text.
+	* Fix crash bug when browser got incorrect cookie.
 
 2011-12-20 Wang Yong <lazycat.manatee@gmail.com>
 	* Adjust index icons.

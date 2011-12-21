@@ -198,35 +198,58 @@ class DetailView(object):
         self.commentErrorAlign.add(self.commentErrorBox)
         self.commentErrorBox.connect("button-press-event", lambda w, e: self.refreshComment())
         
-        self.commentArea = browser.Browser("%s/softcenter/v1/comment?n=%s&hl=%s" % (
-                SERVER_ADDRESS, 
-                pkgName, 
-                getDefaultLanguage()))
+        self.contentBox.pack_start(self.infoTab)
+        
         self.commentAreaAlign = gtk.Alignment()
         self.commentAreaAlign.set(0.0, 0.0, 1.0, 1.0)
         self.commentAreaAlign.set_padding(self.ALIGN_Y, 0, self.ALIGN_X, self.ALIGN_X)
-        self.commentAreaAlign.add(self.commentArea)
-        self.commentArea.connect("console-message", lambda view, message, line, sourceId: self.handleConsoleMessage(message))
-        self.commentArea.connect("load-finished", lambda view, frame: self.scrollCommentAreaToTop())
-        self.commentArea.connect("load-error", lambda v, f, u, e: self.handleLoadError())
-        
-        # Set small width to avoid comment area can't shrink window when main window shrink.
-        self.commentArea.set_size_request(DEFAULT_WINDOW_WIDTH / 2, -1) 
-        
-        self.contentBox.pack_start(self.infoTab)
         self.contentBox.pack_start(self.commentAreaAlign)
+            
+        self.createCommentArea()
+        
         self.contentBox.show_all()
         
         self.scrolledWindow.show_all()
+        
+    def checkCommentArea(self):
+        '''Check comment area, create it if it not exist.'''
+        if self.commentArea == None:
+            self.createCommentArea()    
+        
+    def createCommentArea(self):
+        '''Create comment area.'''
+        self.commentArea = None
+        utils.containerRemoveAll(self.commentAreaAlign)
+        
+        try:
+            commentView = browser.Browser("%s/softcenter/v1/comment?n=%s&hl=%s" % (
+                    SERVER_ADDRESS, 
+                    self.pkgName, 
+                    getDefaultLanguage()))
+            self.commentArea = commentView
+            self.commentArea.connect("console-message", lambda view, message, line, sourceId: self.handleConsoleMessage(message))
+            self.commentArea.connect("load-finished", lambda view, frame: self.scrollCommentAreaToTop())
+            self.commentArea.connect("load-error", lambda v, f, u, e: self.handleLoadError())
+            
+            # Set small width to avoid comment area can't shrink window when main window shrink.
+            self.commentArea.set_size_request(DEFAULT_WINDOW_WIDTH / 2, -1) 
+            
+            self.commentAreaAlign.add(self.commentArea)
+        except Exception, e:
+            # Display error button if got exception when create browser.
+            print e
+            self.handleLoadError()
         
     def refreshComment(self):
         '''Refresh comment.'''
         if self.commentErrorAlign.get_parent() != None:
             self.contentBox.remove(self.commentErrorAlign)
             
+        self.checkCommentArea()
+        if self.commentArea:
+            self.commentArea.reload_bypass_cache()
+            
         self.contentBox.show_all()
-        
-        self.commentArea.reload_bypass_cache()
         
     def handleLoadError(self):
         '''Handle load error signal.'''
@@ -250,7 +273,9 @@ class DetailView(object):
         
     def scrollCommentAreaToTop(self):
         '''Scroll comment area to top.'''
-        if self.commentButtonFlag:
+        self.checkCommentArea()
+        
+        if self.commentButtonFlag and self.commentArea:
             # Update Y coordinate.
             vadj = self.scrolledWindow.get_vadjustment()
             (_, offsetY) = self.commentArea.translate_coordinates(self.scrolledWindow, 0, 0)

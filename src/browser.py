@@ -42,20 +42,17 @@ class Browser(webkit.WebView):
         # Init.
         webkit.WebView.__init__(self)
         
-        try:
-            # Get default session.
-            self.session = libwebkit.webkit_get_default_session()
-            
-            # Init cookie.
-            self.initCookie()
+        # Get default session.
+        self.session = libwebkit.webkit_get_default_session()
         
-            # Init proxy.
-            self.initProxy()
+        # Init cookie.
+        self.initCookie()
+        
+        # Init proxy.
+        self.initProxy()
 
-            # Load uri.
-            self.load_uri(uri)
-        except Exception, e:
-            print "Got error when loading %s: %s" % (uri, e)
+        # Load uri.
+        self.load_uri(uri)
             
     def initCookie(self):
         '''Init cookie.'''
@@ -63,7 +60,10 @@ class Browser(webkit.WebView):
     		os.mknod(COOKIE_FILE)
         soupCookie = libsoup.soup_cookie_jar_text_new(COOKIE_FILE, False)
         print "Soup Cookie: %s" % (soupCookie)
-    	libgobject.g_object_set(self.session, 'add-feature', soupCookie, None)
+        if soupCookie < 0:
+            raise Exception("Incorrect cookie value: %s" % (soupCookie))
+        else:
+            libgobject.g_object_set(self.session, 'add-feature', soupCookie, None)
         
     def initProxy(self):
         '''Init proxy.'''

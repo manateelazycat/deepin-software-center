@@ -603,11 +603,8 @@ def drawHLineExpose(widget, event, dColor):
     rect = widget.allocation
     
     cr = widget.window.cairo_create()
-    cr.set_line_width(0.3)
-    cr.set_source_rgb(*colorHexToCairo(color))
-
-    cr.move_to(rect.x, rect.y)
-    cr.line_to(rect.x + rect.width, rect.y)
+    pixbuf = appTheme.getDynamicPixbuf("detail/pix.png").getPixbuf().scale_simple(rect.width, 1, gtk.gdk.INTERP_BILINEAR)
+    drawPixbuf(cr, pixbuf, rect.x, rect.y)
     
     cr.stroke()
 

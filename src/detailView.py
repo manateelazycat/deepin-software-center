@@ -149,18 +149,14 @@ class DetailView(object):
         appMiddleBox.pack_start(appIntroAlign, False, False)
         
         # Add return button.
-        self.returnButton = utils.newButtonWithoutPadding()
-        self.returnButton.connect("button-release-event", lambda widget, event: exitCallback(pageId, utils.getPkgName(pkg)))
-        drawButton(self.returnButton, "return", "cell", False, __("Return"), BUTTON_FONT_SIZE_MEDIUM, "bigButtonFont")
-        
         buttonPaddingTop = 20
         buttonPaddingRight = 20
-        returnButtonAlign = gtk.Alignment()
-        returnButtonAlign.set(0.0, 0.0, 0.0, 0.0)
-        returnButtonAlign.add(self.returnButton)
-        returnButtonAlign.set_padding(buttonPaddingTop, 0, 0, buttonPaddingRight)
-        titleBox.pack_start(returnButtonAlign, False, False)
-
+        (self.returnButton, self.returnButtonAlign) = newActionButton("return", 0.0, 0.5, "detail")
+        self.returnButton.connect("button-release-event", lambda w, e: exitCallback(pageId, utils.getPkgName(pkg)))
+        self.returnButtonAlign.set(0.0, 0.0, 0.0, 0.0)
+        self.returnButtonAlign.set_padding(buttonPaddingTop, 0, 0, buttonPaddingRight)
+        titleBox.pack_start(self.returnButtonAlign, False, False)
+        
         # Add top information.
         self.appInfoItem = AppInfoItem(self.aptCache, appInfo, switchStatus, downloadQueue, actionQueue)
         

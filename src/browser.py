@@ -61,11 +61,15 @@ class Browser(webkit.WebView):
         '''Init cookie.'''
     	if not os.path.exists(COOKIE_FILE):
     		os.mknod(COOKIE_FILE)
-    	libgobject.g_object_set(self.session, 'add-feature', libsoup.soup_cookie_jar_text_new(COOKIE_FILE, False), None)
+        soupCookie = libsoup.soup_cookie_jar_text_new(COOKIE_FILE, False)
+        print "Soup Cookie: %s" % (soupCookie)
+    	libgobject.g_object_set(self.session, 'add-feature', soupCookie, None)
         
     def initProxy(self):
         '''Init proxy.'''
         proxyString = utils.parseProxyString()
         if proxyString != None:
-            libgobject.g_object_set(self.session, 'proxy-uri', libsoup.soup_uri_new(str(proxyString)), None)
+            soupUri = libsoup.soup_uri_new(str(proxyString))
+            print "Soup Uri: %s" % (soupUri)
+            libgobject.g_object_set(self.session, 'proxy-uri', soupUri, None)
 

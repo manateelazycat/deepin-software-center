@@ -65,7 +65,7 @@ class RepoItem(DownloadItem):
         self.itemFrame = gtk.Alignment()
         self.itemFrame.set(0.0, 0.5, 1.0, 1.0)
         
-        self.appBasicView = AppBasicView(self.appInfo, 200, self.itemBox, self.entryDetailView)
+        self.appBasicView = AppBasicView(self.appInfo, 200 + APP_BASIC_WIDTH_ADJUST, self.itemBox, self.entryDetailView)
         
         # Widget that status will change.
         self.installingProgressbar = None

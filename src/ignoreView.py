@@ -94,7 +94,7 @@ class IgnoreItem(object):
         self.checkAlign.add(self.checkButton)
         self.itemBox.pack_start(self.checkAlign, False, False)
         
-        self.appBasicView = AppBasicView(self.appInfo, 300, self.itemBox, self.entryDetailView) 
+        self.appBasicView = AppBasicView(self.appInfo, 300 + APP_BASIC_WIDTH_ADJUST, self.itemBox, self.entryDetailView) 
         self.itemBox.pack_start(self.appBasicView.align, True, True)
         
         self.appAdditionBox = gtk.HBox()

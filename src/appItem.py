@@ -80,7 +80,7 @@ class UninstallItem(object):
         self.itemFrame.set(0.0, 0.5, 1.0, 1.0)
         self.itemFrame.add(self.itemEventBox)
         
-        self.appBasicView = AppBasicView(self.appInfo, 200, self.itemBox, self.entryDetailView)
+        self.appBasicView = AppBasicView(self.appInfo, 200 + APP_BASIC_WIDTH_ADJUST, self.itemBox, self.entryDetailView)
         self.itemBox.pack_start(self.appBasicView.align, True, True, self.APP_LEFT_PADDING_X)
         
         self.appAdditionBox = gtk.HBox()
@@ -797,14 +797,11 @@ def newSearchUI(helpString, getCandidatesCallback, clickCandidateCallback, searc
     searchEntry.set_size_request(SEARCH_ENTRY_WIDTH, -1)
     searchEntry.connect("activate", searchCallback)
     searchEntry.connect("icon-press", lambda entry, icon, event: searchCallback(entry))
-    # searchEntry.set_property("inner-border", gtk.Border(0, 0, 0, 0))
     searchBox.pack_start(searchEntry, False, False, entryPaddingX)
     
     searchEntry.set_icon_from_pixbuf(
-    # searchEntry.set_icon_from_stock(
         gtk.ENTRY_ICON_SECONDARY, 
         appTheme.getDynamicPixbuf("topbar/search.png").getPixbuf()
-        # gtk.STOCK_FIND
         )
 
     searchCompletion = sc.SearchCompletion(

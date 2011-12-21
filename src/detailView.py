@@ -202,7 +202,10 @@ class DetailView(object):
         self.commentErrorAlign.add(self.commentErrorBox)
         self.commentErrorBox.connect("button-press-event", lambda w, e: self.refreshComment())
         
-        self.commentArea = browser.Browser("%s/softcenter/v1/comment?n=%s" % (SERVER_ADDRESS, pkgName))
+        self.commentArea = browser.Browser("%s/softcenter/v1/comment?n=%s&hl=%s" % (
+                SERVER_ADDRESS, 
+                pkgName, 
+                getDefaultLanguage()))
         self.commentAreaAlign = gtk.Alignment()
         self.commentAreaAlign.set(0.0, 0.0, 1.0, 1.0)
         self.commentAreaAlign.set_padding(self.ALIGN_Y, 0, self.ALIGN_X, self.ALIGN_X)

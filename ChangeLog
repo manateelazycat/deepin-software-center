@@ -5,6 +5,7 @@
 	* Fix uninstall button render bug, make it render correctly both Chinese and English.
 	* Fix draw line in detail view.
 	* Fix browser code and detail view.
+	* Add hl option in screenshot url.
 
 2011-12-20 Wang Yong <lazycat.manatee@gmail.com>
 	* Adjust index icons.

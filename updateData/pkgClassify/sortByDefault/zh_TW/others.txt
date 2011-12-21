@@ -509,7 +509,7 @@ vala-terminal
 verbiste
 viking
 virt-manager
-virtualbox-4.0
+virtualbox
 virtualbox-ose
 vym
 wally

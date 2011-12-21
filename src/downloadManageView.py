@@ -23,7 +23,7 @@
 from appItem import *
 from constant import *
 from draw import *
-from lang import __
+from lang import __, getDefaultLanguage
 from theme import *
 from utils import *
 import appView

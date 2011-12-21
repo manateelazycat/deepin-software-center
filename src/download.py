@@ -21,7 +21,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from constant import *
-from lang import __
+from lang import __, getDefaultLanguage
 from pprint import pprint
 from utils import *
 import Queue as Q

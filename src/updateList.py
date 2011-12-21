@@ -21,7 +21,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from apt.progress.old import FetchProgress
-from lang import __
+from lang import __, getDefaultLanguage
 from utils import *
 import glib
 import os

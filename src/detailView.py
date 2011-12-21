@@ -24,7 +24,7 @@ from appItem import *
 from constant import *
 from draw import *
 from draw import *
-from lang import __
+from lang import __, getDefaultLanguage
 from math import pi
 from theme import *
 from utils import *
@@ -325,7 +325,7 @@ class DetailView(object):
             utils.setHelpTooltip(homepageEventBox, homepage)
             
         # Add help translation.
-        lang = utils.getDefaultLanguage()
+        lang = getDefaultLanguage()
         if lang == "zh_CN":
             translationAlignY = 20
             (translationLabel, translationEventBox) = setDefaultClickableDynamicLabel(

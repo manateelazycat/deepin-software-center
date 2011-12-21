@@ -22,7 +22,7 @@
 
 from checkUpdate import *
 from dbus.mainloop.glib import DBusGMainLoop
-from lang import __
+from lang import __, getDefaultLanguage
 import dbus
 import glib
 

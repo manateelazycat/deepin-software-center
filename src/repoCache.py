@@ -21,7 +21,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from constant import *
-from lang import __
+from lang import __, getDefaultLanguage
 from utils import *
 import apt_pkg
 import categorybar
@@ -126,7 +126,7 @@ class RepoCache(object):
 
         # Scan category dict.
         whiteList = []
-        sortRecommendDir = "../updateData/pkgClassify/sortByDefault/%s/" % (utils.getDefaultLanguage())
+        sortRecommendDir = "../updateData/pkgClassify/sortByDefault/%s/" % (getDefaultLanguage())
         sortDownloadDir =  "../updateData/pkgClassify/sortByDownload/"
         sortVoteDir =  "../updateData/pkgClassify/sortByVote/"
         

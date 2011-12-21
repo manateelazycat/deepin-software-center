@@ -22,7 +22,7 @@
 
 from constant import *
 from draw import *
-from lang import __
+from lang import __, getDefaultLanguage
 from searchEntry import *
 from theme import *
 import appView
@@ -162,14 +162,18 @@ class UninstallItem(object):
             appUninstallAlign.add(appUninstallBox)
             actionButtonBox.pack_start(appUninstallAlign, False, False)
             
+            if getDefaultLanguage() == "default":
+                buttonName = "uninstall_confirm"
+            else:
+                buttonName = "uninstall_confirm_cn"
             (appConfirmButton, appConfirmAlign) = newActionButton(
-                "uninstall_confirm", 0.0, 0.5, 
+                buttonName, 0.0, 0.5, 
                 "cell", False, __("Action Uninstall"), BUTTON_FONT_SIZE_SMALL, "buttonFont"
                 )
             appConfirmButton.connect("button-release-event", lambda widget, event: self.switchToUninstalling())
             
             (appCancelButton, appCancelAlign) = newActionButton(
-                "uninstall_confirm", 1.0, 0.5, 
+                buttonName, 1.0, 0.5, 
                 "cell", False, __("Action Cancel"), BUTTON_FONT_SIZE_SMALL, "buttonFont"
                 )
             appCancelButton.connect("button-release-event", lambda widget, event: self.switchToNormal(False))

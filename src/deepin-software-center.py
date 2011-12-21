@@ -23,7 +23,7 @@
 from constant import *
 from copy import deepcopy
 from draw import *
-from lang import __
+from lang import __, getDefaultLanguage
 from theme import *
 from tooltips import *
 from utils import postGUI

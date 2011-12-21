@@ -20,7 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from lang import __
+from lang import __, getDefaultLanguage
 
 VERSION = "2.0"
 AUTHOR = ["Wang Yong"]
@@ -118,7 +118,11 @@ GET_TIMEOUT = 10                # seconds
 
 ACTION_BUTTON_PADDING_X = 5
 ACTION_BUTTON_PADDING_Y = 5
-ACTION_BUTTON_WIDTH = 100
+lang = getDefaultLanguage()
+if lang == "default":
+    ACTION_BUTTON_WIDTH = 140
+else:
+    ACTION_BUTTON_WIDTH = 100
 
 DEFAULT_WINDOW_WIDTH = 890
 DEFAULT_WINDOW_HEIGHT = 631

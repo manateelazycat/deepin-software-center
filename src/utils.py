@@ -21,7 +21,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from constant import *
-from lang import __, DEFAULT_LANG
+from lang import __, getDefaultLanguage, DEFAULT_LANG
 from math import pi
 import cairo
 import gtk
@@ -425,17 +425,6 @@ def touchFile(filepath):
         
     # Touch file.
     open(filepath, "w").close()
-
-def getDefaultLanguage():
-    '''Get default language.'''
-    (lang, _) = locale.getdefaultlocale()
-    if lang in ["zh_CN", "zh_TW"]:
-        if DEFAULT_LANG == None:
-            return lang
-        else:
-            return DEFAULT_LANG
-    else:
-        return "default"
 
 def showVersionTooltip(widget, pkg):
     '''Show version tooltip.'''

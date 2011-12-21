@@ -23,7 +23,7 @@
 from appItem import *
 from constant import *
 from draw import *
-from lang import __
+from lang import __, getDefaultLanguage
 import appView
 import gtk
 import pango

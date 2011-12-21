@@ -23,7 +23,7 @@
 from appItem import *
 from constant import *
 from draw import *
-from lang import __
+from lang import __, getDefaultLanguage
 from utils import *
 import apt_pkg
 import categorybar

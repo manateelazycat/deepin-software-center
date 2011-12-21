@@ -21,7 +21,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from constant import *
-from lang import __
+from lang import __, getDefaultLanguage
 from math import pi
 from theme import *
 from utils import *

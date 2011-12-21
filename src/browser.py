@@ -22,7 +22,7 @@
 
 from constant import *
 from ctypes import *
-from lang import __
+from lang import __, getDefaultLanguage
 from utils import *
 import gobject
 import gtk

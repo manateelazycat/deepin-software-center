@@ -2,6 +2,7 @@
 
 2011-12-21 Wang Yong <lazycat.manatee@gmail.com>
 	* Update virtualbox information.
+	* Fix uninstall button render bug, make it render correctly both Chinese and English.
 
 2011-12-20 Wang Yong <lazycat.manatee@gmail.com>
 	* Adjust index icons.

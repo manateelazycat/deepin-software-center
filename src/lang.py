@@ -36,3 +36,15 @@ if DEFAULT_LANG == None:
         __ = gettext.translation('deepin-software-center', '../locale', languages=["default"]).gettext
 else:    
     __ = gettext.translation('deepin-software-center', '../locale', languages=[DEFAULT_LANG]).gettext
+
+def getDefaultLanguage():
+    '''Get default language.'''
+    (lang, _) = locale.getdefaultlocale()
+    if lang in ["zh_CN", "zh_TW"]:
+        if DEFAULT_LANG == None:
+            return lang
+        else:
+            return DEFAULT_LANG
+    else:
+        return "default"
+

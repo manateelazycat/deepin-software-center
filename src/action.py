@@ -21,7 +21,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from constant import *
-from lang import __
+from lang import __, getDefaultLanguage
 import apt
 import apt.progress.base as apb
 import os

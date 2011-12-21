@@ -166,6 +166,7 @@ class UninstallItem(object):
                 buttonName = "uninstall_confirm"
             else:
                 buttonName = "uninstall_confirm_cn"
+                
             (appConfirmButton, appConfirmAlign) = newActionButton(
                 buttonName, 0.0, 0.5, 
                 "cell", False, __("Action Uninstall"), BUTTON_FONT_SIZE_SMALL, "buttonFont"

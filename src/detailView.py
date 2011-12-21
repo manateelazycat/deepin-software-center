@@ -339,6 +339,9 @@ class DetailView(object):
             translationEventBox.connect(
                 "button-press-event", 
                 lambda w, e: utils.sendCommand("xdg-open http://pootle.linuxdeepin.com/zh_CN/ddtp-done/%s.po/translate/" % (pkgName)))
+            if homepage == "":
+                vLineLeft = gtk.image_new_from_pixbuf(appTheme.getDynamicPixbuf("detail/vLine.png").getPixbuf())
+                summaryBox.pack_start(vLineLeft, False, False, vLinePaddingX)
             summaryBox.pack_start(translationEventBox, False, False)
             vLineRight = gtk.image_new_from_pixbuf(appTheme.getDynamicPixbuf("detail/vLine.png").getPixbuf())
             summaryBox.pack_start(vLineRight, False, False, vLinePaddingX)
@@ -365,12 +368,14 @@ class DetailView(object):
         screenshotLabel = screenshotDLabel.getLabel()
         screenshotAlign = gtk.Alignment()
         screenshotAlign.set(0.0, 0.5, 0.0, 0.0)
-        screenshotAlign.set_padding(0, 0, 11, 0)
+        # screenshotAlign.set_padding(0, 0, 11, 0)
+        screenshotAlign.set_padding(0, 0, 0, 0)
         screenshotAlign.add(screenshotLabel)
         self.screenshotBox.pack_start(screenshotAlign, False, False)
         
         self.smallScreenshot = SmallScreenshot(pkgName, self.scrolledWindow, self.messageCallback, self.refreshScreenshot)
-        self.screenshotBox.pack_start(self.smallScreenshot.box, False, False, 8)
+        # self.screenshotBox.pack_start(self.smallScreenshot.box, False, False, 8)
+        self.screenshotBox.pack_start(self.smallScreenshot.box, False, False, 13)
         self.smallScreenshot.start()
         
         infoBox.pack_start(self.screenshotBox, False, False)

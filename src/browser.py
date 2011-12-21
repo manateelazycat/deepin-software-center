@@ -21,17 +21,18 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from constant import *
-from ctypes import *
 from lang import __, getDefaultLanguage
 from utils import *
+import ctypes
 import gobject
+import glib
 import gtk
 import os, webkit, webbrowser
 import utils
 
-libgobject = cdll.LoadLibrary('libgobject-2.0.so.0')
-libwebkit = cdll.LoadLibrary('libwebkitgtk-1.0.so.0')
-libsoup = cdll.LoadLibrary('libsoup-2.4.so.1')
+libgobject = ctypes.CDLL('libgobject-2.0.so.0')
+libwebkit = ctypes.CDLL('libwebkitgtk-1.0.so.0')
+libsoup = ctypes.CDLL('libsoup-2.4.so.1')
 
 class Browser(webkit.WebView):
     '''Browser.'''
@@ -60,11 +61,11 @@ class Browser(webkit.WebView):
         '''Init cookie.'''
     	if not os.path.exists(COOKIE_FILE):
     		os.mknod(COOKIE_FILE)
-    	libgobject.g_object_set(self.session, 'add-feature', libsoup.soup_cookie_jar_text_new(COOKIE_FILE, False))
+    	libgobject.g_object_set(self.session, 'add-feature', libsoup.soup_cookie_jar_text_new(COOKIE_FILE, False), None)
         
     def initProxy(self):
         '''Init proxy.'''
         proxyString = utils.parseProxyString()
         if proxyString != None:
-            libgobject.g_object_set(self.session, 'proxy-uri', libsoup.soup_uri_new(proxyString))
+            libgobject.g_object_set(self.session, 'proxy-uri', libsoup.soup_uri_new(str(proxyString)), None)
 

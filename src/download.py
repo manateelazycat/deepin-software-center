@@ -85,13 +85,20 @@ class Download(td.Thread):
                    '--summary-interval=0',
                    '--remote-time=true',
                    '--auto-save-interval=%s' % (self.autoSaveInterval),
-                   '--enable-xml-rpc=true',
-                   '--xml-rpc-listen-port=%s' % (self.rpcListenPort),
                    '--max-concurrent-downloads=%s' % (self.maxConcurrentDownloads),
                    '--metalink-servers=%s' % (self.metalinkServers),
-                   # '--max-overall-download-limit=%s' % (self.maxOverallDownloadLimit),
                    '--check-integrity=true',
+                   '--disable-ipv6=true',
+                   # '--max-overall-download-limit=%s' % (self.maxOverallDownloadLimit),
                    ]
+        
+        # Compatible aria2c 1.12.x, damn Japanese, why change options every version? Damn it!
+        if ARIA2_MAJOR_VERSION >= 1 and ARIA2_MINOR_VERSION >= 12:
+            cmdline.append('--enable-rpc=true')
+            cmdline.append('--rpc-listen-port=%s' % (self.rpcListenPort))
+        else:
+            cmdline.append('--enable-xml-rpc=true')
+            cmdline.append('--xml-rpc-listen-port=%s' % (self.rpcListenPort))
         
         # Add `max-connection-per-server` and `min-split-size` options if aria2c >= 1.10.x.
         if ARIA2_MAJOR_VERSION >= 1 and ARIA2_MINOR_VERSION >= 10:
@@ -399,6 +406,7 @@ class DownloadQueue(object):
         if len(self.downloadingQueue) >= self.maxConcurrentDownloads:
             utils.addInList(self.waitQueue, pkgName)
         else:
+            print "************************* Add thread for: %s" % (pkgName)
             self.startDownloadThread(pkgName)
         
     def stopDownload(self, pkgName):

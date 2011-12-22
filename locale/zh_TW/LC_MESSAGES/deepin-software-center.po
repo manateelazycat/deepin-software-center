@@ -303,7 +303,7 @@ msgid "Update select software"
 msgstr "升級選中的軟體"
 
 msgid "Notify select software"
-msgstr "提示選中的軟體"
+msgstr "重新提醒提示選中的軟體"
 
 msgid "Notify again"
 msgstr "重新提醒"

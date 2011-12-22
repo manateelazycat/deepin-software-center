@@ -102,7 +102,7 @@ class Topbar(object):
         upgradeBox.pack_start(self.unselectAllBox, False, False, self.paddingX)
 
         (self.upgradeButton, upgradeButtonAlign) = newActionButton(
-             "update_selected", 0.0, 0.5, "cell", True, __("Notify select software"), BUTTON_FONT_SIZE_MEDIUM, "bigButtonFont")
+             "update_selected", 0.0, 0.5, "cell", True, __("Notify again"), BUTTON_FONT_SIZE_MEDIUM, "bigButtonFont")
         upgradeBox.pack_start(upgradeButtonAlign, False, False, self.paddingX)
         self.upgradeButton.connect("button-press-event", lambda w, e: removeIgnorePkgsCallback(getSelectListCallback()))
         

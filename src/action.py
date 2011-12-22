@@ -116,7 +116,7 @@ class Action(td.Thread):
             self.failed()
         
         # Debug, just for emulate install.
-        # self.finish()
+        self.finish()
             
     # NOTE: Don't use interface `finish_update` in apt.progress.base.InstallProgress.
     # Because interface `finish_update` got finish signal *BEFORE* function `cache.commit`,

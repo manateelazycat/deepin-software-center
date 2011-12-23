@@ -85,14 +85,21 @@ class Download(td.Thread):
                    '--summary-interval=0',
                    '--remote-time=true',
                    '--auto-save-interval=%s' % (self.autoSaveInterval),
-                   '--enable-xml-rpc=true',
-                   '--xml-rpc-listen-port=%s' % (self.rpcListenPort),
                    '--max-concurrent-downloads=%s' % (self.maxConcurrentDownloads),
                    '--metalink-servers=%s' % (self.metalinkServers),
-                   # '--max-overall-download-limit=%s' % (self.maxOverallDownloadLimit),
                    '--check-integrity=true',
+                   '--disable-ipv6=true',
+                   # '--max-overall-download-limit=%s' % (self.maxOverallDownloadLimit),
                    ]
         
+        # Compatible with aria2c 1.12.x, damn Japanese, why change options every version? Damn you!
+        if ARIA2_MAJOR_VERSION >= 1 and ARIA2_MINOR_VERSION >= 12:
+            cmdline.append('--enable-rpc=true')
+            cmdline.append('--rpc-listen-port=%s' % (self.rpcListenPort))
+        else:
+            cmdline.append('--enable-xml-rpc=true')
+            cmdline.append('--xml-rpc-listen-port=%s' % (self.rpcListenPort))
+            
         # Add `max-connection-per-server` and `min-split-size` options if aria2c >= 1.10.x.
         if ARIA2_MAJOR_VERSION >= 1 and ARIA2_MINOR_VERSION >= 10:
             cmdline.append('--max-connection-per-server=%s' % (self.maxConnectionPerServer))

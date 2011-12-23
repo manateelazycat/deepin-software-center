@@ -186,7 +186,7 @@ class SlideItem(DownloadItem):
                 appInstalledDynamicLabel = DynamicSimpleLabel(
                     actionButtonBox,
                     __("Action Installed"),
-                    appTheme.getDynamicColor("installed"),
+                    appTheme.getDynamicColor("slideText"),
                     LABEL_FONT_LARGE_SIZE,
                     )
                 appInstalledLabel = appInstalledDynamicLabel.getLabel()

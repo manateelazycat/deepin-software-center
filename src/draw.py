@@ -772,22 +772,22 @@ def drawDetailItemBackgroundOnExpose(
 
 def drawRoundRectangle(cr, x, y, width, height, r):
     '''Draw round rectangle.'''
-    cr.move_to(x + r, y);
-    cr.line_to(x + width - r, y);
+    cr.move_to(x + r, y)
+    cr.line_to(x + width - r, y)
 
-    cr.move_to(x + width, y + r);
-    cr.line_to(x + width, y + height - r);
+    cr.move_to(x + width, y + r)
+    cr.line_to(x + width, y + height - r)
 
-    cr.move_to(x + width - r, y + height);
-    cr.line_to(x + r, y + height);
+    cr.move_to(x + width - r, y + height)
+    cr.line_to(x + r, y + height)
 
-    cr.move_to(x, y + height - r);
-    cr.line_to(x, y + r);
+    cr.move_to(x, y + height - r)
+    cr.line_to(x, y + r)
 
-    cr.arc(x + r, y + r, r, pi, 3 * pi / 2.0);
-    cr.arc(x + width - r, y + r, r, 3 * pi / 2, 2 * pi);
-    cr.arc(x + width - r, y + height - r, r, 0, pi / 2);
-    cr.arc(x + r, y + height - r, r, pi / 2, pi);
+    cr.arc(x + r, y + r, r, pi, 3 * pi / 2.0)
+    cr.arc(x + width - r, y + r, r, 3 * pi / 2, 2 * pi)
+    cr.arc(x + width - r, y + height - r, r, 0, pi / 2)
+    cr.arc(x + r, y + height - r, r, pi / 2, pi)
 
 def drawFrame(cr, x, y, width, height):
     '''Draw frame.'''

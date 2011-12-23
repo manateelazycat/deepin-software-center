@@ -1052,6 +1052,18 @@ def drawListItem(widget, index, getSelectIndex, selectable=True):
             )
     except Exception, e:
         print "Ignore exception in drawListItem."
+
+def drawRecommendItem(widget, index, getSelectIndex):
+    '''Draw list item.'''
+    try:
+        listItemSetBackground(
+            widget,
+            "recommend/list_item.png",
+            "recommend/list_item.png",
+            index, getSelectIndex
+            )
+    except Exception, e:
+        print "Ignore exception in drawListItem."
     
 def drawTitlebar(widget):
     '''Draw title bar.'''

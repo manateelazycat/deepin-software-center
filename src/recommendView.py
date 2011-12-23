@@ -74,7 +74,7 @@ class RecommendItem(DownloadItem):
         self.itemAlign.add(self.itemBox)
         self.itemEventBox = gtk.EventBox()
         self.itemEventBox.connect("button-press-event", lambda w, e: clickItem(w, e, entryDetailCallback, appInfo))
-        drawListItem(self.itemEventBox, index, getSelectIndex, False)
+        drawRecommendItem(self.itemEventBox, index, getSelectIndex)
         self.itemFrame = gtk.Alignment()
         self.itemFrame.set(0.0, 0.5, 0.0, 0.0)
         

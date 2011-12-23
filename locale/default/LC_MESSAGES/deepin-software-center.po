@@ -448,3 +448,6 @@ msgstr "Cancel"
 
 msgid "Comment load failed, please try again!"
 msgstr "Comment load failed, please try again!"
+
+msgid "Vote num"
+msgstr "  (Vote number %s)"

@@ -1367,7 +1367,7 @@ class FetchVote(td.Thread):
     def run(self):
         '''Run.'''
         try:
-            args = {'n' : self.pkgArguments}
+            args = {'n' : self.pkgArguments, "t" : "comment"}
             connection = urllib2.urlopen(
                 "%s/softcenter/v1/mark" % (SERVER_ADDRESS),
                 data=urllib.urlencode(args),

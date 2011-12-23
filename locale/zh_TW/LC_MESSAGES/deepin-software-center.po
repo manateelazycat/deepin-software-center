@@ -451,3 +451,6 @@ msgstr "取消代理"
 
 msgid "Comment load failed, please try again!"
 msgstr "評論加載失敗， 請刷新重試!"
+
+msgid "Vote num"
+msgstr "  (已經有%s人評分)"

@@ -487,10 +487,12 @@ class AppInfoItem(DownloadItem):
         self.itemFrame = gtk.VBox()
         self.itemBox = gtk.HBox()
         self.itemPaddingY = 10
+        self.itemInfoBox = gtk.VBox()
+        self.itemInfoBox.pack_start(self.itemBox)
         self.itemAlign = gtk.Alignment()
         self.itemAlign.set(0.0, 0.5, 1.0, 1.0)
         self.itemAlign.set_padding(self.itemPaddingY, self.itemPaddingY, 0, 0)
-        self.itemAlign.add(self.itemBox)
+        self.itemAlign.add(self.itemInfoBox)
         self.itemTopLine = gtk.Image()
         self.itemBottomLine = gtk.Image()
         drawHLine(self.itemTopLine, appTheme.getDynamicColor("itemFrame"))
@@ -514,8 +516,7 @@ class AppInfoItem(DownloadItem):
         self.uninstallingProgressbar = None
         self.uninstallingFeedbackLabel = None
         
-        pkg = appInfo.pkg
-        pkgName = utils.getPkgName(pkg)
+        self.pkgName = utils.getPkgName(appInfo.pkg)
         
         topLeftBox = gtk.HBox()
         self.itemBox.pack_start(topLeftBox, False, False)
@@ -535,6 +536,43 @@ class AppInfoItem(DownloadItem):
         # Init addition status.
         self.initAdditionStatus()
 
+        # Fetch vote info.
+        self.voteAlign = None
+        FetchVoteInfo(self.pkgName, self.updateVoteInfo).start()
+        
+    def updateVoteInfo(self, voteJson):
+        '''Update vote information.'''
+        if self.voteAlign:
+            self.itemInfoBox.remove(self.voteAlign)
+            
+        try:
+            votePaddingTop = 3
+            votePaddingBottom = 5
+            self.voteBox = gtk.HBox()
+            self.voteAlign = gtk.Alignment()
+            self.voteAlign.set_padding(votePaddingTop, votePaddingBottom, 0, 0)
+            self.voteAlign.add(self.voteBox)
+            self.itemInfoBox.pack_start(self.voteAlign)
+            self.itemInfoBox.reorder_child(self.voteAlign, 0)
+            (vote, voteNum) = voteJson[self.pkgName]
+            self.starView = StarView(vote, 20)
+            self.voteBox.pack_start(self.starView.eventbox, False, False)
+            
+            if (int(voteNum) > 0):
+                self.voteLabel = DynamicSimpleLabel(
+                    self.voteBox,
+                    (__("Vote num") % (voteNum)),
+                    appTheme.getDynamicColor("detailName"),
+                    LABEL_FONT_SIZE,
+                    ).getLabel()
+                self.voteLabel.set_alignment(0.0, 1.0)
+                self.voteBox.pack_start(self.voteLabel, False, False)
+            self.itemInfoBox.show_all()
+        except Exception, e:
+            print e
+            if self.voteAlign:
+                self.itemInfoBox.remove(self.voteAlign)
+        
     def initBasicStatus(self):
         '''Init basic status.'''
         pkg = self.appInfo.pkg
@@ -1283,6 +1321,31 @@ class BigScreenshot(object):
             widget.propagate_expose(widget.get_child(), event)
 
         return True
+    
+class FetchVoteInfo(td.Thread):
+    '''Fetch vote.'''
+
+    def __init__(self, pkgName, updateVoteCallback):
+        '''Init for fetch vote.'''
+        td.Thread.__init__(self)
+        self.setDaemon(True) # make thread exit when main program exit
+
+        self.pkgName = pkgName
+        self.updateVoteCallback = updateVoteCallback
+
+    def run(self):
+        '''Run.'''
+        try:
+            args = {'n' : self.pkgName, "t" : "vote"}
+            connection = urllib2.urlopen(
+                "%s/softcenter/v1/mark" % (SERVER_ADDRESS),
+                data=urllib.urlencode(args),
+                timeout=POST_TIMEOUT
+                )
+            voteJson = json.loads(connection.read())            
+            self.updateVoteCallback(voteJson)
+        except Exception, e:
+            print "Fetch vote data failed: %s." % (e)
     
 #  LocalWords:  FFFFFF toggleTab xdg DDDDDD nums cuid cid feedbackLabel td
 #  LocalWords:  initActionStatus appAdditionBox uninstallingProgressbar appInfo

@@ -37,6 +37,9 @@ class NavigateBar(object):
         self.selectPageCallback = None
         self.getRunningNumCallback = None
         self.iconPadding = 8
+        self.animationFrames = 8
+        self.updateAnimationCount = 0
+        self.downloadAnimationCount = 0
         
         self.pageId = PAGE_RECOMMEND
         

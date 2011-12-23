@@ -663,10 +663,10 @@ class VoteView(object):
 class StarView(object):
     '''Star view.'''
 	
-    def __init__(self):
+    def __init__(self, starLevel=10, starSize=16):
         '''Init for star view.'''
-        self.starLevel = 10
-        self.starSize = 16
+        self.starLevel = starLevel
+        self.starSize = starSize
         
         self.eventbox = gtk.EventBox()
         self.eventbox.add_events(gtk.gdk.POINTER_MOTION_MASK)

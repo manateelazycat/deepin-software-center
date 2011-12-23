@@ -1,55 +1,102 @@
 {"colors" :
     {"background" : "#FFFFFF",
-     "foreground" : "#000000", 
-     "appSize" : "#000000",
-     "appSummary" : "#565656",
-	 "appComment" : "#555555",
-     "buttonFont" : "#000000",
-     "bigButtonFont" : "#FFFFFF",
-	 "installed" : "#000000",
-     "slideText" : "#FFFFFF",
-     "sideButton" : "#505050",
-     "detailName" : "#000000",
-     "detailSummary" : "#333333",
-     "detailAction" : "#000000",
-     "detailTitle" : "#3b3b3b", 
-     "recommendTitle" : "#000000",
-     "recommendFrame" : "#D5D5D5",
-     "entryBackground" : "#FFFFFF",
-     "entryForeground" : "#000000",
-     "entryHint" : "#999999",
-     "completionText" : "#000000",
-     "completionKeyword" : "#1A3E88",
-     "completionBackground" : "#FFFFFF",
-     "completionSelect" : "#16A5ED",
-	 "themeSelectTitleText" : "#FFFFFF",
-	 "themeIconHover" : "#1eb0f3",
-	 "themeIconPress" : "#FFFFFF",
-	 "menuItem" : "#FFFFFF",
-	 "newFeatureText" : "#000000",
-	 "uninstallConfirm" : "#CBC9CE",
-     "topbarNum" : '#006efe',
-     "topbarKeyword" : '#006efe',
-	 "index" : "#565656",
-	 "waiting" : "#1A3E88",
-	 "screenshotIndex" : "#FFFFFF",
-	 "navigateText" : "#FFFFFF",
-	 "statusText" : "#FFFFFF",
-	 "tooltipBackground" : "#b8d2ff",
-	 "tooltipForeground" : "#333333",
-	 "statusUpdate" : "#000000",
-	 "itemFrame" : "#d6d3d6",
+     
+"foreground" : "#000000", 
+     
+"appSize" : "#000000",
+     
+"appSummary" : "#565656",
+	
+ "appComment" : "#555555",
+     
+"buttonFont" : "#000000",
+     
+"bigButtonFont" : "#FFFFFF",
+	 
+"installed" : "#000000",
+     
+"slideText" : "#FFFFFF",
+     
+"sideButton" : "#505050",
+     
+"detailName" : "#000000",
+     
+"detailSummary" : "#333333",
+     
+"detailAction" : "#000000",
+     
+"detailTitle" : "#3b3b3b", 
+     
+"recommendTitle" : "#000000",
+     
+"recommendFrame" : "#8b8b8b",
+     
+"entryBackground" : "#FFFFFF",
+     
+"entryForeground" : "#000000",
+     
+"entryHint" : "#999999",
+     
+"completionText" : "#000000",
+     
+"completionKeyword" : "#1A3E88",
+     
+"completionBackground" : "#FFFFFF",
+     
+"completionSelect" : "#16A5ED",
+	 
+"themeSelectTitleText" : "#FFFFFF",
+	 
+"themeIconHover" : "#1eb0f3",
+	 
+"themeIconPress" : "#FFFFFF",
+	 
+"menuItem" : "#FFFFFF",
+	 
+"newFeatureText" : "#000000",
+	
+ "uninstallConfirm" : "#CBC9CE",
+    
+ "topbarNum" : '#006efe',
+     
+"topbarKeyword" : '#006efe',
+	 
+"index" : "#565656",
+	 
+"waiting" : "#1A3E88",
+	 
+"screenshotIndex" : "#FFFFFF",
+	 
+"navigateText" : "#FFFFFF",
+	 
+"statusText" : "#FFFFFF",
+	 
+"tooltipBackground" : "#b8d2ff",
+	 
+"tooltipForeground" : "#333333",
+	 
+"statusUpdate" : "#000000",
+	 
+"itemFrame" : "#d6d3d6",
     },
- "labelColors" : 
+ 
+"labelColors" : 
     {"appName" : ("#1A3E88", "#0084FF", "#1A3E88"),
- 	 "appIgnore" : ("#1A3E88", "#0084FF", "#1A3E88"),
- 	 "recommendMore" : ("#000000", "#0084FF", "#000000"),
- 	 "topbarButton" : ("#1A3E88", "#0084FF", "#1A3E88"),
- 	 "link" : ("#1A3E88", "#0084FF", "#1A3E88"),
+ 	
+ "appIgnore" : ("#1A3E88", "#0084FF", "#1A3E88"),
+ 	 
+"recommendMore" : ("#000000", "#0084FF", "#000000"),
+ 	 
+"topbarButton" : ("#1A3E88", "#0084FF", "#1A3E88"),
+ 	 
+"link" : ("#1A3E88", "#0084FF", "#1A3E88"),
 	},
- "alphaColors" :
+ 
+"alphaColors" :
     {"topbarBottom" : ("#333333", 0.5),
-     "statusbarTop" : ("#333333", 0.5),
-     "frameLigtht" : ("#FFFFFF", 0.8),
+     
+"statusbarTop" : ("#333333", 0.5),
+     
+"frameLigtht" : ("#FFFFFF", 0.8),
 	},
 }

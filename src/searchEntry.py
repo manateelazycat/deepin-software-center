@@ -24,6 +24,7 @@ from lang import __, getDefaultLanguage
 from theme import *
 import gobject
 import gtk
+import pango
 
 class SearchEntry(gtk.Entry):
     '''Search entry.'''
@@ -37,6 +38,9 @@ class SearchEntry(gtk.Entry):
         self.backgroundDColor = backgroundDColor
         self.foregroundDColor = foregroundDColor
         self.ticker = 0
+        
+        # Set default font.
+        self.modify_font(pango.FontDescription(DEFAULT_FONT + " 10"))
         
         # Clean input when first time focus in entry.
         if noHint:

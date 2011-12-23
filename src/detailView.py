@@ -234,6 +234,10 @@ class DetailView(object):
             # Set small width to avoid comment area can't shrink window when main window shrink.
             self.commentArea.set_size_request(DEFAULT_WINDOW_WIDTH / 2, -1) 
             
+            # Set default font size.
+            # settings = self.commentArea.get_settings()
+            # settings.set_property("default-font-size", 12)
+            
             self.commentAreaAlign.add(self.commentArea)
         except Exception, e:
             # Display error button if got exception when create browser.

@@ -43,7 +43,6 @@ class Tooltips(object):
         
         # Create tooltips window.
         self.window = gtk.Window()
-        self.window.set_type_hint(gtk.gdk.WINDOW_TYPE_HINT_DIALOG)
         self.window.set_decorated(False)
         self.window.set_resizable(True)
         self.window.set_transient_for(window.get_toplevel())

@@ -101,6 +101,7 @@ class Action(td.Thread):
 
     def run(self):
         '''Run'''
+        
         try:
             # Commit apt changes.
             self.cache.commit(None, self.progress)

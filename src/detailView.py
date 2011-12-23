@@ -1004,9 +1004,8 @@ class SmallScreenshot(td.Thread):
             '--summary-interval=0',
             '--remote-time=true',
             '--auto-save-interval=%s' % (self.autoSaveInterval),
-            '--check-integrity=true',
-            '--disable-ipv6=true',
             # '--max-overall-download-limit=10K', # for debug
+            '--check-integrity=true',
             ]
         
         # Make software center can work with aria2c 1.9.x.

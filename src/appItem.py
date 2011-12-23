@@ -303,7 +303,7 @@ class DownloadItem(object):
         actionBox.pack_start(feedbackLabel)
         
     def initDownloadPauseStatus(self, appAdditionBox, withoutBorder=False, color=None):
-        if color == None:
+        if (color == None):
             color == appTheme.getDynamicColor("statusUpdate").getColor()
         
         '''Init download pause status.'''
@@ -396,7 +396,7 @@ class DownloadItem(object):
     def updateDownloadingStatus(self, progress, feedback, color=None):
         '''Update downloading status.'''
         if self.appInfo.status == APP_STATE_DOWNLOADING:
-            if color == None:
+            if (color == None):
                 color == appTheme.getDynamicColor("statusUpdate").getColor()
         
             if self.downloadingProgressbar != None and self.downloadingFeedbackLabel != None:
@@ -410,7 +410,7 @@ class DownloadItem(object):
     def updateInstallingStatus(self, progress, feedback, color=None):
         '''Update installing status.'''
         if self.appInfo.status == APP_STATE_INSTALLING:
-            if color == None:
+            if (color == None):
                 color == appTheme.getDynamicColor("statusUpdate").getColor()
         
             if self.installingProgressbar != None and self.installingFeedbackLabel != None:
@@ -424,7 +424,7 @@ class DownloadItem(object):
     def updateUpgradingStatus(self, progress, feedback, color=None):
         '''Update upgrading status.'''
         if self.appInfo.status == APP_STATE_UPGRADING:
-            if color == None:
+            if (color == None):
                 color = appTheme.getDynamicColor("statusUpdate").getColor()
         
             if self.upgradingProgressbar != None and self.upgradingFeedbackLabel != None:

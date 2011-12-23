@@ -10,22 +10,14 @@ case "$1" in
     "push" )
         git push git@github.com:manateelazycat/deepin-software-center.git
         ;;
-    "changelog" )
-        git log --oneline
-        ;;
-    "checkout" )
-        git checkout -- .
-        ;;
     "revert" )
-        git revert $2
+        git checkout -- .
         ;;
     * ) 
         echo "Help"
         echo "./repos.sh record         => record patch"
         echo "./repos.sh pull           => pull patch"
         echo "./repos.sh push           => push patch"
-        echo "./repos.sh changelog      => show changelog"
-        echo "./repos.sh checkout       => revert change code"
-        echo "./repos.sh revert         => revert patch by id"
+        echo "./repos.sh revert         => revert patch"
         ;;
     esac

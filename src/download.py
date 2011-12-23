@@ -127,8 +127,8 @@ class Download(td.Thread):
             result = self.download([self.pkgName])
             self.server.aria2.shutdown()
         except Exception, e:
-            self.messageCallback((_("% s: Download failed, please check your network link.") % self.pkgName))
-            self.updateCallback(self.pkgName, self.progress, _("Download failed"))
+            self.messageCallback((__("% s: Download failed, please check your network link.") % self.pkgName))
+            self.updateCallback(self.pkgName, self.progress, __("Download failed"))
             result = DOWNLOAD_STATUS_FAILED
             print "Download error: ", e
         

@@ -304,7 +304,7 @@ class DownloadItem(object):
         
     def initDownloadPauseStatus(self, appAdditionBox, withoutBorder=False, color=None):
         if (color == None):
-            color == appTheme.getDynamicColor("statusUpdate").getColor()
+            color = appTheme.getDynamicColor("statusUpdate").getColor()
         
         '''Init download pause status.'''
         # Clean right box first.
@@ -397,7 +397,7 @@ class DownloadItem(object):
         '''Update downloading status.'''
         if self.appInfo.status == APP_STATE_DOWNLOADING:
             if (color == None):
-                color == appTheme.getDynamicColor("statusUpdate").getColor()
+                color = appTheme.getDynamicColor("statusUpdate").getColor()
         
             if self.downloadingProgressbar != None and self.downloadingFeedbackLabel != None:
                 self.downloadingProgressbar.setProgress(progress)
@@ -411,7 +411,7 @@ class DownloadItem(object):
         '''Update installing status.'''
         if self.appInfo.status == APP_STATE_INSTALLING:
             if (color == None):
-                color == appTheme.getDynamicColor("statusUpdate").getColor()
+                color = appTheme.getDynamicColor("statusUpdate").getColor()
         
             if self.installingProgressbar != None and self.installingFeedbackLabel != None:
                 self.installingProgressbar.setProgress(progress)

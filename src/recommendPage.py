@@ -111,7 +111,7 @@ class SlideItem(DownloadItem):
         self.itemNameLabel = gtk.Label()
         self.itemNameLabel.set_markup(
             "<span foreground='%s' size='%s'>%s</span>"
-            % (appTheme.getDynamicColor("slideText"),
+            % (appTheme.getDynamicColor("slideText").getColor(),
                LABEL_FONT_XXX_LARGE_SIZE, 
                self.name))
         self.itemNameLabel.set_alignment(0.0, 0.5)
@@ -297,19 +297,19 @@ class SlideBar(object):
         '''Update downloading status.'''
         if self.itemDict.has_key(pkgName):
             appItem = self.itemDict[pkgName]
-            appItem.updateDownloadingStatus(progress, feedback, appTheme.getDynamicColor("slideText"))
+            appItem.updateDownloadingStatus(progress, feedback, appTheme.getDynamicColor("slideText").getColor())
             
     def updateInstallingStatus(self, pkgName, progress, feedback):
         '''Update installing status.'''
         if self.itemDict.has_key(pkgName):
             appItem = self.itemDict[pkgName]
-            appItem.updateInstallingStatus(progress, feedback, appTheme.getDynamicColor("slideText"))
+            appItem.updateInstallingStatus(progress, feedback, appTheme.getDynamicColor("slideText").getColor())
             
     def updateUpgradingStatus(self, pkgName, progress, feedback):
         '''Update upgrading status.'''
         if self.itemDict.has_key(pkgName):
             appItem = self.itemDict[pkgName]
-            appItem.updateUpgradingStatus(progress, feedback, appTheme.getDynamicColor("slideText"))
+            appItem.updateUpgradingStatus(progress, feedback, appTheme.getDynamicColor("slideText").getColor())
             
     def getSlideItem(self, index):
         '''Get slide item.'''

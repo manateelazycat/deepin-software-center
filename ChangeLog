@@ -10,6 +10,7 @@
 	* Fix crash bug when browser got incorrect cookie.
 	* Fix crash bug that click return button when downloading screenshot.
 	* Adjust app basic view width when use English.
+	* Fix bugs that cause by dynamic color.
 
 2011-12-20 Wang Yong <lazycat.manatee@gmail.com>
 	* Adjust index icons.

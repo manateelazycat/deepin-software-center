@@ -70,6 +70,10 @@ class Topbar(object):
         drawTopbar(self.eventbox)
         
         self.numLabel = gtk.Label()
+        self.numLabelAlign = gtk.Alignment()
+        self.numLabelAlign.set(0.0, 0.5, 0.0, 0.0)
+        self.numLabelAlign.set_padding(0, 0, self.paddingX, 0)
+        self.numLabelAlign.add(self.numLabel)
         self.iconPadding = 5
         
         self.openDirEventBox = setIconLabelButton(
@@ -97,10 +101,9 @@ class Topbar(object):
         
         # Connect.
         self.updateNum(itemNum)
-        self.numLabel.set_alignment(0.0, 0.5)
-        self.box.pack_start(self.numLabel, False, False, self.paddingX)
-        self.box.pack_start(self.openDirAlign, True, True, self.paddingX)
-        self.box.pack_start(self.cleanAlign, True, True, self.paddingX)
+        self.box.pack_start(self.numLabelAlign, True, True, self.paddingX)
+        self.box.pack_start(self.openDirAlign, False, False, self.paddingX)
+        self.box.pack_start(self.cleanAlign, False, False, self.paddingX)
         self.eventbox.add(self.boxAlign)
         
     def updateNum(self, upgradeNum):

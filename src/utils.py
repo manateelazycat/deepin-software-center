@@ -543,7 +543,7 @@ def getUniqueId():
     if uniqueId:
         return uniqueId
     else:
-        uId = int(uuid.uuid1())
+        uId = int(uuid.uuid1()) # this is unique id of current hardware and time, so it's very safe for user. :)
         writeFile("./uuid", str(uId))
         return uId
         

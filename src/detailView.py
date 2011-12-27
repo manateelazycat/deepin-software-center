@@ -1060,9 +1060,9 @@ class SmallScreenshot(td.Thread):
             cmdline.append("--continue=true")
             
         # Append proxy configuration.
-        proxyString = utils.parseProxyString()
-        if proxyString != None:
-            cmdline.append("=".join(["--all-proxy", proxyString]))
+        # proxyString = utils.parseProxyString()
+        # if proxyString != None:
+        #     cmdline.append("=".join(["--all-proxy", proxyString]))
         
         self.proc = subprocess.Popen(cmdline)
         self.proc.wait()

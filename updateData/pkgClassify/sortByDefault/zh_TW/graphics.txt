@@ -1,3 +1,4 @@
+comix
 gnome-paint
 gimp
 inkscape
@@ -8,6 +9,9 @@ eog
 scribus
 shotwell
 tuxpaint
+pinta
+shutter
+chmsee
 aqsis
 boats
 darkroom

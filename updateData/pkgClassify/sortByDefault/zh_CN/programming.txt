@@ -1,8 +1,9 @@
 emacs
 vim
 eclipse
-codeblocks
 geany
+codeblocks
+bluefish
 anjuta
 devhelp
 dffuse

@@ -1,4 +1,3 @@
-shutter
 gparted
 alltray
 aqemu
@@ -16,12 +15,13 @@ gcolor2
 gdebi
 gcursor
 gdesklets
-gnash
 gnome-do
 gnome-clor-chooser
 gstm
 guake
 htop
+shutter
+gnash
 openbox
 obconf
 ibus-pinyin

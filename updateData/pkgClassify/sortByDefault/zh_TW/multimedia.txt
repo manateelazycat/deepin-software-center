@@ -1,7 +1,6 @@
-openshot
+amarok
+banshee
 audacity
-lastfm
-minitube
 pitivi
 radiotray
 rhythmbox
@@ -9,6 +8,9 @@ sonata
 totem
 vlc
 smplayer
+openshot
+lastfm
+minitube
 audacious
 brasero
 aconnectgui
@@ -25,7 +27,6 @@ asunder
 audex
 avidemux-qt
 bangarang
-banshee
 beast
 bitmeter
 bluemindo

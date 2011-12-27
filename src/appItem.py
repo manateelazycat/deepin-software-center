@@ -663,7 +663,7 @@ class VoteView(object):
 class StarView(object):
     '''Star view.'''
 	
-    def __init__(self, starLevel=10, starSize=16):
+    def __init__(self, starLevel=10, starSize=16, drag=True):
         '''Init for star view.'''
         self.starLevel = starLevel
         self.starSize = starSize
@@ -673,7 +673,8 @@ class StarView(object):
         self.eventbox.add_events(gtk.gdk.POINTER_MOTION_HINT_MASK)
         self.eventbox.set_visible_window(False)
         self.eventbox.set_size_request(self.starSize * 5, self.starSize)
-        self.eventbox.connect("motion-notify-event", self.updateStarLevel)
+        if drag:
+            self.eventbox.connect("motion-notify-event", self.updateStarLevel)
         self.eventbox.connect("expose-event", self.draw)
         
         self.eventbox.show_all()

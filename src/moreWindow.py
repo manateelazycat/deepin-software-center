@@ -60,7 +60,7 @@ class MoreWindow(object):
         
         # Create list item.
         self.createListItem(1, __("New Feature"), self.newFeature)
-        self.createListItem(2, __("Proxy Setup"), self.setProxy)
+        # self.createListItem(2, __("Proxy Setup"), self.setProxy)
         self.createListItem(3, __("Forum Help"), self.forumHelp)
         self.createListItem(4, __("Report Problem"), self.reportProblem)
 

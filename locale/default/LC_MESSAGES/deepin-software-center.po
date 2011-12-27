@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: deepin-software-center\n"
 "POT-Creation-Date: 2011-11-20 20:48+CST\n"
-"PO-Revision-Date: 2011-11-20 20:48+CST\n"
-"Last-Translator: Yong Wang <lazycat.manatee@gmail.com>\n"
+"PO-Revision-Date: 2011-12-27 10:27+0800\n"
+"Last-Translator: Xilin Sun <s.sn.giraffe AT gmail.com>\n"
 "Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,52 +21,52 @@ msgid "Action Uninstall"
 msgstr "Uninstall"
 
 msgid "Action Update"
-msgstr "Update"
+msgstr "Upgrade"
 
 msgid "Action Wait Download"
-msgstr "Wait download"
+msgstr "Waiting for download"
 
 msgid "Action Wait Install"
-msgstr "Wait install"
+msgstr "Waiting for installation"
 
 msgid "Action Wait Update"
-msgstr "Wait update"
+msgstr "Waiting for upgrade"
 
 msgid "Action Wait Uninstall"
-msgstr "Wait uninstall"
+msgstr "Waiting for unstallation"
 
 msgid "Action Startup"
-msgstr "Startup"
+msgstr "Start"
 
 msgid "Action Installed"
 msgstr "Installed"
 
 msgid "Action Install Start"
-msgstr "Start install"
+msgstr "Start installation"
 
 msgid "Action Update Start"
-msgstr "Start update"
+msgstr "Start upgrade"
 
 msgid "Action Uninstall Start"
-msgstr "Start uninstall"
+msgstr "Start uninstallation"
 
 msgid "Action Install Failed"
-msgstr "Install failed"
+msgstr "Installation failed"
 
 msgid "Action Update Failed"
-msgstr "Update failed"
+msgstr "Upgrade failed"
 
 msgid "Action Uninstall Failed"
-msgstr "Uninstall failed"
+msgstr "Uninstallation failed"
 
 msgid "Action Install Finish"
-msgstr "Install completed"
+msgstr "Installation completed"
 
 msgid "Action Update Finish"
-msgstr "Update completed"
+msgstr "Upgrade completed"
 
 msgid "Action Uninstall Finish"
-msgstr "Uninstall completed"
+msgstr "Uninstallation completed"
 
 msgid "Action Cancel"
 msgstr "Cancel"
@@ -78,7 +78,7 @@ msgid "Action Installing"
 msgstr "Installing"
 
 msgid "Action Updating"
-msgstr "Updating"
+msgstr "Upgrading"
 
 msgid "Action Uninstalling"
 msgstr "Uninstalling"
@@ -90,7 +90,7 @@ msgid "Nav Repository"
 msgstr "Repository"
 
 msgid "Nav Update"
-msgstr "Update"
+msgstr "Upgrades"
 
 msgid "Nav Uninstall"
 msgstr "Uninstall"
@@ -99,16 +99,16 @@ msgid "Nav Download Manage"
 msgstr "Download"
 
 msgid "Click Show Detail"
-msgstr "Click to show detail"
+msgstr "Click to show details"
 
 msgid "Click Start Vote"
-msgstr "Click to start vote"
+msgstr "Click to rate"
 
 msgid "Click Finish Vote"
-msgstr "Click to finish vote"
+msgstr "Finish rating"
 
 msgid "Comment"
-msgstr "  (Comment: %s)"
+msgstr "(%s comments)"
 
 msgid "First Comment"
 msgstr "Say something!"
@@ -126,16 +126,16 @@ msgid "Current Version"
 msgstr "Current version"
 
 msgid "Upgrade Version"
-msgstr "Upgrade version"
+msgstr "Latest version"
 
 msgid "Are you sure uninstall?"
-msgstr "Are you sure uninstall？"
+msgstr "Are you sure?"
 
 msgid "There are %s software packages can be upgraded"
-msgstr "There are %s software packages can be upgraded"
+msgstr "%s upgrades available"
 
 msgid "gksu message"
-msgstr "Please enter the administrator password to enable the Deepin Software Center"
+msgstr "Please enter your password to start Deepin Software Center"
 
 msgid "About"
 msgstr "About"
@@ -144,28 +144,28 @@ msgid "Exit"
 msgstr "Exit"
 
 msgid "Deepin Update Manager"
-msgstr "Deepin Update Manager"
+msgstr "Deepin Upgrade Manager"
 
 msgid "Classify News"
-msgstr "Recently"
+msgstr "Latest upgrades"
 
 msgid "Classify Recommend"
-msgstr "Recommend"
+msgstr "Recommendations"
 
 msgid "Classify Web"
-msgstr "Web"     
+msgstr "Internet"
 
 msgid "Classify Multimedia"
-msgstr "Multimedia"
+msgstr "Sound & Video"
 
 msgid "Classify Game"
-msgstr "Game"     
+msgstr "Games"
 
 msgid "Classify Graphics"
 msgstr "Graphics"
 
 msgid "Classify Word"
-msgstr "Word"   
+msgstr "Office"
 
 msgid "Classify Professional"
 msgstr "Professional"
@@ -174,112 +174,112 @@ msgid "Classify Programming"
 msgstr "Programming"
 
 msgid "Classify Driver"
-msgstr "Driver"    
+msgstr "Hardware Drivers"
 
 msgid "Classify Windows"
-msgstr "Windows" 
+msgstr "Wine"
 
 msgid "Classify Others"
-msgstr "Others"  
+msgstr "Other"
 
 msgid "Deepin Software Center"
 msgstr "Deepin Software Center"
 
 msgid " Loading, please wait ..."
-msgstr " Loading, please wait ..."
+msgstr "Loading, please wait..."
 
 msgid "Send request to start %s"
-msgstr "Send request to start %s"
+msgstr "Request to start %s"
 
 msgid "Congratulations, your system is clean."
-msgstr "Congratulations, your system is clean."
+msgstr "Congratulations, your system is clean!"
 
 msgid "Software Center is using the downloaded package, please wait clearing."
-msgstr "Software Center is using the downloaded package, please wait clearing."
+msgstr "Software Center is using the downloaded package, please clean later."
 
 msgid "Cleaned up %s package, release %s space."
-msgstr "Cleaned up %s package, release %s space."
+msgstr "%s packages cleaned, releasing %s of space."
 
 msgid "To ensure fairness, only a day to %s score once."
-msgstr "To ensure fairness, only a day to %s score once."
+msgstr "You may only rate %s once a day."
 
 msgid "%s vote success, thanks!"
-msgstr "%s vote success, thanks!"
+msgstr "Thank you for rating %s !"
 
 msgid "%s vote failed, please check your network link."
-msgstr "%s vote failed, please check your network link."
+msgstr "Unable to rate &s, please check your network."
 
 msgid "Return"
 msgstr "Return"
 
 msgid "Long Description"
-msgstr "Long Description"
+msgstr "Detailed descriptions"
 
 msgid "Homepage"
 msgstr "Homgepage"
 
 msgid "Translate description"
-msgstr "Translate description"
+msgstr "Help translate the descriptions"
 
 msgid "Screenshot"
-msgstr "Screenshot"
+msgstr "Screenshots"
 
 msgid "Version: "
 msgstr "Version: "
 
 msgid "Uninstall to release %s space"
-msgstr "Uninstall to release %s space"
+msgstr "Uninstall and release %s of space"
 
 msgid "Download to eat %s space"
-msgstr "%s to eat %s space"
+msgstr "%s requires %s of space"
 
 msgid "Query screenshot ..."
-msgstr "Query screenshot ..."
+msgstr "Checking for screenshots..."
 
 msgid "Downloading screenshot ..."
-msgstr "Downloading screenshot ..."
+msgstr "Downloading screenshots..."
 
 msgid "Query fails, check your network and click refresh and try again."
-msgstr "Query fails, refresh and try again."
+msgstr "Loading failed. Click refresh to try again."
 
 msgid "Download fails, check your network and click refresh and try again."
-msgstr "Download fails, click refresh and try again."
+msgstr "Download failed, click refresh to try again."
 
 msgid "The software does not screenshot"
-msgstr "The software does not screenshot"
+msgstr "No screenshots for this software"
 
 msgid "Upload screenshot"
-msgstr "Upload screenshot"
+msgstr "Upload screenshots"
 
 msgid "% s: Download failed, please check your network link."
-msgstr "% s: Download failed, please check your network link."
+msgstr "Fails to download %s , please check your network."
 
 msgid "Query failed, use screenshot cache."
-msgstr "Query failed, use screenshot cache."
+msgstr "Checking failed, use screenshot cache."
 
 msgid "Download failed, use screenshot cache."
 msgstr "Download failed, use screenshot cache."
 
 msgid "Download Failed"
-msgstr "Download Failed"
+msgstr "Download failed"
 
 msgid "Download Finish"
-msgstr "Download Finish"
+msgstr "Download finished"
 
 msgid "Start Download"
-msgstr "Start Download"
+msgstr "Start download"
 
 msgid "% s: Download timeout, please check your network link."
 msgstr "% s: Download timeout, please check your network link."
 
 msgid "Download Timeout"
-msgstr "Download Timeout"
+msgstr "Download timeout"
 
 msgid "Download Pause"
-msgstr "Download Pause"
+msgstr "Download paused"
 
 msgid "%s checkout failed."
-msgstr "%s checkout failed."
+msgstr "%s verify failed"
 
 msgid "Open download directory"
 msgstr "Open download directory"
@@ -288,52 +288,52 @@ msgid "Clean download cache"
 msgstr "Clean download cache"
 
 msgid "Clean download cache, save your disk space!"
-msgstr "Clean download cache, save your disk space!"
+msgstr "Clean download cache to save disk space"
 
 msgid "Select All"
-msgstr "Select All"
+msgstr "Select all"
 
 msgid "Unselect All"
-msgstr "Unselect All"
+msgstr "Select none"
 
 msgid "Update select software"
-msgstr "Update select software"
+msgstr "Update selected software"
 
 msgid "Notify select software"
-msgstr "Notify select software"
+msgstr "Notify selected software"
 
 msgid "Notify again"
-msgstr "Notify again"
+msgstr "Notify"
 
 msgid "Don't Notify"
-msgstr "Don't Notify"
+msgstr "Ignore"
 
 msgid "New Feature"
-msgstr "New Feature"
+msgstr "New features"
 
 msgid "Proxy Setup"
-msgstr "Proxy Setup"
+msgstr "Proxy settings"
 
 msgid "Forum Help"
-msgstr "Forum Help"
+msgstr "Visit forum"
 
 msgid "Join Us"
-msgstr "Join Us"
+msgstr "Join us"
 
 msgid "Report Problem"
-msgstr "Report Problem"
+msgstr "Report bugs"
 
 msgid "Software Center 2.0 New Feature"
-msgstr "Software Center 2.0 New Feature"
+msgstr "New features of Deepin Software Center 2.0"
 
 msgid "Setup"
-msgstr "Setup"
+msgstr "Settings"
 
 msgid "Cancel proxy!"
-msgstr "Cancel proxy!"
+msgstr "Proxy canceled"
 
 msgid "Setup proxy!"
-msgstr "Setup proxy!"
+msgstr "Proxy set"
 
 msgid "Pause"
 msgstr "Pause"
@@ -342,94 +342,94 @@ msgid "More >>"
 msgstr "More >>"
 
 msgid "Sort By Recommend"
-msgstr "Sort By Recommend"
+msgstr "Sort by recommendation"
 
 msgid "Sort By Download"
-msgstr "Sort By Download"
+msgstr "Sort by download"
 
 msgid "Sort By Vote"
-msgstr "Sort By Vote"
+msgstr "Sort by ratings"
 
 msgid "Please enter the name you want to search for software, version or other information"
-msgstr "Please enter the name you want to search for software, version or other information"
+msgstr "Enter to search"
 
 msgid "Please enter the name you want to uninstall the software, version or other information"
-msgstr "Please enter the name you want to uninstall the software, version or other information"
+msgstr "Enter to search"
 
 msgid "Files are indexed for the search ..."
-msgstr "Files are indexed for the search ..."
+msgstr "Indexing files for searching..."
 
 msgid "Build the search index file is completed."
-msgstr "Build the search index file is completed."
+msgstr "Index built"
 
 msgid "Indexing, search capabilities please try again later."
-msgstr "Indexing, search capabilities please try again later."
+msgstr "Indexing files, please try later"
 
 msgid "No search packages related %s"
-msgstr "No search packages related %s"
+msgstr "No packages found for %s"
 
 msgid "Global Search"
-msgstr "Global Search"
+msgstr "Global search"
 
 msgid "Change Theme"
-msgstr "Change Theme"
+msgstr "Change theme"
 
 msgid "Updating souces list ..."
-msgstr "Updating souces list ..."
+msgstr "Updating souces list..."
 
 msgid "Update sources list completed."
-msgstr "Update sources list completed."
+msgstr "Sources list updated"
 
 msgid "News\n"
 msgstr ""
-"* 解决更新管理器冲突导致软件中心安装失败的问题。\n"
-"* 添加‘下载管理’页面。\n"
-"* 添加‘智能清理下载缓存’的功能。\n"
-"* 可以选择不更新指定的软件。\n"
-"* 更快的推荐更新。\n"
-"* 社区评论功能。\n"
-"* 安装后直接在软件中心启动。\n"
-"* 支持多个软件并行下载。\n"
-"* 支持动态换肤功能。\n"
-"* 支持英文和繁体中文。\n"
-"* 优化内存占用。\n"
-"* 优化搜索体验。\n"
-"* 优化界面交互体验细节。\n"
-"* 优化启动速度。\n"
-"* 支持Ubuntu系统。\n"
+"* Solved the conflict between DSC and update manager.\n"
+"* Added \"Download\" page.\n"
+"* Added \"Clean download cache\".\n"
+"* Added \"Ignore upgrades\" for selected softwares\".\n"
+"* Dynamic recommodations.\n"
+"* Added \"Comment\" function.\n"
+"* Added \"Start\" button.\n"
+"* Added support of parallel download.\n"
+"* Added upport of user change of themes\n"
+"* Added support of English and Hant.\n"
+"* Using less ram.\n"
+"* Improved searching engine.\n"
+"* Improved interactive UI.\n"
+"* Improved starting speed\n"
+"* Official support of Ubuntu.\n"
 
 msgid "Topbar UpdatePage"
-msgstr "<span size='%s'>There are </span><span foreground='%s' size='%s'>%s</span><span size='%s'> software can be upgraded</span>"
+msgstr "<span size='%s'></span><span foreground='%s' size='%s'>%s</span><span size='%s'> upgrades available</span>"
 
 msgid "Topbar DownloadManagePage"
-msgstr "<span size='%s'>There are </span><span foreground='%s' size='%s'>%s</span><span size='%s'> software downloading</span>"
+msgstr "<span size='%s'></span><span foreground='%s' size='%s'>%s</span><span size='%s'> packages downloading</span>"
 
 msgid "Topbar SearchPage"
-msgstr "<span size='%s'>Search </span><span foreground='%s' size='%s'>%s</span><span size='%s'> related software </span><span foreground='%s' size='%s'>%s</span><span size='%s'> </span>"
+msgstr "<span size='%s'>Related with </span><span foreground='%s' size='%s'>%s</span><span size='%s'>, </span><span foreground='%s' size='%s'>%s</span><span size='%s'> softwares are found</span>"
 
 msgid "Topbar SearchUninstallPage"
-msgstr "<span size='%s'>Search </span><span foreground='%s' size='%s'>%s</span><span size='%s'> related software </span><span foreground='%s' size='%s'>%s</span><span size='%s'> </span>"
+msgstr "<span size='%s'>Related with </span><span foreground='%s' size='%s'>%s</span><span size='%s'>, </span><span foreground='%s' size='%s'>%s</span><span size='%s'> softwares are found</span>"
 
 msgid "Topbar UninstallPage"
-msgstr "<span size='%s'>There are </span><span foreground='%s' size='%s'>%s</span><span size='%s'> software can be uninstalled</span>"
+msgstr "<span size='%s'></span><span foreground='%s' size='%s'>%s</span><span size='%s'> softwares can be uninstalled</span>"
 
 msgid "Topbar IgnorePage"
-msgstr "<span size='%s'>There are </span><span foreground='%s' size='%s'>%s</span><span size='%s'> software upgrade is no longer reminds</span>"
+msgstr "<span size='%s'></span><span foreground='%s' size='%s'>%s</span><span size='%s'> softwares ignored</span>"
 
 msgid "No Notify UpdatePage"
-msgstr "(Don't notify update %s)"
+msgstr "(Ignore upgrades for %s)"
 
 msgid "Your system is up to date."
-msgstr "Your system is up to date."
+msgstr "Your system is up to date"
 
 msgid "No Downloads."
-msgstr "No Downloads."
+msgstr "No downloads"
 
 msgid "No software needs to remind."
-msgstr "No software needs to remind."
+msgstr "No packages ignored"
 
 msgid "Proxy Address"
-msgstr "Address: "
+msgstr "IP or domain:"
 
 msgid "Proxy Port"
 msgstr "Port: "
@@ -441,13 +441,14 @@ msgid "Proxy Password"
 msgstr "Password: "
 
 msgid "Proxy OK"
-msgstr "Setup"
+msgstr "Set"
 
 msgid "Proxy Cancel"
 msgstr "Cancel"
 
 msgid "Comment load failed, please try again!"
-msgstr "Comment load failed, please try again!"
+msgstr "Comments failed to load, please try again!"
 
 msgid "Vote num"
-msgstr "  (Vote number %s)"
+msgstr "(%s ratings)"
+

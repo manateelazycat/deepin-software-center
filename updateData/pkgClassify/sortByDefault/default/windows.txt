@@ -1,9 +1,11 @@
+q4wine
+playonlinux
+wine
+wine 1.2
+wine1.3
+winetricks
 deepin-wine-tm2009
 deepin-wine-rtx2010
 wine-thunder
 picasa
-playonlinux
-q4wine
-wine
 wine1.2
-wine1.3

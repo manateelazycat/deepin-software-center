@@ -1,8 +1,13 @@
 qcad
+celestia
+electric
+extcalc
+gelemental
+kile
+stellarium
 ballview
 amide
 scilab
-celestia
 achilles
 aeskulap
 avida-qt-viewer
@@ -28,12 +33,10 @@ dx
 eagle
 easychem
 eficas
-electric
 emboss-explorer
 epigrass
 eqonomize
 euler
-extcalc
 extrema
 fastdnaml
 fityk
@@ -54,7 +57,6 @@ gdpc
 geda-gattrib
 geda-gschem
 geda-xgsch2pcb
-gelemental
 genesis
 geomview
 gerbv
@@ -94,7 +96,6 @@ kayali
 kbruch
 kicad
 kig
-kile
 kitsune
 klog
 kmplot
@@ -155,7 +156,6 @@ sixpack
 snappea
 socnetv
 starplot
-stellarium
 survex-aven
 survex-svxedit
 sweethome3d

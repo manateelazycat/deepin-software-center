@@ -1,8 +1,14 @@
-aisleriot
 frozen-bubble
 hedgewars
 supertuxkart
 alien-arena
+chromium-bsu
+glest
+gmchess
+gnome-sudoku
+hex-a-hop
+tuxpuck
+aisleriot
 a7xpg
 abe
 abuse
@@ -62,7 +68,6 @@ bzflag
 ceferino
 cgoban
 childsplay
-chromium-bsu
 circuslinux
 colorcode
 connectagram
@@ -123,13 +128,11 @@ gfpoken
 ghextris
 gl-117
 glchess
-glest
 glines
 glob2
 glpeces
 gltron
 gmameui
-gmchess
 gmult
 gnect
 gnibbles
@@ -138,7 +141,6 @@ gnome-breakout
 gnome-chess
 gnome-hearts
 gnome-mastermind
-gnome-sudoku
 gnomine
 gnotravex
 gnotski
@@ -163,7 +165,6 @@ gunroar
 gvrng
 gweled
 hannah
-hex-a-hop
 hexalate
 hitori
 holdingnuts
@@ -367,7 +368,6 @@ tremulous
 trigger-rally
 tumiki-fighters
 tuxmath
-tuxpuck
 tuxtype
 tworld
 uqm

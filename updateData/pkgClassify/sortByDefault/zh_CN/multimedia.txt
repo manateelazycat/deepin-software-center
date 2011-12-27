@@ -1,7 +1,15 @@
-audacious
-smplayer
 openshot
 audacity
+lastfm
+minitube
+pitivi
+radiotray
+rhythmbox
+sonata
+totem
+vlc
+smplayer
+audacious
 brasero
 aconnectgui
 aeolus
@@ -125,7 +133,6 @@ kplayer
 kradio4
 kscd
 kwave
-lastfm
 liguidsoap
 lingot
 listen
@@ -140,7 +147,6 @@ meterbridge
 mhwaveedit
 milkytracker
 minirok
-minitube
 mistelix
 mixxx
 moovida
@@ -167,7 +173,6 @@ pavucontrol
 pavumeter
 phasex
 picard
-pitivi
 potamus
 ppstream
 projectm-jack
@@ -188,17 +193,14 @@ qsynth
 qtractor
 quark
 quodlibet
-radiotray
 rakarrack
 rezound
-rhythmbox
 ripoff
 ripperx
 rosegarden
 scolily
 seq24
 solfege
-sonata
 songwrite
 sooperlooper
 sound-juicer
@@ -222,7 +224,6 @@ timidity-interfaces-extra
 tinyeartrainer
 todiscgui
 toonloop
-totem
 totem-xine
 transcriber
 transmageddon
@@ -234,7 +235,6 @@ videocut
 videoporama
 viridian
 vkeybd
-vlc
 vmpk
 wavbreaker
 wavesurfer

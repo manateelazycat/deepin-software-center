@@ -4,6 +4,13 @@ eclipse
 codeblocks
 geany
 anjuta
+devhelp
+dffuse
+idle-python2.6
+kdesvn
+lyx
+mysql-server
+myqsl-client
 basic256
 bless
 boa-constructor
@@ -19,7 +26,6 @@ conduit
 conglomerate
 cssed
 ddd
-devhelp
 diffuse
 dreampie
 drpython
@@ -49,7 +55,6 @@ gsql
 gwrite
 hotwire
 idle
-idle-python2.6
 idle-python2.7
 idle-python3.1
 idle-python3.2
@@ -63,7 +68,6 @@ kabikaboo
 kapptemplate
 kate
 kcachegrind
-kdesvn
 kdevelop
 kiki
 kildclient
@@ -75,7 +79,6 @@ kwrite
 lazarus
 leafpad
 lemon
-lyx
 medit
 mlview
 monkeystudio
@@ -84,7 +87,6 @@ monodoc-http
 mousepad
 mysql-client
 mysql-navigator
-mysql-server
 nedit
 netbeans
 okteta

@@ -1,3 +1,18 @@
+comix
+amarok
+bluefish
+emesene
+stardict
+gimp
+pinta
+filezilla
+miro
+postr
+qbittorrent
+qwit
+wireshardk
+xchat
+zim
 firefox
 amule
 uget
@@ -16,7 +31,6 @@ bittornado
 blam
 blogilo
 blogtk
-bluefish
 bmon
 bookmarkbridge
 buxon
@@ -36,7 +50,6 @@ eiskaltdcpp
 ekiga
 elinks
 email-reminder
-emesene
 empathy
 enigmail
 etherape
@@ -44,7 +57,6 @@ ettercap
 evolution
 fatrat
 fennec
-filezilla
 firefox-launchpad-plugin
 flashplugin-installer
 flush
@@ -135,7 +147,6 @@ mail-notification
 mango-lassi
 mediatomb
 midori
-miro
 mldonkey-gui
 multiget
 mumble
@@ -154,12 +165,10 @@ packeth
 pidgin-otr
 pidgin-plugin-pack
 ploader
-postr
 prismstumbler
 psi
 putty
 pyneighborhood
-qbittorrent
 qfreefax
 qnapi
 qterm
@@ -167,7 +176,6 @@ quassel
 quicksynergy
 qutecom
 qutim
-qwit
 rekonq
 rutilt
 rygel
@@ -209,10 +217,8 @@ wifi-radar
 willowng
 wireshark
 x11vnc
-xchat
 xchat-gnome
 xpn
 yarssr
 youtranslate
 zenmap
-zim

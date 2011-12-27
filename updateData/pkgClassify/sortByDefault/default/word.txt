@@ -1,6 +1,14 @@
 tomboy
 libreoffice
 evince
+satdict
+calibre
+chmsee
+comix
+gnumeric
+goldendict
+mupdf
+xpdf
 kchmviewer
 stardict
 almanah
@@ -11,10 +19,7 @@ bibledit
 biblememorizer
 bibletime
 bibshelf
-calibre
 cbrpager
-chmsee
-comix
 djvusmooth
 ebview
 eio
@@ -27,8 +32,6 @@ gbgoffice
 gedit
 gnome-office
 gnote
-gnumeric
-goldendict
 gpdftext
 gtodo
 gtranslator
@@ -54,7 +57,6 @@ libreoffice-impress
 libreoffice-math
 libreoffice-writer
 lokalize
-mupdf
 nfoview
 omaque
 omegat
@@ -74,6 +76,5 @@ txtreader
 xchm
 xournal
 xpad
-xpdf
 zanshin
 zhone

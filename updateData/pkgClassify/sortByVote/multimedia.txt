@@ -1,6 +1,19 @@
+openshot
+audacity
+lastfm
+minitube
+pitivi
+radiotray
+rhythmbox
+sonata
+totem
+vlc
+smplayer
+audacious
+brasero
+aconnectgui
 aeolus
 alsamixergui
-aconnectgui
 alsoft-conf
 ams
 amsynth
@@ -9,7 +22,6 @@ ardour
 ario
 asoundconf-gtk
 asunder
-audacity
 audex
 avidemux-qt
 bangarang
@@ -18,7 +30,6 @@ beast
 bitmeter
 bluemindo
 bombono-dvd
-brasero
 canorus
 cecilia
 clementine
@@ -122,7 +133,6 @@ kplayer
 kradio4
 kscd
 kwave
-lastfm
 liguidsoap
 lingot
 listen
@@ -137,7 +147,6 @@ meterbridge
 mhwaveedit
 milkytracker
 minirok
-minitube
 mistelix
 mixxx
 moovida
@@ -156,7 +165,6 @@ nvtv
 oggconvert
 ogmrip
 openmovieeditor
-openshot
 padevchooser
 paman
 paprefs
@@ -165,7 +173,6 @@ pavucontrol
 pavumeter
 phasex
 picard
-pitivi
 potamus
 ppstream
 projectm-jack
@@ -186,18 +193,14 @@ qsynth
 qtractor
 quark
 quodlibet
-radiotray
 rakarrack
 rezound
-rhythmbox
 ripoff
 ripperx
 rosegarden
 scolily
 seq24
-smplayer
 solfege
-sonata
 songwrite
 sooperlooper
 sound-juicer
@@ -221,7 +224,6 @@ timidity-interfaces-extra
 tinyeartrainer
 todiscgui
 toonloop
-totem
 totem-xine
 transcriber
 transmageddon
@@ -233,7 +235,6 @@ videocut
 videoporama
 viridian
 vkeybd
-vlc
 vmpk
 wavbreaker
 wavesurfer

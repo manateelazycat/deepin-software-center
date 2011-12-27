@@ -1,1 +1,2 @@
-[("chromium-browser", "穀歌瀏覽器"), ("smplayer", "SMPlayer 萬能播放器"), ("mplayer", "永中集成Office")]
+[("chromium-browser", "穀歌瀏覽器"), ("audacious", "Audacious 播放器"), ("gweled", "寶石迷陣")]
+

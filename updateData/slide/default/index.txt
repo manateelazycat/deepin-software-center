@@ -1,1 +1,1 @@
-[("chromium-browser", "Chromium browser"), ("smplayer", "SMPlayer"), ("mplayer", "Evermore Integrated Office")]
+[("chromium-browser", "Chromium browser"), ("gtkpod", "Gtkpod"), ("turpial", "Turpial")]

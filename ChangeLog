@@ -1,5 +1,8 @@
 * News in 2.0
 
+2011-12-27 Wang Yong <lazycat.manatee@gmail.com>
+	* Fix color of default theme.
+
 2011-12-23 Wang Yong <lazycat.manatee@gmail.com>
 	* Fix bugs that cause by dynamic color.
 	* Compatible with aria2c 1.12.x, damn Japanese, why change options every version? Damn you!

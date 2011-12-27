@@ -1,3 +1,3 @@
-{"navigatebar" : (372, "#3bb8f2"),
- "statusbar" : (445, "#068DFF"),
+{"navigatebar" : (372, "#45a8d7"),
+ "statusbar" : (445, "#469dd5"),
 }

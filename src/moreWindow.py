@@ -129,7 +129,7 @@ class MoreWindow(object):
 class NewFeature(object):
     '''New feature.'''
     
-    WINDOW_WIDTH = 360
+    WINDOW_WIDTH = 380
     WINDOW_HEIGHT = 270
 	
     def __init__(self, widget):

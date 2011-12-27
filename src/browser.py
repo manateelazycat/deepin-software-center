@@ -23,6 +23,7 @@
 from constant import *
 from lang import __, getDefaultLanguage
 from utils import *
+import sys
 import ctypes
 import gobject
 import glib
@@ -73,3 +74,10 @@ class Browser(webkit.WebView):
             print "Soup Uri: %s" % (soupUri)
             libgobject.g_object_set(self.session, 'proxy-uri', soupUri, None)
 
+if __name__ == "__main__":
+    window = gtk.Window(gtk.WINDOW_TOPLEVEL)
+    window.add(Browser(sys.argv[1]))
+    
+    window.show_all()
+    
+    gtk.main()

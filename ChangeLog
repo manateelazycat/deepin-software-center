@@ -9,6 +9,7 @@
 	* Adjust recommend list.
 	* Update slide images.
 	* Adjust recommend list to avoid crash.
+	* Use uuid to instead Mac address's MD5 to protected intimacy of user.
 
 2011-12-23 Wang Yong <lazycat.manatee@gmail.com>
 	* Fix bugs that cause by dynamic color.

@@ -25,7 +25,6 @@ from lang import __, getDefaultLanguage, DEFAULT_LANG
 from math import pi
 import cairo
 import gtk
-import hashlib
 import locale
 import math
 import os
@@ -538,11 +537,16 @@ def removeDirectory(path):
             os.remove(fullPath)
     os.rmdir(path)        
 
-def getUserID():
-    '''Get Mac Address and MD5.'''
-    macAddress = uuid.getnode()
-    return (hashlib.md5(str(macAddress))).hexdigest()
-
+def getUniqueId():
+    '''Get unique id.'''
+    uniqueId = evalFile("./uuid", True)
+    if uniqueId:
+        return uniqueId
+    else:
+        uId = int(uuid.uuid1())
+        writeFile("./uuid", str(uId))
+        return uId
+        
 def getLastUpdateHours(filepath):
     """
     Return the number of hours since last update.

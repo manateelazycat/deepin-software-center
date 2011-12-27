@@ -42,9 +42,8 @@ import urllib2
 
 def sendStatistics():
     '''Send statistics.'''
-    # Send Mac address to server for statistics.
     try:
-        userId = getUserID()
+        userId = getUniqueId()
         args = {'a' : 'm', 'n' : userId}
         
         connection = urllib2.urlopen(
@@ -52,11 +51,9 @@ def sendStatistics():
             data=urllib.urlencode(args),
             timeout=POST_TIMEOUT,
             )
-        print connection.read()
-        
-        print "Send mac address %s success." % (userId)
+        connection.read()
     except Exception, e:
-        print "Send mac address %s failed" % (userId)
+        print e
         
 class TrayIcon(object):
     '''Tray icon.'''

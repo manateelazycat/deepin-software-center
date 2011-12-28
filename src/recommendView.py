@@ -467,7 +467,7 @@ class RecommendView(object):
     '''Recommend view.'''
 	
     def __init__(self, repoCache, switchStatus, downloadQueue, entryDetailCallback, selectCategoryCallback,
-                 launchApplicationCallback):
+                 launchApplicationCallback, updateDataDir):
         '''Init for recommend view.'''
         # Init.
         self.repoCache = repoCache
@@ -476,6 +476,7 @@ class RecommendView(object):
         self.entryDetailCallback = entryDetailCallback
         self.selectCategoryCallback = selectCategoryCallback
         self.launchApplicationCallback = launchApplicationCallback
+        self.updateDataDir = updateDataDir
         
         self.box = gtk.VBox()
         self.itemDict = {}
@@ -485,7 +486,7 @@ class RecommendView(object):
         
         # Create container box.
         listLen = 12
-        self.pkgRecomments = evalFile("../updateData/pkgRecommend/%s/recommendList.txt" % (getDefaultLanguage()))
+        self.pkgRecomments = evalFile(self.updateDataDir + "pkgRecommend/%s/recommendList.txt" % (getDefaultLanguage()))
         boxlist = map (lambda n: gtk.HBox(), range(0, listLen / 2 + listLen % 2))
         for box in boxlist:
             self.box.pack_start(box, False, False)

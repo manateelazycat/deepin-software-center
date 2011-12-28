@@ -1264,8 +1264,18 @@ class InitThread(td.Thread):
         apt_pkg.init()
         center.aptCache = apt.Cache()
         
+        # Get update data directory.
+        if os.path.exists(UPDATE_DATA_DIR):
+            center.updateDataDir = UPDATE_DATA_DIR
+        else:
+            center.updateDataDir = UPDATE_DATA_BACKUP_DIR
+            print "Haven't found directory: %s, use %s instead" % (UPDATE_DATA_DIR, UPDATE_DATA_BACKUP_DIR)
+        
         # Init repo cache.
-        center.repoCache = repoCache.RepoCache(center.aptCache)
+        center.repoCache = repoCache.RepoCache(
+            center.aptCache,
+            center.updateDataDir,
+            )
         
         # Init update list.
         center.updateList = updateList.UpdateList(center.aptCache, center.statusbar)       
@@ -1297,6 +1307,7 @@ class InitThread(td.Thread):
             center.entryDetailView,
             center.selectCategory,
             center.launchApplication,
+            center.updateDataDir,
             )
         center.repoPage = repoPage.RepoPage(
             center.repoCache,

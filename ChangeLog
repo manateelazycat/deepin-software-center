@@ -4,6 +4,7 @@
 	* Save upgrade number when startup or upgrade action finish.
 	* Update checkUpdate.py
 	* Fix bug that software center won't start next time after kill downloading software center.
+	* Add new directory ready for update.
 
 2011-12-27 Wang Yong <lazycat.manatee@gmail.com>
 	* Fix color of default theme.

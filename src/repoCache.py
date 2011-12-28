@@ -111,10 +111,11 @@ class RepoCache(object):
     '''Repository cache.'''
 
     # @printExecTime
-    def __init__(self, cache):
+    def __init__(self, cache, updateDataDir):
         '''Init for repository cache.'''
         # Init.
         self.cache = {}
+        self.updateDataDir = updateDataDir
         self.upgradablePkgs = []
         ignorePkgs = evalFile("./ignorePkgs", True)
         if ignorePkgs == None:
@@ -126,9 +127,9 @@ class RepoCache(object):
 
         # Scan category dict.
         whiteList = []
-        sortRecommendDir = "../updateData/pkgClassify/sortByDefault/%s/" % (getDefaultLanguage())
-        sortDownloadDir =  "../updateData/pkgClassify/sortByDownload/"
-        sortVoteDir =  "../updateData/pkgClassify/sortByVote/"
+        sortRecommendDir = self.updateDataDir + "pkgClassify/sortByDefault/%s/" % (getDefaultLanguage())
+        sortDownloadDir =  self.updateDataDir + "pkgClassify/sortByDownload/"
+        sortVoteDir =  self.updateDataDir + "pkgClassify/sortByVote/"
         
         for (categoryType, categoryFile) in CLASSIFY_FILES:
             sortRecommendList = []

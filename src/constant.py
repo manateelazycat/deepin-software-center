@@ -91,6 +91,8 @@ CLASSIFY_LIST = [(CLASSIFY_WEB,          ("web.png", None)),
                  ]
 
 SCREENSHOT_DOWNLOAD_DIR = "/var/cache/deepin-software-center/screenshot/"
+UPDATE_DATA_BACKUP_DIR = "../updateData/"
+UPDATE_DATA_DIR = "/var/cache/deepin-software-center/updateData/"
 DOWNLOAD_FAILED = 1
 DOWNLOAD_SUCCESS = 0
 

@@ -35,13 +35,19 @@ class RecommendPage(object):
     '''Interface for recommend page.'''
 	
     def __init__(self, repoCache, switchStatus, downloadQueue, entryDetailCallback, selectCategoryCallback,
-                 launchApplicationCallback):
+                 launchApplicationCallback, updateDataDir):
         '''Init for recommend page.'''
         # Init.
         self.box = gtk.VBox()
         
         # Add slide bar.
-        self.slidebar = SlideBar(repoCache, switchStatus, downloadQueue, entryDetailCallback, launchApplicationCallback)
+        self.slidebar = SlideBar(
+            repoCache, 
+            switchStatus, 
+            downloadQueue, 
+            entryDetailCallback, 
+            launchApplicationCallback,
+            updateDataDir)
         
         # Add recommend view.
         self.recommendView = recommendView.RecommendView(
@@ -50,7 +56,8 @@ class RecommendPage(object):
             downloadQueue, 
             entryDetailCallback,
             selectCategoryCallback,
-            launchApplicationCallback)
+            launchApplicationCallback,
+            updateDataDir)
         self.appBox = gtk.VBox()
         self.appBox.pack_start(self.recommendView.box, False, False)
 
@@ -197,7 +204,7 @@ class SlideItem(DownloadItem):
 class SlideBar(object):
     '''Slide bar'''
 	
-    def __init__(self, repoCache, switchStatus, downloadQueue, entryDetailCallback, launchApplicationCallback):
+    def __init__(self, repoCache, switchStatus, downloadQueue, entryDetailCallback, launchApplicationCallback, updateDataDir):
         '''Init for slide bar.'''
         # Init.
         self.entryDetailCallback = entryDetailCallback
@@ -213,7 +220,7 @@ class SlideBar(object):
         self.hoverTimeout = 100
 
         self.repoCache = repoCache
-        self.slideDir = "../updateData/slide/%s" % (getDefaultLanguage())
+        self.slideDir = updateDataDir + "slide/%s" % (getDefaultLanguage())
         self.infoList = evalFile("%s/index.txt" % (self.slideDir))
         self.itemDict = sortedDict.SortedDict(map(lambda (pkgName, _): (pkgName, None), self.infoList))
         self.initItems(switchStatus, downloadQueue)

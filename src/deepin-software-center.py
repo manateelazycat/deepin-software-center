@@ -35,6 +35,7 @@ import checkUpdate
 import detailView
 import download
 import downloadManagePage
+import downloadUpdateData
 import getopt
 import glib
 import gobject
@@ -943,6 +944,9 @@ class DeepinSoftwareCenter(object):
         # Update List.
         self.updateList.start()
         
+        # Download update data from server.
+        downloadUpdateData.DownloadUpdateData().start()
+        
     @postGUI
     def raiseToTop(self):
         '''Raise main window to top of the window stack.'''
@@ -1265,8 +1269,7 @@ class InitThread(td.Thread):
         center.aptCache = apt.Cache()
         
         # Get update data directory.
-        # osVersion = getOSVersion()
-        osVersion = "Ubuntu"
+        osVersion = getOSVersion()
         if osVersion == OS_VERSION:
             if os.path.exists(UPDATE_DATA_DIR):
                 center.updateDataDir = UPDATE_DATA_DIR
@@ -1488,6 +1491,8 @@ class SendUninstallCount(td.Thread):
         except Exception, e:
             print "Send uninstall count (%s) failed." % (self.pkgName)
             print "Error: ", e
+            
+            
         
 if __name__ == "__main__":
     DeepinSoftwareCenter().main()

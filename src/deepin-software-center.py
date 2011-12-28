@@ -1269,6 +1269,7 @@ class InitThread(td.Thread):
         if osVersion == OS_VERSION:
             if os.path.exists(UPDATE_DATA_DIR):
                 center.updateDataDir = UPDATE_DATA_DIR
+                # center.updateDataDir = UPDATE_DATA_BACKUP_DIR
                 print "Use newest data from %s" % UPDATE_DATA_DIR
             else:
                 center.updateDataDir = UPDATE_DATA_BACKUP_DIR

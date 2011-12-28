@@ -48,6 +48,8 @@ class Download(td.Thread):
     def __init__(self, pkgName, rpcListenPort, updateCallback, finishCallback, messageCallback):
         # Init.
         td.Thread.__init__(self)
+        self.setDaemon(True) # make thread exit when main program exit 
+        
         self.cache = apt.Cache()
         self.pkgName = pkgName
         self.rpcListenPort = rpcListenPort
@@ -119,7 +121,7 @@ class Download(td.Thread):
         #     cmdline.append("=".join(["--all-proxy", proxyString]))
 
         # Start child process.
-        proc = subprocess.Popen(cmdline)
+        self.proc = subprocess.Popen(cmdline)
         
         # Get process result.
         result = DOWNLOAD_STATUS_FAILED
@@ -133,9 +135,9 @@ class Download(td.Thread):
             print "Download error: ", e
         
         # Kill child process.
-        killProcess(proc)
+        killProcess(self.proc)
         
-        print proc.returncode
+        print self.proc.returncode
         
         # Call callback.
         self.finishCallback(self.pkgName, result)
@@ -380,7 +382,7 @@ class DownloadQueue(object):
         # Init.
         self.maxConcurrentDownloads = 5 # max concurrent download
         self.downloadingQueue = []
-        self.downloadingSignalChannel = {}
+        self.downloadingChannel = {}
         self.portTicker = 7000
         self.waitQueue = []
         self.updateCallback = updateCallback
@@ -399,7 +401,7 @@ class DownloadQueue(object):
         download.start()
         
         # Add signal channel.
-        self.downloadingSignalChannel[pkgName] = download.signalChannel
+        self.downloadingChannel[pkgName] = download
         
     def addDownload(self, pkgName):
         '''Add new download'''
@@ -412,11 +414,11 @@ class DownloadQueue(object):
         '''Stop download.'''
         # Send pause signal if package at download list.
         if pkgName in self.downloadingQueue:
-            if self.downloadingSignalChannel.has_key(pkgName):
+            if self.downloadingChannel.has_key(pkgName):
                 # Pause download.
-                self.downloadingSignalChannel[pkgName].put('PAUSE')
+                self.downloadingChannel[pkgName].signalChannel.put('PAUSE')
             else:
-                print "Impossible: downloadingSignalChannel not key '%s'" % (pkgName)
+                print "Impossible: downloadingChannel not key '%s'" % (pkgName)
         # Otherwise just simple remove from download queue.
         else:
             utils.removeFromList(self.waitQueue, pkgName)
@@ -425,7 +427,7 @@ class DownloadQueue(object):
         '''Finish download, start new download if have download in queue.'''
         # Remove pkgName from download list.
         utils.removeFromList(self.downloadingQueue, pkgName)
-        del self.downloadingSignalChannel[pkgName]
+        del self.downloadingChannel[pkgName]
                 
         # Call back if download success.
         if downloadStatus in [DOWNLOAD_STATUS_COMPLETE, DOWNLOAD_STATUS_DONT_NEED]:
@@ -450,7 +452,8 @@ class DownloadQueue(object):
     
     def stopAllDownloads(self):
         '''Stop all download task.'''
-        for signalChannel in self.downloadingSignalChannel.values():
-            signalChannel.put('STOP')
+        for channel in self.downloadingChannel.values():
+            channel.signalChannel.put('STOP')
+            killProcess(channel.proc) # must kill here, otherwise aria2c process exit even send STOP signal
             
 #  LocalWords:  completedLength

@@ -8,6 +8,7 @@
 	* Won't update recommend list on non-LinuxDeepin system.
 	* Add update data code, now software center can fetch update data from server.
 	* Remove unnecessary packages from recommend list.
+	* Just fetch update data after list update completed.
 
 2011-12-27 Wang Yong <lazycat.manatee@gmail.com>
 	* Fix color of default theme.

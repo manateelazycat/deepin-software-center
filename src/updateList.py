@@ -23,6 +23,7 @@
 from apt.progress.old import FetchProgress
 from lang import __, getDefaultLanguage
 from utils import *
+import downloadUpdateData
 import glib
 import os
 import stat
@@ -73,6 +74,9 @@ class UpdateList(td.Thread):
         
         # Reset statusbar after 2 seconds.
         glib.timeout_add_seconds(2, self.resetStatus)
+        
+        # Download update data from server, this must execute after list update complete.
+        downloadUpdateData.DownloadUpdateData().start()
         
     def resetStatus(self):
         '''Reseet status.'''

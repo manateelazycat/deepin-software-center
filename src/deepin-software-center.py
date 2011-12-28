@@ -35,7 +35,6 @@ import checkUpdate
 import detailView
 import download
 import downloadManagePage
-import downloadUpdateData
 import getopt
 import glib
 import gobject
@@ -943,9 +942,6 @@ class DeepinSoftwareCenter(object):
 
         # Update List.
         self.updateList.start()
-        
-        # Download update data from server.
-        downloadUpdateData.DownloadUpdateData().start()
         
     @postGUI
     def raiseToTop(self):

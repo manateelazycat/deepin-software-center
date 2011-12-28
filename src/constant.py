@@ -22,6 +22,8 @@
 
 from lang import __, getDefaultLanguage
 
+OS_VERSION = "LinuxDeepin"
+
 VERSION = "2.0"
 AUTHOR = ["Wang Yong"]
 ARTISTS = ["Can Yang"]

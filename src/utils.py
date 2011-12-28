@@ -384,6 +384,15 @@ def getAria2Version():
     
     return (int(versionList[0]), int(versionList[1]), int(versionList[2]))
 
+def getOSVersion():
+    '''Get OS version.'''
+    versionInfos = getCommandOutputFirstLine(["lsb_release", "-i"]).split()
+    
+    if len(versionInfos) > 0:
+        return versionInfos[-1]
+    else:
+        return ""
+
 def compareCandidates((preA, matchA, restA, pkgA), (preB, matchB, restB, pkgB)):
     '''Compare candidates.'''
     lenA = len(preA)

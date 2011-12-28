@@ -5,6 +5,7 @@
 	* Update checkUpdate.py
 	* Fix bug that software center won't start next time after kill downloading software center.
 	* Add new directory ready for update.
+	* Won't update recommend list on non-LinuxDeepin system.
 
 2011-12-27 Wang Yong <lazycat.manatee@gmail.com>
 	* Fix color of default theme.

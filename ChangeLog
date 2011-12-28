@@ -1,5 +1,8 @@
 * News in 2.0
 
+2011-12-28 Wang Yong <lazycat.manatee@gmail.com>
+	* Save upgrade number when startup or upgrade action finish.
+
 2011-12-27 Wang Yong <lazycat.manatee@gmail.com>
 	* Fix color of default theme.
 	* Update home slide images.

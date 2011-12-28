@@ -536,6 +536,9 @@ class DeepinSoftwareCenter(object):
 
                     # Add in uninstall list.
                     self.updateUninstallView(pkgName, not isMarkDeleted)
+                    
+                    # Save upgrade number.
+                    self.saveUpgradeNum()
                 else:
                     print "Impossible: %s not in RepoCache" % (pkgName)
         elif actionType == ACTION_UNINSTALL:
@@ -933,6 +936,9 @@ class DeepinSoftwareCenter(object):
         '''Execute after init thread finish.'''
         # Select default page.
         self.selectPage(self.defaultPageId, False)
+        
+        # Save upgrade number.
+        self.saveUpgradeNum()
 
         # Update List.
         self.updateList.start()
@@ -944,6 +950,11 @@ class DeepinSoftwareCenter(object):
         # So use `gtk.window.set_keep_above` instead.
         self.window.set_keep_above(True)
         self.window.set_keep_above(False)
+        
+    def saveUpgradeNum(self):
+        '''Save upgrade number.'''
+        upgradeNum = self.repoCache.getUpgradableNum()
+        writeFile("./upgradeNum", str(upgradeNum))
 
     def selectPage(self, pageId, hideWindow=True):
         '''Select recommend page.'''

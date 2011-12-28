@@ -55,16 +55,13 @@ extace
 fmit
 foo-yc20
 freebirth
-freecycle
 freemix
 freevo
 freewheeling
 freqtweak
 frescobaldi
 galan
-gamix
 gbemol
-gcdmaster
 genpo
 gespeaker
 gimmix
@@ -79,9 +76,6 @@ gmusicbrowser
 gnome-alsamixer
 gnome-media-player
 gnome-mplayer
-gnomebaker
-gnomeradio
-gnusound
 goattracker
 gopchop
 griffith
@@ -96,9 +90,7 @@ guvcview
 gwc
 gxmms2
 hexter
-hipo
 horgand
-hornsey
 hydrogen
 ifpgui
 imagination
@@ -155,7 +147,6 @@ mp3diags
 mp3splt-gtk
 mplinuxman
 mscore
-muine
 muse
 mx44
 mythtv
@@ -165,8 +156,6 @@ nted
 nvtv
 oggconvert
 ogmrip
-openmovieeditor
-padevchooser
 paman
 paprefs
 patchage
@@ -174,15 +163,12 @@ pavucontrol
 pavumeter
 phasex
 picard
-potamus
-ppstream
 projectm-jack
 projectm-pulseaudio
 promoe
 puredata
 pygmy
 pykaraoke
-pympd
 qarecord
 qjackctl
 qmidinet
@@ -192,10 +178,8 @@ qpxtool
 qsampler
 qsynth
 qtractor
-quark
 quodlibet
 rakarrack
-rezound
 ripoff
 ripperx
 rosegarden
@@ -217,7 +201,6 @@ sweep
 syncropated
 tagtool
 tangerine
-thelastripper
 themonospot
 thoggen
 timemachine
@@ -225,8 +208,6 @@ timidity-interfaces-extra
 tinyeartrainer
 todiscgui
 toonloop
-totem-xine
-transcriber
 transmageddon
 traverso
 tunapie

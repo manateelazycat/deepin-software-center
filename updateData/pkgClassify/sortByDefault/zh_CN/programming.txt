@@ -6,12 +6,10 @@ codeblocks
 bluefish
 anjuta
 devhelp
-dffuse
 idle-python2.6
 kdesvn
 lyx
 mysql-server
-myqsl-client
 basic256
 bless
 boa-constructor
@@ -31,7 +29,6 @@ diffuse
 dreampie
 drpython
 efte
-emacs-snapshot
 emacs23
 emma
 entagged
@@ -49,15 +46,12 @@ giggle
 gitg
 gmanedit
 gmysqlcc
-gnuserv
-gpaco
 gphpedit
 gsql
 gwrite
 hotwire
 idle
 idle-python2.7
-idle-python3.1
 idle-python3.2
 idle3
 jedit
@@ -81,7 +75,6 @@ lazarus
 leafpad
 lemon
 medit
-mlview
 monkeystudio
 monodevelop
 monodoc-http
@@ -89,7 +82,6 @@ mousepad
 mysql-client
 mysql-navigator
 nedit
-netbeans
 okteta
 phoronix-test-suite
 pida
@@ -99,12 +91,10 @@ pypibrowser
 pyragua
 pyroom
 python-poker2d
-qa-assistant
 qdevelop
 qgit
 qsource-highlight
 qtcreator
-quanta
 rapidsvn
 rbbr
 regexxer

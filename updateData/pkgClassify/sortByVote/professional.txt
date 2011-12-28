@@ -5,7 +5,6 @@ extcalc
 gelemental
 kile
 stellarium
-ballview
 amide
 scilab
 achilles
@@ -30,7 +29,6 @@ critterding
 ctsim
 drawxtl
 dx
-eagle
 easychem
 eficas
 emboss-explorer
@@ -44,7 +42,6 @@ freecad
 freediams
 freemat
 fsl-4.1
-fslview
 g3data
 gabedit
 galculator
@@ -164,8 +161,6 @@ tree-ppuzzle
 tree-puzzle
 treeviewx
 tucnak2
-twlog
-twpsk
 udav
 ugene
 viewmol

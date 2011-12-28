@@ -8,7 +8,6 @@ goldendict
 mupdf
 xpdf
 zim
-satdict
 chmsee
 comix
 kchmviewer
@@ -25,13 +24,11 @@ djvusmooth
 ebview
 eio
 epdfview
-fantasdic
 fbreader
 gaiksaurus
 gaupol
 gbgoffice
 gedit
-gnome-office
 gnote
 gpdftext
 gtodo
@@ -42,11 +39,9 @@ jpilot
 kasumi
 katoob
 kbedic
-kbibtex
 kexi
 kjots
 knotes
-kobby
 koffice
 kpresenter
 kspread
@@ -64,13 +59,11 @@ omegat
 opendict
 pdfedit
 qcomicbook
-qdacco
 qrfcview
 qstardict
 qtodo
 referencer
 rhinote
-tasks
 treb
 tuxcards
 txtreader

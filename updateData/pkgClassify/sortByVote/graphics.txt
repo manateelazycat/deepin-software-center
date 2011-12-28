@@ -32,7 +32,6 @@ geeqie-gps
 gextractwinicons
 gliv
 gosmore
-gpaint
 gpicview
 gpixpod
 gpppon
@@ -73,7 +72,6 @@ ristretto
 scantailor
 scribus-ng
 showfoto
-skencil
 slicer
 structure-synth
 sunflow

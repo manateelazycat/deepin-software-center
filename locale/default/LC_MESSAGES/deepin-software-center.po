@@ -324,7 +324,7 @@ msgid "Report Problem"
 msgstr "Report bugs"
 
 msgid "Software Center 2.0 New Feature"
-msgstr "New features of DSC 2.0"
+msgstr "New features of Deepin Software Center 2.0"
 
 msgid "Setup"
 msgstr "Settings"

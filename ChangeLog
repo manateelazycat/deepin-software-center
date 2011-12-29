@@ -1,5 +1,8 @@
 * News in 2.0
 
+2011-12-29 Wang Yong <lazycat.manatee@gmail.com>
+	* Update translations and support zh_HK.
+
 2011-12-28 Wang Yong <lazycat.manatee@gmail.com>
 	* Save upgrade number when startup or upgrade action finish.
 	* Update checkUpdate.py

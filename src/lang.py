@@ -30,8 +30,11 @@ DEFAULT_LANG = None             # automatically
 
 if DEFAULT_LANG == None:
     (lang, _) = locale.getdefaultlocale()
-    if lang in ["zh_CN", "zh_TW"]:
-        __ = gettext.translation('deepin-software-center', '../locale', languages=[lang]).gettext
+    if lang in ["zh_CN", "zh_TW", "zh_HK"]:
+        if lang == "zh_HK":
+            __ = gettext.translation('deepin-software-center', '../locale', languages=["zh_TW"]).gettext
+        else:
+            __ = gettext.translation('deepin-software-center', '../locale', languages=[lang]).gettext
     else:
         __ = gettext.translation('deepin-software-center', '../locale', languages=["default"]).gettext
 else:    
@@ -40,9 +43,12 @@ else:
 def getDefaultLanguage():
     '''Get default language.'''
     (lang, _) = locale.getdefaultlocale()
-    if lang in ["zh_CN", "zh_TW"]:
+    if lang in ["zh_CN", "zh_TW", "zh_HK"]:
         if DEFAULT_LANG == None:
-            return lang
+            if lang == "zh_HK":
+                return "zh_TW"
+            else:
+                return lang
         else:
             return DEFAULT_LANG
     else:

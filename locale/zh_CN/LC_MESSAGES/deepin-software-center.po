@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: deepin-software-center\n"
 "POT-Creation-Date: 2011-11-20 20:48+CST\n"
-"PO-Revision-Date: 2011-11-20 20:48+CST\n"
-"Last-Translator: Yong Wang <lazycat.manatee@gmail.com>\n"
+"PO-Revision-Date: 2011-12-26 21:09+0800\n"
+"Last-Translator: Xilin Sun <s.sn.giraffe AT gmail.com>\n"
 "Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -156,19 +156,19 @@ msgid "Classify Recommend"
 msgstr "编辑推荐"
 
 msgid "Classify Web"
-msgstr "网络应用"     
+msgstr "网络应用"
 
 msgid "Classify Multimedia"
 msgstr "影音播放"
 
 msgid "Classify Game"
-msgstr "游戏娱乐"     
+msgstr "游戏娱乐"
 
 msgid "Classify Graphics"
 msgstr "图形图像"
 
 msgid "Classify Word"
-msgstr "文字处理"   
+msgstr "文字处理"
 
 msgid "Classify Professional"
 msgstr "行业软件"
@@ -177,13 +177,13 @@ msgid "Classify Programming"
 msgstr "编程开发"
 
 msgid "Classify Driver"
-msgstr "硬件驱动"    
+msgstr "硬件驱动"
 
 msgid "Classify Windows"
-msgstr "Win 软件" 
+msgstr "Win 软件"
 
 msgid "Classify Others"
-msgstr "其他软件"  
+msgstr "其他软件"
 
 msgid "Deepin Software Center"
 msgstr "深度软件中心"
@@ -297,7 +297,7 @@ msgid "Select All"
 msgstr "全选"
 
 msgid "Unselect All"
-msgstr "全不选"
+msgstr "取消全选"
 
 msgid "Update select software"
 msgstr "升级选中的软件"
@@ -454,3 +454,4 @@ msgstr "评论加载失败， 请刷新重试!"
 
 msgid "Vote num"
 msgstr "  (已经有%s人评分)"
+

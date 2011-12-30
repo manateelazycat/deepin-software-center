@@ -8,6 +8,7 @@ xchat
 minitube
 lastfm
 comix
+pywebqq
 amarok
 stardict
 gimp

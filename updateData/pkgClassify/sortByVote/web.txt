@@ -12,6 +12,7 @@ amarok
 stardict
 gimp
 pinta
+pywebqq
 zim
 firefox
 amule

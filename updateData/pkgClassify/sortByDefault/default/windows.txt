@@ -1,9 +1,3 @@
-deepwine-qq2010
-deepwine-thunder5
-deepwine-rtx2010
-deepwine-picasa
-deepwine-cajviewer
-deepwine-qq2009
 picasa
 playonlinux
 wine
@@ -15,3 +9,9 @@ deepin-wine-tm2009
 deepin-wine-rtx2010
 wine-thunder
 deepwine-thunder5
+deepwine-qq2010
+deepwine-thunder5
+deepwine-rtx2010
+deepwine-picasa
+deepwine-cajviewer
+deepwine-qq2009

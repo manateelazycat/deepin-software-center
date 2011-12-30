@@ -1,8 +1,6 @@
-alltray
 aqemu
 avant-window-navigator
 cairo-clock
-compiz
 computer-janitor-gtk
 deja-dup
 desktopnova

@@ -28,6 +28,7 @@ import subprocess
 def startCommandProxy():
     '''Start command proxy.'''
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  
+    s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) # make sure socket port always work
     
     try:
         # Software center is not running if address is not bind.

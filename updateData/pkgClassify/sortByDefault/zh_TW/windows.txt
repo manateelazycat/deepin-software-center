@@ -2,10 +2,12 @@ deepinwine-qq2010
 deepinwine-thunder5
 deepinwine-rtx2010
 deepinwine-picasa
+deepinwine-foxitreader5
 deepinwine-cajviewer
 deepinwine-qq2009
 deepin-wine-tm2009
 deepin-wine-rtx2010
+deepinwine-foxitreader4
 wine-thunder
 picasa
 playonlinux

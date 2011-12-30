@@ -1,8 +1,10 @@
 deepinwine-qq2010
 deepinwine-thunder5
 deepinwine-rtx2010
+deepinwine-foxitreader5
 deepinwine-picasa
 deepinwine-cajviewer
+deepinwine-foxitreader4
 deepinwine-qq2009
 deepin-wine-tm2009
 deepin-wine-rtx2010

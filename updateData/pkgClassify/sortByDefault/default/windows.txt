@@ -15,3 +15,5 @@ deepinwine-rtx2010
 deepinwine-picasa
 deepinwine-cajviewer
 deepinwine-qq2009
+deepinwine-foxitreader4
+deepinwine-foxitreader5

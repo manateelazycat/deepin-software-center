@@ -1,5 +1,8 @@
 * News in 2.0
 
+2011-12-30 Wang Yong <lazycat.manatee@gmail.com>
+	* Remove fglrx from drivers until ATI fix bug with gnome-shell.
+
 2011-12-29 Wang Yong <lazycat.manatee@gmail.com>
 	* Update translations and support zh_HK.
 

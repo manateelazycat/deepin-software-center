@@ -215,14 +215,8 @@ class TrayIcon(object):
         # Get input.
         ignoreInterval = len(sys.argv) == 2 and sys.argv[1] == "--now"
         
-        # Get last update hours.
-        agoHours = getLastUpdateHours("./check-update-stamp")
-        
         # Just update one day after.
-        if ignoreInterval or (agoHours != None and agoHours >= UPDATE_INTERVAL):
-            # Touch file to mark update stamp.
-            touchFile("./check-update-stamp")
-                
+        if ignoreInterval:
             # Send statistics information.
             AnonymityThread(sendStatistics).start()
             
@@ -248,8 +242,6 @@ class TrayIcon(object):
                 gtk.main()
             else:
                 print "No updatable packages, exit."
-        else:
-            print "Just check update %s hours ago" % (agoHours)
             
 if __name__ == "__main__":
     TrayIcon().main()

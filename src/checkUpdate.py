@@ -43,7 +43,7 @@ import urllib2
 def sendStatistics():
     '''Send statistics.'''
     try:
-        uuid = evalFile(UUID_FILE, True)
+        uuid = readFile(UUID_FILE, True)
         if uuid: 
             args = {'a' : 'm', 'n' : uuid}
         
@@ -213,36 +213,31 @@ class TrayIcon(object):
 
     def main(self):
         '''Main.'''
-        # Get input.
-        ignoreInterval = len(sys.argv) == 2 and sys.argv[1] == "--now"
+        # Send statistics information.
+        AnonymityThread(sendStatistics).start()
         
-        # Just update one day after.
-        if ignoreInterval:
-            # Send statistics information.
-            AnonymityThread(sendStatistics).start()
+        # Just show tray icon when have updatable packages.
+        self.updateNum = self.calculateUpdateNumber()
+        if self.updateNum > 0:
+            print "Show tray icon."
             
-            # Just show tray icon when have updatable packages.
-            self.updateNum = self.calculateUpdateNumber()
-            if self.updateNum > 0:
-                print "Show tray icon."
-                
-                gtk.gdk.threads_init()        
-                
-                self.trayIcon = gtk.StatusIcon()
-                self.trayIcon.set_from_file("../icon/icon.png")
-                self.trayIcon.set_has_tooltip(True)
-                self.trayIcon.set_visible(True)
-                self.trayIcon.connect("activate", lambda w: self.showSoftwareCenter())
-                self.trayIcon.connect("query-tooltip", self.hoverIcon)
-                self.trayIcon.connect("popup-menu", self.handleRightClick)
-                
-                # Show tooltips.
-                # Add timeout to make tooltip display at correct coordinate.
-                glib.timeout_add_seconds(1, self.hoverIcon)
-                
-                gtk.main()
-            else:
-                print "No updatable packages, exit."
+            gtk.gdk.threads_init()        
+            
+            self.trayIcon = gtk.StatusIcon()
+            self.trayIcon.set_from_file("../icon/icon.png")
+            self.trayIcon.set_has_tooltip(True)
+            self.trayIcon.set_visible(True)
+            self.trayIcon.connect("activate", lambda w: self.showSoftwareCenter())
+            self.trayIcon.connect("query-tooltip", self.hoverIcon)
+            self.trayIcon.connect("popup-menu", self.handleRightClick)
+            
+            # Show tooltips.
+            # Add timeout to make tooltip display at correct coordinate.
+            glib.timeout_add_seconds(1, self.hoverIcon)
+            
+            gtk.main()
+        else:
+            print "No updatable packages, exit."
             
 if __name__ == "__main__":
     TrayIcon().main()

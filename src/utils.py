@@ -35,7 +35,6 @@ import stat
 import subprocess
 import threading as td
 import time
-import uuid
 
 def isDoubleClick(event):
     '''Whether an event is double click?'''
@@ -546,16 +545,6 @@ def removeDirectory(path):
             os.remove(fullPath)
     os.rmdir(path)        
 
-def getUniqueId():
-    '''Get unique id.'''
-    uniqueId = evalFile("./uuid", True)
-    if uniqueId:
-        return uniqueId
-    else:
-        uId = int(uuid.uuid1()) # this is unique id of current hardware and time, so it's very safe for user. :)
-        writeFile("./uuid", str(uId))
-        return uId
-        
 def getLastUpdateHours(filepath):
     """
     Return the number of hours since last update.

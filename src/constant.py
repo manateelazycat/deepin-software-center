@@ -96,6 +96,7 @@ SCREENSHOT_DOWNLOAD_DIR = "/var/cache/deepin-software-center/screenshot/"
 UPDATE_DATA_BACKUP_DIR = "../updateData/"
 UPDATE_DATA_DIR = "/var/cache/deepin-software-center/updateData/"
 UPDATE_DATA_DOWNLOAD_DIR = "/var/cache/deepin-software-center/"
+UUID_FILE = "/var/lib/deepin-software-center/uuid"
 DOWNLOAD_FAILED = 1
 DOWNLOAD_SUCCESS = 0
 

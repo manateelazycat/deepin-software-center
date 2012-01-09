@@ -43,15 +43,16 @@ import urllib2
 def sendStatistics():
     '''Send statistics.'''
     try:
-        userId = getUniqueId()
-        args = {'a' : 'm', 'n' : userId}
+        uuid = evalFile(UUID_FILE, True)
+        if uuid: 
+            args = {'a' : 'm', 'n' : uuid}
         
-        connection = urllib2.urlopen(
-            "%s/softcenter/v1/analytics" % (SERVER_ADDRESS),
-            data=urllib.urlencode(args),
-            timeout=POST_TIMEOUT,
-            )
-        connection.read()
+            connection = urllib2.urlopen(
+                "%s/softcenter/v1/analytics" % (SERVER_ADDRESS),
+                data=urllib.urlencode(args),
+                timeout=POST_TIMEOUT,
+                )
+            connection.read()
     except Exception, e:
         print e
         

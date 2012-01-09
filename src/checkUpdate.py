@@ -43,8 +43,8 @@ import urllib2
 def sendStatistics():
     '''Send statistics.'''
     try:
-        uuid = readFile(UUID_FILE, True)
-        if uuid: 
+        uuid = readFirstLine(UUID_FILE, True)
+        if uuid != "": 
             args = {'a' : 'm', 'n' : uuid}
         
             connection = urllib2.urlopen(

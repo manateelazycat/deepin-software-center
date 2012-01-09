@@ -3,6 +3,7 @@
 2012-01-09 Wang Yong <lazycat.manatee@gmail.com>
 	* Change directory.
 	* Fix uuid read bug.
+	* Update uuid read me
 
 2011-12-30 Wang Yong <lazycat.manatee@gmail.com>
 	* Remove fglrx from drivers until ATI fix bug with gnome-shell.

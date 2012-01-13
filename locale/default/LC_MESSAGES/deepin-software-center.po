@@ -1,384 +1,384 @@
 # Deepin software center.
 # Copyright (C) 2011 Deepin, Inc.
-# Yong Wang <lazycat.manatee@gmail.com>, 2011.
+# Yaron Shahrabani <sh.yaron@gmail.com>, 2012
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: deepin-software-center\n"
 "POT-Creation-Date: 2011-11-20 20:48+CST\n"
-"PO-Revision-Date: 2011-12-27 10:27+0800\n"
-"Last-Translator: Xilin Sun <s.sn.giraffe AT gmail.com>\n"
-"Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
+"PO-Revision-Date: 2012-01-13 10:27+0800\n"
+"Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
+"Language-Team: Hebrew\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: pygettext.py 1.5\n"
 
 msgid "Action Install"
-msgstr "Install"
+msgstr "התקנה"
 
 msgid "Action Uninstall"
-msgstr "Uninstall"
+msgstr "הסרה"
 
 msgid "Action Update"
-msgstr "Upgrade"
+msgstr "שדרוג"
 
 msgid "Action Wait Download"
-msgstr "Waiting for download"
+msgstr "בהמתנה להורדה"
 
 msgid "Action Wait Install"
-msgstr "Waiting for installation"
+msgstr "בהמתנה להתקנה"
 
 msgid "Action Wait Update"
-msgstr "Waiting for upgrade"
+msgstr "בהמתנה לשדרוג"
 
 msgid "Action Wait Uninstall"
-msgstr "Waiting for unstallation"
+msgstr "בהמתנה להסרה"
 
 msgid "Action Startup"
-msgstr "Start"
+msgstr "התחלה"
 
 msgid "Action Installed"
-msgstr "Installed"
+msgstr "מותקן"
 
 msgid "Action Install Start"
-msgstr "Start installation"
+msgstr "התחלת ההתקנה"
 
 msgid "Action Update Start"
-msgstr "Start upgrade"
+msgstr "התחלת השדרוג"
 
 msgid "Action Uninstall Start"
-msgstr "Start uninstallation"
+msgstr "התחלת ההסרה"
 
 msgid "Action Install Failed"
-msgstr "Installation failed"
+msgstr "ההתקנה נכשלה"
 
 msgid "Action Update Failed"
-msgstr "Upgrade failed"
+msgstr "השדרוג נכשל"
 
 msgid "Action Uninstall Failed"
-msgstr "Uninstallation failed"
+msgstr "ההסרה נכשלה"
 
 msgid "Action Install Finish"
-msgstr "Installation completed"
+msgstr "ההתקנה הושלמה"
 
 msgid "Action Update Finish"
-msgstr "Upgrade completed"
+msgstr "השדרוג הושלם"
 
 msgid "Action Uninstall Finish"
-msgstr "Uninstallation completed"
+msgstr "ההסרה הושלמה"
 
 msgid "Action Cancel"
-msgstr "Cancel"
+msgstr "ביטול"
 
 msgid "Action Pause"
-msgstr "Pause"
+msgstr "השהיה"
 
 msgid "Action Installing"
-msgstr "Installing"
+msgstr "בהתקנה"
 
 msgid "Action Updating"
-msgstr "Upgrading"
+msgstr "מתבצע שדרוג"
 
 msgid "Action Uninstalling"
-msgstr "Uninstalling"
+msgstr "מתבצעת הסרה"
 
 msgid "Nav Recommend"
-msgstr "Home"
+msgstr "בית"
 
 msgid "Nav Repository"
-msgstr "Repository"
+msgstr "מאדר"
 
 msgid "Nav Update"
-msgstr "Upgrades"
+msgstr "שדרוגים"
 
 msgid "Nav Uninstall"
-msgstr "Uninstall"
+msgstr "הסרה"
 
 msgid "Nav Download Manage"
-msgstr "Download"
+msgstr "הורדה"
 
 msgid "Click Show Detail"
-msgstr "Click to show details"
+msgstr "יש ללחוץ כדי להציג פרטים"
 
 msgid "Click Start Vote"
-msgstr "Click to rate"
+msgstr "יש ללחוץ כדי לדרג"
 
 msgid "Click Finish Vote"
-msgstr "Finish rating"
+msgstr "השלמת הדירוג"
 
 msgid "Comment"
-msgstr "(%s comments)"
+msgstr "(%s הערות)"
 
 msgid "First Comment"
-msgstr "Say something!"
+msgstr "אמרו משהו!"
 
 msgid "Jump To"
-msgstr "Jump to"
+msgstr "מעבר אל"
 
 msgid "Page"
-msgstr "Page"
+msgstr "עמוד"
 
 msgid "Jump"
-msgstr "Jump"
+msgstr "מעבר"
 
 msgid "Current Version"
-msgstr "Current version"
+msgstr "הגרסה הנוכחית"
 
 msgid "Upgrade Version"
-msgstr "Latest version"
+msgstr "הגרסה העדכנית ביותר"
 
 msgid "Are you sure uninstall?"
-msgstr "Are you sure?"
+msgstr "האם זהו רצונך?"
 
 msgid "There are %s software packages can be upgraded"
-msgstr "%s upgrades available"
+msgstr "%s שדרוגים זמינים"
 
 msgid "gksu message"
-msgstr "Please enter your password to start Deepin Software Center"
+msgstr "נא להזין את הססמה שלך כדי להפעיל את מרכז התכנה של Deepin"
 
 msgid "About"
-msgstr "About"
+msgstr "על אודות"
 
 msgid "Exit"
-msgstr "Exit"
+msgstr "יציאה"
 
 msgid "Deepin Update Manager"
-msgstr "Deepin Upgrade Manager"
+msgstr "מנהל השדרוגים של Deepin"
 
 msgid "Classify News"
-msgstr "Latest upgrades"
+msgstr "השדרוגים העדכניים ביותר"
 
 msgid "Classify Recommend"
-msgstr "Recommendations"
+msgstr "המלצות"
 
 msgid "Classify Web"
-msgstr "Internet"
+msgstr "אינטרנט"
 
 msgid "Classify Multimedia"
-msgstr "Sound & Video"
+msgstr "שמע ווידאו"
 
 msgid "Classify Game"
-msgstr "Games"
+msgstr "משחקים"
 
 msgid "Classify Graphics"
-msgstr "Graphics"
+msgstr "גרפיקה"
 
 msgid "Classify Word"
-msgstr "Office"
+msgstr "כלי משרד"
 
 msgid "Classify Professional"
-msgstr "Professional"
+msgstr "מקצועי"
 
 msgid "Classify Programming"
-msgstr "Programming"
+msgstr "תכנות"
 
 msgid "Classify Driver"
-msgstr "Drivers"
+msgstr "מנהלי התקן"
 
 msgid "Classify Windows"
 msgstr "Wine"
 
 msgid "Classify Others"
-msgstr "Other"
+msgstr "אחרים"
 
 msgid "Deepin Software Center"
-msgstr "Deepin Software Center"
+msgstr "מרכז התכנה של Deepin"
 
 msgid " Loading, please wait ..."
-msgstr "Loading, please wait..."
+msgstr "בטעינה, נא להמתין..."
 
 msgid "Send request to start %s"
-msgstr "Request to start %s"
+msgstr "בקשה להפעלת %s"
 
 msgid "Congratulations, your system is clean."
-msgstr "Congratulations, your system is clean!"
+msgstr "ברכות, המערכת שלך נקייה!"
 
 msgid "Software Center is using the downloaded package, please wait clearing."
-msgstr "Software Center is using the downloaded package, please clean later."
+msgstr "מרכז התכנה משתמש בחבילות שהורדו, נא לפנות מאוחר יותר."
 
 msgid "Cleaned up %s package, release %s space."
-msgstr "%s packages cleaned, releasing %s of space."
+msgstr "%s חבילות פונו, ועל ידי כך התפנו עוד %s של שטח בכונן."
 
 msgid "To ensure fairness, only a day to %s score once."
-msgstr "You may only rate %s once a day."
+msgstr "באפשרותך לדרג את %s רק פעם אחת ביום."
 
 msgid "%s vote success, thanks!"
-msgstr "Thank you for rating %s !"
+msgstr "תודה על שדירגת את %s !"
 
 msgid "%s vote failed, please check your network link."
-msgstr "Unable to rate &s, please check your network."
+msgstr "לא ניתן לדרג את %s, נא לבדוק את חיבור הרשת שלך."
 
 msgid "Return"
-msgstr "Return"
+msgstr "חזרה"
 
 msgid "Long Description"
-msgstr "Detailed descriptions"
+msgstr "תיאור מפורט"
 
 msgid "Homepage"
-msgstr "Homgepage"
+msgstr "דף הבית"
 
 msgid "Translate description"
-msgstr "Help translate the descriptions"
+msgstr "סיוע בתרגום התאורים"
 
 msgid "Screenshot"
-msgstr "Screenshots"
+msgstr "צילומי מסך"
 
 msgid "Version: "
-msgstr "Version: "
+msgstr "גרסה: "
 
 msgid "Uninstall to release %s space"
-msgstr "Uninstall and release %s of space"
+msgstr "הסרה ופינוי של %s משטח הכונן"
 
 msgid "Download to eat %s space"
-msgstr "%s requires %s of space"
+msgstr "החבילה %s דורשת %s של נפח בכונן"
 
 msgid "Query screenshot ..."
-msgstr "Checking for screenshots..."
+msgstr "תמונות המסך נבדקות..."
 
 msgid "Downloading screenshot ..."
-msgstr "Downloading screenshots..."
+msgstr "תמונות המסך מתקבלות..."
 
 msgid "Query fails, check your network and click refresh and try again."
-msgstr "Loading failed. Click refresh to try again."
+msgstr "הטעינה נכשלה. יש ללחוץ על רענון כדי לנסות שוב."
 
 msgid "Download fails, check your network and click refresh and try again."
-msgstr "Download failed, click refresh to try again."
+msgstr "ההורדה נכשלה, יש ללחוץ על רענון כדי לנסות שוב."
 
 msgid "The software does not screenshot"
-msgstr "No screenshots for this software"
+msgstr "אין צילומי מסך ליישום זה"
 
 msgid "Upload screenshot"
-msgstr "Upload screenshots"
+msgstr "העלאת צילומי מסך"
 
 msgid "% s: Download failed, please check your network link."
-msgstr "Fails to download %s , please check your network."
+msgstr "הורדת %s נכשלה, נא לבדוק את חיבור הרשת שלך."
 
 msgid "Query failed, use screenshot cache."
-msgstr "Checking failed, use screenshot cache."
+msgstr "הבדיקה נכשלה, ייעשה שימוש במטמון צילומי המסך."
 
 msgid "Download failed, use screenshot cache."
-msgstr "Download failed, use screenshot cache."
+msgstr "ההורדה נכשלה, ייעשה שימוש במטמון צילומי המסך."
 
 msgid "Download Failed"
-msgstr "Download failed"
+msgstr "ההורדה נכשלה"
 
 msgid "Download Finish"
-msgstr "Download finished"
+msgstr "ההורדה הושלמה"
 
 msgid "Start Download"
-msgstr "Start download"
+msgstr "התחלת ההורדה"
 
 msgid "% s: Download timeout, please check your network link."
-msgstr "% s: Download timeout, please check your network link."
+msgstr "% s: זמן ההורדה פג, נא לבדוק את הקישור שלך לרשת."
 
 msgid "Download Timeout"
-msgstr "Download timeout"
+msgstr "זמן ההורדה פג"
 
 msgid "Download Pause"
-msgstr "Download paused"
+msgstr "ההורדה הושהיתה"
 
 msgid "%s checkout failed."
-msgstr "%s verify failed"
+msgstr "האימות של %s נכשל
 
 msgid "Open download directory"
-msgstr "Open download directory"
+msgstr "פתיחת תיקיית ההורדה"
 
 msgid "Clean download cache"
-msgstr "Clean download cache"
+msgstr "פינוי מטמון ההורדה"
 
 msgid "Clean download cache, save your disk space!"
-msgstr "Clean download cache to save disk space"
+msgstr "ניתן לפנות את מטמון ההורדה כדי לחסוך בנפח הכונן"
 
 msgid "Select All"
-msgstr "Select all"
+msgstr "בחירת הכול"
 
 msgid "Unselect All"
-msgstr "Select none"
+msgstr "לא לבחור דבר"
 
 msgid "Update select software"
-msgstr "Update selected software"
+msgstr "עדכון התוכנות הנבחרות"
 
 msgid "Notify select software"
-msgstr "Notify selected software"
+msgstr "הצגת התרעה על התכניות הנבחרות"
 
 msgid "Notify again"
-msgstr "Notify"
+msgstr "התרעה"
 
 msgid "Don't Notify"
-msgstr "Ignore"
+msgstr "התעלמות"
 
 msgid "New Feature"
-msgstr "New features"
+msgstr "תכונות חדשות"
 
 msgid "Proxy Setup"
-msgstr "Proxy settings"
+msgstr "הגדרות שרת התיווך"
 
 msgid "Forum Help"
-msgstr "Visit forum"
+msgstr "ביקור בפורום"
 
 msgid "Join Us"
-msgstr "Join us"
+msgstr "הצטרפות אלינו"
 
 msgid "Report Problem"
-msgstr "Report bugs"
+msgstr "דיווח על תקלות"
 
 msgid "Software Center 2.0 New Feature"
-msgstr "New features of Deepin Software Center 2.0"
+msgstr "תכונות חדשות במרכז התקנה של Deepin 2.0"
 
 msgid "Setup"
-msgstr "Settings"
+msgstr "הגדרות"
 
 msgid "Cancel proxy!"
-msgstr "Proxy canceled"
+msgstr "המתווך נכשל"
 
 msgid "Setup proxy!"
-msgstr "Proxy set"
+msgstr "המתווך הוגדר"
 
 msgid "Pause"
-msgstr "Pause"
+msgstr "השהייה"
 
 msgid "More >>"
-msgstr "More >>"
+msgstr "עוד >>"
 
 msgid "Sort By Recommend"
-msgstr "Sort by recommendation"
+msgstr "מיון לפי המלצות"
 
 msgid "Sort By Download"
-msgstr "Sort by download"
+msgstr "מיון לפי כמות הורדות"
 
 msgid "Sort By Vote"
-msgstr "Sort by ratings"
+msgstr "מיון לפי דירוג"
 
 msgid "Please enter the name you want to search for software, version or other information"
-msgstr "Enter to search"
+msgstr "יש להזין כדי לחפש"
 
 msgid "Please enter the name you want to uninstall the software, version or other information"
-msgstr "Enter to search"
+msgstr "יש להזין כדי לחפש"
 
 msgid "Files are indexed for the search ..."
-msgstr "Indexing files for searching..."
+msgstr "הקבצים נשמרים במפתח לצורכי חיפוש..."
 
 msgid "Build the search index file is completed."
-msgstr "Index built"
+msgstr "המפתח נבנה"
 
 msgid "Indexing, search capabilities please try again later."
-msgstr "Indexing files, please try later"
+msgstr "הקבצים נשמרים במפתח, נא לנסות שוב מאוחר יותר"
 
 msgid "No search packages related %s"
-msgstr "No packages found for %s"
+msgstr "לא נמצאה חבילה עבור %s"
 
 msgid "Global Search"
-msgstr "Global search"
+msgstr "חיפוש כללי"
 
 msgid "Change Theme"
-msgstr "Change theme"
+msgstr "החלפת העיצוב"
 
 msgid "Updating souces list ..."
-msgstr "Updating souces list..."
+msgstr "רשימת המקורות מתעדכנת..."
 
 msgid "Update sources list completed."
-msgstr "Sources list updated"
+msgstr "רשימת המקורות מעודכנת"
 
 msgid "News\n"
 msgstr ""
@@ -399,56 +399,56 @@ msgstr ""
 "* Official support of Ubuntu.\n"
 
 msgid "Topbar UpdatePage"
-msgstr "<span size='%s'></span><span foreground='%s' size='%s'>%s</span><span size='%s'> upgrades available</span>"
+msgstr "<span size='%s'></span><span foreground='%s' size='%s'>%s</span><span size='%s'> שדרוגים זמינים</span>"
 
 msgid "Topbar DownloadManagePage"
-msgstr "<span size='%s'></span><span foreground='%s' size='%s'>%s</span><span size='%s'> packages downloading</span>"
+msgstr "<span size='%s'></span><span foreground='%s' size='%s'>%s</span><span size='%s'> חבילות בהורדה</span>"
 
 msgid "Topbar SearchPage"
-msgstr "<span size='%s'>Related with </span><span foreground='%s' size='%s'>%s</span><span size='%s'>, </span><span foreground='%s' size='%s'>%s</span><span size='%s'> softwares are found</span>"
+msgstr "<span size='%s'>נמצאה קשורה ל־</span><span foreground='%s' size='%s'>%s</span><span size='%s'>, </span><span foreground='%s' size='%s'>%s</span><span size='%s'> חבילות תכנה</span>"
 
 msgid "Topbar SearchUninstallPage"
-msgstr "<span size='%s'>Related with </span><span foreground='%s' size='%s'>%s</span><span size='%s'>, </span><span foreground='%s' size='%s'>%s</span><span size='%s'> softwares are found</span>"
+msgstr "<span size='%s'>נמצאה קשורה ל־</span><span foreground='%s' size='%s'>%s</span><span size='%s'>, </span><span foreground='%s' size='%s'>%s</span><span size='%s'> חבילות תכנה</span>"
 
 msgid "Topbar UninstallPage"
-msgstr "<span size='%s'></span><span foreground='%s' size='%s'>%s</span><span size='%s'> softwares can be uninstalled</span>"
+msgstr "<span size='%s'></span><span foreground='%s' size='%s'>%s</span><span size='%s'> חבילות תכנה אינן ניתנות להסרה</span>"
 
 msgid "Topbar IgnorePage"
-msgstr "<span size='%s'></span><span foreground='%s' size='%s'>%s</span><span size='%s'> softwares ignored</span>"
+msgstr "<span size='%s'></span><span foreground='%s' size='%s'>%s</span><span size='%s'> חבילות תכנה סומנו להתעלמות</span>"
 
 msgid "No Notify UpdatePage"
-msgstr "(Ignore upgrades for %s)"
+msgstr "(התעלמות משדרוגים עבור %s)"
 
 msgid "Your system is up to date."
-msgstr "Your system is up to date"
+msgstr "המערכת שלך מעודכנת"
 
 msgid "No Downloads."
-msgstr "No downloads"
+msgstr "אין הורדות"
 
 msgid "No software needs to remind."
-msgstr "No packages ignored"
+msgstr "אין הגדרת התעלמות לשום חבילה"
 
 msgid "Proxy Address"
-msgstr "IP or domain:"
+msgstr "IP או כתובת:"
 
 msgid "Proxy Port"
-msgstr "Port: "
+msgstr "פתחה: "
 
 msgid "Proxy User"
-msgstr "User: "
+msgstr "משתמש: "
 
 msgid "Proxy Password"
-msgstr "Password: "
+msgstr "ססמה: "
 
 msgid "Proxy OK"
-msgstr "Set"
+msgstr "הגדרה"
 
 msgid "Proxy Cancel"
-msgstr "Cancel"
+msgstr "ביטול"
 
 msgid "Comment load failed, please try again!"
-msgstr "Comments failed to load, please try again!"
+msgstr "טעינת ההערות נכשלה, נא לנסות שוב מאוחר יותר!!"
 
 msgid "Vote num"
-msgstr "(%s ratings)"
+msgstr "(%s דירוגים)"
 

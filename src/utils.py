@@ -165,7 +165,11 @@ def getPkgShortDesc(pkg):
     '''Get package's short description.'''
     pkgPath = "../pkgData/pkgInfo/" + pkg.name
     if os.path.exists(pkgPath):
-        return ((evalFile(pkgPath))[getDefaultLanguage()])["shortDesc"]
+        shortDescDict = evalFile(pkgPath)
+        if shortDescDict.has_key(getDefaultLanguage()):
+            return ((evalFile(pkgPath))[getDefaultLanguage()])["shortDesc"]
+        else:
+            return pkg.candidate.summary
     else:
         return pkg.candidate.summary
 
@@ -173,7 +177,11 @@ def getPkgLongDesc(pkg):
     '''Get package's long description.'''
     pkgPath = "../pkgData/pkgInfo/" + pkg.name
     if os.path.exists(pkgPath):
-        return ((evalFile(pkgPath))[getDefaultLanguage()])["longDesc"]
+        longDescDict = evalFile(pkgPath)
+        if longDescDict.has_key(getDefaultLanguage()):
+            return ((evalFile(pkgPath))[getDefaultLanguage()])["longDesc"]
+        else:
+            return pkg.candidate.description
     else:
         return pkg.candidate.description
 

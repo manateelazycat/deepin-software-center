@@ -27,6 +27,7 @@ DEFAULT_LANG = None             # automatically
 # DEFAULT_LANG = "default"        # english
 # DEFAULT_LANG = "zh_CN"          # simple chinese
 # DEFAULT_LANG = "zh_TW"          # transitional chinese
+# DEFAULT_LANG = "he_IL"          # hebrew
 
 if DEFAULT_LANG == None:
     (lang, _) = locale.getdefaultlocale()

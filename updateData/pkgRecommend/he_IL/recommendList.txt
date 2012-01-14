@@ -1,0 +1,2 @@
+[["deluge", "gnucash", "hardinfo", "subdownloader", "gpodder", "pokerth", "gmusicbrowser", "bibus", "gwibber", "qutim", "exaile", "guvcview", "kino"]
+,["amsn", "rekonq", "k3b", "terminator", "synapse", "furiusisomount", "liferea", "choqok", "gftp", "kmail", "kopete", "gpicview", "gpixpod"]]

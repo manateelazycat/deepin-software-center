@@ -1,5 +1,8 @@
 * News in 2.0
 
+2012-01-14 Wang Yong <lazycat.manatee@gmail.com>
+	* Support hebrew language.
+
 2012-01-09 Wang Yong <lazycat.manatee@gmail.com>
 	* Change directory.
 	* Fix uuid read bug.

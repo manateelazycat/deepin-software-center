@@ -797,7 +797,7 @@ class DeepinSoftwareCenter(object):
 
         # Init.
         window.set_title(__("Deepin Software Center"))
-        window.set_position(gtk.WIN_POS_CENTER_ALWAYS)
+        window.set_position(gtk.WIN_POS_CENTER)
         (width, height) = utils.getScreenSize(window)
         window.set_default_size(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT)
         window.set_geometry_hints(

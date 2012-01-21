@@ -133,7 +133,7 @@ class DeepinSoftwareCenter(object):
         
         self.window.connect_after("show", lambda w: self.createTooltips())
         
-    def showThemeSelectWindow(self, widget, event):
+    def showThemeSelectWindow(self, widget):
         '''Show theme select window.'''
         if self.themeSelectWindow.window.get_visible():
             self.themeSelectWindow.hide()
@@ -147,7 +147,7 @@ class DeepinSoftwareCenter(object):
             (x, y) = widget.translate_coordinates(self.window, wx, wy)
             self.themeSelectWindow.show(x + rect.width - THEME_WINDOW_WIDTH, y + rect.height)
             
-    def showMoreWindow(self, widget, event):
+    def showMoreWindow(self, widget):
         '''Show more window.'''
         if self.moreWindow.window.get_visible():
             self.moreWindow.hide()

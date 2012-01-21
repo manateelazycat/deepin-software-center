@@ -40,27 +40,27 @@ class Titlebar(object):
         self.box.add(self.controlAlign)
         
         self.themeButton = gtk.Button()
-        self.themeButton.connect("button-release-event", lambda w, e: selectThemeCallback(w, e))
+        self.themeButton.connect("clicked", lambda w: selectThemeCallback(w))
         drawButton(self.themeButton, "theme", "navigate")
         self.controlBox.pack_start(self.themeButton, False, False)
 
         self.moreButton = gtk.Button()
-        self.moreButton.connect("button-release-event", lambda w, e: showMoreWindowCallback(w, e))
+        self.moreButton.connect("clicked", lambda w: showMoreWindowCallback(w))
         drawButton(self.moreButton, "more", "navigate")
         self.controlBox.pack_start(self.moreButton, False, False)
         
         self.minButton = gtk.Button()
-        self.minButton.connect("button-release-event", lambda w, e: minCallback())
+        self.minButton.connect("clicked", lambda w: minCallback())
         drawButton(self.minButton, "min", "navigate")
         self.controlBox.pack_start(self.minButton, False, False)
         
         self.maxButton = gtk.Button()
-        self.maxButton.connect("button-release-event", lambda w, e: maxCallback())
+        self.maxButton.connect("clicked", lambda w: maxCallback())
         drawButton(self.maxButton, "max", "navigate")
         self.controlBox.pack_start(self.maxButton, False, False)
 
         self.closeButton = gtk.Button()
-        self.closeButton.connect("button-release-event", lambda w, e: closeCallback())
+        self.closeButton.connect("clicked", lambda w: closeCallback())
         drawButton(self.closeButton, "close", "navigate")
         self.controlBox.pack_start(self.closeButton, False, False)
         

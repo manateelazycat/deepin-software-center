@@ -156,7 +156,7 @@ msgid "Classify Web"
 msgstr "Internet"
 
 msgid "Classify Multimedia"
-msgstr "Sound & Video"
+msgstr "Multimedia"
 
 msgid "Classify Game"
 msgstr "Games"

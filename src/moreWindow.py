@@ -176,7 +176,7 @@ class NewFeature(object):
         self.titleBox.pack_start(self.titleAlign, True, True)
         
         self.closeButton = gtk.Button()
-        self.closeButton.connect("button-release-event", lambda w, e: self.hide())
+        self.closeButton.connect("clicked", lambda w: self.hide())
         drawButton(self.closeButton, "close", "navigate")
         self.titleBox.pack_start(self.closeButton, False, False)
         

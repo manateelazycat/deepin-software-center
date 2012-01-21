@@ -4,6 +4,7 @@
 	* Use clicked event instead button-press-event for button of titlebar, thanks lovesnow.
 	* Use WIN_POS_CENTER instead WIN_POS_CENTER_ALWAYS.
 	* Fix link of joinUs and reportBug.
+	* Use clicked event instead button-press-event for button of NewFeature.
 
 2012-01-14 Wang Yong <lazycat.manatee@gmail.com>
 	* Support hebrew language.

@@ -23,8 +23,8 @@
 import gettext
 import locale
 
-# DEFAULT_LANG = None             # automatically
-DEFAULT_LANG = "default"        # english
+DEFAULT_LANG = None             # automatically
+# DEFAULT_LANG = "default"        # english
 # DEFAULT_LANG = "zh_CN"          # simple chinese
 # DEFAULT_LANG = "zh_TW"          # transitional chinese
 # DEFAULT_LANG = "he_IL"          # hebrew

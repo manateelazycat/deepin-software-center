@@ -84,7 +84,7 @@ class MoreWindow(object):
     
     def reportProblem(self,):
         '''Report problem.'''
-        sendCommand("xdg-open http://www.linuxdeepin.com/forum/17")
+        sendCommand("xdg-open http://www.linuxdeepin.com/mantis/login_select_proj_page.php?ref=bug_report_page.php")
     
     def setIndex(self, index):
         '''Set index.'''

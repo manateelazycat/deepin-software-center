@@ -48,8 +48,9 @@ class SearchEntry(gtk.Entry):
             self.set_text(self.helpString)
         else:
             self.focusIn = False
-            self.focusInHandler = self.connect("focus-in-event", lambda w, e: self.firstFocusIn())
+            self.connect("focus-in-event", lambda w, e: self.firstFocusIn())
             self.connect("expose-event", self.exposeCallback)
+            self.connect("focus-out-event", lambda w, e: self.focusOut()) # restore text when focus out.
         
         # Show help string.
         self.updateColor()
@@ -75,16 +76,21 @@ class SearchEntry(gtk.Entry):
         '''First touch callback.'''
         self.focusIn = True
         
-        # Empty entry when first time focus in.
-        self.set_text("")
+        # Empty entry when input is help string.
+        if self.get_text() == self.helpString:
+            self.set_text("")
         
         # Adjust input text color.
         self.modify_base(gtk.STATE_NORMAL, gtk.gdk.color_parse(self.backgroundDColor.getColor()))
         self.modify_text(gtk.STATE_NORMAL, gtk.gdk.color_parse(self.foregroundDColor.getColor()))
         
-        # And disconnect signal itself.
-        self.disconnect(self.focusInHandler)
-        
         return False
     
+    def focusOut(self):
+        '''Callback for 'focus-out-event' signal.'''
+        if self.get_text() == "":
+            self.focusIn = False
+            self.modify_text(gtk.STATE_NORMAL, gtk.gdk.color_parse(self.hintDColor.getColor()))
+            self.set_text(self.helpString)
+            
 gobject.type_register(SearchEntry)

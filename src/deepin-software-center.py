@@ -1202,20 +1202,21 @@ class DeepinSoftwareCenter(object):
         # Delete cache directory.
         archiveDir = apt_pkg.config.find_dir('Dir::Cache::Archives')
         partialDir = os.path.join(archiveDir, "deepin_software_center_cache")
-        for pDir in os.listdir(partialDir):
-            # Get path.
-            dirPath = os.path.join(partialDir, pDir)
-                
-            if pDir in pkgs:
-                print "*** Can't remove directory: %s, software center using it." % (pDir)
-            elif os.path.isdir(dirPath):
-                # Update number.
-                packageNum += len(os.listdir(dirPath))
-                cleanSize += utils.getDirSize(dirPath)
-                
-                # Remove directory.
-                utils.removeDirectory(dirPath)
-                print "Delete directory: %s" % (dirPath)
+        if os.path.exists(partialDir):
+            for pDir in os.listdir(partialDir):
+                # Get path.
+                dirPath = os.path.join(partialDir, pDir)
+                    
+                if pDir in pkgs:
+                    print "*** Can't remove directory: %s, software center using it." % (pDir)
+                elif os.path.isdir(dirPath):
+                    # Update number.
+                    packageNum += len(os.listdir(dirPath))
+                    cleanSize += utils.getDirSize(dirPath)
+                    
+                    # Remove directory.
+                    utils.removeDirectory(dirPath)
+                    print "Delete directory: %s" % (dirPath)
                 
         # Delete deb packages.
         for debFile in os.listdir(archiveDir):

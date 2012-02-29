@@ -68,7 +68,7 @@ class UpdateList(td.Thread):
         glib.timeout_add_seconds(5, self.resetStatus)
         
         # Download update data from server, this must execute after list update complete.
-        downloadUpdateData.DownloadUpdateData().start()
+        # downloadUpdateData.DownloadUpdateData().start()
         
     def resetStatus(self):
         '''Reseet status.'''

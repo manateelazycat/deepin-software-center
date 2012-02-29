@@ -1265,18 +1265,19 @@ class InitThread(td.Thread):
         center.aptCache = apt.Cache()
         
         # Get update data directory.
-        osVersion = getOSVersion()
-        if osVersion == OS_VERSION:
-            if os.path.exists(UPDATE_DATA_DIR):
-                center.updateDataDir = UPDATE_DATA_DIR
-                # center.updateDataDir = UPDATE_DATA_BACKUP_DIR
-                print "Use newest data from %s" % UPDATE_DATA_DIR
-            else:
-                center.updateDataDir = UPDATE_DATA_BACKUP_DIR
-                print "Haven't found directory: %s, use %s instead" % (UPDATE_DATA_DIR, UPDATE_DATA_BACKUP_DIR)
-        else:
-            center.updateDataDir = UPDATE_DATA_BACKUP_DIR
-            print "Your system is not %s, deepin software center won't update `recommend list` to keep your system safety, if you want deepin software center update `recommend list` on your system, please contact AUTHOR (lazycat.manatee@gmail.com)." % OS_VERSION
+        center.updateDataDir = UPDATE_DATA_BACKUP_DIR
+        # osVersion = getOSVersion()
+        # if osVersion == OS_VERSION:
+        #     if os.path.exists(UPDATE_DATA_DIR):
+        #         center.updateDataDir = UPDATE_DATA_DIR
+        #         # center.updateDataDir = UPDATE_DATA_BACKUP_DIR
+        #         print "Use newest data from %s" % UPDATE_DATA_DIR
+        #     else:
+        #         center.updateDataDir = UPDATE_DATA_BACKUP_DIR
+        #         print "Haven't found directory: %s, use %s instead" % (UPDATE_DATA_DIR, UPDATE_DATA_BACKUP_DIR)
+        # else:
+        #     center.updateDataDir = UPDATE_DATA_BACKUP_DIR
+        #     print "Your system is not %s, deepin software center won't update `recommend list` to keep your system safety, if you want deepin software center update `recommend list` on your system, please contact AUTHOR (lazycat.manatee@gmail.com)." % OS_VERSION
         
         # Init repo cache.
         center.repoCache = repoCache.RepoCache(

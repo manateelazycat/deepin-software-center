@@ -50,10 +50,14 @@ class Statusbar(object):
         
         self.name = gtk.Label()
         self.initStatus()
+        self.nameEventBox = gtk.EventBox()
+        self.nameEventBox.set_visible_window(False)
+        self.nameEventBox.add(self.name)
+        self.nameEventBox.connect("button-press-event", lambda w, e: sendCommand("xdg-open http://www.linuxdeepin.com/feature#software"))
         self.nameAlignment = gtk.Alignment()
         self.nameAlignment.set_padding(self.paddingY, self.paddingY, self.paddingX, self.paddingX)
         self.nameAlignment.set(0.0, 0.0, 0.0, 1.0)
-        self.nameAlignment.add(self.name)
+        self.nameAlignment.add(self.nameEventBox)
         self.box.pack_start(self.nameAlignment)
         
         self.joinUs = gtk.Label()
@@ -64,6 +68,7 @@ class Statusbar(object):
         self.joinUsEventBox.set_visible_window(False)
         self.joinUsEventBox.add(self.joinUs)
         self.joinUsEventBox.connect("button-press-event", lambda w, e: sendCommand("xdg-open http://www.linuxdeepin.com/joinus/job"))
+        setClickableCursor(self.nameEventBox)
         setClickableCursor(self.joinUsEventBox)
         self.joinUsAlign = gtk.Alignment()
         self.joinUsAlign.set_padding(0, 0, 0, self.paddingX)

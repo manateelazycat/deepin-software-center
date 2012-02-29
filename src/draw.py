@@ -1076,10 +1076,13 @@ def drawTitlebar(widget):
     
 def drawFont(cr, content, fontSize, fontColor, x, y):
     '''Draw font.'''
-    if DEFAULT_FONT in getFontFamilies():
+    try:    
         cr.select_font_face(DEFAULT_FONT,
                             cairo.FONT_SLANT_NORMAL, 
                             cairo.FONT_WEIGHT_NORMAL)
+    except Exception, e:
+        print e
+        print "No font %s in current system" % (DEFAULT_FONT)
     cr.set_source_rgb(*colorHexToCairo(fontColor))
     cr.set_font_size(fontSize)
     cr.move_to(x, y)

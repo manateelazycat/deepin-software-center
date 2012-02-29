@@ -75,7 +75,7 @@ class AppInfo(object):
             self.downloadPauseFeedback = __("Pause")
         elif appStatus == APP_STATE_INSTALLING:
             self.installingProgress = 0
-            self.installingFeedback = __("Action Wait Download")
+            self.installingFeedback = __("Action Wait Install")
         elif appStatus == APP_STATE_UPGRADING:
             self.upgradingProgress = 0
             self.upgradingFeedback = __("Action Wait Update")

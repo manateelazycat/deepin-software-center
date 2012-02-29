@@ -1,3 +1,4 @@
+deluge
 emesene
 filezilla
 miro
@@ -39,7 +40,6 @@ chromium-browser
 clamz
 claws-mail
 dc-qt
-deluge
 desktop-webmail
 dfo
 dooble

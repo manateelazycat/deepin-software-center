@@ -25,35 +25,13 @@ from dbus.mainloop.glib import DBusGMainLoop
 from lang import __, getDefaultLanguage
 import dbus
 import glib
+import sys
 
-class NetworkWatcher(object):
-    '''Watch network status.'''
+class UpdateMonitor(object):
+    '''Update monitor.'''
 	
-    # Network state.
-    NM_STATE_UNKNOWN = 0
-    NM_STATE_ASLEEP = 1
-    NM_STATE_CONNECTING = 2
-    NM_STATE_CONNECTED = 3
-    NM_STATE_DISCONNECTED = 4
-    
-    def __init__(self):
-        '''Init for NetworkWatcher.'''
-        # Init.
-        DBusGMainLoop(set_as_default=True)
-        self.bus = dbus.Bus(dbus.Bus.TYPE_SYSTEM)
-        self.networkState = self.NM_STATE_CONNECTED # make it always connected if NM isn't available
-        self.obj = self.bus.get_object(
-            "org.freedesktop.NetworkManager", 
-            "/org/freedesktop/NetworkManager")
-        
     def run(self):
         '''Run.'''
-        # Register callback to StateChanged signal.
-        self.obj.connect_to_signal(
-            "StateChanged",
-            self.updateNotify,
-            dbus_interface="org.freedesktop.NetworkManager")
-        
         # Run first time.
         self.update()
         
@@ -62,35 +40,25 @@ class NetworkWatcher(object):
         
     def update(self):
         '''Update.'''
-        interface = dbus.Interface(self.obj, "org.freedesktop.DBus.Properties")
-        self.networkState = interface.Get("org.freedesktop.NetworkManager", "State")
-        self.updateNotify(self.networkState)
-        
-        return True
-
-    def updateNotify(self, state):
-        '''Notify update.'''
-        if state == self.NM_STATE_CONNECTED:
-            s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  
-            try:
-                s.bind(SOCKET_UPDATEMANAGER_ADDRESS)
-                s.close()
-                
-                runCommand("./checkUpdate.py")
-            except Exception, e:
-                s.close()
-                
-                print "Has one update manager running..."
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  
+        try:
+            s.bind(SOCKET_UPDATEMANAGER_ADDRESS)
+            s.close()
+            
+            runCommand("./checkUpdate.py")
+        except Exception, e:
+            print "Has one update manager running..."
+            s.close()
+            
+        return True    
         
 if __name__ == "__main__":
     # Init loop.
     loop = gobject.MainLoop()
 
     # Start network watcher.
-    networkWatcher = NetworkWatcher()
+    networkWatcher = UpdateMonitor()
     networkWatcher.run()
     
     # Run loop.
     loop.run()
-
-#  LocalWords:  NetworkWatcher StateChanged

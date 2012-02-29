@@ -44,6 +44,7 @@ def sendStatistics():
     '''Send statistics.'''
     try:
         uuid = readFirstLine(UUID_FILE, True)
+        print uuid
         if uuid != "": 
             args = {'a' : 'm', 'n' : uuid}
         

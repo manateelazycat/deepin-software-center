@@ -48,18 +48,10 @@ class UpdateList(td.Thread):
         
     def run(self):
         '''Update package list.'''
-        # Get last update hours.
-        agoHours = getLastUpdateHours("/var/lib/apt/periodic/update-success-stamp")
-
-        # Just update one day after.
-        if agoHours != None and agoHours >= UPDATE_INTERVAL:
-        # if True:
-            try:
-                self.cache.update(self.progress)
-            except Exception, e:
-                print "UpdateList.run(): %s" % (e)
-        else:
-            print "Just update system %s hours ago" % (agoHours)
+        try:
+            self.cache.update(self.progress)
+        except Exception, e:
+            print "UpdateList.run(): %s" % (e)
         
     @postGUI
     def updateCallback(self, percent):
@@ -73,7 +65,7 @@ class UpdateList(td.Thread):
         self.statusbar.setStatus(__("Update sources list completed."))
         
         # Reset statusbar after 2 seconds.
-        glib.timeout_add_seconds(2, self.resetStatus)
+        glib.timeout_add_seconds(5, self.resetStatus)
         
         # Download update data from server, this must execute after list update complete.
         downloadUpdateData.DownloadUpdateData().start()

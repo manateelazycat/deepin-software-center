@@ -8,7 +8,7 @@ case "$1" in
         git pull origin master
         ;;
     "push" )
-        git push git@github.com:manateelazycat/deepin-software-center.git
+        git push git@github.com:$2/deepin-software-center.git
         ;;
     "changelog" )
         git log --oneline
@@ -19,6 +19,12 @@ case "$1" in
     "revert" )
         git revert $2
         ;;
+    "tag" )
+        git tag -a $2
+        ;;
+    "pushtag" )
+        git push git@github.com:$2/deepin-software-center.git --tag
+        ;;
     * ) 
         echo "Help"
         echo "./repos.sh record         => record patch"
@@ -27,5 +33,7 @@ case "$1" in
         echo "./repos.sh changelog      => show changelog"
         echo "./repos.sh checkout       => revert change code"
         echo "./repos.sh revert         => revert patch by id"
+        echo "./repos.sh tag            => tag version"
+        echo "./repos.sh pushtag        => push tag"
         ;;
     esac

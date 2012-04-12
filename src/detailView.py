@@ -30,7 +30,7 @@ from theme import *
 from utils import *
 import appView
 import base64
-import browser
+import dsc_browser
 import copy
 import gtk
 import json
@@ -222,10 +222,12 @@ class DetailView(object):
         utils.containerRemoveAll(self.commentAreaAlign)
         
         try:
-            commentView = browser.Browser("%s/softcenter/v1/comment?n=%s&hl=%s" % (
+            commentView = dsc_browser.browser_new(
+                "%s/softcenter/v1/comment?n=%s&hl=%s" % (
                     SERVER_ADDRESS, 
                     self.pkgName, 
-                    getDefaultLanguage()))
+                    getDefaultLanguage()),
+                COOKIE_FILE)
             self.commentArea = commentView
             self.commentArea.connect("console-message", lambda view, message, line, sourceId: self.handleConsoleMessage(message))
             self.commentArea.connect("load-finished", lambda view, frame: self.scrollCommentAreaToTop())
@@ -287,17 +289,17 @@ class DetailView(object):
             vadj.set_value(currentY + offsetY)
         
             # Update height.
-            self.commentArea.set_size_request(DEFAULT_WINDOW_WIDTH / 2, self.getCommentAreaHeight())
+            # self.commentArea.set_size_request(DEFAULT_WINDOW_WIDTH / 2, self.getCommentAreaHeight())
             
             # Update flag.
             self.commentButtonFlag = False
             
-    def getCommentAreaHeight(self):
-        '''Get comment area height.'''
-        self.commentArea.execute_script('oldtitle=document.title;document.title=document.body.offsetHeight;')
-        height = self.commentArea.get_main_frame().get_title()
-        self.commentArea.execute_script('document.title=oldtitle;')
-        return int(height) + 50
+    # def getCommentAreaHeight(self):
+    #     '''Get comment area height.'''
+    #     # self.commentArea.execute_script('oldtitle=document.title;document.title=document.body.offsetHeight;')
+    #     height = self.commentArea.get_main_frame().get_title()
+    #     self.commentArea.execute_script('documeget_titlent.title=oldtitle;')
+    #     return int(height) + 50
         
     def createInfoTab(self, appInfo, pkg):
         '''Select information tab.'''

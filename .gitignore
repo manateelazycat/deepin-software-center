@@ -11,3 +11,6 @@ voteBlacklist/
 .#*
 uuid
 upgradeNum
+build/
+dist/
+dsc.egg-info/

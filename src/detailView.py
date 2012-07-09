@@ -30,7 +30,7 @@ from theme import *
 from utils import *
 import appView
 import base64
-import dsc_browser
+from dtk.ui.browser import WebView
 import copy
 import gtk
 import json
@@ -222,12 +222,11 @@ class DetailView(object):
         utils.containerRemoveAll(self.commentAreaAlign)
         
         try:
-            commentView = dsc_browser.browser_new(
-                "%s/softcenter/v1/comment?n=%s&hl=%s" % (
+            commentView = WebView(COOKIE_FILE)
+            commentView.open("%s/softcenter/v1/comment?n=%s&hl=%s" % (
                     SERVER_ADDRESS, 
                     self.pkgName, 
-                    getDefaultLanguage()),
-                COOKIE_FILE)
+                    getDefaultLanguage()))
             self.commentArea = commentView
             self.commentArea.connect("console-message", lambda view, message, line, sourceId: self.handleConsoleMessage(message))
             self.commentArea.connect("load-finished", lambda view, frame: self.scrollCommentAreaToTop())

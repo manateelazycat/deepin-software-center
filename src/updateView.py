@@ -82,19 +82,20 @@ class UpdateItem(DownloadItem):
         checkPaddingLeft = 20
         checkPaddingRight = 15
         checkPaddingY = 10
-        self.checkButton = gtk.CheckButton()
-        self.checkButton.set_active(self.getSelectStatusCallback(utils.getPkgName(self.appInfo.pkg)))
-        self.checkButton.connect("toggled", lambda w: self.toggleSelectStatus())
-        checkButtonSetBackground(
-            self.checkButton,
-            False, False, 
-            "cell/select.png",
-            "cell/selected.png",
-            )
+        # self.checkButton = gtk.CheckButton()
+        # self.checkButton.set_active(self.getSelectStatusCallback(utils.getPkgName(self.appInfo.pkg)))
+        # self.checkButton.connect("toggled", lambda w: self.toggleSelectStatus())
+        # checkButtonSetBackground(
+        #     self.checkButton,
+        #     False, False, 
+        #     "cell/select.png",
+        #     "cell/selected.png",
+        #     )
         self.checkAlign = gtk.Alignment()
+        self.checkAlign.set_size_request(4, -1)
         self.checkAlign.set(0.5, 0.5, 0.0, 0.0)
         self.checkAlign.set_padding(checkPaddingY, checkPaddingY, checkPaddingLeft, checkPaddingRight)
-        self.checkAlign.add(self.checkButton)
+        # self.checkAlign.add(self.checkButton)
         self.itemBox.pack_start(self.checkAlign, False, False)
         
         self.appBasicView = AppBasicView(self.appInfo, 300 + APP_BASIC_WIDTH_ADJUST, self.itemBox, self.entryDetailView) 

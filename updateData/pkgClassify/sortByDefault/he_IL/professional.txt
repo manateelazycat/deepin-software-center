@@ -1,4 +1,3 @@
-qcad
 celestia
 electric
 extcalc

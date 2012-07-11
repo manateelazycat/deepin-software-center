@@ -176,4 +176,3 @@ ghkl
 geomview
 gerbv
 ggobi
-qcad

@@ -1,6 +1,5 @@
 hedgewars
 supertuxkart
-alien-arena
 chromium-bsu
 glest
 gmchess

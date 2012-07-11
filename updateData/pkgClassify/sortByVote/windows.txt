@@ -4,14 +4,6 @@ playonlinux
 deepinwine-foxitreader4
 deepinwine-thunder5
 deepinwine-cajviewer
-wine1.3
-deepinwine-qq2010
-deepinwine-qq2009
-deepin-wine-tm2009
-deepin-wine-rtx2010
+deepinwine-qq2012
 picasa
-q4wine
-wine
-wine-thunder
-wine1.2
 winetricks

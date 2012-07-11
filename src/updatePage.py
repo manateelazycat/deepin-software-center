@@ -98,20 +98,20 @@ class Topbar(object):
         self.unselectAllId = "unselectAll"
         self.labelId = self.selectAllId
         
-        (self.selectAllBox, self.selectAllEventBox) = setDefaultRadioButton(
-            __("Select All"), self.selectAllId, self.setLabelId, self.getLabelId, self.selectAllPkgStatus
-            )
-        upgradeBox.pack_start(self.selectAllBox, False, False, self.paddingX)
+        # (self.selectAllBox, self.selectAllEventBox) = setDefaultRadioButton(
+        #     __("Select All"), self.selectAllId, self.setLabelId, self.getLabelId, self.selectAllPkgStatus
+        #     )
+        # upgradeBox.pack_start(self.selectAllBox, False, False, self.paddingX)
         
-        (self.unselectAllBox, self.unselectAllEventBox) = setDefaultRadioButton(
-            __("Unselect All"), self.unselectAllId, self.setLabelId, self.getLabelId, self.unselectAllPkgStatus
-            )
-        upgradeBox.pack_start(self.unselectAllBox, False, False, self.paddingX)
+        # (self.unselectAllBox, self.unselectAllEventBox) = setDefaultRadioButton(
+        #     __("Unselect All"), self.unselectAllId, self.setLabelId, self.getLabelId, self.unselectAllPkgStatus
+        #     )
+        # upgradeBox.pack_start(self.unselectAllBox, False, False, self.paddingX)
         
-        (self.upgradeButton, upgradeButtonAlign) = newActionButton(
-             "search", 0.0, 0.5, "cell", False, __("Action Update"), BUTTON_FONT_SIZE_MEDIUM, "bigButtonFont")
-        upgradeBox.pack_start(upgradeButtonAlign, False, False, 26)
-        self.upgradeButton.connect("button-press-event", lambda w, e: upgradeSelectedPkgsCallback(getSelectListCallback()))
+        # (self.upgradeButton, upgradeButtonAlign) = newActionButton(
+        #      "search", 0.0, 0.5, "cell", False, __("Action Update"), BUTTON_FONT_SIZE_MEDIUM, "bigButtonFont")
+        # upgradeBox.pack_start(upgradeButtonAlign, False, False, 26)
+        # self.upgradeButton.connect("button-press-event", lambda w, e: upgradeSelectedPkgsCallback(getSelectListCallback()))
         
         # Connect.
         self.updateNum(self.repoCache.getUpgradableNum())

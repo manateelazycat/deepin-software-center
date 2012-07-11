@@ -3,7 +3,6 @@ gelemental
 stellarium
 sweethome3d
 sagcad
-qcad
 amide
 fityk
 achilles

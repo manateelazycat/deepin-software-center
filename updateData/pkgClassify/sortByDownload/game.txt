@@ -261,7 +261,6 @@ a7xpg
 aisleriot
 glest
 chromium-bsu
-alien-arena
 supertuxkart
 gmchess
 gnome-sudoku

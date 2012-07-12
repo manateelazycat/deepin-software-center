@@ -1,13 +1,13 @@
-tomboy
+stardict
+zim
+calibre
 libreoffice
 evince
-stardict
-calibre
+tomboy
 gnumeric
 goldendict
 mupdf
 xpdf
-zim
 chmsee
 comix
 kchmviewer

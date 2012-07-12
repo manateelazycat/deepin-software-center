@@ -1,10 +1,9 @@
-picasa
-playonlinux
-winetricks
-deepinwine-thunder5
 deepinwine-qq2012
 deepinwine-thunder5
 deepinwine-rtx2010
 deepinwine-picasa
-deepinwine-cajviewer
 deepinwine-foxitreader4
+deepinwine-cajviewer
+picasa
+playonlinux
+winetricks

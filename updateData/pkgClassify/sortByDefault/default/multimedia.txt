@@ -1,13 +1,13 @@
+vlc
+rhythmbox
 amarok
 banshee
+smplayer
 audacity
 pitivi
 radiotray
-rhythmbox
 sonata
 totem
-vlc
-smplayer
 openshot
 lastfm
 minitube

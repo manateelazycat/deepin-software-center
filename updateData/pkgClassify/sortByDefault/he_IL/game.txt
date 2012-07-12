@@ -1,12 +1,13 @@
-hedgewars
-supertuxkart
 chromium-bsu
-glest
+hex-a-hop
+supertuxkart
+hedgewars
 gmchess
 gnome-sudoku
-hex-a-hop
 tuxpuck
 pingus
+frogatto
+glest
 frozen-bubble
 aisleriot
 a7xpg

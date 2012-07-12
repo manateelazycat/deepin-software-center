@@ -1,2 +1,1 @@
-[["deluge", "gnucash", "hardinfo", "subdownloader", "gpodder", "pokerth", "gmusicbrowser", "bibus", "gwibber", "qutim", "exaile", "guvcview", "kino"]
-,["amsn", "rekonq", "k3b", "terminator", "synapse", "furiusisomount", "liferea", "choqok", "gftp", "kmail", "kopete", "gpicview", "gpixpod"]]
+[["exaile", "subdownloader", "gmusicbrowser", "gwibber", "qutim", "bibus", "guvcview", "kino", "deluge", "gnucash", "gpodder", "pokerth"], ["choqok", "k3b", "rekonq", "terminator", "synapse", "gftp", "kmail", "kopete", "gpicview", "gpixpod", "amsn", "furiusisomount", "liferea"]]

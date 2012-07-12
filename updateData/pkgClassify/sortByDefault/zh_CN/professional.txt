@@ -1,9 +1,9 @@
+stellarium
 celestia
 electric
 extcalc
-gelemental
 kile
-stellarium
+gelemental
 amide
 scilab
 achilles
